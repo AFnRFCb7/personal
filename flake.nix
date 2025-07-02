@@ -2644,7 +2644,7 @@
                                                                                                                     exit 64
                                                                                                                 fi
                                                                                                                 rm --force nixos.qcow2 result
-                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private --show-trace
                                                                                                                 then
                                                                                                                     if result/bin/run-nixos-vm
                                                                                                                     then
