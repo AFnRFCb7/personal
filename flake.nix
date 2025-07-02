@@ -2956,7 +2956,7 @@
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             in
                                                 {
-                                                }
+                                                } ;
                                 } ;
             } ;
 }
