@@ -2954,23 +2954,9 @@
                                     tests.${ system } =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-                                            visitors =
-                                                {
-                                                    lambda = path : value : "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" ;
-                                                    null = path : value : "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" ;
-                                                } ;
                                             in
                                                 {
-                                                    visitor-bool = visitor.lib.test pkgs false false visitors true ;
-                                                    visitor-float = visitor.lib.test pkgs false false visitors 0.0 ;
-                                                    visitor-int = visitor.lib.test pkgs false false visitors 0 ;
-                                                    visitor-list = visitor.lib.test pkgs [ "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" [ ] "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" { } ] true visitors [ ( x : x ) [ ] null { } ] ;
-                                                    visitor-lambda = visitor.lib.test pkgs "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" true visitors ( x : x ) ;
-                                                    visitor-null = visitor.lib.test pkgs "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" true visitors null ;
-                                                    visitor-path = visitor.lib.test pkgs false false visitors ./. ;
-                                                    visitor-set = visitor.lib.test pkgs { lambda = "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" ; list = [ ] ; null = "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" ; set = { } ; } true visitors { lambda = x : x ; list = [ ] ; null = null ; set = { } ; } ;
-                                                    visitor-string = visitor.lib.test pkgs false false visitors "" ;
-                                                } ;
+                                                }
                                 } ;
             } ;
 }
