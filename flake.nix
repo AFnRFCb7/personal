@@ -2737,7 +2737,7 @@
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal checkout -b "$PERSONAL_BRANCH"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
                                                                                                                                 gh auth login --with-token < /var/lib/workspaces/${ epoch }/secrets/github-token.asc
-                                                                                                                                if [[ ! -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]]
+                                                                                                                                if [[ -z "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]]
                                                                                                                                 then
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main
                                                                                                                                     read -rp "Title the changes in personal:  " TITLE
@@ -2750,7 +2750,7 @@
                                                                                                                                 SECRETS_BRANCH="scratch/$( uuidgen )"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "$SECRETS_BRANCH"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets fetch origin main
-                                                                                                                                if [[ ! -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
+                                                                                                                                if [[ -z "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
                                                                                                                                 then
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main
                                                                                                                                     read -rp "Title the changes in secrets:  " TITLE
