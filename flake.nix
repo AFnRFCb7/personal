@@ -1984,87 +1984,6 @@
                                                                                             } ;
                                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                                     } ;
-                                                                                setup =
-                                                                                    {
-                                                                                        after =
-                                                                                            [
-                                                                                                "network.target"
-                                                                                                "calcurse.service"
-                                                                                                "chromium.service"
-                                                                                                "dot-gnupg.service"
-                                                                                                "dot-ssh.service"
-                                                                                                "jrnl.service"
-                                                                                                "ledger.service"
-                                                                                                "repository-personal.service"
-                                                                                                "repository-private.service"
-                                                                                                "repository-secrets.service"
-                                                                                                "secrets.service"
-                                                                                           ] ;
-                                                                                        enable = false ;
-                                                                                        serviceConfig =
-                                                                                            {
-                                                                                                ExecStart = "${ pkgs.coreutils }/bin/true" ;
-                                                                                            } ;
-                                                                                        wants =
-                                                                                            [
-                                                                                                "calcurse.service"
-                                                                                                "chromium.service"
-                                                                                                "dot-gnupg.service"
-                                                                                                "dot-ssh.service"
-                                                                                                "jrnl.service"
-                                                                                                "ledger.service"
-                                                                                                "repository-personal.service"
-                                                                                                "repository-private.service"
-                                                                                                "repository-secrets.service"
-                                                                                                "secrets.service"
-                                                                                           ] ;
-                                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                                    } ;
-                                                                                teardown =
-                                                                                    {
-                                                                                        after = [ "network.target" ] ;
-                                                                                        enable = false ;
-                                                                                        serviceConfig =
-                                                                                            {
-                                                                                                ExecStart =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "application" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.zstd ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            WORK_DIRECTORY="$( pwd )"
-                                                                                                                            cd "$( mktemp --directory )"
-                                                                                                                            tar --create --file=- "$WORK_DIRECTORY" | zstd --long=19 --threads=1 -o "$( mktemp --dry-run --suffix=.tar.zstd )"
-                                                                                                                            if [[ -z "$WORK_DIRECTORY" ]] || [[ "$WORK_DIRECTORY" == "/" ]]
-                                                                                                                            then
-                                                                                                                                echo Refusing to delete
-                                                                                                                            else
-                                                                                                                                rm --recursive --force "$WORK_DIRECTORY"
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/application" ;
-                                                                                                ExecStartPost =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "application" ;
-                                                                                                                    runtimeInputs = [ pkgs.systemd ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            ${ pkgs.systemd }/bin/systemctl start setup.service
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/application" ;
-                                                                                                StateDirectory = "workspaces" ;
-                                                                                                WorkingDirectory = "/var/lib/workspaces" ;
-                                                                                            } ;
-                                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                                    } ;
                                                                                 stash-cleanup =
                                                                                     {
                                                                                         after = [ "network.target" ] ;
@@ -2119,22 +2038,6 @@
                                                                             } ;
                                                                 timers =
                                                                     {
-                                                                        setup =
-                                                                            {
-                                                                                enable = false ;
-                                                                                timerConfig =
-                                                                                    {
-                                                                                        OnCalendar = config.personal.frequency.setup ;
-                                                                                    } ;
-                                                                            } ;
-                                                                        teardown =
-                                                                            {
-                                                                                enable = false ;
-                                                                                timerConfig =
-                                                                                    {
-                                                                                        OnCalendar = config.personal.frequency.teardown ;
-                                                                                    } ;
-                                                                            } ;
                                                                         stash-cleanup =
                                                                             {
                                                                                 timerConfig =
