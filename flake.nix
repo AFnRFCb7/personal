@@ -2762,7 +2762,7 @@
                                                                                                                                 fi
                                                                                                                                 gh auth logout
                                                                                                                                 cd /var/lib/workspaces/${ epoch }/repository/private
-                                                                                                                                rm result
+                                                                                                                                rm nixos.qcow2 result
                                                                                                                                 while [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]] || [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
                                                                                                                                 do
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
