@@ -2120,8 +2120,8 @@
                                                                 timers =
                                                                     {
                                                                         setup =
-                                                                            enable = false ;
                                                                             {
+                                                                                enable = false ;
                                                                                 timerConfig =
                                                                                     {
                                                                                         OnCalendar = config.personal.frequency.setup ;
