@@ -2644,7 +2644,7 @@
                                                                                                                     exit 64
                                                                                                                 fi
                                                                                                                 rm --force nixos.qcow2 result
-                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private --show-trace
+                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private#myhost --show-trace
                                                                                                                 then
                                                                                                                     if result/bin/run-nixos-vm
                                                                                                                     then
@@ -2680,7 +2680,7 @@
                                                                                                                             do
                                                                                                                                 sleep 1s
                                                                                                                             done
-                                                                                                                            if ! nixos-rebuild build-vm-with-bootloader --update-vm personal --update-vm secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                            if ! nixos-rebuild build-vm-with-bootloader --update-vm personal --update-vm secrets --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                             then
                                                                                                                                 MESSAGE="The private repository failed to build the vm with bootloader from github sources at $CURRENT_TIME"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
@@ -2707,7 +2707,7 @@
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/development
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
                                                                                                                                     git -C /var/lib/workspacews
-                                                                                                                                    if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                    if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                     then
                                                                                                                                         SATISFACTORY=""
                                                                                                                                         while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
@@ -2725,7 +2725,7 @@
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private checkout origin/development
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "scratch/$( uuidgen )"
-                                                                                                                                            if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                            if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                             then
                                                                                                                                                 SATISFACTORY=""
                                                                                                                                                 while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
