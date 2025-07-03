@@ -2723,7 +2723,7 @@
                                                                                                                     if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                     then
                                                                                                                         echo "We have successfully built the private repository using local sources"
-                                                                                                                        if result/bin/run-nixos-vm
+                                                                                                                        if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
                                                                                                                         then
                                                                                                                             SATISFACTORY=""
                                                                                                                             while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
@@ -2775,7 +2775,7 @@
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "scratch/$( uuidgen )"
                                                                                                                                 if nixos-rebuild build-vm-with-bootloader --update-input personal --update-input secrets --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                                 then
-                                                                                                                                    if result/bin/run-nixos-vm
+                                                                                                                                    if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
                                                                                                                                     then
                                                                                                                                         rm nixos.qcow2 result
                                                                                                                                         SATISFACTORY=""
@@ -2912,7 +2912,6 @@
                                                                                                         ${ pkgs.jetbrains.idea-community }/bin/idea-community \
                                                                                                         $out/bin/repository-private \
                                                                                                         --add-flags /var/lib/workspaces/${ epoch }/repository/private \
-                                                                                                        --set LD_LIBRARY_PATH pkgs.e2fsprogs \
                                                                                                         --set PATH ${ pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.git promote ] } \
                                                                                                         --set GH_TOKEN "$( cat /var/lib/workspaces/${ epoch }/secrets/github-token.asc )"
                                                                                                 '' ;
