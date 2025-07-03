@@ -2773,6 +2773,7 @@
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal checkout "scratch/$( uuidgen )"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout origin/main
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "scratch/$( uuidgen )"
+                                                                                                                                nix-collect-garbage
                                                                                                                                 if nixos-rebuild build-vm-with-bootloader --update-input personal --update-input secrets --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                                 then
                                                                                                                                     if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
@@ -2796,9 +2797,9 @@
                                                                                                                                                 then
                                                                                                                                                     rm nixos.qcow2 result
                                                                                                                                                     echo "Since the development run was satisfactory we are going to rebase the private flake into the development branch."
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin development
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private diff origin/development
                                                                                                                                                     read -rp "Success Message:  " SUCCESS_MESSAGE
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin development
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "DEVELOPMENT SUCCESS AT $CURRENT_TIME:  $SUCCESS_MESSAGE"
                                                                                                                                                     DEVELOPMENT_SCRATCH="scratch/$( uuidgen )"
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "$DEVELOPMENT_SCRATCH"
