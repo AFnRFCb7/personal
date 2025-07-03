@@ -2857,7 +2857,7 @@
                                                                                                                                                 echo "$MESSAGE" >&2
                                                                                                                                                 exit 64
                                                                                                                                             fi
-                                                                                                                                        elif [[ "$SATISFACTORY" != "n" ]]
+                                                                                                                                        elif [[ "$SATISFACTORY" == "n" ]]
                                                                                                                                         then
                                                                                                                                             rm --force nixos.qcow2 result
                                                                                                                                             read -rp "Details:  " DETAILS
