@@ -1472,12 +1472,14 @@
                                                                             {
 stash-setup = {
     description = "No-op stash-setup service";
-    after = [ "network.target" ];
+    enable = true ;
     serviceConfig = {
       ExecStart = "${pkgs.coreutils}/bin/true";
-      User = "emory";
     };
-    wantedBy = [ "multi-user.target" ];
+    unitConfig = {
+        After = [ "network.target" ];
+        WantedBy = [ "multi-user.target" ];
+    } ;
   };
 
 
