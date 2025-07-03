@@ -2627,7 +2627,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "promote" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.nix pkgs.nixos-rebuild ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 CURRENT_TIME="$( date +%s )"
@@ -2635,7 +2635,7 @@
                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal commit -am "$CURRENT_TIME" --allow-empty
                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal rev-parse HEAD > /var/lib/workspaces/${ epoch }/repository/private/personal.hash
                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets commit -am "$CURRENT_TIME" --allow-empty
-                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets rev-parse HEAD > /var/lib/workspaces/${ epoch }/repository/secrets.hash
+                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets rev-parse HEAD > /var/lib/workspaces/${ epoch }/repository/private/secrets.hash
                                                                                                                 if ! nix flake check --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                 then
                                                                                                                     MESSAGE="The private repository failed checks at $CURRENT_TIME"
@@ -2644,7 +2644,7 @@
                                                                                                                     exit 64
                                                                                                                 fi
                                                                                                                 rm --force nixos.qcow2 result
-                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private#myhost --show-trace
                                                                                                                 then
                                                                                                                     if result/bin/run-nixos-vm
                                                                                                                     then
@@ -2680,7 +2680,7 @@
                                                                                                                             do
                                                                                                                                 sleep 1s
                                                                                                                             done
-                                                                                                                            if ! nixos-rebuild build-vm-with-bootloader --update-vm personal --update-vm secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                            if ! nixos-rebuild build-vm-with-bootloader --update-vm personal --update-vm secrets --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                             then
                                                                                                                                 MESSAGE="The private repository failed to build the vm with bootloader from github sources at $CURRENT_TIME"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
@@ -2707,7 +2707,7 @@
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/development
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
                                                                                                                                     git -C /var/lib/workspacews
-                                                                                                                                    if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                    if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                     then
                                                                                                                                         SATISFACTORY=""
                                                                                                                                         while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
@@ -2725,7 +2725,7 @@
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private checkout origin/development
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "scratch/$( uuidgen )"
-                                                                                                                                            if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                            if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                             then
                                                                                                                                                 SATISFACTORY=""
                                                                                                                                                 while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
@@ -2954,22 +2954,8 @@
                                     tests.${ system } =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-                                            visitors =
-                                                {
-                                                    lambda = path : value : "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" ;
-                                                    null = path : value : "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" ;
-                                                } ;
                                             in
                                                 {
-                                                    visitor-bool = visitor.lib.test pkgs false false visitors true ;
-                                                    visitor-float = visitor.lib.test pkgs false false visitors 0.0 ;
-                                                    visitor-int = visitor.lib.test pkgs false false visitors 0 ;
-                                                    visitor-list = visitor.lib.test pkgs [ "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" [ ] "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" { } ] true visitors [ ( x : x ) [ ] null { } ] ;
-                                                    visitor-lambda = visitor.lib.test pkgs "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" true visitors ( x : x ) ;
-                                                    visitor-null = visitor.lib.test pkgs "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" true visitors null ;
-                                                    visitor-path = visitor.lib.test pkgs false false visitors ./. ;
-                                                    visitor-set = visitor.lib.test pkgs { lambda = "103a798535e88ad24601208d72f211c8fee7decc327a92eaaa20a1734491cc3b43457a7656217632c22264b35d9dc558ee5663870936ac1cbabd2b16154df853" ; list = [ ] ; null = "283b18f4ec295dd925b61a760258a3bda187b170b92ccd75158f603b78181ff9f6bf4e216e09c74ee9a811af7aeb2b7abed9d4610eec0c899dd3f87d387d8c0a" ; set = { } ; } true visitors { lambda = x : x ; list = [ ] ; null = null ; set = { } ; } ;
-                                                    visitor-string = visitor.lib.test pkgs false false visitors "" ;
                                                 } ;
                                 } ;
             } ;
