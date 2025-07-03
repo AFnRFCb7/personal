@@ -2793,7 +2793,8 @@
                                                                                                                                                     read -rp "Was the development run satisfactory? y/n " SATISFACTORY
                                                                                                                                                 done
                                                                                                                                                 if [[ "$SATISFACTORY" == "y" ]]
-                                                                                                                                                thenrm --force nixos.qcow2 result
+                                                                                                                                                then
+                                                                                                                                                    rm nixos.qcow2 result
                                                                                                                                                     echo "Since the development run was satisfactory we are going to rebase the private flake into the development branch."
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private diff origin/development
                                                                                                                                                     read -rp "Success Message:  " SUCCESS_MESSAGE
