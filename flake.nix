@@ -1984,76 +1984,9 @@
                                                                                             } ;
                                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                                     } ;
-                                                                                stash-cleanup =
-                                                                                    {
-                                                                                        after = [ "network.target" ] ;
-                                                                                        serviceConfig =
-                                                                                            {
-                                                                                                ExecStart =
-                                                                                                    let
-                                                                                                        script =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "script" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            NOW="$( date +%s )"
-                                                                                                                            RECYCLE_BIN="$( mktemp --directory )"
-                                                                                                                            if [ -d /home/${ config.personal.name }/${ config.personal.stash }/direct ]
-                                                                                                                            then
-                                                                                                                                find /home/${ config.personal.name }/${ config.personal.stash }/direct -mindepth 1 -maxdepth 1 -type d ! -name ${ builtins.substring 0 config.personal.hash-length ( builtins.hashString "sha512" ( builtins.toString current-time ) ) } | while read -r DIRECTORY
-                                                                                                                                do
-                                                                                                                                    if [ -L "$DIRECTORY/teardown" ] && [ -x "DIRECTORY/teardown" ]
-                                                                                                                                    then
-                                                                                                                                        "$DIRECTORY/teardown"
-                                                                                                                                    fi
-                                                                                                                                    if [ -f "$DIRECTORY/release.success.yaml" ]
-                                                                                                                                    then
-                                                                                                                                        LAST_ACCESS="$( stat "$DIRECTORY/release.success.yaml" --format "%X" )"
-                                                                                                                                        if [ "$(( "$NOW" - "$LAST_ACCESS" ))" -gt ${ builtins.toString config.personal.stale } ]
-                                                                                                                                        then
-                                                                                                                                            mv "$DIRECTORY" "$RECYCLE_BIN"
-                                                                                                                                        fi
-                                                                                                                                    fi
-                                                                                                                                done
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ script }/bin/script" ;
-                                                                                                User = config.personal.name ;
-                                                                                            } ;
-                                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                                    } ;
-                                                                                stash-setup =
-                                                                                    {
-                                                                                        after = [ "network.target" ] ;
-                                                                                        serviceConfig =
-                                                                                            {
-                                                                                                ExecStart = "${ setup }/bin/setup" ;
-                                                                                                User = config.personal.name ;
-                                                                                            } ;
-                                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                                    } ;
                                                                             } ;
                                                                 timers =
                                                                     {
-                                                                        stash-cleanup =
-                                                                            {
-                                                                                timerConfig =
-                                                                                    {
-                                                                                        OnCalendar = "daily" ;
-                                                                                    } ;
-                                                                                wantedBy = [ "timers.target" ] ;
-                                                                            } ;
-                                                                        stash-setup =
-                                                                            {
-                                                                                timerConfig =
-                                                                                    {
-                                                                                        OnCalendar = "daily" ;
-                                                                                    } ;
-                                                                                wantedBy = [ "timers.target" ] ;
-                                                                            } ;
                                                                     } ;
                                                             } ;
                                                         system.stateVersion = "23.05" ;
