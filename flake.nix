@@ -2773,6 +2773,7 @@
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal checkout "scratch/$( uuidgen )"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout origin/main
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "scratch/$( uuidgen )"
+                                                                                                                                nix-collect-garbage
                                                                                                                                 if nixos-rebuild build-vm-with-bootloader --update-input personal --update-input secrets --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                                 then
                                                                                                                                     if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
