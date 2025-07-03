@@ -2627,7 +2627,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "promote" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.nix pkgs.nixos-rebuild ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.less kgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 CURRENT_TIME="$( date +%s )"
