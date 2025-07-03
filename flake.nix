@@ -2736,7 +2736,7 @@
                                                                                                                                 PERSONAL_BRANCH="scratch/$( uuidgen )"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal checkout -b "$PERSONAL_BRANCH"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
-                                                                                                                                echo "$GH_TOKEN" | gh auth login --with-token
+                                                                                                                                echo "$GH_TOKEN" | gh auth login
                                                                                                                                 if [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]]
                                                                                                                                 then
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main
