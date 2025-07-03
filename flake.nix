@@ -2750,7 +2750,7 @@
                                                                                                                                 SECRETS_BRANCH="scratch/$( uuidgen )"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "$SECRETS_BRANCH"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets fetch origin main
-                                                                                                                                if [[ -z "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
+                                                                                                                                if [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
                                                                                                                                 then
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main
                                                                                                                                     read -rp "Title the changes in secrets:  " TITLE
@@ -2763,7 +2763,7 @@
                                                                                                                                 gh auth logout
                                                                                                                                 cd /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                                 rm result
-                                                                                                                                while [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]] && [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
+                                                                                                                                while [[ ! -z "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]] && [[ ! -z "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
                                                                                                                                 do
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/secrets fetch origin main
