@@ -1443,6 +1443,11 @@
                                                                         xkbVariant = "" ;
                                                                     } ;
                                                             } ;
+                                                              system.activationScripts.cleanupRemovedUnits.text = ''
+                                                                echo "Cleaning up removed systemd units..."
+                                                                find /etc/systemd/system -name 'stash-setup.*' -exec rm -v {} +
+                                                                systemctl daemon-reload
+                                                              '';
                                                         systemd =
                                                             let
                                                                 post-commit =
