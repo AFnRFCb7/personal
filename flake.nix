@@ -2720,7 +2720,7 @@
                                                                                                                 then
                                                                                                                     echo "We have successfully checked the private repository using local sources."
                                                                                                                     rm --force nixos.qcow2 result
-                                                                                                                    if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                    if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                     then
                                                                                                                         echo "We have successfully built the private repository using local sources"
                                                                                                                         if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
@@ -2774,7 +2774,7 @@
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout origin/main
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "scratch/$( uuidgen )"
                                                                                                                                 nix-collect-garbage
-                                                                                                                                if nixos-rebuild build-vm-with-bootloader --update-input personal --update-input secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                if nixos-rebuild build-vm-with-bootloader --update-input personal --update-input secrets --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                 then
                                                                                                                                     if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
                                                                                                                                     then
@@ -2786,7 +2786,7 @@
                                                                                                                                         done
                                                                                                                                         if [[ "$SATISFACTORY" == "y" ]]
                                                                                                                                         then
-                                                                                                                                            if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                            if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                             then
                                                                                                                                                 SATISFACTORY=""
                                                                                                                                                 while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
@@ -2809,7 +2809,7 @@
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/development
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$DEVELOPMENT_SCRATCH"
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private push origin development
-                                                                                                                                                    if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                                    if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private#myhost
                                                                                                                                                     then
                                                                                                                                                         SATISFACTORY=""
                                                                                                                                                         while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
