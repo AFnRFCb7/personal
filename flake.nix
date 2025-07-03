@@ -1445,7 +1445,7 @@
                                                             } ;
                                                               system.activationScripts.cleanupRemovedUnits.text = ''
                                                                 echo "Cleaning up removed systemd units..."
-                                                                find /etc/systemd/system -name 'stash-setup.*' -exec rm -v {} +
+                                                                # find /etc/systemd/system -name 'stash-setup.*' -exec rm -v {} +
                                                                 systemctl daemon-reload
                                                               '';
                                                         systemd =
@@ -1470,6 +1470,17 @@
                                                                     {
                                                                         services =
                                                                             {
+stash-setup = {
+    description = "No-op stash-setup service";
+    after = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.coreutils}/bin/true";
+      User = "emory";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
+
                                                                                 calcurse =
                                                                                     {
                                                                                         after = [ "network.target" "network-online.target" "dot-gnupg.service" "dot-ssh.service" ] ;
