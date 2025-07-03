@@ -2783,7 +2783,7 @@
                                                                                                                                         do
                                                                                                                                             read -rp "Was the github run satisfactory? y/n " SATISFACTORY
                                                                                                                                         done
-                                                                                                                                        if [[ "$SATISFACTORY" != "y" ]]
+                                                                                                                                        if [[ "$SATISFACTORY" == "y" ]]
                                                                                                                                         then
                                                                                                                                             if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                                             then
