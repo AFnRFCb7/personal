@@ -2735,7 +2735,7 @@
                                                                                                                             done
                                                                                                                             if [[ "$SATISFACTORY" == "y" ]]
                                                                                                                             then
-                                                                                                                                echo Since the local run 1 was satisfactory let us try it again"
+                                                                                                                                echo "Since the local run 1 was satisfactory let us try it again"
                                                                                                                                 if LD_LIBRARY_PATH=${ pkgs.e2fsprogs }/bin result/bin/run-nixos-vm
                                                                                                                                 then
                                                                                                                                 SATISFACTORY=""
