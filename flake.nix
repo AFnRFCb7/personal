@@ -2777,6 +2777,7 @@
                                                                                                                                 then
                                                                                                                                     if result/bin/run-nixos-vm
                                                                                                                                     then
+                                                                                                                                        rm nixos.qcow2 result
                                                                                                                                         SATISFACTORY=""
                                                                                                                                         while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
                                                                                                                                         do
@@ -2792,7 +2793,7 @@
                                                                                                                                                     read -rp "Was the development run satisfactory? y/n " SATISFACTORY
                                                                                                                                                 done
                                                                                                                                                 if [[ "$SATISFACTORY" == "y" ]]
-                                                                                                                                                then
+                                                                                                                                                thenrm --force nixos.qcow2 result
                                                                                                                                                     echo "Since the development run was satisfactory we are going to rebase the private flake into the development branch."
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private diff origin/development
                                                                                                                                                     read -rp "Success Message:  " SUCCESS_MESSAGE
@@ -2857,6 +2858,7 @@
                                                                                                                                             fi
                                                                                                                                         elif [[ "$SATISFACTORY" != "n" ]]
                                                                                                                                         then
+                                                                                                                                            rm --force nixos.qcow2 result
                                                                                                                                             read -rp "Details:  " DETAILS
                                                                                                                                             MESSAGE="The private repository ran unsatisfactory from github at $CURRENT_TIME: $DETAILS"
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
