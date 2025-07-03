@@ -1606,6 +1606,7 @@
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/dot-gnupg" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/dot-gnupg" ;
                                                                                             } ;
@@ -1642,6 +1643,7 @@
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/dot-password-store" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/dot-password-store" ;
                                                                                             } ;
@@ -1668,24 +1670,25 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             cat > config <<EOF
-                                                                                                                            HostName github.com
                                                                                                                             Host github.com
-                                                                                                                            IdentityFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/identity.asc
-                                                                                                                            UserKnownHostsFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/known-hosts.asc
-                                                                                                                            StrictHostKeyChecking true
+                                                                                                                            HostName github.com
+                                                                                                                                IdentityFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/identity.asc
+                                                                                                                                UserKnownHostsFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/known-hosts.asc
+                                                                                                                                StrictHostKeyChecking true
 
-                                                                                                                            HostName 192.168.1.202
                                                                                                                             Host mobile
-                                                                                                                            IdentityFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/identity.asc
-                                                                                                                            UserKnownHostsFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/known-hosts.asc
-                                                                                                                            StrictHostKeyChecking true
-                                                                                                                            Port 202
+                                                                                                                                HostName 192.168.1.202
+                                                                                                                                IdentityFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/identity.asc
+                                                                                                                                UserKnownHostsFile /var/lib/workspaces/${ epoch }/secrets/dot-ssh/boot/known-hosts.asc
+                                                                                                                                StrictHostKeyChecking true
+                                                                                                                                Port 8022
                                                                                                                             EOF
-                                                                                                                            chmod 0400 config
+                                                                                                                                chmod 0400 config
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/dot-ssh" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/dot-ssh" ;
                                                                                             } ;
@@ -1742,6 +1745,7 @@
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/jrnl" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/jrnl" ;
                                                                                             } ;
@@ -1800,6 +1804,7 @@
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/ledger" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/ledger" ;
                                                                                             } ;
@@ -1838,6 +1843,7 @@
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/repository/private" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/repository/private" ;
                                                                                             } ;
@@ -1881,6 +1887,7 @@
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/repository/personal" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/repository/personal" ;
                                                                                             } ;
@@ -1920,6 +1927,7 @@
                                                                                                         in "${ application }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/repository/secrets" ;
                                                                                                 User = config.personal.name ;
+                                                                                                Type = "oneshot" ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/repository/secrets" ;
                                                                                             } ;
                                                                                         unitConfig =
@@ -1934,27 +1942,31 @@
                                                                                         after = [ "network.target" ] ;
                                                                                         serviceConfig =
                                                                                             {
+                                                                                                ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /var/lib/workspaces/${epoch}/secrets";
                                                                                                 ExecStart =
                                                                                                     let
                                                                                                         derivation =
                                                                                                             pkgs.stdenv.mkDerivation
                                                                                                                 {
                                                                                                                     installPhase =
+                                                                                                                        let
+                                                                                                                              secretFiles =
+                                                                                                                                [
+                                                                                                                                    "wifi.nix"
+                                                                                                                                    "dot-ssh/viktor/identity.asc"
+                                                                                                                                    "dot-ssh/viktor/known-hosts.asc"
+                                                                                                                                    "dot-ssh/boot/identity.asc"
+                                                                                                                                    "dot-ssh/boot/known-hosts.asc"
+                                                                                                                                    "secret-keys.asc"
+                                                                                                                                    "ownertrust.asc"
+                                                                                                                                    "github-token.asc"
+                                                                                                                                ] ;
+                                                                                                                            in
                                                                                                                         ''
-                                                                                                                            mkdir --parents $out/scripts $out/bin
-                                                                                                                            find ${ secrets } -type f -name "*.age" | while read -r FILE
-                                                                                                                            do
-                                                                                                                                RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "FILE#${ secrets }/" "}" ] }"
-                                                                                                                                RELATIVE_DIRECTORY=$( dirname "$RELATIVE_PATH" )
-                                                                                                                                STRIPPED=${ builtins.concatStringsSep "" [ "$" "{" "RELATIVE_PATH%.*" "}" ] }
-                                                                                                                                cat >> $out/scripts/application <<EOF
-                                                                                                                                mkdir --parents "$RELATIVE_DIRECTORY"
-                                                                                                                                age --decrypt --identity "${ config.personal.agenix }" --output "$STRIPPED" "$FILE"
-                                                                                                                                chmod 0400 "$STRIPPED"
-                                                                                                                            EOF
-                                                                                                                            done
-                                                                                                                            chmod 0500 $out/scripts/application
-                                                                                                                            makeWrapper $out/scripts/application $out/bin/application --set PATH ${ pkgs.lib.makeBinPath [ pkgs.age pkgs.coreutils ] }
+                                                                                                                            mkdir --parents $out/src $out/scripts $out/bin
+                                                                                                                            cp -r ${ secrets } $out/src
+                                                                                                                            ln --symbolic ${ pkgs.writeShellScript "application" ( builtins.concatStringsSep "\n" ( builtins.map ( secretFile : ''mkdir --parents $( dirname ${ secretFile } ) && age --decrypt --identity ${ config.personal.agenix } --output ${ secretFile } $OUT/${ secretFile }.age && chmod 0400 ${ secretFile }'' ) secretFiles ) ) } $out/scripts/application
+                                                                                                                            makeWrapper $out/scripts/application $out/bin/application --set PATH ${ pkgs.lib.makeBinPath [ pkgs.age pkgs.coreutils ] } --set OUT ${ secrets }
                                                                                                                         ''  ;
                                                                                                                     name = "derivation" ;
                                                                                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.findutils pkgs.makeWrapper ] ;
@@ -1962,6 +1974,7 @@
                                                                                                                 } ;
                                                                                                         in "${ derivation }/bin/application" ;
                                                                                                 StateDirectory = "workspaces/${ epoch }/secrets" ;
+                                                                                                Type = "oneshot" ;
                                                                                                 User = config.personal.name ;
                                                                                                 WorkingDirectory = "/var/lib/workspaces/${ epoch }/secrets" ;
                                                                                             } ;
@@ -1973,16 +1986,43 @@
                                                                                     } ;
                                                                                 setup =
                                                                                     {
-                                                                                        after = [ "network.target" "secrets.service" "dot-gnupg.service" ] ;
+                                                                                        after =
+                                                                                            [
+                                                                                                "network.target"
+                                                                                                "calcurse.service"
+                                                                                                "chromium.service"
+                                                                                                "dot-gnupg.service"
+                                                                                                "dot-ssh.service"
+                                                                                                "jrnl.service"
+                                                                                                "ledger.service"
+                                                                                                "repository-personal.service"
+                                                                                                "repository-private.service"
+                                                                                                "repository-secrets.service"
+                                                                                                "secrets.service"
+                                                                                           ] ;
                                                                                         serviceConfig =
                                                                                             {
+                                                                                                ExecStart = "${ pkgs.coreutils }/bin/true" ;
                                                                                             } ;
-                                                                                        wants = [ "secrets.service" "dot-gnupg.service" ] ;
+                                                                                        wants =
+                                                                                            [
+                                                                                                "calcurse.service"
+                                                                                                "chromium.service"
+                                                                                                "dot-gnupg.service"
+                                                                                                "dot-ssh.service"
+                                                                                                "jrnl.service"
+                                                                                                "ledger.service"
+                                                                                                "repository-personal.service"
+                                                                                                "repository-private.service"
+                                                                                                "repository-secrets.service"
+                                                                                                "secrets.service"
+                                                                                           ] ;
                                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                                     } ;
                                                                                 teardown =
                                                                                     {
                                                                                         after = [ "network.target" ] ;
+                                                                                        enable = false ;
                                                                                         serviceConfig =
                                                                                             {
                                                                                                 ExecStart =
@@ -1991,15 +2031,36 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "application" ;
-                                                                                                                    runtimeInputs = [ pkgs.gnutar pkgs.zstd ] ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.zstd ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            tar --create --file=- . | zstd --long=19 --threads=1 --output="$( mktemp --suffix=.tar.zstd )"
+                                                                                                                            WORK_DIRECTORY="$( pwd )"
+                                                                                                                            cd "$( mktemp --directory )"
+                                                                                                                            tar --create --file=- "$WORK_DIRECTORY" | zstd --long=19 --threads=1 -o "$( mktemp --dry-run --suffix=.tar.zstd )"
+                                                                                                                            if [[ -z "$WORK_DIRECTORY" ]] || [[ "$WORK_DIRECTORY" == "/" ]]
+                                                                                                                            then
+                                                                                                                                echo Refusing to delete
+                                                                                                                            else
+                                                                                                                                rm --recursive --force "$WORK_DIRECTORY"
+                                                                                                                            fi
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/application" ;
-                                                                                                User = config.personal.name ;
-                                                                                                WorkingDirectory = "/home/${ config.personal.name }/workspaces" ;
+                                                                                                ExecStartPost =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "application" ;
+                                                                                                                    runtimeInputs = [ pkgs.systemd ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            ${ pkgs.systemd }/bin/systemctl start setup.service
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/application" ;
+                                                                                                StateDirectory = "workspaces" ;
+                                                                                                WorkingDirectory = "/var/lib/workspaces" ;
                                                                                             } ;
                                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                                     } ;
@@ -2622,12 +2683,30 @@
                                                                             pkgs.stdenv.mkDerivation
                                                                                 {
                                                                                     installPhase =
+                                                                                        ''
+                                                                                            mkdir --parents $out/bin
+                                                                                            makeWrapper \
+                                                                                                ${ pkgs.jetbrains.idea-community }/bin/idea-community \
+                                                                                                $out/bin/repository-personal \
+                                                                                                --add-flags /var/lib/workspaces/${ epoch }/repository/personal \
+                                                                                                --set PATH ${ pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.git ] } \
+                                                                                                --set GH_TOKEN "$( cat /var/lib/workspaces/${ epoch }/personal/github-token.asc )"
+                                                                                        '' ;
+                                                                                    name = "repository-personal" ;
+                                                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                                                    src = ./. ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.stdenv.mkDerivation
+                                                                                {
+                                                                                    installPhase =
                                                                                         let
                                                                                             promote =
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "promote" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.nix pkgs.nixos-rebuild ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 CURRENT_TIME="$( date +%s )"
@@ -2636,170 +2715,185 @@
                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/personal rev-parse HEAD > /var/lib/workspaces/${ epoch }/repository/private/personal.hash
                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets commit -am "$CURRENT_TIME" --allow-empty
                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/secrets rev-parse HEAD > /var/lib/workspaces/${ epoch }/repository/secrets.hash
-                                                                                                                if ! nix flake check --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                echo "The CURRENT_TIME is $CURRENT_TIME.  We have commited personal and secrets repository and recorded the commit hashes."
+                                                                                                                if nix flake check --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                 then
-                                                                                                                    MESSAGE="The private repository failed checks at $CURRENT_TIME"
-                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                    echo "$MESSAGE"
-                                                                                                                    exit 64
-                                                                                                                fi
-                                                                                                                rm --force nixos.qcow2 result
-                                                                                                                if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private
-                                                                                                                then
-                                                                                                                    if result/bin/run-nixos-vm
+                                                                                                                    echo "We have successfully checked the private repository using local sources."
+                                                                                                                    rm --force nixos.qcow2 result
+                                                                                                                    if nixos-rebuild build-vm --override-input personal /var/lib/workspaces/${ epoch }/repository/personal --override-input secrets /var/lib/workspaces/${ epoch }/repository/secrets --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                     then
-                                                                                                                        SATISFACTORY=""
-                                                                                                                        while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
-                                                                                                                        do
-                                                                                                                            read -rp "Was the run satisfactory? y/n " SATISFACTORY
-                                                                                                                        done
-                                                                                                                        if [[ "$SATISFACTORY" == "y" ]]
+                                                                                                                        echo "We have successfully built the private repository using local sources"
+                                                                                                                        if result/bin/run-nixos-vm
                                                                                                                         then
-                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/personal checkout -b "scratch/$( uuidgen )"
-                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
-                                                                                                                            if [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]]
-                                                                                                                            then
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main
-                                                                                                                                read -rp "Describe the changes in personal:  " CHANGES
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal reset --soft origin/main
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal commit -am "$CHANGES"
-                                                                                                                                # gh pr create --title "Add feature X" --body "This adds feature X to fix issue Y." --base main --head my-feature-branch
-                                                                                                                            fi
-                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "scratch/$( uuidgen )"
-                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/secrets fetch origin main
-                                                                                                                            if [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
-                                                                                                                            then
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main
-                                                                                                                                read -rp "Describe the changes in personal:  " CHANGES
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets reset --soft origin/main
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets commit -am "$CHANGES"
-                                                                                                                                # gh pr create --title "Add feature X" --body "This adds feature X to fix issue Y." --base main --head my-feature-branch
-                                                                                                                            fi
-                                                                                                                            rm result
-                                                                                                                            while [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]] && [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
+                                                                                                                            SATISFACTORY=""
+                                                                                                                            while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
                                                                                                                             do
-                                                                                                                                sleep 1s
+                                                                                                                                read -rp "Was the local run satisfactory? y/n " SATISFACTORY
                                                                                                                             done
-                                                                                                                            if ! nixos-rebuild build-vm-with-bootloader --update-vm personal --update-vm secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                            if [[ "$SATISFACTORY" == "y" ]]
                                                                                                                             then
-                                                                                                                                MESSAGE="The private repository failed to build the vm with bootloader from github sources at $CURRENT_TIME"
-                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                echo "$MESSAGE"
-                                                                                                                                exit 64
-                                                                                                                            fi
-                                                                                                                            if result/bin/run-nixos-vm
-                                                                                                                            then
-                                                                                                                                SATISFACTORY=""
-                                                                                                                                while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
-                                                                                                                                do
-                                                                                                                                    read -rp "Was the run satisfactory? y/n " SATISFACTORY
-                                                                                                                                done
-                                                                                                                                if [[ "$SATISFACTORY" != "y" ]]
+                                                                                                                                echo "Since the run using local sources was satisfactory we are going to pull request changes to personal and secrets back into main."
+                                                                                                                                PERSONAL_BRANCH="scratch/$( uuidgen )"
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal checkout -b "$PERSONAL_BRANCH"
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
+                                                                                                                                if [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]]
                                                                                                                                 then
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin development
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private diff origin/development
-                                                                                                                                    read -rp "Success Message:  " MESSAGE
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "DEVELOPMENT SUCCESS AT $CURRENT_TIME:  $MESSAGE"
-                                                                                                                                    SCRATCH="scratch/$( uuidgen )"
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "$SCRATCH"
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private reset origin/development
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private checkout development
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/development
-                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
-                                                                                                                                    git -C /var/lib/workspacews
-                                                                                                                                    if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main
+                                                                                                                                    read -rp "Title the changes in personal:  " TITLE
+                                                                                                                                    read -rp "Body the changes in personal:  " BODY
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/personal reset --soft origin/main
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/personal commit -am "$CHANGES"
+                                                                                                                                    cd /var/lib/workspaces/${ epoch }/repository/personal
+                                                                                                                                    gh pr create --title "$TITLE" --body "$BODY" --base main --head "$PERSONAL_BRANCH"
+                                                                                                                                fi
+                                                                                                                                SECRETS_BRANCH="scratch/$( uuidgen )"
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "$SECRETS_BRANCH"
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets fetch origin main
+                                                                                                                                if [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
+                                                                                                                                then
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main
+                                                                                                                                    read -rp "Title the changes in secrets:  " TITLE
+                                                                                                                                    read -rp "Body the changes in secrets:  " BODY
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/secrets reset --soft origin/main
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/secrets commit -am "$CHANGES"
+                                                                                                                                    cd /var/lib/workspaces/${ epoch }/repository/secrets
+                                                                                                                                    gh pr create --title "$TITLE" --body "$BODY" --base main --head "$SECRETS_BRANCH"
+                                                                                                                                fi
+                                                                                                                                rm result
+                                                                                                                                while [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/personal diff origin/main )" ]] && [[ -n "$( git -C /var/lib/workspaces/${ epoch }/repository/secrets diff origin/main )" ]]
+                                                                                                                                do
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/personal fetch origin main
+                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/secrets fetch origin main
+                                                                                                                                    sleep 1m
+                                                                                                                                done
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal checkout origin/main
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/personal checkout "scratch/$( uuidgen )"
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout origin/main
+                                                                                                                                git -C /var/lib/workspaces/${ epoch }/repository/secrets checkout -b "scratch/$( uuidgen )"
+                                                                                                                                if nixos-rebuild build-vm-with-bootloader --update-vm personal --update-vm secrets --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                then
+                                                                                                                                    if result/bin/run-nixos-vm
                                                                                                                                     then
                                                                                                                                         SATISFACTORY=""
                                                                                                                                         while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
                                                                                                                                         do
-                                                                                                                                            read -rp "Was the run satisfactory? y/n " SATISFACTORY
+                                                                                                                                            read -rp "Was the github run satisfactory? y/n " SATISFACTORY
                                                                                                                                         done
-                                                                                                                                        if [[ "$SATISFACTORY" == "y" ]]
+                                                                                                                                        if [[ "$SATISFACTORY" != "y" ]]
                                                                                                                                         then
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin main
-                                                                                                                                            SCRATCH="scratch/$( uuidgen )"
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin development
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "$SCRATCH"
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private reset --soft origin/development
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private checkout origin/development
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
-                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "scratch/$( uuidgen )"
-                                                                                                                                            if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                            if sudo nixos-rebuild test --flake /var/lib/workspaces/${ epoch }/repository/private
                                                                                                                                             then
                                                                                                                                                 SATISFACTORY=""
                                                                                                                                                 while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
                                                                                                                                                 do
-                                                                                                                                                    read -rp "Was the switch satisfactory? y/n " SATISFACTORY
+                                                                                                                                                    read -rp "Was the development run satisfactory? y/n " SATISFACTORY
                                                                                                                                                 done
                                                                                                                                                 if [[ "$SATISFACTORY" == "y" ]]
                                                                                                                                                 then
+                                                                                                                                                    echo "Since the development run was satisfactory we are going to rebase the private flake into the development branch."
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private diff origin/development
+                                                                                                                                                    read -rp "Success Message:  " SUCCESS_MESSAGE
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin development
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "DEVELOPMENT SUCCESS AT $CURRENT_TIME:  $SUCCESS_MESSAGE"
+                                                                                                                                                    DEVELOPMENT_SCRATCH="scratch/$( uuidgen )"
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "$DEVELOPMENT_SCRATCH"
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private reset --soft origin/development
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$SUCCESS_MESSAGE"
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private checkout development
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/development
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$DEVELOPMENT_SCRATCH"
+                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private push origin development
+                                                                                                                                                    if sudo nixos-rebuild switch --flake /var/lib/workspaces/${ epoch }/repository/private
+                                                                                                                                                    then
+                                                                                                                                                        SATISFACTORY=""
+                                                                                                                                                        while [[ "$SATISFACTORY" != "y" ]] && [[ "$SATISFACTORY" != "n" ]]
+                                                                                                                                                        do
+                                                                                                                                                            read -rp "Was the switch run satisfactory? y/n " SATISFACTORY
+                                                                                                                                                        done
+                                                                                                                                                        if [[ "$SATISFACTORY" == "y" ]]
+                                                                                                                                                        then
+                                                                                                                                                            echo "Since the main run was satisfactory we are going to rebase the development branch into the main branch."
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin development
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin main
+                                                                                                                                                            MAIN_SCRATCH="scratch/$( uuidgen )"
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private checkout origin/develop
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private checkout -b "$MAIN_SCRATCH"
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private reset --soft origin/main
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "MAIN SUCCESS AT $CURRENT_TIME:  $SUCCESS_MESSAGE"
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private checkout main
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/main
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$MAIN_SCRATCH"
+                                                                                                                                                            git -C /var/lib/workspaces/${ epoch }/repository/private push origin main
+                                                                                                                                                            nix-collect-garbage
+                                                                                                                                                            exit 0
+                                                                                                                                                        elif [[ "$SATISFACTORY" == "n" ]]
+                                                                                                                                                        then
+                                                                                                                                                            read -rp "Details:  " DETAILS
+                                                                                                                                                            MESSAGE="The private repository ran unsatisfactory on switch at $CURRENT_TIME:  $DETAILS:"
+                                                                                                                                                            echo "$MESSAGE" >&2
+                                                                                                                                                            exit 64
+                                                                                                                                                        fi
+                                                                                                                                                    else
+                                                                                                                                                        MESSAGE="The private repository failed to build switch at $CURRENT_TIME"
+                                                                                                                                                        git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
+                                                                                                                                                        echo "$MESSAGE" >&2
+                                                                                                                                                        exit 64
+                                                                                                                                                    fi
+                                                                                                                                                else
                                                                                                                                                     read -rp "Details:  " DETAILS
-                                                                                                                                                    MESSAGE="The promotion was successful on switch at $CURRENT_TIME:  $DETAILS"
+                                                                                                                                                    MESSAGE="The private repository ran unsatisfactory on development at $CURRENT_TIME:  $DETAILS"
                                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private fetch origin main
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private reset --soft origin/main
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private checkout main
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private rebase origin/main
-                                                                                                                                                    git -C /var/lib/workspaces/${ epoch }/repository/private rebase "$SCRATCH"
-                                                                                                                                                    exit 0
-                                                                                                                                                elif [[ "$SATISFACTORY" == "n" ]]
-                                                                                                                                                then
-                                                                                                                                                    read -rp "Details:  " DETAILS
-                                                                                                                                                    MESSAGE="The private repository ran unsatisfactory on switch at $CURRENT_TIME:  $DETAILS:"
-                                                                                                                                                    echo "$MESSAGE"
+                                                                                                                                                    echo "$MESSAGE" >&2
                                                                                                                                                     exit 64
                                                                                                                                                 fi
                                                                                                                                             else
-                                                                                                                                                MESSAGE="The private repository failed to build switch at $CURRENT_TIME"
+                                                                                                                                                MESSAGE="The private repository failed to build development at $CURRENT_TIME"
                                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                                echo "$MESSAGE"
+                                                                                                                                                echo "$MESSAGE" >&2
                                                                                                                                                 exit 64
                                                                                                                                             fi
-                                                                                                                                        else
+                                                                                                                                        elif [[ "$SATISFACTORY" != "n" ]]
+                                                                                                                                        then
                                                                                                                                             read -rp "Details:  " DETAILS
-                                                                                                                                            MESSAGE="The private repository ran unsatisfactory on development at $CURRENT_TIME:  $DETAILS"
+                                                                                                                                            MESSAGE="The private repository ran unsatisfactory from github at $CURRENT_TIME: $DETAILS"
                                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                            echo "$MESSAGE"
+                                                                                                                                            echo "$MESSAGE" >&2
                                                                                                                                             exit 64
                                                                                                                                         fi
                                                                                                                                     else
-                                                                                                                                        MESSAGE="The private repository failed to build development at $CURRENT_TIME"
+                                                                                                                                        MESSAGE="The private repository failed to run the vm with bootloader from github sources at $CURRENT_TIME"
                                                                                                                                         git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                        echo "$MESSAGE"
+                                                                                                                                        echo "$MESSAGE" >&2
                                                                                                                                         exit 64
                                                                                                                                     fi
-                                                                                                                                elif [[ "$SATISFACTORY" != "n" ]]
-                                                                                                                                then
-                                                                                                                                    read -rp "Details:  " DETAILS
-                                                                                                                                    MESSAGE="The private repository ran unsatisfactory from github at $CURRENT_TIME: $DETAILS"
+                                                                                                                                else
+                                                                                                                                    MESSAGE="The private repository failed to build the vm with bootloader from github sources at $CURRENT_TIME"
                                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                    echo "$MESSAGE"
+                                                                                                                                    echo "$MESSAGE" >&2
                                                                                                                                     exit 64
                                                                                                                                 fi
-                                                                                                                            else
-                                                                                                                                MESSAGE="The private repository failed to run the vm with bootloader from github sources at $CURRENT_TIME"
+                                                                                                                            elif [[ "$SATISFACTORY" == "n" ]]
+                                                                                                                            then
+                                                                                                                                read -rp "Details:  " DETAILS
+                                                                                                                                MESSAGE="The private repository ran unsatisfactory from local sources at $CURRENT_TIME:  $DETAILS"
                                                                                                                                 git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                                echo "$MESSAGE"
+                                                                                                                                echo "$MESSAGE" >&2
                                                                                                                                 exit 64
                                                                                                                             fi
-                                                                                                                        elif [[ "$SATISFACTORY" == "n" ]]
-                                                                                                                        then
-                                                                                                                            read -rp "Details:  " DETAILS
-                                                                                                                            MESSAGE="The private repository ran unsatisfactory from local sources at $CURRENT_TIME:  $DETAILS"
+                                                                                                                        else
+                                                                                                                            MESSAGE="The private repository failed to run the vm from local sources at $CURRENT_TIME"
                                                                                                                             git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
-                                                                                                                            echo "$MESSAGE"
+                                                                                                                            echo "$MESSAGE" >&2
                                                                                                                             exit 64
                                                                                                                         fi
                                                                                                                     else
-                                                                                                                        MESSAGE="The private repository failed to run the vm from local sources at $CURRENT_TIME"
+                                                                                                                        MESSAGE="The private repository failed to build the vm from local sources at $CURRENT_TIME"
                                                                                                                         git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
                                                                                                                         echo "$MESSAGE"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 else
-                                                                                                                    MESSAGE="The private repository failed to build the vm from local sources at $CURRENT_TIME"
+                                                                                                                    MESSAGE="The private repository failed checks at $CURRENT_TIME"
                                                                                                                     git -C /var/lib/workspaces/${ epoch }/repository/private commit -am "$MESSAGE"
                                                                                                                     echo "$MESSAGE"
                                                                                                                     exit 64
@@ -2810,12 +2904,13 @@
                                                                                                 ''
                                                                                                     makeWrapper \
                                                                                                         ${ pkgs.jetbrains.idea-community }/bin/idea-community \
-                                                                                                        $out/bin/idea-community \
+                                                                                                        $out/bin/repository-private \
                                                                                                         --add-flags /var/lib/workspaces/${ epoch }/repository/private \
                                                                                                         --set LD_LIBRARY_PATH pkgs.e2fsprogs \
-                                                                                                        --set PATH ${ pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.git promote ] }
+                                                                                                        --set PATH ${ pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.git promote ] } \
+                                                                                                        --set GH_TOKEN "$( cat /var/lib/workspaces/${ epoch }/secrets/github-token.asc )"
                                                                                                 '' ;
-                                                                                    name = "private" ;
+                                                                                    name = "repository-private" ;
                                                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
                                                                                     src = ./. ;
                                                                                 }
@@ -2830,7 +2925,8 @@
                                                                                                 ${ pkgs.jetbrains.idea-community }/bin/idea-community \
                                                                                                 $out/bin/repository-secrets \
                                                                                                 --add-flags /var/lib/workspaces/${ epoch }/repository/secrets \
-                                                                                                --set PATH ${ pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.git ] }
+                                                                                                --set PATH ${ pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.git ] } \
+                                                                                                --set GH_TOKEN "$( cat /var/lib/workspaces/${ epoch }/secrets/github-token.asc )"
                                                                                         '' ;
                                                                                     name = "repository-secrets" ;
                                                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
