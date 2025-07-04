@@ -29,7 +29,7 @@
 													runtimeInputs = [ pkgs.age ] ;
 													text =
 													     ''
-														age --decrypt --identity ${ config.personal.agenix } -o $1 ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
+														age --decrypt --identity ${ config.personal.agenix } -o "$1" ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
 													     '' ;
 												} ;
 										in "${ application }/bin/application"
@@ -207,7 +207,7 @@
 										pkgs.writeShellApplication
 											{
 												name = "foobar" ;
-												text = secrets-scripts.dot-ssh."identity.asc.age" ;
+												text = secrets-scripts."ownertrust.asc.age" ;
 											}
 									)
                                                                     ] ;
