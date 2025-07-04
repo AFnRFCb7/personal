@@ -1443,11 +1443,6 @@
                                                                         xkbVariant = "" ;
                                                                     } ;
                                                             } ;
-                                                              system.activationScripts.cleanupRemovedUnits.text = ''
-                                                                # echo "Cleaning up removed systemd units..."
-                                                                # find /etc/systemd/system -name 'stash-setup.*' -exec rm -v {} +
-                                                                # systemctl daemon-reload
-                                                              '';
                                                         systemd =
                                                             let
                                                                 post-commit =
@@ -1470,19 +1465,6 @@
                                                                     {
                                                                         services =
                                                                             {
-stash-setup = {
-    description = "No-op stash-setup service";
-    enable = true ;
-    serviceConfig = {
-      ExecStart = "${pkgs.coreutils}/bin/true";
-    };
-    unitConfig = {
-        After = [ "network.target" ];
-        WantedBy = [ "multi-user.target" ];
-    } ;
-  };
-
-
                                                                                 calcurse =
                                                                                     {
                                                                                         after = [ "network.target" "network-online.target" "dot-gnupg.service" "dot-ssh.service" ] ;
