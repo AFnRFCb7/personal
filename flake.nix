@@ -1937,6 +1937,45 @@
                                                                                         wants = [ "network-online.target" ] ;
                                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                                     } ;
+                                                                                repository-temporary =
+                                                                                    {
+                                                                                        after = [ "network.target" "network-online.target" "dot-ssh.service" ] ;
+                                                                                        requires = [ "dot-ssh.service" ] ;
+                                                                                        serviceConfig =
+                                                                                            {
+                                                                                                ExecStart =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "application" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            git init
+                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F /var/lib/workspaces/${ epoch }/dot-ssh/config"
+                                                                                                                            git config user.email ${ config.personal.name }
+                                                                                                                            git config user.name ${ config.personal.email }
+                                                                                                                            ln --symbolic ${ post-commit } .git/hooks/post-commit
+                                                                                                                            git remote add origin ${ config.personal.repository.temporary.remote }
+                                                                                                                            git fetch origin ${ config.personal.repository.temporary.branch }
+                                                                                                                            git checkout origin/${ config.personal.repository.temporary.branch }
+                                                                                                                            git checkout -b "scratch/$( uuidgen )"
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/application" ;
+                                                                                                StateDirectory = "workspaces/${ epoch }/repository/temporary" ;
+                                                                                                User = config.personal.name ;
+                                                                                                Type = "oneshot" ;
+                                                                                                WorkingDirectory = "/var/lib/workspaces/${ epoch }/repository/temporary" ;
+                                                                                            } ;
+                                                                                        unitConfig =
+                                                                                            {
+                                                                                                ConditionPathExists = "!/var/lib/workspaces/${ epoch }/repository/temporary" ;
+                                                                                            } ;
+                                                                                        wants = [ "network-online.target" ] ;
+                                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                                    } ;
                                                                                 secrets =
                                                                                     {
                                                                                         after = [ "network.target" ] ;
@@ -2890,6 +2929,11 @@
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                           } ;
+                                                                        temporary =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/temporary" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
                                                                 stale = lib.mkOption { default = 60 * 60 * 24 * 7 * 2 ; type = lib.types.int ; } ;
