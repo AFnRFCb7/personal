@@ -1995,7 +1995,6 @@
                                                                             } ;
                                                                 timers =
                                                                     {
-                                                                        stash-setup = { } ;
                                                                     } ;
                                                             } ;
                                                         system.stateVersion = "23.05" ;
