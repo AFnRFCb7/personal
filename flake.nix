@@ -1984,18 +1984,9 @@
                                                                                             } ;
                                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                                     } ;
-                                                                                stash-setup =
-                                                                                    {
-                                                                                        serviceConfig =
-                                                                                            {
-                                                                                                ExecStart = "${ pkgs.coreutils }/bin/true" ;
-                                                                                                Type = "oneshot" ;
-                                                                                            } ;
-                                                                                    } ;
                                                                             } ;
                                                                 timers =
                                                                     {
-                                                                        stash-setup = { } ;
                                                                     } ;
                                                             } ;
                                                         system.stateVersion = "23.05" ;
