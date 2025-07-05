@@ -198,7 +198,7 @@
 										pkgs.writeShellApplication
 											{
 												name = "foobar" ;
-												text = let app = secrets-scripts."ownertrust.asc.age" ; in "${ app }/bin/application" ;
+												text = let application = secrets-scripts."ownertrust.asc.age" ; in "${ application }/bin/application" ;
 											}
 									)
                                                                     ] ;
