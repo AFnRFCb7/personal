@@ -10,6 +10,7 @@
                         nixpkgs ,
                         secrets ,
                         system ,
+			temporary ,
                         visitor
                     } :
                         let
@@ -21,18 +22,7 @@
 								mapper =
 								       path : name : value :
 								       	    if value == "regular" then
-									       let
-										application =
-											    pkgs.writeShellApplication
-												{
-													name = "application" ;
-													runtimeInputs = [ pkgs.age ] ;
-													text =
-													     ''
-														age --decrypt --identity ${ config.personal.agenix } -o "$1" ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
-													     '' ;
-												} ;
-										in "${ application }/bin/application"
+									       temporary
 									   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
 									   else builtins.throw "wtf" ;
 								in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
