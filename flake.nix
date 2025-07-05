@@ -7,7 +7,6 @@
             {
                 lib =
                     {
-                        agenix ,
                         nixpkgs ,
                         secrets ,
                         system ,
