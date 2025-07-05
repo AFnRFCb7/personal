@@ -57,11 +57,15 @@
                                                                         LC_TIME = "en_US.UTF-8" ;
                                                                     } ;
                                                             } ;
-                                                        networking.wireless =
-                                                            {
-                                                                enable = true ;
-                                                                networks = config.personal.wifi ;
-                                                            } ;
+                                                        networking =
+								{
+									host-name = "user" ;
+								    wireless =
+        	                                                    	{
+                	                                                	enable = true ;
+	                	                                                networks = config.personal.wifi ;
+        	                	                                    } ;
+								} ;
                                                         nix =
                                                             {
                                                                 nixPath =
