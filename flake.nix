@@ -23,7 +23,7 @@
 								mapper =
 								       path : name : value :
 								       	    if value == "regular" then
-									       pkgs.writeShellApplication { name = "application" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo XXX ${ name }" ; }
+									       pkgs.writeShellApplication { name = "application" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo ${ name }" ; }
 									   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
 									   else builtins.throw "wtf" ;
 								in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
