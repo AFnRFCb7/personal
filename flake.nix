@@ -59,7 +59,6 @@
                                                             } ;
                                                         networking =
 								{
-									host-name = "user" ;
 								    wireless =
         	                                                    	{
                 	                                                	enable = true ;
