@@ -23,7 +23,7 @@
 								mapper =
 								       path : name : value :
 								       	    if value == "regular" then
-									       temporary
+									       pkgs.writeShellApplication { name = "application" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo ${ value }" ; }
 									   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
 									   else builtins.throw "wtf" ;
 								in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
@@ -198,7 +198,7 @@
 										pkgs.writeShellApplication
 											{
 												name = "foobar" ;
-												text = secrets-scripts."ownertrust.asc.age" ;
+												text = let app = secrets-scripts."ownertrust.asc.age" ; in "${ app }/bin/application" ;
 											}
 									)
                                                                     ] ;
