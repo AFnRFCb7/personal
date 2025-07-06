@@ -47,7 +47,7 @@
 																in
 																	''
 																		mkdir $out
-																		age --decrypt --identity ${ config.personal.agenix } --output $out/secret
+																		age --decrypt --identity ${ config.personal.agenix } --output $out/secret ${ token }
 																		makeWrapper ${ script }/bin/script $out/script --set OUT $out
 																	'' ;
 														name = "derivation" ;
