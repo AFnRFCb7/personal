@@ -245,8 +245,8 @@
 													dot-gnupg.lib.implementation
 														{
 															nixpkgs = nixpkgs ;
-															secret-keys = secret-scripts."secret-keys..asc.age" ;
-															ownertrust = secret-scripts."ownertrust.asc.age" ;
+															secret-keys = secrets-scripts."secret-keys..asc.age" ;
+															ownertrust = secrets-scripts."ownertrust.asc.age" ;
 															system = system ;
 														} ;
 											}
