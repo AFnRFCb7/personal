@@ -38,7 +38,7 @@
 																					then
 																						mkdir --parents /tmp/resources
 																						cat "$OUT/secret" > /tmp/resources/${ builtins.hashString "sha512" token }
-																						chmod 0400 /tmp/resource/${ builtins.hashString "sha512" token }
+																						chmod 0400 /tmp/resources/${ builtins.hashString "sha512" token }
 																					fi
 																					echo /tmp/resources/${ builtins.hashString "sha512" token }
 																				'' ;
