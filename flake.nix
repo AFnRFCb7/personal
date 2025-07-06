@@ -45,7 +45,7 @@
 																					echo /tmp/resources/${ builtins.hashString "sha512" token }
 																				'' ;
 																		} ;
-																token = ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] )) }
+																token = ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ;
 																in
 																	''
 																		mkdir $out
