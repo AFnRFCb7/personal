@@ -7,6 +7,7 @@
             {
                 lib =
                     {
+			dot-gnupg ,
                         nixpkgs ,
                         secrets ,
                         system ,
@@ -231,8 +232,22 @@
 									(
 										pkgs.writeShellApplication
 											{
-												name = "widget" ;
+												name = "widget-1" ;
 												text = secrets-scripts."ownertrust.asc.age" ;
+											}
+									)
+									(
+										pkgs.writeShellApplication
+											{
+												name = "widget-2" ;
+												text =
+													dot-gnupg.lib.implementation
+														{
+															nixpkgs = nixpkgs ;
+															secret-keys = secret-scripts."secret-keys..asc.age" ;
+															ownertrust = secret-scripts."ownertrust.asc.age" ;
+															system = system ;
+														}
 											}
 									)
                                                                     ] ;
