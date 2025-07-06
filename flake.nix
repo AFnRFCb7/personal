@@ -265,8 +265,8 @@
 																		{
 																			host-name = "192.168.1.202" ;
 																			port = "8022" ;
-																			identity-file = "$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } } )" ;
-																			user-known-hosts-file = "$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } } )" ;
+																			identity-file = "$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
+																			user-known-hosts-file = "$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } )" ;
 																		} ;
 																} ;
 															nixpkgs = nixpkgs ;
