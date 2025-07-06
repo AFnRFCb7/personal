@@ -28,7 +28,7 @@
 														installPhase =	
 															let
 																script =
-																	pkgs.writeShellApplicationn
+																	pkgs.writeShellApplication
 																		{
 																			name = "script" ;
 																			runtimeInputs = [ pkgs.coreutils ] ;
