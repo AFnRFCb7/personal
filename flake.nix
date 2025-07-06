@@ -1,3 +1,4 @@
+
 {
     inputs =
         {
@@ -247,7 +248,7 @@
 															secret-keys = secret-scripts."secret-keys..asc.age" ;
 															ownertrust = secret-scripts."ownertrust.asc.age" ;
 															system = system ;
-														}
+														} ;
 											}
 									)
                                                                     ] ;
