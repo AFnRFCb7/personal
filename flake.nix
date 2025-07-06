@@ -23,7 +23,40 @@
 								mapper =
 								       path : name : value :
 								       	    if value == "regular" then
-									       pkgs.writeShellApplication { name = "application" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo ${ name }" ; }
+										let
+											derivation =
+												pkgs.stdenv.mkDerivationn
+													{
+														installPhase =	
+															let
+																script =
+																	pkgs.writeShellApplicationn
+																		{
+																			name = "script" ;
+																			runtimeInputs = [ pkgs.coreutils ] ;
+																			text =
+																				''
+																					if [ ! -e /tmp/resources/${ builtins.hashString "sha512" token } ]
+																					then
+																						mkdir --parents /tmp/resources
+																						cat "$OUT/secret" > /tmp/resources/${ builtins.hashString "sha512" token }
+																						chmod 0400 /tmp/resource/${ builtins.hashString "sha512" token }
+																					fi
+																					echo /tmp/resources/${ builtins.hashString "sha512" token }
+																				'' ;
+																		} ;
+																token = ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] )) }
+																in
+																	''
+																		mkdir $out
+																		age --decrypt --identity ${ config.personal.agenix } --output $out/secret
+																		makeWrapper ${ script }/bin/script $out/script --set OUT $out
+																	'' ;
+														name = "derivation" ;
+														nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
+														src = ./. ;
+													} ;
+											in "${ derivation }/bin/binary" ;
 									   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
 									   else builtins.throw "wtf" ;
 								in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
@@ -200,8 +233,8 @@
 									(
 										pkgs.writeShellApplication
 											{
-												name = "foobar" ;
-												text = let application = secrets-scripts."ownertrust.asc.age" ; in "${ application }/bin/application" ;
+												name = "widget" ;
+												text = secrets-scripts."ownertrust.asc.age" ;
 											}
 									)
                                                                     ] ;
