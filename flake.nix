@@ -9,9 +9,7 @@
                     {
                         nixpkgs ,
                         secrets ,
-			shell-script ,
                         system ,
-			temporary ,
                         visitor
                     } :
                         let
