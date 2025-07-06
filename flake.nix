@@ -23,7 +23,7 @@
 								       	    if value == "regular" then
 										let
 											derivation =
-												pkgs.stdenv.mkDerivationn
+												pkgs.stdenv.mkDerivation
 													{
 														installPhase =	
 															let
