@@ -1,4 +1,5 @@
 
+
 {
     inputs =
         {
@@ -230,51 +231,8 @@
                                                                 isNormalUser = true ;
                                                                 name = config.personal.name ;
                                                                 packages =
-                                                                    [
-									(
-										pkgs.writeShellApplication
-											{
-												name = "widget-1" ;
-												text = secrets-scripts."ownertrust.asc.age" ;
-											}
-									)
-									(
-										pkgs.writeShellApplication
-											{
-												name = "widget-2" ;
-												text =
-													dot-gnupg.lib.implementation
-														{
-															nixpkgs = nixpkgs ;
-															secret-keys = secrets-scripts."secret-keys.asc.age" ;
-															ownertrust = secrets-scripts."ownertrust.asc.age" ;
-															system = system ;
-														} ;
-											}
-									)
-									(
-										pkgs.writeShellApplication
-											{
-												name = "widget-3" ;
-												text =
-													dot-ssh.lib.implementation
-														{
-															config =
-																{
-																	mobile =
-																		{
-																			host-name = "192.168.1.202" ;
-																			port = "8022" ;
-																			identity-file = "$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
-																			user-known-hosts-file = "$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } )" ;
-																		} ;
-																} ;
-															nixpkgs = nixpkgs ;
-															system = system ;
-														} ;
-											}
-									)
-                                                                    ] ;
+											[
+											] ;
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
