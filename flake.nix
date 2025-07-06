@@ -51,7 +51,7 @@
 																		mkdir $out
 																		age --decrypt --identity ${ config.personal.agenix } --output $out/secret
 																		makeWrapper ${ script }/bin/script $out/script --set OUT $out
-																	'' ;
+																	''
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
 														src = ./. ;
