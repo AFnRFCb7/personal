@@ -276,12 +276,12 @@
 																				in "${ application }/bin/application" ;
 																				
 																	} ;
-#																init =
-#																	''
-#																		git fetch origin main
-#																		git checkout origin/main
-#																		git checkout -b scratch/$( uuidgen )
-#																	'' ;
+																init =
+																	''
+																		git fetch origin main
+																		git checkout origin/main
+																		git checkout -b scratch/$( uuidgen )
+																	'' ;
 																nixpkgs = nixpkgs ;
 #																remote =
 #																	{
