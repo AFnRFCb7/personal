@@ -236,10 +236,10 @@
 										(
 											pkgs.writeShellApplication
 												{
-													name = builtins.trace "FIND ${ builtins.typeOf git.lib.implementation }" "widget" ;
-													text =
-														git.lib.implementation
-															{
+													name = "widget" ;
+													text = "" ;
+#														git.lib.implementation
+#															{
 #																config =
 #																	{
 #																		"core.sshCommand" =
@@ -294,7 +294,7 @@
 #																		git checkout origin/main
 #																		git checkout -b scratch/$( uuidgen )
 #																	'' ;
-															} ;
+#															} ;
 												}
 										)
 									] ;
