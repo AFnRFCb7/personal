@@ -243,7 +243,7 @@
 																								{
 																									mobile =
 																										{
-																											host = "192.168.1.202" ;
+																											host-name = "192.168.1.202" ;
 																											identity-file = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
 																											user-known-hosts-file = "\$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } )" ;
 																											port = "8022" ;
