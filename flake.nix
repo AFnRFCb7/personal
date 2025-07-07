@@ -236,7 +236,7 @@
 										(
 											pkgs.writeShellApplication
 												{
-													name = "widget" ;
+													name = builtins.trace ( builtins.typeOf git.lib.implementation ) "widget" ;
 													text =
 														git.lib.implementation
 															{
