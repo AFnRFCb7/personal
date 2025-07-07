@@ -283,10 +283,10 @@
 																		git checkout -b scratch/$( uuidgen )
 																	'' ;
 																nixpkgs = nixpkgs ;
-#																remote =
-#																	{
-#																		origin = "mobile:private" ;
-#																	} ;
+																remote =
+																	{
+																		origin = "mobile:private" ;
+																	} ;
 																system = system ;
 															} ;
 												}
