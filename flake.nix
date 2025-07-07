@@ -217,14 +217,6 @@
                                                             } ;
                                                         system.stateVersion = "23.05" ;
                                                         time.timeZone = "America/New_York" ;
-                                                        users.users.backup =
-                                                            {
-                                                                description = "delete me" ;
-                                                                name = "backup" ;
-                                                                isNormalUser = true ;
-                                                                password = "password" ;
-                                                                extraGroups = [ "wheel" ] ;
-                                                            } ;
                                                         users.users.user =
                                                             {
                                                                 description = config.personal.description ;
@@ -237,7 +229,7 @@
 											pkgs.writeShellApplication
 												{
 													name = "widget" ;
-													text = git.lib.implementation { nixpkgs = nixpkgs ; system = system ; } ;
+													text = 
 #														git.lib.implementation
 #															{
 #																config =
@@ -284,16 +276,19 @@
 #																				in "${ application }/bin/application" ;
 #																				
 #																	} ;
-#																remote =
-#																	{
-#																		origin = "mobile:private" ;
-#																	} ;
 #																init =
 #																	''
 #																		git fetch origin main
 #																		git checkout origin/main
 #																		git checkout -b scratch/$( uuidgen )
 #																	'' ;
+
+																nixpkgs = nixpkgs ;
+#																remote =
+#																	{
+#																		origin = "mobile:private" ;
+#																	} ;
+																system = system ;
 #															} ;
 												}
 										)
