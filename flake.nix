@@ -242,25 +242,25 @@
 															{
 																config =
 																	{
-																		"core.sshCommand" =
-																			let
-																				config =
-																					{
-																						config =
-																							{
-																								mobile =
-																									{
-																										host = "192.168.1.202" ;
-																										identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
-																										userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh."known-hosts.asc.age" } )" ;
-																										port = "8022" ;
-																										stricthostkeycychecking = "yes" ; 
-																									} ; 
-																							} ;
-																						nixpkgs = nixpkgs ;
-																						system = system ;
-																					} ;
-																				in "${ pkgs.openssh }/bin/ssh -F \$( ${ config } )" ;
+																		# "core.sshCommand" =
+																		#	let
+																		#		config =
+																		#			{
+																		#				config =
+																		#					{
+																		#						mobile =
+																		#							{
+																		#								host = "192.168.1.202" ;
+																		#								identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
+																		#								userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh."known-hosts.asc.age" } )" ;
+																		#								port = "8022" ;
+																		#								stricthostkeycychecking = "yes" ; 
+																		#							} ; 
+																		#					} ;
+																		#				nixpkgs = nixpkgs ;
+																		#				system = system ;
+																		#			} ;
+																		#		in "${ pkgs.openssh }/bin/ssh -F \$( ${ config } )" ;
 																		"user.email" = config.user.email ;
 																		"user.name" = config.user.description ;																		
 																	} ;
@@ -289,9 +289,9 @@
 																	} ;
 																init =
 																	''
-																		git fetch origin main
-																		git checkout origin/main
-																		git checkout -b scratch/$( uuidgen )
+																		# git fetch origin main
+																		# git checkout origin/main
+																		# git checkout -b scratch/$( uuidgen )
 																	'' ;
 															} ;
 												}
