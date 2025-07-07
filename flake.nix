@@ -247,7 +247,7 @@
 																											identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
 																											userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } )" ;
 																											port = "8022" ;
-																											stricthostkeycychecking = "yes" ; 
+																											stricthostkeychecking = "yes" ; 
 																										} ; 
 																								} ;
 																							nixpkgs = nixpkgs ;
