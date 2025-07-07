@@ -240,59 +240,59 @@
 													text =
 														git.lib.implementation
 															{
-																config =
-																	{
-																		"core.sshCommand" =
-																			let
-																				config =
-																					{
-																						config =
-																							{
-																								mobile =
-																									{
-																										host = "192.168.1.202" ;
-																										identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
-																										userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh."known-hosts.asc.age" } )" ;
-																										port = "8022" ;
-																									stricthostkeycychecking = "yes" ; 
-																									} ; 
-																							} ;
-																						nixpkgs = nixpkgs ;
-																						system = system ;
-																					} ;
-																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ dot-ssh { config = config ; nixpkgs = nixpkgs ; system = system ; } } )" ;
-																		"user.email" = config.user.email ;
-																		"user.name" = config.user.description ;																		
-																	} ;
-																hooks =
-																	{
-																		post-commit =
-																			let
-																				application =
-																					pkgs.writeShellApplication
-																						{
-																							name = "application" ;
-																							runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-																							text =
-																								''
-																									while ! git push origin HEAD
-																									do
-																										sleep 1m
-																									done
-																								'' ;
-																						} ;
-																				in "${ application }/bin/application" ;
-																				
-																	} ;
-																remote =
-																	{
-																		origin = "mobile:private" ;
-																	} ;
-																init =
-																	''
-																		# git fetch origin main
-																		# git checkout origin/main
-																		# git checkout -b scratch/$( uuidgen )
+#																config =
+#																	{
+#																		"core.sshCommand" =
+#																			let
+#																				config =
+#																					{
+#																						config =
+#																							{
+#																								mobile =
+#																									{
+#																										host = "192.168.1.202" ;
+#																										identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
+#																										userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh."known-hosts.asc.age" } )" ;
+#																										port = "8022" ;
+#																									stricthostkeycychecking = "yes" ; 
+#																									} ; 
+#																							} ;
+#																						nixpkgs = nixpkgs ;
+#																						system = system ;
+#																					} ;
+#																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ dot-ssh { config = config ; nixpkgs = nixpkgs ; system = system ; } } )" ;
+#																		"user.email" = config.user.email ;
+#																		"user.name" = config.user.description ;																		
+#																	} ;
+#																hooks =
+#																	{
+#																		post-commit =
+#																			let
+#																				application =
+#																					pkgs.writeShellApplication
+#																						{
+#																							name = "application" ;
+#																							runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+#																							text =
+#																								''
+#																									while ! git push origin HEAD
+#																									do
+#																										sleep 1m
+#																									done
+#																								'' ;
+#																						} ;
+#																				in "${ application }/bin/application" ;
+#																				
+#																	} ;
+#																remote =
+#																	{
+#																		origin = "mobile:private" ;
+#																	} ;
+#																init =
+#																	''
+#																		git fetch origin main
+#																		git checkout origin/main
+#																		git checkout -b scratch/$( uuidgen )
 																	'' ;
 															} ;
 												}
