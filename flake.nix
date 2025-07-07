@@ -256,26 +256,26 @@
 																		"user.email" = config.user.email ;
 																		"user.name" = config.user.description ;																		
 																	} ;
-																hooks =
-																	{
-																		post-commit =
-																			let
-																				application =
-																					pkgs.writeShellApplication
-																						{
-																							name = "application" ;
-																							runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-																							text =
-																								''
-																									while ! git push origin HEAD
-																									do
-																										sleep 1m
-																									done
-																								'' ;
-																						} ;
-																				in "${ application }/bin/application" ;
-																				
-																	} ;
+#																hooks =
+#																	{
+#																		post-commit =
+#																			let
+#																				application =
+#																					pkgs.writeShellApplication
+#																						{
+#																							name = "application" ;
+#																							runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+#																							text =
+#																								''
+#																									while ! git push origin HEAD
+#																									do
+#																										sleep 1m
+#																									done
+#																								'' ;
+#																						} ;
+#																				in "${ application }/bin/application" ;
+#																				
+#																	} ;
 #																init =
 #																	''
 #																		git fetch origin main
