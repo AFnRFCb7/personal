@@ -236,23 +236,24 @@
 																	{
 																		"core.sshCommand" =
 																			let
-																				config =
-																					{
-																						config =
-																							{
-																								mobile =
-																									{
-																										host = "192.168.1.202" ;
-																										identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
-																										userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } )" ;
-																										port = "8022" ;
-																									stricthostkeycychecking = "yes" ; 
-																									} ; 
-																							} ;
-																						nixpkgs = nixpkgs ;
-																						system = system ;
-																					} ;
-																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ dot-ssh.lib.implementation { config = config ; nixpkgs = nixpkgs ; system = system ; } } )" ;
+																				ssh =
+																					dot-ssh.lib.implementation
+																						{
+																							config =
+																								{
+																									mobile =
+																										{
+																											host = "192.168.1.202" ;
+																											identityfile = "\$( ${ secrets-scripts.dot-ssh.boot."identity.asc.age" } )" ;
+																											userknownhostsfile = "\$( ${ secrets-scripts.dot-ssh.boot."known-hosts.asc.age" } )" ;
+																											port = "8022" ;
+																											stricthostkeycychecking = "yes" ; 
+																										} ; 
+																								} ;
+																							nixpkgs = nixpkgs ;
+																							system = system ;
+																						} ;
+																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ ssh } } )" ;
 																		"user.email" = config.user.email ;
 																		"user.name" = config.user.description ;																		
 																	} ;
