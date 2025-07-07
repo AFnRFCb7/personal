@@ -237,7 +237,7 @@
 											pkgs.writeShellApplication
 												{
 													name = "widget" ;
-													text = builtins.trace "FIND ${ builtins.typeOf git }" "" ;
+													text = git.lib.implementation { nixpkgs = nixpkgs ; system = system ; } ;
 #														git.lib.implementation
 #															{
 #																config =
