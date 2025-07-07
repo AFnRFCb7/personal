@@ -254,8 +254,8 @@
 																							system = system ;
 																						} ;
 																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ ssh } } )" ;
-																		"user.email" = config.user.email ;
-																		"user.name" = config.user.description ;																		
+																		"user.email" = config.personal.user.email ;
+																		"user.name" = config.personal.user.description ;																		
 																	} ;
 																hooks =
 																	{
