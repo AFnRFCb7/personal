@@ -236,7 +236,7 @@
 										(
 											pkgs.writeShellApplication
 												{
-													name = builtins.trace ( builtins.typeOf git.lib.implementation ) "widget" ;
+													name = builtins.trace "FIND ${ builtins.typeOf git.lib.implementation }" "widget" ;
 													text =
 														git.lib.implementation
 															{
