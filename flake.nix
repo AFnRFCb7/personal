@@ -281,7 +281,7 @@
 																									done
 																								'' ;
 																						} ;
-																		#		in "${ application }/bin/application" ;
+																				in "${ application }/bin/application" ;
 																				
 																	} ;
 																remote =
