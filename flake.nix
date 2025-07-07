@@ -251,8 +251,8 @@
 																								mobile =
 																									{
 																										host = "192.168.1.202" ;
-																										identityfile = "\$( secrets-scripts.dot-ssh.boot.identity.asc.age" )" ;
-																										userknownhostsfile = "" ;
+																										identityfile = "\$( secrets-scripts.dot-ssh.boot."identity.asc.age" )" ;
+																										userknownhostsfile = "\$( secrets-script.dot-ssh."known-hosts.asc.age" )" ;
 																										port = "8022" ;
 																										stricthostkeycychecking = "yes" ; 
 																									} ; 
