@@ -293,7 +293,7 @@
 #																		git fetch origin main
 #																		git checkout origin/main
 #																		git checkout -b scratch/$( uuidgen )
-																	'' ;
+#																	'' ;
 															} ;
 												}
 										)
