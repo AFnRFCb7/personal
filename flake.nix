@@ -260,7 +260,7 @@
 																						nixpkgs = nixpkgs ;
 																						system = system ;
 																					} ;
-																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ dot-ssh { config = config ; nixpkgs = nixpkgs ; system = system ; } )" ;
+																			in "${ pkgs.openssh }/bin/ssh -F \$( ${ dot-ssh { config = config ; nixpkgs = nixpkgs ; system = system ; } } )" ;
 																		"user.email" = config.user.email ;
 																		"user.name" = config.user.description ;																		
 																	} ;
