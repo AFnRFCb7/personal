@@ -236,6 +236,7 @@
                                                                 name = config.personal.name ;
                                                                 packages =
 									[
+										pkgs.lsof
 										(
 											pkgs.writeShellApplication
 												{
