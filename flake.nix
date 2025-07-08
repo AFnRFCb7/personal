@@ -22,6 +22,12 @@
                             module =
                                 { config , lib , pkgs , ... } :
                                     let
+					xxx =
+						secret.lib.implementation
+							{
+								nixpkgs = nixpkgs ;
+								system = system ;
+							} ;
 					secrets-scripts =
 							let
 								mapper =
