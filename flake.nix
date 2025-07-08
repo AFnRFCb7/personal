@@ -13,7 +13,7 @@
 			dot-ssh ,
 			git ,
                         nixpkgs ,
-			resources ,
+			secret ,
                         secrets ,
                         system ,
                         visitor
