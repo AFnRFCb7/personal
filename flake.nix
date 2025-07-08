@@ -25,7 +25,8 @@
 					xxx =
 						secret.lib.implementation
 							{
-								init-script =
+								init-inputs = [ pkgs.coreutils ] ;
+								init-text =
 									''
 										echo hi > /mount/target
 									'' ;
