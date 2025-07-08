@@ -25,7 +25,6 @@
 					xxx =
 						secret.lib.implementation
 							{
-								init-packages = [ pkgs.coreutils ] ;
 								init-script =
 									''
 										echo hi > /mount/target
