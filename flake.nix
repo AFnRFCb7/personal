@@ -30,6 +30,7 @@
 									''
 										echo hi > /mount/target
 									'' ;
+								lease = 60 ;
 								nixpkgs = nixpkgs ;
 								system = system ;
 							} ;
