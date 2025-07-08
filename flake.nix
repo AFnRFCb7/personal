@@ -25,6 +25,11 @@
 					xxx =
 						secret.lib.implementation
 							{
+								init-packages = [ pkgs.coreutils ] ;
+								init-script =
+									''
+										echo hi > /mount/target
+									'' ;
 								nixpkgs = nixpkgs ;
 								system = system ;
 							} ;
@@ -232,6 +237,13 @@
                                                                 name = config.personal.name ;
                                                                 packages =
 									[
+										(
+											pkgs.writeShellApplication
+												{
+													name = "widget2" ;
+													text = xxx ;
+												}
+										)
 										(
 											pkgs.writeShellApplication
 												{
