@@ -90,7 +90,7 @@ EOF
 													''
 														cd /mount
 														git init
-														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh }/config )"
+														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config"
 														git config user.email ${ config.personal.email }
 														git config user.name "${ config.personal.description }"
 														git remote add origin ${ config.personal.pass.remote }
@@ -316,6 +316,7 @@ EOF
                                                                 name = config.personal.name ;
                                                                 packages =
 									[
+										pkgs.git
 										(
 											pkgs.stdenv.mkDerivation
 												{
