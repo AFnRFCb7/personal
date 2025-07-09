@@ -40,7 +40,7 @@
 																src = ./. ;
 															} ;
 													in
-														secret
+														secret.lib.implementation
 															{
 																init-inputs = [ pkgs.coreutils ] ;
 																init-text =
