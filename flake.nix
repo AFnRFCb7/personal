@@ -42,27 +42,31 @@
 								   else builtins.throw "We can not handle ${ value }." ;
 							in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
 					resources =
-						{
-							dot-ssh =
+						let
+							tree =
 								{
-									init-packages = [ pkgs.coreutils ] ;		
-									input-text =
-										''
-											cat > /mount/config <<EOF
-											HostName github.com
-												Host github.com
-												IdentityFile $SELF/identity
-												UserKnownHostsFile $SELF/known-hosts
-												StrictHostKeyChecking true
-											HostName mobile
-												Host 192.168.1.202
-												IdentityFile $SELF/identity
-												UserKnownHostsFile $SELF/known-hosts
-											EOF
-											chmod 0400 /mount/config /mount/identity /mount/known-hosts
-										'' ;
+									dot-ssh =
+										ignore :
+											{
+												init-packages = [ pkgs.coreutils ] ;		
+												input-text =
+													''
+														cat > /mount/config <<EOF
+														HostName github.com
+															Host github.com
+															IdentityFile $SELF/identity
+															UserKnownHostsFile $SELF/known-hosts
+															StrictHostKeyChecking true
+														HostName mobile
+															Host 192.168.1.202
+															IdentityFile $SELF/identity
+															UserKnownHostsFile $SELF/known-hosts
+														EOF
+														chmod 0400 /mount/config /mount/identity /mount/known-hosts
+													'' ;
+											} ;
 								} ;
-						} ;
+							in visitors.lib.implementation { lambda = path : value : secret.lib.implementation ( value null ) ; } tree ;
 					xxx =
 						secret.lib.implementation
 							{
