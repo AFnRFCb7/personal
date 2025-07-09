@@ -51,17 +51,19 @@
 												init-inputs = [ pkgs.coreutils ] ;		
 												init-text =
 													''
-														cat > /mount/config <<EOF
-														HostName github.com
-															Host github.com
-															IdentityFile $SELF/identity
-															UserKnownHostsFile $SELF/known-hosts
-															StrictHostKeyChecking true
-														HostName mobile
-															Host 192.168.1.202
-															IdentityFile $SELF/identity
-															UserKnownHostsFile $SELF/known-hosts
-														EOF
+														cat ${ _secrets.dot-ssh.boot."identity.asc.age" > "$SELF/identity"
+														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" > $SELF/known-hosts"
+cat > /mount/config <<EOF
+HostName github.com
+Host github.com
+IdentityFile $SELF/identity
+UserKnownHostsFile $SELF/known-hosts
+StrictHostKeyChecking true
+HostName mobile
+Host 192.168.1.202
+IdentityFile $SELF/identity
+UserKnownHostsFile $SELF/known-hosts
+EOF
 														chmod 0400 /mount/config /mount/identity /mount/known-hosts
 													'' ;
 											} ;
