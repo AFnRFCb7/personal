@@ -53,8 +53,8 @@
 													''
 														export GNUPGHOME=/mount/dot_gnupg
 														mkdir "$GNUPGHOME"
-														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets.dot-gnupg."secret-keys.asc.age" }
-														gpg --homedir "$GNUPGHOME" --batch --yes --import-ownertrust ${ _secrets.dot-gnupg."ownertrust.asc.age" }
+														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets."secret-keys.asc.age" }
+														gpg --homedir "$GNUPGHOME" --batch --yes --import-ownertrust ${ _secrets."ownertrust.asc.age" }
 														gpg --homedir "$GNUPGHOME" --batch --yes --update-trustdb
 													'' ;
 											} ;
