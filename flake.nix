@@ -45,6 +45,19 @@
 						let
 							tree =
 								{
+									dot-gnupg =
+										ignore :
+											{
+												init-inputs = [ pkgs.coreutils pkgs.gnupg ] ;
+												init-text =
+													''
+														export GNUPGHOME=/mount/dot_gnupg
+														mkdir "$GNUPGHOME"
+														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets.dot-gnupg."secret-keys.asc.age" }
+														gpg --homedir "$GNUPGHOME" --batch --yes --import-ownertrust ${ _secrets.dot-gnupg."ownertrust.asc.age" }
+														gpg --homedir "$GNUPGHOME" --batch --yes --update-trustdb
+													''
+											} ;
 									dot-ssh =
 										ignore :
 											{
@@ -67,6 +80,22 @@ Host mobile
 	StrictHostKeyChecking true
 EOF
 														chmod 0400 /mount/config /mount/identity /mount/known-hosts
+													'' ;
+											} ;
+									dot-pass =
+										ignore :
+											{
+												init-inputs = [ pkgs.coreutils pkgs.git ] ;
+												init-text =
+													''
+														cd /mount
+														git init
+														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh }/config )"
+														git config user.email ${ config.personal.email }
+														git config user.name "${ config.personal.description }"
+														git remote add origin ${ config.personal.pass.remote }
+														git fetch origin ${ config.personal.pass.branch }
+														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
 								} ;
@@ -287,12 +316,21 @@ EOF
                                                                 name = config.personal.name ;
                                                                 packages =
 									[
-										pkgs.lsof
 										(
-											pkgs.writeShellApplication
+											pkgs.stdenv.mkDerivation
 												{
-													name = "widget" ;
-													text = resources.dot-ssh ;
+													installPhase =
+														''
+															mkdir --parents $out/bin
+															makeWrapper \
+																${ pkgs.pass }/bin/pass \
+																$out/bin/pass \
+																--set PASSWORD_STORE_DIR "\$( ${ resources.dot-pass } )"
+																--set PASSWORD_STORE_GPG_OPTS "--homedir \( ${ resources.dot-gnupg }  )"
+														'' ;
+													name = "pass" ;
+													nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+													src = ./. ;
 												}
 										)
 									] ;
