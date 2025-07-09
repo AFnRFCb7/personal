@@ -23,25 +23,24 @@
 					resources =
 						{
 							dot-ssh =
-								secrets.lib.implementation
-									{
-										init-packages = [ pkgs.coreutils ] ;
-										input-text =
-											''
-												cat > /mount/config <<EOF
-												HostName github.com
-													Host github.com
-													IdentityFile \$( ${ resources.secrets.dot-ssh.boot."identity.asc.age" } )
-													UserKnownHostsFile \$( ${ resources.secrets.dot-ssh.boot."known-hosts.asc.age" } )
-													StrictHostKeyChecking true
-												HostName mobile
-													Host 192.168.1.202
-													IdentityFile \$( ${ resources.secrets.dot-ssh.boot."identity.asc.age" } )
-													UserKnownHostsFile \( ${ resources.secrets.dot-ssh.boot."known
-												EOF
-												chmod 0400 /mount/config
-											'' ;
-									} ;
+								{
+									init-packages = [ pkgs.coreutils ] ;		
+									input-text =
+										''
+											cat > /mount/config <<EOF
+											HostName github.com
+												Host github.com
+												IdentityFile \$( ${ resources.secrets.dot-ssh.boot."identity.asc.age" } )
+												UserKnownHostsFile \$( ${ resources.secrets.dot-ssh.boot."known-hosts.asc.age" } )
+												StrictHostKeyChecking true
+											HostName mobile
+												Host 192.168.1.202
+												IdentityFile \$( ${ resources.secrets.dot-ssh.boot."identity.asc.age" } )
+												UserKnownHostsFile \( ${ resources.secrets.dot-ssh.boot."known
+											EOF
+											chmod 0400 /mount/config
+										'' ;
+								} ;
 					xxx =
 						secret.lib.implementation
 							{
