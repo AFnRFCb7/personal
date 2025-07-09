@@ -20,6 +20,29 @@
                             module =
                                 { config , lib , pkgs , ... } :
                                     let
+					_secrets =
+						let
+							mapper =
+							       path : name : value :
+							       	    if value == "regular" then
+									let
+										derivation =
+											pkgs.stdenv.mkDerivation
+												{
+													installPhase =	
+														let
+															script =
+																''
+																	age --decrypt --identity ${ config.personal.agenix } --output $out ${ token }
+																'' ;
+													name = "derivation" ;
+													nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
+													src = ./. ;
+												} ;
+										in "${ derivation }"
+								   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
+								   else builtins.throw "We can not handle ${ value }." ;
+							in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
 					resources =
 						{
 							dot-ssh =
@@ -27,20 +50,23 @@
 									init-packages = [ pkgs.coreutils ] ;		
 									input-text =
 										''
+											cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > $SELF/identity
+											cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > $SELF/known-hosts
 											cat > /mount/config <<EOF
 											HostName github.com
 												Host github.com
-												IdentityFile \$( ${ resources.secrets.dot-ssh.boot."identity.asc.age" } )
-												UserKnownHostsFile \$( ${ resources.secrets.dot-ssh.boot."known-hosts.asc.age" } )
+												IdentityFile $SELF/identity
+												UserKnownHostsFile $SELF/known-hosts
 												StrictHostKeyChecking true
 											HostName mobile
 												Host 192.168.1.202
-												IdentityFile \$( ${ resources.secrets.dot-ssh.boot."identity.asc.age" } )
-												UserKnownHostsFile \( ${ resources.secrets.dot-ssh.boot."known
+												IdentityFile $SELF/identity
+												UserKnownHostsFile $SELF/known-hosts
 											EOF
-											chmod 0400 /mount/config
+											chmod 0400 /mount/config /mount/identity /mount/known-hosts
 										'' ;
 								} ;
+						} ;
 					xxx =
 						secret.lib.implementation
 							{
@@ -262,7 +288,7 @@
 											pkgs.writeShellApplication
 												{
 													name = "widget2" ;
-													text = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ;
+													text = resources.dot-ssh ;
 												}
 										)
 										(
