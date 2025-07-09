@@ -56,7 +56,7 @@
 														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets.dot-gnupg."secret-keys.asc.age" }
 														gpg --homedir "$GNUPGHOME" --batch --yes --import-ownertrust ${ _secrets.dot-gnupg."ownertrust.asc.age" }
 														gpg --homedir "$GNUPGHOME" --batch --yes --update-trustdb
-													''
+													'' ;
 											} ;
 									dot-ssh =
 										ignore :
