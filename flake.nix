@@ -20,6 +20,41 @@
                             module =
                                 { config , lib , pkgs , ... } :
                                     let
+					resources =
+						{
+							secrets =
+								let
+									mapper =
+										path : name : value :
+											if value == "regular" then
+												let
+													derivation =
+														pkgs.stdenv.mkDerivation
+															{
+																installPhase =
+																	''
+																		age --decrypt --identity ${ config.personal.agenix } --output $out ${ name }
+																	'' ;
+																name = "derivation" ;
+																nativeBuildInputs = [ pkgs.age ] ;
+																src = ./. ;
+															} ;
+													in
+														secret
+															{
+																init-inputs = [ pkgs.coreutils ] ;
+																init-text =
+																	''
+																		cat ${ derivation } > /mount/secret
+																		chmod 0400 /mount/secret
+																	'' ;
+																nixpkgs = nixpkgs ;
+																system = system ;
+															}
+										   	else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
+											else builtins.throw "We are not prepared for ${ value }." ;
+									in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
+						} ;
 					xxx =
 						secret.lib.implementation
 							{
