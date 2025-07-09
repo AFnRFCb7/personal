@@ -30,10 +30,9 @@
 											pkgs.stdenv.mkDerivation
 												{
 													installPhase =	
-														let
-															''
-																age --decrypt --identity ${ config.personal.agenix } --output $out ${ token }
-															'' ;
+														''
+															age --decrypt --identity ${ config.personal.agenix } --output $out ${ token }
+														'' ;
 													name = "derivation" ;
 													nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
 													src = ./. ;
