@@ -66,7 +66,7 @@
 													'' ;
 											} ;
 								} ;
-							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( value null ) ; } tree ;
+							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation = ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value null ) ) ; } tree ;
 					xxx =
 						secret.lib.implementation
 							{
