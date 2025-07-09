@@ -325,7 +325,7 @@ EOF
 															makeWrapper \
 																${ pkgs.pass }/bin/pass \
 																$out/bin/pass \
-																--set PASSWORD_STORE_DIR "\$( ${ resources.dot-pass } )"
+																--set PASSWORD_STORE_DIR "\$( ${ resources.dot-pass } )" \
 																--set PASSWORD_STORE_GPG_OPTS "--homedir \( ${ resources.dot-gnupg }  )"
 														'' ;
 													name = "pass" ;
