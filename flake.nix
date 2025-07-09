@@ -284,7 +284,7 @@
 											pkgs.writeShellApplication
 												{
 													name = "widget2" ;
-													text = resources.dot-ssh ;
+													text = "echo hi" ;
 												}
 										)
 										(
