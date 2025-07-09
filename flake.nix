@@ -48,7 +48,7 @@
 									dot-ssh =
 										ignore :
 											{
-												init-packages = [ pkgs.coreutils ] ;		
+												init-inputs = [ pkgs.coreutils ] ;		
 												input-text =
 													''
 														cat > /mount/config <<EOF
