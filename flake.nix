@@ -54,13 +54,13 @@
 														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > /mount/identity
 														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > /mount/known-hosts
 cat > /mount/config <<EOF
-HostName github.com
-	Host github.com
+Host github.com
+	HostName github.com
 	IdentityFile $SELF/identity
 	UserKnownHostsFile $SELF/known-hosts
 	StrictHostKeyChecking true
-HostName mobile
-	Host 192.168.1.202
+Host mobile
+	HostName 192.168.1.202
 	IdentityFile $SELF/identity
 	UserKnownHostsFile $SELF/known-hosts
 EOF
