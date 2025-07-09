@@ -276,7 +276,7 @@
 											pkgs.writeShellApplication
 												{
 													name = "widget2" ;
-													text = xxx ;
+													text = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ;
 												}
 										)
 										(
