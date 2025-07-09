@@ -49,7 +49,7 @@
 										ignore :
 											{
 												init-inputs = [ pkgs.coreutils ] ;		
-												input-text =
+												init-text =
 													''
 														cat > /mount/config <<EOF
 														HostName github.com
