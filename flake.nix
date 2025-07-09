@@ -33,7 +33,7 @@
 															{
 																installPhase =
 																	''
-																		age --decrypt --identity ${ config.personal.agenix } --output $out ${ name }
+																		age --decrypt --identity ${ config.personal.agenix } --output $out ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
 																	'' ;
 																name = "derivation" ;
 																nativeBuildInputs = [ pkgs.age ] ;
