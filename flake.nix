@@ -52,7 +52,7 @@
 												init-text =
 													''
 														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/identity"
-														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > $SELF/known-hosts"
+														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/known-hosts"
 cat > /mount/config <<EOF
 HostName github.com
 Host github.com
