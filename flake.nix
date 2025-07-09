@@ -326,8 +326,8 @@ EOF
 															makeWrapper \
 																${ pkgs.pass }/bin/pass \
 																$out/bin/pass \
-																--run "export PASSWORD_STORE_DIR \"\$( ${ resources.dot-pass } )\"" \
-																--run "export PASSWORD_STORE_GPG_OPTS \"--homedir \$( ${ resources.dot-gnupg }  )\""
+																--run "export PASSWORD_STORE_DIR=\"\$( ${ resources.dot-pass } )\"" \
+																--run "export PASSWORD_STORE_GPG_OPTS=\"--homedir \$( ${ resources.dot-gnupg }  )\""
 														'' ;
 													name = "pass" ;
 													nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
