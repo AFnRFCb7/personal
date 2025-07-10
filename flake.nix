@@ -46,12 +46,13 @@
 							tree =
 								{
 									dot-gnupg =
-										ignore :
+										path :
 											{
 												init-inputs = [ pkgs.coreutils pkgs.gnupg ] ;
 												init-text =
 													''
-														export GNUPGHOME=/mount/dot_gnupg
+														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
+														export GNUPGHOME="$SELF/mount"
 														mkdir "$GNUPGHOME"
 														chmod 0700 "$GNUPGHOME"
 														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets."secret-keys.asc.age" }
@@ -65,9 +66,9 @@
 												init-inputs = [ pkgs.coreutils ] ;		
 												init-text =
 													''
-														export SELF="${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secret" ] path ] ) }"
-														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > /mount/identity
-														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > /mount/known-hosts
+														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
+														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/identity"
+														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/mount/known-hosts"
 cat > /mount/config <<EOF
 Host github.com
 	HostName github.com
@@ -83,7 +84,7 @@ Host mobile
 	StrictHostKeyChecking yes
 	BatchMode yes
 EOF
-														chmod 0400 /mount/config /mount/identity /mount/known-hosts
+														chmod 0400 "$SELF/config" "$SELF/identity" "$SELF/known-hosts"
 													'' ;
 											} ;
 									dot-pass =
