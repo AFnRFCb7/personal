@@ -330,6 +330,13 @@ EOF
 									[
 										pkgs.git
 										(
+											pkgs.writeShellApplication
+												{
+													name = "widget-01" ;
+													text = resources.dot-ssh ;
+												}
+										)
+										(
 											pkgs.stdenv.mkDerivation
 												{
 													installPhase =
