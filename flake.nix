@@ -109,7 +109,7 @@ EOF
 													'' ;
 											} ;
 								} ;
-							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value path ) ) ) ) ; } tree ;
+							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value path ) ) ) ; } tree ;
 					xxx =
 						secret.lib.implementation
 							{
