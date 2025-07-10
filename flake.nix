@@ -98,7 +98,7 @@ EOF
 														echo C >&2
 														git init
 														echo D >&2
-														DOT_SSH="$( ${ resources.dot-ssh } )/config"
+														DOT_SSH="\$( ${ resources.dot-ssh } )/config"
 														echo "DOT_SSH=$DOT_SSH" >&2
 														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
 														# git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH -vvv"
