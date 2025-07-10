@@ -60,11 +60,12 @@
 													'' ;
 											} ;
 									dot-ssh =
-										ignore :
+										path :
 											{
 												init-inputs = [ pkgs.coreutils ] ;		
 												init-text =
 													''
+														export SELF="${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ secret-directory ] path ] ) }"
 														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > /mount/identity
 														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > /mount/known-hosts
 cat > /mount/config <<EOF
@@ -108,7 +109,7 @@ EOF
 													'' ;
 											} ;
 								} ;
-							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value null ) ) ; } tree ;
+							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value path ) ) ) ) ; } tree ;
 					xxx =
 						secret.lib.implementation
 							{
