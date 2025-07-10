@@ -96,7 +96,9 @@ EOF
 														echo C >&2
 														git init
 														echo D >&2
-														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config"
+														DOT_SSH="\$( ${ resources.dot-ssh } )/config"
+														echo "DOT_SSH=$DOT_SSH" >&2
+														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
 														echo E >&2
 														git config user.email ${ config.personal.email }
 														echo F >&2
