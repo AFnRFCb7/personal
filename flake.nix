@@ -335,6 +335,7 @@ EOF
                                                                 packages =
 									[
 										pkgs.git
+										pkgs.yq-go
 										(
 											pkgs.writeShellApplication
 												{
