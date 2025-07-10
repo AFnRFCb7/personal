@@ -69,7 +69,7 @@
 														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
 														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/identity"
 														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/mount/known-hosts"
-cat > /mount/config <<EOF
+cat > "$SELF/config" <<EOF
 Host github.com
 	HostName github.com
 	IdentityFile $SELF/identity
