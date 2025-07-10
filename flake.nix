@@ -100,7 +100,8 @@ EOF
 														DOT_SSH=$( ${ resources.dot-ssh } )/config || echo "FAILED TO ASSIGN"
 														export DOT_SSH
 														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
-														git fetch origin ${ config.personal.pass.branch }
+														echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
+														# git fetch origin ${ config.personal.pass.branch }
 														# echo I >&2
 														# git checkout ${ config.personal.pass.branch }
 													'' ;
