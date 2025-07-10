@@ -335,6 +335,14 @@ EOF
 													text = resources.dot-ssh ;
 												}
 										)
+										pkgs.yq-go
+										(
+											pkgs.writeShellApplication
+												{
+													name = "widget-02" ;
+													text = resources.dot-pass ;
+												}
+										)
 										(
 											pkgs.stdenv.mkDerivation
 												{
