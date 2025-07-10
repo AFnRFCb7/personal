@@ -89,16 +89,23 @@ EOF
 												init-inputs = [ pkgs.coreutils pkgs.git ] ;
 												init-text =
 													''
-														mkdir /mount/dot-pass
-														cd /mount/dot-pass
-														git init
-														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config"
-														git config user.email ${ config.personal.email }
-														git config user.name "${ config.personal.description }"
-														git remote add origin ${ config.personal.pass.remote }
 														echo A >&2
-														git fetch origin ${ config.personal.pass.branch }
+														mkdir /mount/dot-pass
 														echo B >&2
+														cd /mount/dot-pass
+														echo C >&2
+														git init
+														echo D >&2
+														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config"
+														echo E >&2
+														git config user.email ${ config.personal.email }
+														echo F >&2
+														git config user.name "${ config.personal.description }"
+														echo G >&2
+														git remote add origin ${ config.personal.pass.remote }
+														echo H >&2
+														git fetch origin ${ config.personal.pass.branch }
+														echo I >&2
 														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
