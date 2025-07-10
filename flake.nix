@@ -92,9 +92,9 @@ EOF
 												init-text =
 													''
 														echo A >&2
-														mkdir /mount/dot-pass
+														mkdir --parents /mount/dot-pass1
 														echo B >&2
-														cd /mount/dot-pass
+														cd /mount/dot-pass1
 														echo C >&2
 														git init
 														echo D >&2
