@@ -89,7 +89,8 @@ EOF
 												init-inputs = [ pkgs.coreutils pkgs.git ] ;
 												init-text =
 													''
-														cd /mount
+														mkdir /mount/dot-pass
+														cd /mount/dot-pass
 														git init
 														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config"
 														git config user.email ${ config.personal.email }
@@ -327,8 +328,8 @@ EOF
 															makeWrapper \
 																${ pkgs.pass }/bin/pass \
 																$out/bin/pass \
-																--run "export PASSWORD_STORE_DIR=\"\$( ${ resources.dot-pass } )\"" \
-																--run "export PASSWORD_STORE_GPG_OPTS=\"--homedir \$( ${ resources.dot-gnupg }  )\""
+																--run "export PASSWORD_STORE_DIR=\"\$( ${ resources.dot-pass } )/dot-pass\"" \
+																--run "export PASSWORD_STORE_GPG_OPTS=\"--homedir \$( ${ resources.dot-gnupg } )/dot-gnupg\""
 														'' ;
 													name = "pass" ;
 													nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
