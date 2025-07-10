@@ -96,7 +96,9 @@ EOF
 														git config user.email ${ config.personal.email }
 														git config user.name "${ config.personal.description }"
 														git remote add origin ${ config.personal.pass.remote }
+														echo A >&2
 														git fetch origin ${ config.personal.pass.branch }
+														echo B >&2
 														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
