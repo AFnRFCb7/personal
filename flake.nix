@@ -52,7 +52,7 @@
 												init-text =
 													''
 														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
-														export GNUPGHOME="$SELF/mount"
+														export GNUPGHOME="$SELF/mount/dot-gnupg"
 														mkdir "$GNUPGHOME"
 														chmod 0700 "$GNUPGHOME"
 														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets."secret-keys.asc.age" }
@@ -67,9 +67,9 @@
 												init-text =
 													''
 														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
-														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/identity"
+														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/mount/identity"
 														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/mount/known-hosts"
-cat > "$SELF/config" <<EOF
+cat > "$SELF/mount/config" <<EOF
 Host github.com
 	HostName github.com
 	IdentityFile $SELF/identity
@@ -84,7 +84,7 @@ Host mobile
 	StrictHostKeyChecking yes
 	BatchMode yes
 EOF
-														chmod 0400 "$SELF/config" "$SELF/identity" "$SELF/known-hosts"
+														chmod 0400 "$SELF/mount/config" "$SELF/mount/identity" "$SELF/mount/known-hosts"
 													'' ;
 											} ;
 									dot-pass =
