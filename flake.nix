@@ -73,12 +73,14 @@ Host github.com
 	IdentityFile $SELF/identity
 	UserKnownHostsFile $SELF/known-hosts
 	StrictHostKeyChecking true
+	BatchMode true
 Host mobile
 	HostName 192.168.1.202
 	IdentityFile $SELF/identity
 	UserKnownHostsFile $SELF/known-hosts
 	Port 8022
 	StrictHostKeyChecking true
+	BatchMode true
 EOF
 														chmod 0400 /mount/config /mount/identity /mount/known-hosts
 													'' ;
