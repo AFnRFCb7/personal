@@ -104,7 +104,7 @@ EOF
 														echo G >&2
 														git remote add origin ${ config.personal.pass.remote }
 														echo H >&2
-														echo "\n\ngit fetch origin ${ config.personal.pass.branch }\n\n"
+														printf "%s" "\n\ngit fetch origin ${ config.personal.pass.branch }\n\n"
 														git fetch origin ${ config.personal.pass.branch }
 														echo I >&2
 														git checkout ${ config.personal.pass.branch }
