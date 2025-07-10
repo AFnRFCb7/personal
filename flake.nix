@@ -98,11 +98,6 @@ EOF
 														echo C >&2
 														git init
 														echo D >&2
-														DOT_SSH="$( ${ resources.dot-ssh } )/config"
-														echo D1 >&2
-														echo "DOT_SSH=$DOT_SSH" >&2
-														echo D2 >&2
-														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH -vvv"
 														# git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH -vvv"
 														echo D3 >&2
 														echo E >&2
@@ -113,11 +108,17 @@ EOF
 														git remote add origin ${ config.personal.pass.remote }
 														echo H >&2
 														echo -en "\n\n FIND ME" >&2
-														git config --get core.sshCommand >&2
+														# git config --get core.sshCommand >&2
 														printf "%s" "\n\ngit fetch origin ${ config.personal.pass.branch }\n\n" >&2
 														echo -en "\n\n FOUND ME" >&2
 														export GIT_TRACE=1
 														export GIT_CURL_VERBOSE=1
+														DOT_SSH="$( ${ resources.dot-ssh } )/config"
+														echo D1 >&2
+														echo "DOT_SSH=$DOT_SSH" >&2
+														echo D2 >&2
+														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH -vvv"
+
 														git fetch origin ${ config.personal.pass.branch }
 														echo I >&2
 														git checkout ${ config.personal.pass.branch }
