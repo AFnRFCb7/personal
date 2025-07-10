@@ -255,7 +255,6 @@ EOF
                                                             {
                                                                 blueman.enable = true ;
                                                                 dbus.packages = [ pkgs.gcr ] ;
-								getty.enable = false ;
                                                                 openssh =
                                                                     {
                                                                         enable = true ;
@@ -322,6 +321,7 @@ EOF
                                                                         xkbVariant = "" ;
                                                                     } ;
                                                             } ;
+							systemd.services."getty@tt1".enable = false ;
                                                         system.stateVersion = "23.05" ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
