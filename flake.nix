@@ -100,6 +100,7 @@ EOF
 														echo D >&2
 														DOT_SSH="\$( ${ resources.dot-ssh } )/config"
 														echo "DOT_SSH=$DOT_SSH" >&2
+														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F \$( $DOT_SSH )"
 														git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH -vvv"
 														echo E >&2
 														git config user.email ${ config.personal.email }
