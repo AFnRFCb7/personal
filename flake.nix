@@ -66,7 +66,7 @@
 												init-inputs = [ pkgs.coreutils ] ;		
 												init-text =
 													''
-														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
+														export SELF="/tmp/secrets/$HASH"
 														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/mount/identity"
 														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/mount/known-hosts"
 cat > "$SELF/mount/config" <<EOF
