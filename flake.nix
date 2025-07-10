@@ -119,9 +119,9 @@ EOF
 														echo D2 >&2
 														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH -vvv"
 
-														git fetch origin ${ config.personal.pass.branch }
-														echo I >&2
-														git checkout ${ config.personal.pass.branch }
+														# git fetch origin ${ config.personal.pass.branch }
+														# echo I >&2
+														# git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
 								} ;
