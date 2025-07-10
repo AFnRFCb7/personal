@@ -110,6 +110,8 @@ EOF
 														git config --get core.sshCommand >&2
 														printf "%s" "\n\ngit fetch origin ${ config.personal.pass.branch }\n\n" >&2
 														echo -en "\n\n FOUND ME" >&2
+														export GIT_TRACE=1
+														export GIT_CURL_VERBOSE=1
 														git fetch origin ${ config.personal.pass.branch }
 														echo I >&2
 														git checkout ${ config.personal.pass.branch }
