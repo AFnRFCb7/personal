@@ -97,7 +97,7 @@ EOF
 														git config user.email ${ config.personal.email }
 														git config user.name "${ config.personal.description }"
 														git remote add origin ${ config.personal.pass.remote }
-														DOT_SSH=$( resources.dot-ssh )/config
+														DOT_SSH=$( ${ resources.dot-ssh } )/config || echo "FAILED TO ASSIGN"
 														export DOT_SSH
 														# git fetch origin ${ config.personal.pass.branch }
 														# echo I >&2
