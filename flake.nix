@@ -255,6 +255,7 @@ EOF
                                                             {
                                                                 blueman.enable = true ;
                                                                 dbus.packages = [ pkgs.gcr ] ;
+								getty.enable = false ;
                                                                 openssh =
                                                                     {
                                                                         enable = true ;
