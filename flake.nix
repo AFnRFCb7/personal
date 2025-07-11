@@ -51,8 +51,7 @@
 												init-inputs = [ pkgs.coreutils pkgs.gnupg ] ;
 												init-text =
 													''
-														export SELF=${ builtins.concatStringsSep "/" ( builtins.concatLists [ [ "/tmp/secrets" ] path ] ) }
-														export GNUPGHOME="$SELF/mount/dot-gnupg"
+														export GNUPGHOME="$SELF/dot-gnupg"
 														mkdir "$GNUPGHOME"
 														chmod 0700 "$GNUPGHOME"
 														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets."secret-keys.asc.age" }
@@ -66,8 +65,8 @@
 												init-inputs = [ pkgs.coreutils ] ;		
 												init-text =
 													''
-														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/mount/identity"
-														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/mount/known-hosts"
+														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/identity"
+														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/known-hosts"
 cat > "$SELF/config" <<EOF
 Host github.com
 	HostName github.com
