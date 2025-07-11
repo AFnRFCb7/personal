@@ -122,7 +122,8 @@ EOF
 																git config user.name "${ config.personal.description }"
 																ln --symbolic ${ post-commit } "$GIT_WORK_TREE/hooks"
 																git remote add origin ${ origin }
-																export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
+																GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
+																export GIT_SSH_COMMAND
 																git fetch origin main
 																git checkout origin/main
 																git checkout -b "scratch/$( uuidgen )"
