@@ -130,6 +130,9 @@ EOF
 											in
 												{
 													personal = repository config.personal.repository.personal.remote ;
+													secret = repository config.personal.repository.secret.remote ;
+													secrets = repository config.personal.repository.secrets.remote ;
+													visitor = repository config.personal.repository.visitor.remote ;
 												} ;
 								} ;
 							post-commit =
