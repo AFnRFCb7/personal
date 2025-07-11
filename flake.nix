@@ -91,8 +91,9 @@ EOF
 												init-inputs = [ pkgs.coreutils pkgs.git ] ;
 												init-text =
 													''
-														mkdir --parents /mount/dot-pass1
-														cd /mount/dot-pass1
+														export PASSWORD_STORE_DIR="$SELF/dot-pass"
+														mkdir --parents "$PASSWORD_STORE_DIR"
+														cd "$PASSWORD_STORE_DIR"
 														git init
 														git config user.email ${ config.personal.email }
 														git config user.name "${ config.personal.description }"
