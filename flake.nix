@@ -125,7 +125,7 @@ EOF
 																export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
 																git fetch origin main
 																git checkout origin/main
-																git checkout -b scratch/$( uuidgen )
+																git checkout -b "scratch/$( uuidgen )"
 															'' ;
 													} ;
 											in
