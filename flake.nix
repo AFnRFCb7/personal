@@ -106,7 +106,49 @@ EOF
 														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
+									repository =
+										let
+											repository =
+												origin : ignore :
+													{
+														init-inputs = [ pkgs.coreutils pkgs.git ] ;
+														init-text =
+															''
+																export GIT_DIR="$SELF/git"
+																export GIT_WORK_TREE="$self/work-tree"
+																mkdir --parents "$GIT_DIR"
+																mkdir --parents "$GIT_WORK_TREE"
+																git config user.email ${ config.personal.email }
+																git config user.name "${ config.personal.description }
+																ln --symbolic ${ post-commit } "$GIT_WORK_TREE/hooks"
+																git remote add origin ${ origin }
+																export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
+																git fetch origin main
+																git checkout origin/main
+																git checkout -b scratch/$( uuidgen )
+															'' ;
+													} ;
+											in
+												{
+													personal = repository config.personal.repository.personal.remote ;
+												} ;
 								} ;
+							post-commit =
+								let
+									post-commit =
+										pkgs.writeShellApplication
+											{
+												name = "post-commit" ;
+												runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+												text =
+													''
+														while ! git push origin HEAD
+														do
+															sleep 1m
+														done
+													'' ;
+											} ;
+										in "${ post-commit }/bin/post-commit" ;
 							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value path ) ) ; } tree ;
 					xxx =
 						secret.lib.implementation
@@ -324,7 +366,27 @@ EOF
                                                                 isNormalUser = true ;
                                                                 name = config.personal.name ;
                                                                 packages =
+									let
+										studio =
+											name : repository :
+												pkgs.stdenv.mkDerivation
+													{
+														installPhase =
+															''
+																makeWrapper \
+																	${ pkgs.bash }/bin/bash \
+																	$out/bin/${ name } \
+																	--run "cd \$( ${ repository } )" \
+																	--run "export GIT_DIR=\"\$( ${ repository } )/git\"" \
+																	--run "export GIT_WORK_TREE=\"\$( ${ repository } )/work-tree\""
+															'' ;
+														name = "derivation" ;
+														nativeBuildInputs = [ pkgs.makeWrapper ] ;
+														src = ./. ;
+													} ;
+									in
 									[
+										( repository "personal" resources.repository.personal )
 										pkgs.git
 										pkgs.yq-go
 										(
