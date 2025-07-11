@@ -385,7 +385,10 @@ EOF
 													} ;
 									in
 									[
-										( studio "personal" resources.repository.personal )
+										( studio "studio-personal" resources.repository.personal )
+										( studio "studio-secret" resources.repository.secret )
+										( studio "studio-secrets" resources.repository.secrets )
+										( studio "studio-visitor" resources.repository.visitor )
 										pkgs.git
 										pkgs.yq-go
 										(
