@@ -359,8 +359,7 @@ EOF
                                                                         xkbVariant = "" ;
                                                                     } ;
                                                             } ;
-							systemd.services."getty@tt1".enable = false ;
-                                                        system.stateVersion = "23.05" ;
+							                                                        system.stateVersion = "23.05" ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
