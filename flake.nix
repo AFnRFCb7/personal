@@ -103,8 +103,7 @@ EOF
 														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
 														echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
 														git fetch origin ${ config.personal.pass.branch }
-														# git checkout ${ config.personal.pass.branch }
-														touch .gpg-id
+														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
 								} ;
