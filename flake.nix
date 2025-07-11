@@ -82,7 +82,7 @@ Host mobile
 	StrictHostKeyChecking yes
 	BatchMode yes
 EOF
-														chmod 0400 "$SELF/mount/config" "$SELF/mount/identity" "$SELF/mount/known-hosts"
+														chmod 0400 "$SELF/config" "$SELF/identity" "$SELF/known-hosts"
 													'' ;
 											} ;
 									dot-pass =
