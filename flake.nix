@@ -115,7 +115,7 @@ EOF
 														init-text =
 															''
 																export GIT_DIR="$SELF/git"
-																export GIT_WORK_TREE="$self/work-tree"
+																export GIT_WORK_TREE="$SELF/work-tree"
 																mkdir --parents "$GIT_DIR"
 																mkdir --parents "$GIT_WORK_TREE"
 																git config user.email ${ config.personal.email }
