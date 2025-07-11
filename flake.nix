@@ -378,7 +378,7 @@ EOF
 																makeWrapper \
 																	${ pkgs.jetbrains.idea-community }/bin/idea-community \
 																	$out/bin/${ name } \
-																	--flag "\$( ${ repository } )\work-tree" \
+																	--add-flags "\$( ${ repository } )\work-tree" \
 																	--run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config\"" \
 																	--run "export GIT_DIR=\"\$( ${ repository } )/git\"" \
 																	--run "export GIT_WORK_TREE=\"\$( ${ repository } )/work-tree\""
