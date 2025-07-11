@@ -386,7 +386,7 @@ EOF
 													} ;
 									in
 									[
-										( repository "personal" resources.repository.personal )
+										( studio "personal" resources.repository.personal )
 										pkgs.git
 										pkgs.yq-go
 										(
