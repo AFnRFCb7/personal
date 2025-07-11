@@ -376,9 +376,10 @@ EOF
 														installPhase =
 															''
 																makeWrapper \
-																	${ pkgs.bash }/bin/bash \
+																	${ pkgs.jetbrains.idea-community }/bin/idea-community \
 																	$out/bin/${ name } \
-																	--run "cd \$( ${ repository } )" \
+																	--flag "\$( ${ repository } )\work-tree" \
+																	--run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config\"" \
 																	--run "export GIT_DIR=\"\$( ${ repository } )/git\"" \
 																	--run "export GIT_WORK_TREE=\"\$( ${ repository } )/work-tree\""
 															'' ;
