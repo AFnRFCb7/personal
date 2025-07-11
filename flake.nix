@@ -7,9 +7,6 @@
             {
                 lib =
                     {
-			dot-gnupg ,
-			dot-ssh ,
-			git ,
                         nixpkgs ,
 			secret ,
                         secrets ,
