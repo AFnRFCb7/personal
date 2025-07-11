@@ -130,6 +130,7 @@ EOF
 											in
 												{
 													personal = repository config.personal.repository.personal.remote ;
+													private = repository config.personal.repository.private.remote ;
 													secret = repository config.personal.repository.secret.remote ;
 													secrets = repository config.personal.repository.secrets.remote ;
 													visitor = repository config.personal.repository.visitor.remote ;
@@ -389,6 +390,7 @@ EOF
 									in
 									[
 										( studio "studio-personal" resources.repository.personal )
+										( studio "studio-private" resources.repository.private )
 										( studio "studio-secret" resources.repository.secret )
 										( studio "studio-secrets" resources.repository.secrets )
 										( studio "studio-visitor" resources.repository.visitor )
