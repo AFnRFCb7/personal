@@ -66,10 +66,9 @@
 												init-inputs = [ pkgs.coreutils ] ;		
 												init-text =
 													''
-														export SELF="/tmp/secrets/$HASH"
 														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/mount/identity"
 														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/mount/known-hosts"
-cat > "$SELF/mount/config" <<EOF
+cat > "$SELF/config" <<EOF
 Host github.com
 	HostName github.com
 	IdentityFile $SELF/identity
