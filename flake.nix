@@ -118,6 +118,7 @@ EOF
 																export GIT_WORK_TREE="$SELF/work-tree"
 																mkdir --parents "$GIT_DIR"
 																mkdir --parents "$GIT_WORK_TREE"
+																git init
 																git config user.email ${ config.personal.email }
 																git config user.name "${ config.personal.description }"
 																ln --symbolic ${ post-commit } "$GIT_WORK_TREE/hooks"
