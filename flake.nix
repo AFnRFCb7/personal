@@ -22,7 +22,7 @@
 							mapper =
 							       path : name : value :
 							       	    if value == "regular" then
-									let
+                                    let
 										derivation =
 											pkgs.stdenv.mkDerivation
 												{
@@ -111,6 +111,12 @@ EOF
 														init-inputs = [ pkgs.coreutils pkgs.git ] ;
 														init-text =
 															''
+															    if [[ $# == 1 ]]
+															    then
+															        BRANCH=$1
+                                                                else
+                                                                    BRANCH=
+                                                                fi
 																export GIT_DIR="$SELF/git"
 																export GIT_WORK_TREE="$SELF/work-tree"
 																mkdir --parents "$GIT_DIR"
@@ -122,8 +128,14 @@ EOF
 																git remote add origin ${ origin }
 																GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
 																export GIT_SSH_COMMAND
-																git fetch origin main
-																git checkout origin/main
+																if [[ -z "$BRANCH" ]]
+																then
+																    git fetch origin main
+																    git checkout origin/main
+                                                                else
+                                                                    git fetch --depth 1 origin "$BRANCH"
+                                                                    git checkout "origin/$BRANCH"
+                                                                fi
 																git checkout -b "scratch/$( uuidgen )"
 															'' ;
 													} ;
@@ -135,6 +147,15 @@ EOF
 													secrets = repository config.personal.repository.secrets.remote ;
 													visitor = repository config.personal.repository.visitor.remote ;
 												} ;
+                                    temporary-directory =
+                                        ignore :
+                                            {
+                                                init-inputs = [ pkgs.coreutils ] ;
+                                                init-text =
+                                                    ''
+                                                        mkdir "$SELF/directory"
+                                                    '' ;
+                                            } ;
 								} ;
 							post-commit =
 								let
@@ -168,9 +189,9 @@ EOF
 					secrets-scripts =
 							let
 								mapper =
-								       path : name : value :
+                                        path : name : value :
 								       	    if value == "regular" then
-										let
+                                        let
 											derivation =
 												pkgs.stdenv.mkDerivation
 													{
@@ -374,21 +395,241 @@ EOF
 												pkgs.stdenv.mkDerivation
 													{
 														installPhase =
-															''
-																makeWrapper \
-																	${ pkgs.jetbrains.idea-community }/bin/idea-community \
-																	$out/bin/${ name } \
-																	--add-flags "\$( ${ repository } )/work-tree" \
-																	--run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config\"" \
-																	--run "export GIT_DIR=\"\$( ${ repository } )/git\"" \
-																	--run "export GIT_WORK_TREE=\"\$( ${ repository } )/work-tree\""
-															'' ;
+														    let
+														        user-env =
+														            pkgs.buildFHSUserEnv
+														                {
+														                    extraBwrapArgs =
+														                        [
+														                            "--bind \$( ${ repository } ) /${ name }"
+														                            "--tmpfs /work"
+														                        ] ;
+                                                                            name = name ;
+                                                                            profile =
+                                                                                ''
+                                                                                    export GIT_DIR=/${ name }/git
+                                                                                    export GIT_WORK_TREE=/${ name }/work-tree
+                                                                                '' ;
+                                                                            runScript = "${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
+                                                                            targetPkgs =
+                                                                                pkgs :
+                                                                                    [
+                                                                                        (
+                                                                                            pkgs.stdenv.mkDerivation
+                                                                                                {
+                                                                                                    installPhase =
+                                                                                                        ''
+                                                                                                            mkdir --parents $out/bin
+                                                                                                            makeWrapper ${ pkgs.openssh }/bin/ssh $out/bin/ssh --add-flags "-F \$( ${ resources.dot-ssh } )/config"
+                                                                                                        '' ;
+                                                                                                    name = "ssh" ;
+                                                                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                                                                    src = ./. ;
+                                                                                                }
+                                                                                        )
+                                                                                    ] ;
+                                                                        } ;
+														        in
+                                                                    ''
+                                                                        mkdir --parents $out/bin
+                                                                        makeWrapper ${ user-env }/bin/${ name } $out/bin/${ name }
+                                                                    '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
 														src = ./. ;
 													} ;
 									in
 									[
+									    (
+									        pkgs.writeShellApplication
+									            {
+									                name = "create-scratch-branch" ;
+									                runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
+									                text =
+									                    ''
+									                        git -C "$( ${ resources.repository.private } )/git" fetch origin main
+									                        git -C "$( ${ resources.repository.private } )/git" checkout origin/main
+									                        git -C "$( ${ resources.repository.private } )/git" checkout -b "scratch/$( uuidgen )"
+									                    '' ;
+									            }
+                                        )
+									    (
+									        pkgs.writeShellApplication
+									            {
+									                name = "promote-to-candidate" ;
+                                                    runtimeInputs = [ pkgs.findutils pkgs.git pkgs.gh pkgs.libuuid pkgs.time ] ;
+                                                    text =
+                                                        ''
+                                                            PRIVATE_1="$( ${ resources.repository.private } )"
+                                                            SCRATCH="scratch/$( uuidgen )"
+                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git checkout -b "$SCRATCH"
+                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git add .
+                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                            PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" "$( GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git rev-parse HEAD )" )
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git rm -r --ignore-unmatch inputs/*
+                                                            PERSONAL_1="$( ${ resources.repository.personal } )"
+                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git checkout -b "$SCRATCH"
+                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git add .
+                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push
+                                                            PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" "$( GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git rev-parse HEAD )" )"
+                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin "$SCRATCH"
+                                                            mkdir --parents "$PRIVATE_2/work-tree/inputs"
+                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git rev-parse HEAD > "$PRIVATE_2/work-tree/inputs/personal"
+                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" add inputs/personal
+                                                            echo
+                                                            echo "#####"
+                                                            echo "nix flake check"
+                                                            cd "$PRIVATE_1/work-tree"
+                                                            export NIX_SHOW_TRACE=1
+                                                            export NIX_LOG=trace
+                                                            nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
+                                                            echo "STATUS=$?"
+                                                            echo
+                                                            echo "#####"
+                                                            echo build vm
+                                                            BUILD_VM="$( ${ resources.temporary-directory } build-vm "$PRIVATE_2" "$PERSONAL_2" )"
+                                                            cd "$BUILD_VM"
+                                                            time timeout 10m nixos-rebuild build-vm --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            echo "STATUS=$?"
+                                                            echo
+                                                            echo "#####"
+                                                            echo run vm 1
+                                                            SATISFACTORY_VM_1="X"
+                                                            while [[ "$SATISFACTORY_VM_1" != "y" ]] && [[ "$SATISFACTORY_VM_1" != "n" ]] && [[ "$SATISFACTORY_VM_1" != "" ]]
+                                                            do
+                                                                read -rp "Was the first run of the vm satisfactory:  Y/n?  " SATISFACTORY_VM_1
+                                                            done
+                                                            if [[ "$SATISFACTORY_VM_1" == "n" ]]
+                                                            then
+                                                                echo "First Run of the VM was unsatisfactory." > failure.txt
+                                                                git -C "$PRIVATE_2/git" commit --allow-empty -e -F failure.txt
+                                                                git push origin HEAD
+                                                                exit 64
+                                                            fi
+                                                            echo
+                                                            echo "#####"
+                                                            echo run vm 2
+                                                            SATISFACTORY_VM_2="X"
+                                                            while [[ "$SATISFACTORY_VM_2" != "y" ]] && [[ "$SATISFACTORY_VM_2" != "n" ]] && [[ "$SATISFACTORY_VM_2" != "" ]]
+                                                            do
+                                                                read -rp "Was the second run of the vm satisfactory:  Y/n?  " SATISFACTORY_VM_2
+                                                            done
+                                                            if [[ "$SATISFACTORY_VM_2" == "n" ]]
+                                                            then
+                                                                echo "Second run of the VM was unsatisfactory." > failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                exit 64
+                                                            fi
+                                                            echo "#####"
+                                                            BUILD_VM_WITH_BOOTLOADER="$( ${ resources.temporary-directory } build-vm-with-bootloader "$PRIVATE_2" "$PERSONAL_2" )"
+                                                            cd "$BUILD_VM_WITH_BOOTLOADER"
+                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            echo "STATUS=$?"
+                                                            echo
+                                                            echo "#####"
+                                                            echo run vm-with-bootloader 1
+                                                            SATISFACTORY_VM_WITH_BOOTLOADER_1="X"
+                                                            while [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "y" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "n" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "" ]]
+                                                            do
+                                                                read -rp "Was the first run of the vm with bootloader satisfactory:  Y/n?  " SATISFACTORY_VM_WITH_BOOTLOADER_1
+                                                            done
+                                                            if [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" == "n" ]]
+                                                            then
+                                                                echo "First Run of the VM with bootloader was unsatisfactory." > failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                exit 64
+                                                            fi
+                                                            echo
+                                                            echo "#####"
+                                                            echo run vm-with-bootloader 2
+                                                            SATISFACTORY_VM_WITH_BOOTLOADER_2="X"
+                                                            while [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "y" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "n" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "" ]]
+                                                            do
+                                                                read -rp "Was the second run of the vm with bootloader satisfactory:  Y/n?  " SATISFACTORY_VM_WITH_BOOTLOADER_2
+                                                            done
+                                                            if [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" == "n" ]]
+                                                            then
+                                                                echo "Second run of the VM with bootloader was unsatisfactory." > failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                exit 64
+                                                            fi
+                                                            echo
+                                                            echo "#####"
+                                                            echo build
+                                                            time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            echo "STATUS=$?"
+                                                            echo
+                                                            echo "#####"
+                                                            echo test
+                                                            time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            echo "STATUS=$?"
+                                                            SATISFACTORY_TEST="X"
+                                                            while [[ "$SATISFACTORY_TEST" != "y" ]] && [[ "$SATISFACTORY_TEST" != "n" ]] && [[ "$SATISFACTORY_TEST" != "" ]]
+                                                            do
+                                                                read -rp "Was the test satisfactory:  Y/n?  " SATISFACTORY_TEST
+                                                            done
+                                                            if [[ "$SATISFACTORY_TEST" == "n" ]]
+                                                            then
+                                                                echo "test was unsatisfactory." > failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                exit 64
+                                                            else
+                                                                echo
+                                                                echo "#####"
+                                                                echo "READY FOR PROMOTION"
+                                                                CANDIDATE=candidate/$( uuidgen )
+                                                                gh auth login --with-token < ${ _secrets."github-token.asc.age" }
+                                                                GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin main
+                                                                if GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git diff --quiet origin/main
+                                                                then
+                                                                    echo "We are not pushing a PR for personal"
+                                                                else
+                                                                    echo "We are pushing a PR for personal"
+                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git diff origin/main
+                                                                    PR_BRANCH="scratch/$( uuidgen )"
+                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git checkout -b "$PR_BRANCH"
+                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git reset --soft origin/main
+                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git commit -a
+                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git push origin "$PR_BRANCH"
+                                                                    cd "$PERSONAL_2"
+                                                                    if ! gh pr create --fill --base main --head "$PR_BRANCH"
+                                                                    then
+                                                                        echo Failed to create a PR for personal
+                                                                        GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
+                                                                        GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                        exit 64
+                                                                    fi
+                                                                fi
+                                                                gh auth logout
+                                                                echo "CANDIDATE=$CANDIDATE"
+                                                                git -C "$PRIVATE_2/git" checkout -b "$CANDIDATE"
+                                                                git -C "$PRIVATE_2/git" fetch origin main
+                                                                git -C "$PRIVATE_2/git" diff origin/main
+                                                                git -C "$PRIVATE_2/git" reset --soft origin/main
+                                                                git -C "$PRIVATE_2/git" commit -a
+                                                                git -C "$PRIVATE_2/git" push origin "$CANDIDATE"
+                                                            fi
+                                                        '' ;
+                                                }
+									    )
+									    (
+									        pkgs.stdenv.mkDerivation
+									            {
+									                installPhase =
+									                    ''
+									                        mkdir --parents $out/bin
+									                        makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/private --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
+									                    '' ;
+									                name = "studio" ;
+                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                    src = ./. ;
+									            }
+									    )
 										( studio "studio-personal" resources.repository.personal )
 										( studio "studio-private" resources.repository.private )
 										( studio "studio-secret" resources.repository.secret )
