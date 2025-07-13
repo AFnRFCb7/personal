@@ -110,34 +110,50 @@ EOF
 													{
 														init-inputs = [ pkgs.coreutils pkgs.git ] ;
 														init-text =
-															''
-															    if [[ $# == 1 ]]
-															    then
-															        BRANCH=$1
-                                                                else
-                                                                    BRANCH=
-                                                                fi
-																export GIT_DIR="$SELF/git"
-																export GIT_WORK_TREE="$SELF/work-tree"
-																mkdir --parents "$GIT_DIR"
-																mkdir --parents "$GIT_WORK_TREE"
-																git init
-																git config user.email ${ config.personal.email }
-																git config user.name "${ config.personal.description }"
-																ln --symbolic ${ post-commit } "$GIT_WORK_TREE/hooks"
-																git remote add origin ${ origin }
-																GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
-																export GIT_SSH_COMMAND
-																if [[ -z "$BRANCH" ]]
-																then
-																    git fetch origin main
-																    git checkout origin/main
-                                                                else
-                                                                    git fetch --depth 1 origin "$BRANCH"
-                                                                    git checkout "origin/$BRANCH"
-                                                                fi
-																git checkout -b "scratch/$( uuidgen )"
-															'' ;
+														    let
+														        ssh =
+														            pkgs.stdenv.mkDerivation
+														                {
+														                    installPhase =
+														                        ''
+														                            mkdir --parents $out/bin
+                                                                                    makeWrapper \
+                                                                                        ${ pkgs.openssh }/bin/ssh \
+                                                                                        $out/bin/ssh \
+                                                                                        --add-flags "-F \$( ${ resources.dot-ssh } )"
+														                        '' ;
+                                                                            name = "ssh" ;
+                                                                            nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ]
+                                                                            src = ./. ;
+														                } ;
+                                                                    in
+                                                                        ''
+                                                                            if [[ $# == 1 ]]
+                                                                            then
+                                                                                BRANCH=$1
+                                                                            else
+                                                                                BRANCH=
+                                                                            fi
+                                                                            export GIT_DIR="$SELF/git"
+                                                                            export GIT_WORK_TREE="$SELF/work-tree"
+                                                                            mkdir --parents "$GIT_DIR"
+                                                                            mkdir --parents "$GIT_WORK_TREE"
+                                                                            git init
+                                                                            git config core.sshCommand ${ ssh }/bin/ssh
+                                                                            git config user.email ${ config.personal.email }
+                                                                            git config user.name "${ config.personal.description }"
+                                                                            ln --symbolic ${ post-commit } "$GIT_WORK_TREE/hooks"
+                                                                            git remote add origin ${ origin }
+                                                                            if [[ -z "$BRANCH" ]]
+                                                                            then
+                                                                                git fetch origin main
+                                                                                git checkout origin/main
+                                                                            else
+                                                                                git fetch --depth 1 origin "$BRANCH"
+                                                                                git checkout "origin/$BRANCH"
+                                                                            fi
+                                                                            git checkout -b "scratch/$( uuidgen )"
+                                                                        '' ;
 													} ;
 											in
 												{
