@@ -623,7 +623,14 @@ EOF
 									                installPhase =
 									                    ''
 									                        mkdir --parents $out/bin
-									                        makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/private --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
+									                        makeWrapper \
+									                            ${ pkgs.jetbrains.idea-community }/bin/idea-community \
+									                            $out/bin/private \
+									                            --add-flags "\$( ${  resources.repository.private } )" \
+									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh }/config )\""
+									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\""
+									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
+									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
 									                    '' ;
 									                name = "studio" ;
                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
