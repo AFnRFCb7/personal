@@ -519,8 +519,8 @@ EOF
                                                             if [[ "$SATISFACTORY_VM_1" == "n" ]]
                                                             then
                                                                 echo "First Run of the VM was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE2/work-tree" git commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE2/work-tree" git git push origin HEAD
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git git push origin HEAD
                                                                 exit 64
                                                             fi
                                                             echo
