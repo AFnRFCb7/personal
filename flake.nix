@@ -120,7 +120,7 @@ EOF
                                                                                     makeWrapper \
                                                                                         ${ pkgs.openssh }/bin/ssh \
                                                                                         $out/bin/ssh \
-                                                                                        --add-flags "-F \$( ${ resources.dot-ssh } )"
+                                                                                        --add-flags "-F \$( ${ resources.dot-ssh } )/config"
 														                        '' ;
                                                                             name = "ssh" ;
                                                                             nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
