@@ -477,22 +477,32 @@ EOF
                                                     text =
                                                         ''
                                                             PRIVATE_1="$( ${ resources.repository.private } )"
+                                                            echo "PRIVATE_1=$PRIVATE_1"
                                                             SCRATCH="scratch/$( uuidgen )"
+                                                            echo "SCRATCH=$SCRATCH"
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git checkout -b "$SCRATCH"
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git add .
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git push origin HEAD
+                                                            echo "COMMITED AND PUSHED TO PRIVATE_1"
                                                             PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" "$( GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git rev-parse HEAD )" )
+                                                            echo "PRIVATE_2=$PRIVATE_2"
                                                             GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git rm -r --ignore-unmatch inputs/*
                                                             PERSONAL_1="$( ${ resources.repository.personal } )"
+                                                            echo "PERSONAL_1=$PERSONAL_1"
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git checkout -b "$SCRATCH"
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git add .
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push origin HEAD
+                                                            echo "COMMITED AND PUSHED TO PERSONAL_1"
                                                             PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" "$( GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git rev-parse HEAD )" )"
+                                                            echo "PERSONAL_2=$PERSONAL_2"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin "$SCRATCH"
                                                             mkdir --parents "$PRIVATE_2/work-tree/inputs"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git rev-parse HEAD > "$PRIVATE_2/work-tree/inputs/personal"
-                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" add inputs/personal
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git add inputs/personal
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit -am "" --allow-empty-message
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
                                                             # echo
                                                             # echo "#####"
                                                             # echo "nix flake check"
@@ -500,13 +510,15 @@ EOF
                                                             # export NIX_SHOW_TRACE=1
                                                             # export NIX_LOG=trace
                                                             # nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
-                                                            #echo "STATUS=$?"
+                                                            # echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
                                                             echo build vm
                                                             BUILD_VM="$( ${ resources.temporary-directory } build-vm "$PRIVATE_2" "$PERSONAL_2" )"
                                                             cd "$BUILD_VM"
-                                                            time timeout 10m nixos-rebuild build-vm --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            date
+                                                            echo time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
@@ -541,7 +553,9 @@ EOF
                                                             echo "#####"
                                                             BUILD_VM_WITH_BOOTLOADER="$( ${ resources.temporary-directory } build-vm-with-bootloader "$PRIVATE_2" "$PERSONAL_2" )"
                                                             cd "$BUILD_VM_WITH_BOOTLOADER"
-                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            date
+                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
@@ -576,12 +590,19 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo build
+                                                            date
+                                                            echo time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
                                                             echo test
-                                                            time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            date
+                                                            sudo time timeout 10m nix-collect-garbage
+                                                            sudo time timeout 10m nix-store --verify --check-contents
+                                                            date
+                                                            echo sudo time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            sudo time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             SATISFACTORY_TEST="X"
                                                             while [[ "$SATISFACTORY_TEST" != "y" ]] && [[ "$SATISFACTORY_TEST" != "n" ]] && [[ "$SATISFACTORY_TEST" != "" ]]
