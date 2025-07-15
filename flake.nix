@@ -154,6 +154,7 @@ EOF
                                                                             fi
                                                                             git checkout -b "scratch/$( uuidgen )"
                                                                         '' ;
+                                                        lease = 60 * 60 ;
 													} ;
 											in
 												{
