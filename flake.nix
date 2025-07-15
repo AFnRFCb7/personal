@@ -128,15 +128,15 @@ EOF
 														                } ;
                                                                     in
                                                                         ''
-                                                                            if [[ $# == 1 ]]
+                                                                            if [[ "$#" == 1 ]]
                                                                             then
-                                                                                BRANCH=$1
+                                                                                BRANCH="$1"
                                                                             else
                                                                                 BRANCH=
                                                                             fi
                                                                             export GIT_DIR="$SELF/git"
-                                                                            export GIT_WORK_TREE="$SELF/work-tree
-                                                                            mkdir --parents "SELF/home"
+                                                                            export GIT_WORK_TREE="$SELF/work-tree"
+                                                                            mkdir --parents "$SELF/home"
                                                                             mkdir --parents "$GIT_DIR"
                                                                             mkdir --parents "$GIT_WORK_TREE"
                                                                             git init
