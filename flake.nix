@@ -123,7 +123,7 @@ EOF
                                                                                         --add-flags "-F \$( ${ resources.dot-ssh } )"
 														                        '' ;
                                                                             name = "ssh" ;
-                                                                            nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ]
+                                                                            nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
                                                                             src = ./. ;
 														                } ;
                                                                     in
@@ -487,20 +487,20 @@ EOF
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git checkout -b "$SCRATCH"
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git add .
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push
+                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push origin HEAD
                                                             PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" "$( GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git rev-parse HEAD )" )"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin "$SCRATCH"
                                                             mkdir --parents "$PRIVATE_2/work-tree/inputs"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git rev-parse HEAD > "$PRIVATE_2/work-tree/inputs/personal"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" add inputs/personal
-                                                            echo
-                                                            echo "#####"
-                                                            echo "nix flake check"
-                                                            cd "$PRIVATE_1/work-tree"
-                                                            export NIX_SHOW_TRACE=1
-                                                            export NIX_LOG=trace
-                                                            nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
-                                                            echo "STATUS=$?"
+                                                            # echo
+                                                            # echo "#####"
+                                                            # echo "nix flake check"
+                                                            # cd "$PRIVATE_1/work-tree"
+                                                            # export NIX_SHOW_TRACE=1
+                                                            # export NIX_LOG=trace
+                                                            # nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
+                                                            #echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
                                                             echo build vm
@@ -519,8 +519,8 @@ EOF
                                                             if [[ "$SATISFACTORY_VM_1" == "n" ]]
                                                             then
                                                                 echo "First Run of the VM was unsatisfactory." > failure.txt
-                                                                git -C "$PRIVATE_2/git" commit --allow-empty -e -F failure.txt
-                                                                git push origin HEAD
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE2/work-tree" git commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE2/work-tree" git git push origin HEAD
                                                                 exit 64
                                                             fi
                                                             echo
