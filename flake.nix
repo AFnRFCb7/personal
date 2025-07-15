@@ -135,7 +135,8 @@ EOF
                                                                                 BRANCH=
                                                                             fi
                                                                             export GIT_DIR="$SELF/git"
-                                                                            export GIT_WORK_TREE="$SELF/work-tree"
+                                                                            export GIT_WORK_TREE="$SELF/work-tree
+                                                                            mkdir --parents "SELF/home"
                                                                             mkdir --parents "$GIT_DIR"
                                                                             mkdir --parents "$GIT_WORK_TREE"
                                                                             git init
@@ -424,6 +425,7 @@ EOF
                                                                             name = name ;
                                                                             profile =
                                                                                 ''
+                                                                                    export HOME=/${ name }/home
                                                                                     export GIT_DIR=/${ name }/git
                                                                                     export GIT_WORK_TREE=/${ name }/work-tree
                                                                                 '' ;
