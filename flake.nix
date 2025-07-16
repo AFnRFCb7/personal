@@ -419,7 +419,7 @@ EOF
 														                {
 														                    extraBwrapArgs =
 														                        [
-														                            "--bind /$NAME /${ name }"
+														                            "--bind ${ secret-directory }/$NAME /${ name }"
 														                            "--tmpfs /work"
 														                        ] ;
                                                                             name = name ;
@@ -452,9 +452,9 @@ EOF
                                                                             ${ user-env }/bin/${ name } \
                                                                             $out/bin/${ name } \
                                                                             --run 'export NAME=$( ${ repository } )' \
-                                                                            --run 'export HOME=/${ name }/home' \
-                                                                            --run 'export GIT_DIR=/${ name }/git' \
-                                                                            --run 'export GIT_WORK_TREE=/${ name }/work-tree'
+                                                                            --run 'export HOME=/$NAME/home' \
+                                                                            --run 'export GIT_DIR=/$NAME/git' \
+                                                                            --run 'export GIT_WORK_TREE=/$NAME/work-tree'
                                                                     '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
