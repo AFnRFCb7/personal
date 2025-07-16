@@ -454,7 +454,7 @@ EOF
                                                                         makeWrapper \
                                                                             ${ user-env }/bin/${ name } \
                                                                             $out/bin/${ name } \
-                                                                            "--run "\export NAME=\$( ${ repository } )\"" \
+                                                                            "--run "\export NAME=\$( ${ repository } )\""
                                                                     '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
