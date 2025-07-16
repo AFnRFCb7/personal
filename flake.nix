@@ -452,9 +452,9 @@ EOF
                                                                             ${ user-env }/bin/${ name } \
                                                                             $out/bin/${ name } \
                                                                             --run 'export NAME=$( ${ repository } )' \
-                                                                            --run 'export HOME=/$NAME/home' \
-                                                                            --run 'export GIT_DIR=/$NAME/git' \
-                                                                            --run 'export GIT_WORK_TREE=/$NAME/work-tree'
+                                                                            --run 'export HOME=$NAME/home' \
+                                                                            --run 'export GIT_DIR=$NAME/git' \
+                                                                            --run 'export GIT_WORK_TREE=$NAME/work-tree'
                                                                     '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
