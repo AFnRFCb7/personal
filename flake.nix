@@ -423,7 +423,7 @@ EOF
 														                            "--tmpfs /work"
 														                        ] ;
                                                                             name = name ;
-                                                                            runScript = "${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
+                                                                            runScript = "${ pkgs.findutils }/bin/find /${ name } && ${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
                                                                             targetPkgs =
                                                                                 pkgs :
                                                                                     [
