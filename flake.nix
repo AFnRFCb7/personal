@@ -110,34 +110,52 @@ EOF
 													{
 														init-inputs = [ pkgs.coreutils pkgs.git ] ;
 														init-text =
-															''
-															    if [[ $# == 1 ]]
-															    then
-															        BRANCH=$1
-                                                                else
-                                                                    BRANCH=
-                                                                fi
-																export GIT_DIR="$SELF/git"
-																export GIT_WORK_TREE="$SELF/work-tree"
-																mkdir --parents "$GIT_DIR"
-																mkdir --parents "$GIT_WORK_TREE"
-																git init
-																git config user.email ${ config.personal.email }
-																git config user.name "${ config.personal.description }"
-																ln --symbolic ${ post-commit } "$GIT_WORK_TREE/hooks"
-																git remote add origin ${ origin }
-																GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
-																export GIT_SSH_COMMAND
-																if [[ -z "$BRANCH" ]]
-																then
-																    git fetch origin main
-																    git checkout origin/main
-                                                                else
-                                                                    git fetch --depth 1 origin "$BRANCH"
-                                                                    git checkout "origin/$BRANCH"
-                                                                fi
-																git checkout -b "scratch/$( uuidgen )"
-															'' ;
+														    let
+														        ssh =
+														            pkgs.stdenv.mkDerivation
+														                {
+														                    installPhase =
+														                        ''
+														                            mkdir --parents $out/bin
+                                                                                    makeWrapper \
+                                                                                        ${ pkgs.openssh }/bin/ssh \
+                                                                                        $out/bin/ssh \
+                                                                                        --add-flags "-F \$( ${ resources.dot-ssh } )/config"
+														                        '' ;
+                                                                            name = "ssh" ;
+                                                                            nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                                            src = ./. ;
+														                } ;
+                                                                    in
+                                                                        ''
+                                                                            if [[ "$#" == 1 ]]
+                                                                            then
+                                                                                BRANCH="$1"
+                                                                            else
+                                                                                BRANCH=
+                                                                            fi
+                                                                            export GIT_DIR="$SELF/git"
+                                                                            export GIT_WORK_TREE="$SELF/work-tree"
+                                                                            mkdir --parents "$SELF/home"
+                                                                            mkdir --parents "$GIT_DIR"
+                                                                            mkdir --parents "$GIT_WORK_TREE"
+                                                                            git init
+                                                                            git config core.sshCommand ${ ssh }/bin/ssh
+                                                                            git config user.email ${ config.personal.email }
+                                                                            git config user.name "${ config.personal.description }"
+                                                                            ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
+                                                                            git remote add origin ${ origin }
+                                                                            if [[ -z "$BRANCH" ]]
+                                                                            then
+                                                                                git fetch origin main
+                                                                                git checkout origin/main
+                                                                            else
+                                                                                git fetch --depth 1 origin "$BRANCH"
+                                                                                git checkout "origin/$BRANCH"
+                                                                            fi
+                                                                            git checkout -b "scratch/$( uuidgen )"
+                                                                        '' ;
+                                                        # lease = 60 * 60 ;
 													} ;
 											in
 												{
@@ -395,45 +413,17 @@ EOF
 												pkgs.stdenv.mkDerivation
 													{
 														installPhase =
-														    let
-														        user-env =
-														            pkgs.buildFHSUserEnv
-														                {
-														                    extraBwrapArgs =
-														                        [
-														                            "--bind \$( ${ repository } ) /${ name }"
-														                            "--tmpfs /work"
-														                        ] ;
-                                                                            name = name ;
-                                                                            profile =
-                                                                                ''
-                                                                                    export GIT_DIR=/${ name }/git
-                                                                                    export GIT_WORK_TREE=/${ name }/work-tree
-                                                                                '' ;
-                                                                            runScript = "${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
-                                                                            targetPkgs =
-                                                                                pkgs :
-                                                                                    [
-                                                                                        (
-                                                                                            pkgs.stdenv.mkDerivation
-                                                                                                {
-                                                                                                    installPhase =
-                                                                                                        ''
-                                                                                                            mkdir --parents $out/bin
-                                                                                                            makeWrapper ${ pkgs.openssh }/bin/ssh $out/bin/ssh --add-flags "-F \$( ${ resources.dot-ssh } )/config"
-                                                                                                        '' ;
-                                                                                                    name = "ssh" ;
-                                                                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                                                                    src = ./. ;
-                                                                                                }
-                                                                                        )
-                                                                                    ] ;
-                                                                        } ;
-														        in
-                                                                    ''
-                                                                        mkdir --parents $out/bin
-                                                                        makeWrapper ${ user-env }/bin/${ name } $out/bin/${ name }
-                                                                    '' ;
+                                                            ''
+                                                                mkdir --parents $out/bin
+                                                                makeWrapper \
+                                                                    ${ pkgs.jetbrains.idea-community }/bin/idea-community \
+                                                                    $out/bin/${ name } \
+                                                                    --add-flags '$( ${ repository } )' \
+                                                                    --run 'export NAME=$( ${ repository } )' \
+                                                                    --run 'export HOME=$NAME/home' \
+                                                                    --run 'export GIT_DIR=$NAME/git' \
+                                                                    --run 'export GIT_WORK_TREE=$NAME/work-tree'
+                                                            '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
 														src = ./. ;
@@ -461,36 +451,48 @@ EOF
                                                     text =
                                                         ''
                                                             PRIVATE_1="$( ${ resources.repository.private } )"
+                                                            echo "PRIVATE_1=$PRIVATE_1"
                                                             SCRATCH="scratch/$( uuidgen )"
+                                                            echo "SCRATCH=$SCRATCH"
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git checkout -b "$SCRATCH"
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git add .
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git push origin HEAD
+                                                            echo "COMMITED AND PUSHED TO PRIVATE_1"
                                                             PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" "$( GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git rev-parse HEAD )" )
+                                                            echo "PRIVATE_2=$PRIVATE_2"
                                                             GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git rm -r --ignore-unmatch inputs/*
                                                             PERSONAL_1="$( ${ resources.repository.personal } )"
+                                                            echo "PERSONAL_1=$PERSONAL_1"
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git checkout -b "$SCRATCH"
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git add .
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push
+                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push origin HEAD
+                                                            echo "COMMITED AND PUSHED TO PERSONAL_1"
                                                             PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" "$( GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git rev-parse HEAD )" )"
+                                                            echo "PERSONAL_2=$PERSONAL_2"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin "$SCRATCH"
                                                             mkdir --parents "$PRIVATE_2/work-tree/inputs"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git rev-parse HEAD > "$PRIVATE_2/work-tree/inputs/personal"
-                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" add inputs/personal
-                                                            echo
-                                                            echo "#####"
-                                                            echo "nix flake check"
-                                                            cd "$PRIVATE_1/work-tree"
-                                                            export NIX_SHOW_TRACE=1
-                                                            export NIX_LOG=trace
-                                                            nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
-                                                            echo "STATUS=$?"
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git add inputs/personal
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit -am "" --allow-empty-message
+                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
+                                                            # echo
+                                                            # echo "#####"
+                                                            # echo "nix flake check"
+                                                            # cd "$PRIVATE_1/work-tree"
+                                                            # export NIX_SHOW_TRACE=1
+                                                            # export NIX_LOG=trace
+                                                            # nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
+                                                            # echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
                                                             echo build vm
                                                             BUILD_VM="$( ${ resources.temporary-directory } build-vm "$PRIVATE_2" "$PERSONAL_2" )"
                                                             cd "$BUILD_VM"
-                                                            time timeout 10m nixos-rebuild build-vm --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            date
+                                                            echo time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
@@ -503,8 +505,8 @@ EOF
                                                             if [[ "$SATISFACTORY_VM_1" == "n" ]]
                                                             then
                                                                 echo "First Run of the VM was unsatisfactory." > failure.txt
-                                                                git -C "$PRIVATE_2/git" commit --allow-empty -e -F failure.txt
-                                                                git push origin HEAD
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git git push origin HEAD
                                                                 exit 64
                                                             fi
                                                             echo
@@ -525,7 +527,9 @@ EOF
                                                             echo "#####"
                                                             BUILD_VM_WITH_BOOTLOADER="$( ${ resources.temporary-directory } build-vm-with-bootloader "$PRIVATE_2" "$PERSONAL_2" )"
                                                             cd "$BUILD_VM_WITH_BOOTLOADER"
-                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            date
+                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
@@ -560,12 +564,19 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo build
+                                                            date
+                                                            echo time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
                                                             echo test
-                                                            time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            date
+                                                            sudo time timeout 10m nix-collect-garbage
+                                                            sudo time timeout 10m nix-store --verify --check-contents
+                                                            date
+                                                            echo sudo time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            sudo time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             SATISFACTORY_TEST="X"
                                                             while [[ "$SATISFACTORY_TEST" != "y" ]] && [[ "$SATISFACTORY_TEST" != "n" ]] && [[ "$SATISFACTORY_TEST" != "" ]]
@@ -623,7 +634,14 @@ EOF
 									                installPhase =
 									                    ''
 									                        mkdir --parents $out/bin
-									                        makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/private --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
+									                        makeWrapper \
+									                            ${ pkgs.jetbrains.idea-community }/bin/idea-community \
+									                            $out/bin/private \
+									                            --add-flags "\$( ${  resources.repository.private } )" \
+									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
+									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
+									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
+									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
 									                    '' ;
 									                name = "studio" ;
                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
