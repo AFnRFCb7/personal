@@ -419,7 +419,7 @@ EOF
 														                {
 														                    extraBwrapArgs =
 														                        [
-														                            "--bind /tmp/secrets/$NAME/mount /${ name }"
+														                            "--bind $NAME /${ name }"
 														                            "--tmpfs /work"
 														                        ] ;
                                                                             name = name ;
