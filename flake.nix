@@ -448,10 +448,10 @@ EOF
 														        in
                                                                     ''
                                                                         mkdir --parents $out/bin
+                                                                            # "--run "\export NAME=\$( ${ repository } )\"" \
                                                                         makeWrapper \
                                                                             ${ user-env }/bin/${ name } \
                                                                             $out/bin/${ name } \
-                                                                            # "--run "\export NAME=\$( ${ repository } )\"" \
                                                                             "--run \"export HOME=/${ name }/home\"" \
                                                                             "--run \"export GIT_DIR=/${ name }/git\"" \
                                                                             "--run \"export GIT_WORK_TREE=/${ name }/work-tree\""
