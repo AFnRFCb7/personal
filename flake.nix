@@ -419,11 +419,8 @@ EOF
 														                {
 														                    extraBwrapArgs =
 														                        [
-														                            "--bind \$( ${ repository } ) /${ name }"
+														                            "--bind /$NAME /${ name }"
 														                            "--tmpfs /work"
-														                            "--setenv HOME /${ name }/home"
-														                            "--setenv GIT_DIR /${ name }/git"
-														                            "--setenv GIT_WORK_TREE /${ name }/work-tree"
 														                        ] ;
                                                                             name = name ;
                                                                             runScript = "${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
@@ -436,7 +433,10 @@ EOF
                                                                                                     installPhase =
                                                                                                         ''
                                                                                                             mkdir --parents $out/bin
-                                                                                                            makeWrapper ${ pkgs.openssh }/bin/ssh $out/bin/ssh --add-flags "-F \$( ${ resources.dot-ssh } )/config"
+                                                                                                            makeWrapper \
+                                                                                                                ${ pkgs.openssh }/bin/ssh \
+                                                                                                                $out/bin/ssh \
+                                                                                                                --add-flags "-F \$( ${ resources.dot-ssh } )/config"
                                                                                                         '' ;
                                                                                                     name = "ssh" ;
                                                                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
@@ -448,7 +448,13 @@ EOF
 														        in
                                                                     ''
                                                                         mkdir --parents $out/bin
-                                                                        makeWrapper ${ user-env }/bin/${ name } $out/bin/${ name }
+                                                                        makeWrapper \
+                                                                            ${ user-env }/bin/${ name } \
+                                                                            $out/bin/${ name } \
+                                                                            "--run "\export NAME=$( { repository } ) \
+                                                                            "--run \"export HOME=/${ name }/home\"" \
+                                                                            "--run \"export GIT_DIR=/${ name }/git\"" \
+                                                                            "--run \"export GIT_WORK_TREE=/${ name }/work-tree\""
                                                                     '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
