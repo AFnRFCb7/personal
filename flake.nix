@@ -418,7 +418,7 @@ EOF
                                                                 makeWrapper \
                                                                     ${ pkgs.jetbrains.idea-community }/bin/idea-community \
                                                                     $out/bin/${ name } \
-                                                                    --add-flags '$( ${ repository } )'
+                                                                    --add-flags '$( ${ repository } )' \
                                                                     --run 'export NAME=$( ${ repository } )' \
                                                                     --run 'export HOME=$NAME/home' \
                                                                     --run 'export GIT_DIR=$NAME/git' \
