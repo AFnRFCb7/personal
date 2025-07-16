@@ -413,49 +413,17 @@ EOF
 												pkgs.stdenv.mkDerivation
 													{
 														installPhase =
-														    let
-														        user-env =
-														            pkgs.buildFHSUserEnv
-														                {
-														                    extraBwrapArgs =
-														                        [
-														                            "--bind $NAME /${ name }"
-														                            "--tmpfs /work"
-														                        ] ;
-                                                                            name = name ;
-                                                                            runScript = "${ pkgs.findutils }/bin/find /${ name } && ${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
-                                                                            targetPkgs =
-                                                                                pkgs :
-                                                                                    [
-                                                                                        (
-                                                                                            pkgs.stdenv.mkDerivation
-                                                                                                {
-                                                                                                    installPhase =
-                                                                                                        ''
-                                                                                                            mkdir --parents $out/bin
-                                                                                                            makeWrapper \
-                                                                                                                ${ pkgs.openssh }/bin/ssh \
-                                                                                                                $out/bin/ssh \
-                                                                                                                --add-flags "-F \$( ${ resources.dot-ssh } )/config"
-                                                                                                        '' ;
-                                                                                                    name = "ssh" ;
-                                                                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                                                                    src = ./. ;
-                                                                                                }
-                                                                                        )
-                                                                                    ] ;
-                                                                        } ;
-														        in
-                                                                    ''
-                                                                        mkdir --parents $out/bin
-                                                                        makeWrapper \
-                                                                            ${ user-env }/bin/${ name } \
-                                                                            $out/bin/${ name } \
-                                                                            --run 'export NAME=$( ${ repository } )' \
-                                                                            --run 'export HOME=$NAME/home' \
-                                                                            --run 'export GIT_DIR=$NAME/git' \
-                                                                            --run 'export GIT_WORK_TREE=$NAME/work-tree'
-                                                                    '' ;
+                                                            ''
+                                                                mkdir --parents $out/bin
+                                                                makeWrapper \
+                                                                    ${ pkgs.jetbrains.idea-community }/bin/idea-community \
+                                                                    $out/bin/${ name } \
+                                                                    --add-flags '$( ${ repository } )'
+                                                                    --run 'export NAME=$( ${ repository } )' \
+                                                                    --run 'export HOME=$NAME/home' \
+                                                                    --run 'export GIT_DIR=$NAME/git' \
+                                                                    --run 'export GIT_WORK_TREE=$NAME/work-tree'
+                                                            '' ;
 														name = "derivation" ;
 														nativeBuildInputs = [ pkgs.makeWrapper ] ;
 														src = ./. ;
