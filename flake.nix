@@ -421,14 +421,11 @@ EOF
 														                        [
 														                            "--bind \$( ${ repository } ) /${ name }"
 														                            "--tmpfs /work"
+														                            "--setenv HOME /${ name }/home"
+														                            "--setenv GIT_DIR /${ name }/git"
+														                            "--setenv GIT_WORK_TREE /${ name }/work-tree"
 														                        ] ;
                                                                             name = name ;
-                                                                            profile =
-                                                                                ''
-                                                                                    export HOME=/${ name }/home
-                                                                                    export GIT_DIR=/${ name }/git
-                                                                                    export GIT_WORK_TREE=/${ name }/work-tree
-                                                                                '' ;
                                                                             runScript = "${ pkgs.jetbrains.idea-community }/bin/idea-community /${ name }" ;
                                                                             targetPkgs =
                                                                                 pkgs :
