@@ -498,6 +498,7 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo run vm 1
+                                                            ./result/bin/run-nixos-vm
                                                             SATISFACTORY_VM_1="X"
                                                             while [[ "$SATISFACTORY_VM_1" != "y" ]] && [[ "$SATISFACTORY_VM_1" != "n" ]] && [[ "$SATISFACTORY_VM_1" != "" ]]
                                                             do
@@ -513,6 +514,7 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo run vm 2
+                                                            ./result/bin/run-nixos-vm
                                                             SATISFACTORY_VM_2="X"
                                                             while [[ "$SATISFACTORY_VM_2" != "y" ]] && [[ "$SATISFACTORY_VM_2" != "n" ]] && [[ "$SATISFACTORY_VM_2" != "" ]]
                                                             do
@@ -535,6 +537,7 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo run vm-with-bootloader 1
+                                                            ./result/bin/run-nixos-vm
                                                             SATISFACTORY_VM_WITH_BOOTLOADER_1="X"
                                                             while [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "y" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "n" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "" ]]
                                                             do
@@ -550,6 +553,7 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo run vm-with-bootloader 2
+                                                            ./result/bin/run-nixos-vm
                                                             SATISFACTORY_VM_WITH_BOOTLOADER_2="X"
                                                             while [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "y" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "n" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "" ]]
                                                             do
