@@ -158,6 +158,7 @@ EOF
 													} ;
 											in
 												{
+													application = repository config.personal.repository.application.remote ;
 													personal = repository config.personal.repository.personal.remote ;
 													private = repository config.personal.repository.private.remote ;
 													secret = repository config.personal.repository.secret.remote ;
@@ -649,6 +650,7 @@ EOF
                                                     src = ./. ;
 									            }
 									    )
+										( studio "studio-application" resources.repository.application )
 										( studio "studio-personal" resources.repository.personal )
 										( studio "studio-private" resources.repository.private )
 										( studio "studio-secret" resources.repository.secret )
@@ -739,6 +741,11 @@ EOF
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
+                                                                        application =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/application.git" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
