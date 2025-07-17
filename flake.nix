@@ -96,7 +96,6 @@ EOF
 														git config user.name "${ config.personal.description }"
 														git remote add origin ${ config.personal.pass.remote }
 														DOT_SSH=$( ${ resources.dot-ssh } )/config || echo "FAILED TO ASSIGN"
-														export DOT_SSH
 														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
 														echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
 														git fetch origin ${ config.personal.pass.branch }
@@ -497,6 +496,7 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo run vm 1
+                                                            ./result/bin/run-nixos-vm
                                                             SATISFACTORY_VM_1="X"
                                                             while [[ "$SATISFACTORY_VM_1" != "y" ]] && [[ "$SATISFACTORY_VM_1" != "n" ]] && [[ "$SATISFACTORY_VM_1" != "" ]]
                                                             do
@@ -506,7 +506,7 @@ EOF
                                                             then
                                                                 echo "First Run of the VM was unsatisfactory." > failure.txt
                                                                 GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git git push origin HEAD
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
                                                                 exit 64
                                                             fi
                                                             echo
@@ -565,18 +565,18 @@ EOF
                                                             echo "#####"
                                                             echo build
                                                             date
-                                                            echo time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            time timeout 10m nixos-rebuild build --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            echo time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             echo
                                                             echo "#####"
                                                             echo test
                                                             date
                                                             sudo time timeout 10m nix-collect-garbage
-                                                            sudo time timeout 10m nix-store --verify --check-contents
+                                                            sudo time timeout 10m nix-store --verify --check-contents --repair
                                                             date
-                                                            echo sudo time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            sudo time timeout 10m nixos-rebuild test --flake "$PERSONAL_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            echo sudo time timeout 10m nixos-rebuild test --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
+                                                            sudo time timeout 10m nixos-rebuild test --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
                                                             echo "STATUS=$?"
                                                             SATISFACTORY_TEST="X"
                                                             while [[ "$SATISFACTORY_TEST" != "y" ]] && [[ "$SATISFACTORY_TEST" != "n" ]] && [[ "$SATISFACTORY_TEST" != "" ]]
@@ -639,6 +639,7 @@ EOF
 									                            $out/bin/private \
 									                            --add-flags "\$( ${  resources.repository.private } )" \
 									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
+									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F $DOT_SSH\"" \
 									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
 									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
 									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
