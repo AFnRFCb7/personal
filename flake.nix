@@ -96,7 +96,6 @@ EOF
 														git config user.name "${ config.personal.description }"
 														git remote add origin ${ config.personal.pass.remote }
 														DOT_SSH=$( ${ resources.dot-ssh } )/config || echo "FAILED TO ASSIGN"
-														export DOT_SSH
 														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
 														echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
 														git fetch origin ${ config.personal.pass.branch }
@@ -639,6 +638,7 @@ EOF
 									                            $out/bin/private \
 									                            --add-flags "\$( ${  resources.repository.private } )" \
 									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
+									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F $DOT_SSH\""
 									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
 									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
 									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
