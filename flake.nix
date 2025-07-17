@@ -135,12 +135,12 @@ EOF
                                                                                 BRANCH=
                                                                             fi
                                                                             export GIT_DIR="$SELF/git"
+                                                                            export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $( ${ resources.dot-ssh } )/config"
                                                                             export GIT_WORK_TREE="$SELF/work-tree"
                                                                             mkdir --parents "$SELF/home"
                                                                             mkdir --parents "$GIT_DIR"
                                                                             mkdir --parents "$GIT_WORK_TREE"
                                                                             git init
-                                                                            git config core.sshCommand ${ ssh }/bin/ssh
                                                                             git config user.email ${ config.personal.email }
                                                                             git config user.name "${ config.personal.description }"
                                                                             ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
@@ -159,6 +159,7 @@ EOF
 													} ;
 											in
 												{
+												    application = repository config.personal.repository.personal.remote ;
 													personal = repository config.personal.repository.personal.remote ;
 													private = repository config.personal.repository.private.remote ;
 													secret = repository config.personal.repository.secret.remote ;
@@ -638,7 +639,7 @@ EOF
 									                            ${ pkgs.jetbrains.idea-community }/bin/idea-community \
 									                            $out/bin/private \
 									                            --add-flags "\$( ${  resources.repository.private } )" \
-									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
+									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F \$( ${ resources.dot-ssh } )/config\"" \
 									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
 									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
 									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
@@ -738,6 +739,10 @@ EOF
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
+                                                                        application =
+                                                                            {
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/application.git" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
