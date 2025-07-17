@@ -639,7 +639,7 @@ EOF
 									                            $out/bin/private \
 									                            --add-flags "\$( ${  resources.repository.private } )" \
 									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
-									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F $DOT_SSH\""
+									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F $DOT_SSH\"" \
 									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
 									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
 									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
