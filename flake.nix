@@ -496,6 +496,7 @@ EOF
                                                             echo
                                                             echo "#####"
                                                             echo run vm 1
+                                                            ./result/bin/run-nixos-vm
                                                             SATISFACTORY_VM_1="X"
                                                             while [[ "$SATISFACTORY_VM_1" != "y" ]] && [[ "$SATISFACTORY_VM_1" != "n" ]] && [[ "$SATISFACTORY_VM_1" != "" ]]
                                                             do
