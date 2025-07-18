@@ -1,3 +1,4 @@
+
 {
     inputs =
         {
@@ -442,6 +443,104 @@ EOF
 									                    '' ;
 									            }
                                         )
+                                        (
+                                            pkgs.stdenv.mkDerivation
+                                                {
+                                                    installPhase =
+                                                        let
+                                                            schedule =
+                                                                pkgs.writeShellApplication
+                                                                    {
+                                                                        name = "schedule" ;
+                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.libuuid pkgs.yq ] ;
+                                                                        text =
+                                                                            ''
+                                                                                PRIVATE_1="$( ${ resources.repository.private } )"
+                                                                                PERSONAL_1="$( ${ resources.repository.personal } )"
+                                                                                REPO=${ resources.repository.personal.repo }
+                                                                                SCRATCH="scratch/$( uuidgen )"
+
+                                                                                # Helper to run git with env
+                                                                                gitcmd() {
+                                                                                  GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git "$@"
+                                                                                }
+
+                                                                                # Check for diff
+                                                                                gitcmd fetch origin main
+                                                                                if [[ -z "$(gitcmd diff origin/main)" ]]; then
+                                                                                  echo "No changes from origin/main. Nothing to do."
+                                                                                  personal_subissue_branch=""
+                                                                                else
+                                                                                    # Select or create milestone
+                                                                                    milestones=$(gh api -H "Accept: application/vnd.github+json" /repos/$REPO/milestones)
+                                                                                    milestone_number=$(echo "$milestones" | jq -r '.[] | "\(.number): \(.title)"' | fzf --prompt="Select milestone > " | cut -d: -f1)
+                                                                                    if [[ -z "$milestone_number" ]]; then
+                                                                                      next_month=$(date -d "$(date +%Y-%m-01) +2 month -1 day" +%Y-%m)
+                                                                                      milestone_title=$(date -d "$next_month-01" +%B-%Y)
+                                                                                      due_on=$(date -d "$next_month-01 23:59:59" --utc +%Y-%m-%dT%H:%M:%SZ)
+                                                                                      milestone_json=$(jq -n --arg title "$milestone_title" --arg due_on "$milestone_due" '{title: $title, due_on: ($due_on // null)}')
+                                                                                      milestone_response=$(gh api -X POST -H "Accept: application/vnd.github+json" /repos/$REPO/milestones -f title="$milestone_title" ${milestone_due:+-f due_on="$milestone_due"})
+                                                                                      milestone_number=$(echo "$milestone_response" | jq -r '.number')
+                                                                                    fi
+                                                                                    milestone_branch="milestone/$milestone_number"
+                                                                                    if ! gitcmd show-ref --verify --quiet "refs/heads/$milestone_branch"; then
+                                                                                      echo "Creating branch $milestone_branch from origin/main"
+                                                                                      gitcmd branch "$milestone_branch" origin/main
+                                                                                    fi
+
+                                                                                    # Select or create issue
+                                                                                    issues=$(gh api -H "Accept: application/vnd.github+json" "/repos/$REPO/issues?milestone=$milestone_number&state=open")
+                                                                                    issue_number=$(echo "$issues" | jq -r '.[] | "\(.number): \(.title)"' | fzf --prompt="Select issue > " | cut -d: -f1)
+                                                                                    if [[ -z "$issue_number" ]]; then
+                                                                                      read -p "New issue title: " issue_title
+                                                                                      issue_response=$(gh api -X POST -H "Accept: application/vnd.github+json" /repos/$REPO/issues \
+                                                                                        -f title="$issue_title" \
+                                                                                        -f milestone="$milestone_number")
+                                                                                      issue_number=$(echo "$issue_response" | jq -r '.number')
+                                                                                    fi
+                                                                                    issue_branch="issues/$issue_number"
+                                                                                    if ! gitcmd show-ref --verify --quiet "refs/heads/$issue_branch"; then
+                                                                                      echo "Creating branch $issue_branch from $milestone_branch"
+                                                                                      gitcmd branch "$issue_branch" "$milestone_branch"
+                                                                                    fi
+
+                                                                                    # Select or create subissue
+                                                                                    subissues=$(gh api -H "Accept: application/vnd.github+json" "/repos/$REPO/issues?state=open" | jq -r \
+                                                                                      --arg parent "#$issue_number" '.[] | select(.body | contains($parent)) | "\(.number): \(.title)"')
+                                                                                    subissue_number=$(echo "$subissues" | fzf --prompt="Select subissue > " | cut -d: -f1)
+                                                                                    if [[ -z "$subissue_number" ]]; then
+                                                                                      read -p "New subissue title: " subissue_title
+                                                                                      subissue_response=$(gh api -X POST -H "Accept: application/vnd.github+json" /repos/$REPO/issues \
+                                                                                        -f title="$subissue_title" \
+                                                                                        -f milestone="$milestone_number")
+                                                                                      subissue_number=$(echo "$subissue_response" | jq -r '.number')
+                                                                                    fi
+                                                                                    subissue_branch="subissues/$subissue_number"
+                                                                                    if ! gitcmd show-ref --verify --quiet "refs/heads/$subissue_branch"; then
+                                                                                      echo "Creating branch $subissue_branch from $issue_branch"
+                                                                                      gitcmd branch "$subissue_branch" "$issue_branch"
+                                                                                    fi
+
+                                                                                    echo "Done. Now on branch: $subissue_branch"
+                                                                                    gitcmd checkout "$subissue_branch"
+                                                                                    personal_subissue_branch="$subissue_branch"
+                                                                                fi
+                                                                            cat > "$PRIVATE_1/promotion-schedule.yaml" <<EOF
+                                                                            type: subissue
+                                                                            inputs:
+                                                                              personal: $personal_subissue_branch
+                                                                            EOF
+                                                                            '' ;
+                                                                    } ;
+                                                        ''
+                                                            mkdir --parents $out/bin
+                                                            makeWrapper ${ promotion }/bin/schedule $out/bin/schedule ;
+                                                        '' ;
+                                                    name = "promotion" ;
+                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                    src = ./. ;
+                                                }
+                                        )
 									    (
 									        pkgs.writeShellApplication
 									            {
@@ -520,8 +619,8 @@ EOF
                                                             if [[ "$SATISFACTORY_VM_2" == "n" ]]
                                                             then
                                                                 echo "Second run of the VM was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
                                                                 exit 64
                                                             fi
                                                             echo "#####"
@@ -747,7 +846,9 @@ EOF
                                                                         personal =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/personal.git" ; type = lib.types.str ; } ;
+                                                                                repo = lib.mkOption { default = "personal.git" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         private =
                                                                             {
