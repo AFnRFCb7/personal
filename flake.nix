@@ -427,7 +427,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        MILESSTONE="$( ${ milestone }/bin/milestone "$1" )"
+                                                                                                                        MILESTONE="$( ${ milestone }/bin/milestone "$1" )"
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$MILESTONE" )"
                                                                                                                         echo "$SOURCE"
                                                                                                                     '' ;
