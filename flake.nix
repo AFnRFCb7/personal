@@ -197,7 +197,11 @@ EOF
 														                } ;
                                                                     in
                                                                         ''
-                                                                            if [[ "$#" == 2 ]]
+                                                                            if [[ "$#" == 1 ]]
+                                                                            then
+                                                                                BRANCH="$1"
+                                                                                COMMIT_HASH=
+                                                                            elif [[ "$#" == 2 ]]
                                                                             then
                                                                                 BRANCH="$1"
                                                                                 COMMIT_HASH="$2"
@@ -221,9 +225,13 @@ EOF
                                                                             then
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
-                                                                            else
+                                                                            elif [[ ! -z "$BRANCH" ]] && [[ ! -z "$COMMIT_HASH" ]]
+                                                                            then
                                                                                 git fetch --depth 1 origin "$BRANCH"
                                                                                 git checkout "$COMMIT_HASH"
+                                                                            else
+                                                                                git fetch --depth 1 origin "$BRANCH"
+                                                                                git checkout "origin/$BRANCH"
                                                                             fi
                                                                             git checkout -b "scratch/$( uuidgen )"
                                                                         '' ;
@@ -543,7 +551,7 @@ EOF
                                                                 MONTH="$MONTH"
                                                                 GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
                                                             EOF
-                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringString "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
+                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringSep "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
                                                             do
                                                                 INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
                                                                 export GIT_DIR="$INPUT_REPO_INPUT/git"
