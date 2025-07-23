@@ -419,7 +419,7 @@
                                                                                                                     ''
                                                                                                                         date --date "$( )" +%Y-%m
                                                                                                                     '' ;
-                                                                                                           }
+                                                                                                           } ;
                                                                                                     promote =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -427,7 +427,8 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } ${ milestone }/bin/milestone )"
+                                                                                                                        MILESSTONE="$( ${ milestone }/bin/milestone "$1" )"
+                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } "$MILESTONE" )"
                                                                                                                         echo "$SOURCE"
                                                                                                                     '' ;
                                                                                                             } ;
