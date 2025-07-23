@@ -231,6 +231,7 @@ EOF
 													} ;
 											in
 												{
+													applications = repository config.personal.repository.personal.remote "github:AFnRFCb7/applications" ;
 													personal = repository config.personal.repository.personal.remote "github:AFnRFCb7/personal" ;
 													private = repository config.personal.repository.private.remote "" ;
 													secret = repository config.personal.repository.secret.remote "github:AFnRFCb7/secret" ;
