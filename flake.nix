@@ -116,6 +116,7 @@
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
                                                                                             mkdir --parents "$GIT_DIR"
                                                                                             mkdir --parents "$GIT_WORK_TREE"
+                                                                                            git init
                                                                                             DOT_SSH=$( ${ resources.dot-ssh } )/config
                                                                                             git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
                                                                                             git config user.email ${ config.personal.email }
@@ -405,16 +406,39 @@
 									                                    in
                                                                             [
                                                                                 (
-                                                                                    pkgs.writeShellApplication
+                                                                                    pkgs.stdenv.mkDerivation
                                                                                         {
-                                                                                            name = "promote" ;
-                                                                                            runtimeInputs = [ ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    SOURCE="$( ${ resources.milestone.source.private } $ )"
-                                                                                                    echo "$SOURCE"
-                                                                                                '' ;
-                                                                                        }
+                                                                                            installPhase =
+                                                                                                let
+                                                                                                    milestone =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "milestone" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        date --date "$( )" +%Y-%m
+                                                                                                                    '' ;
+                                                                                                           }
+                                                                                                    promote =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "promote" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } ${ milestone }/bin/milestone )"
+                                                                                                                        echo "$SOURCE"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            mkdir --parents $out/bin
+                                                                                                            makeWrapper ${ promote }/bin/promote $out/bin/promote
+                                                                                                        '' ;
+                                                                                            name = "promotion" ;
+                                                                                            nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                                                            src = ./. ;
                                                                                 )
                                                                                 ( studio "studio-personal" resources.repository.personal )
                                                                                 ( studio "studio-private" resources.repository.private )
