@@ -580,6 +580,7 @@ EOF
                                                             export GIT_DIR="$PRIVATE_OUTPUT/git"
                                                             export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
                                                             SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$SOURCE"
                                                             CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
                                                             cd "$CHECK"
                                                             BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
