@@ -102,10 +102,80 @@ EOF
 														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
+                                    milestone =
+                                        {
+                                            build =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$*" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
+                                                            '' ;
+                                                    } ;
+                                            build-vm =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                cd "$SELF"
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$*" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                mkdir --parents "$SELF/test"
+                                                            '' ;
+                                                    } ;
+                                            build-vm-with-bootloader =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                cd "$SELF"
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$*" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                mkdir --parents "$SELF/test"
+                                                            '' ;
+                                                    } ;
+                                            check =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                export NIX_SHOW_TRACE=1
+                                                                export NIX_LOG=trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$*" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ builtins.toString config.personal.milestone.timeout }
+                                                            '' ;
+                                                    } ;
+                                            source =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
+                                                        init-text =
+                                                            ''
+                                                                SOURCE_BRANCH="$1"
+                                                                SOURCE_COMMIT="$2"
+                                                                shift 2 &&
+                                                                SUBSTITUTION=( "$@" )
+                                                                export GIT_DIR="$SELF/git"
+                                                                export GIT_WORK_TREE="$SELF/work-tree"
+                                                                mkdir --parents "$GIT_DIR"
+                                                                mkdir --parents "$GIT_WORK_TREE"
+                                                                git init
+                                                                DOT_SSH="$( "${ resources.dot-ssh }" )/config"
+                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
+                                                                git config user.email ${ config.personal.email }
+                                                                git config user.name "${ config.personal.description }"
+                                                                git remote add origin ${ config.personal.repository.private.remote }
+                                                                git fetch --depth 1 origin "$SOURCE_BRANCH"
+                                                                git checkout "$SOURCE_COMMIT"
+                                                                sed -i "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" "$GIT_WORK_TREE/flake.nix"
+                                                            '' ;
+                                                    } ;
+                                        } ;
 									repository =
 										let
 											repository =
-												origin : ignore :
+												origin : flake-input : ignore :
 													{
 														init-inputs = [ pkgs.coreutils pkgs.git ] ;
 														init-text =
@@ -130,8 +200,14 @@ EOF
                                                                             if [[ "$#" == 1 ]]
                                                                             then
                                                                                 BRANCH="$1"
+                                                                                COMMIT_HASH=
+                                                                            elif [[ "$#" == 2 ]]
+                                                                            then
+                                                                                BRANCH="$1"
+                                                                                COMMIT_HASH="$2"
                                                                             else
                                                                                 BRANCH=
+                                                                                COMMIT_HASH=
                                                                             fi
                                                                             export GIT_DIR="$SELF/git"
                                                                             export GIT_WORK_TREE="$SELF/work-tree"
@@ -140,14 +216,19 @@ EOF
                                                                             mkdir --parents "$GIT_WORK_TREE"
                                                                             git init
                                                                             git config core.sshCommand ${ ssh }/bin/ssh
+                                                                            git config promote.input ${ flake-input }
                                                                             git config user.email ${ config.personal.email }
                                                                             git config user.name "${ config.personal.description }"
                                                                             ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
                                                                             git remote add origin ${ origin }
-                                                                            if [[ -z "$BRANCH" ]]
+                                                                            if [[ -z "$BRANCH" ]] || [[ -z "$COMMIT_HASH" ]]
                                                                             then
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
+                                                                            elif [[ -n "$BRANCH" ]] && [[ -n "$COMMIT_HASH" ]]
+                                                                            then
+                                                                                git fetch --depth 1 origin "$BRANCH"
+                                                                                git checkout "$COMMIT_HASH"
                                                                             else
                                                                                 git fetch --depth 1 origin "$BRANCH"
                                                                                 git checkout "origin/$BRANCH"
@@ -158,11 +239,12 @@ EOF
 													} ;
 											in
 												{
-													personal = repository config.personal.repository.personal.remote ;
-													private = repository config.personal.repository.private.remote ;
-													secret = repository config.personal.repository.secret.remote ;
-													secrets = repository config.personal.repository.secrets.remote ;
-													visitor = repository config.personal.repository.visitor.remote ;
+													applications = repository config.personal.repository.personal.remote "github:AFnRFCb7/applications" ;
+													personal = repository config.personal.repository.personal.remote "github:AFnRFCb7/personal" ;
+													private = repository config.personal.repository.private.remote "" ;
+													secret = repository config.personal.repository.secret.remote "github:AFnRFCb7/secret" ;
+													secrets = repository config.personal.repository.secrets.remote "github:AFnRFCb7/secrets" ;
+													visitor = repository config.personal.repository.visitor.remote "github:AFnRFCb7/personal" ;
 												} ;
                                     temporary-directory =
                                         ignore :
@@ -429,18 +511,101 @@ EOF
 													} ;
 									in
 									[
-									    (
-									        pkgs.writeShellApplication
-									            {
-									                name = "create-scratch-branch" ;
-									                runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
-									                text =
-									                    ''
-									                        git -C "$( ${ resources.repository.private } )/git" fetch origin main
-									                        git -C "$( ${ resources.repository.private } )/git" checkout origin/main
-									                        git -C "$( ${ resources.repository.private } )/git" checkout -b "scratch/$( uuidgen )"
-									                    '' ;
-									            }
+									    # (
+									    #     pkgs.writeShellApplication
+									    #         {
+									    #             name = "launch" ;
+									    #             runtimeInputs = [ pkgs.nixos-rebuild ] ;
+									    #             text =
+									    #                 ''
+                                        #                     INCREMENT="$1"
+                                        #                     MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
+                                        #                     PRIVATE="$( ${ resources.repository.private } "$MONTH" )"
+                                        #                     sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake "$( ${ resources.milestone.source } "$PRIVATE" )" --verbose --print-build-logs --log-format raw --show-trace
+									    #                 '' ;
+									    #         }
+									    # )
+                                        (
+                                            pkgs.writeShellApplication
+                                                {
+                                                    name = "promote" ;
+                                                    runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
+                                                    text =
+                                                        ''
+                                                            INCREMENT="$1"
+                                                            MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
+                                                            PRIVATE_INPUT="$( ${ resources.repository.private } )"
+                                                            export GIT_DIR="$PRIVATE_INPUT/git"
+                                                            export GIT_WORK_TREE="$PRIVATE_INPUT/work-tree"
+                                                            git add .
+                                                            git commit -am "" --allow-empty --allow-empty-message
+                                                            PRIVATE_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
+                                                            PRIVATE_COMMIT_HASH="$( git rev-parse HEAD )"
+                                                            PRIVATE_OUTPUT="$( ${ resources.repository.private } "$PRIVATE_BRANCH" "$PRIVATE_REPOSITORY" )"
+                                                            INPUT_REPO_SCRIPTS=( "${ resources.repository.applications }" "${ resources.repository.personal }" "${ resources.repository.secret }" "${ resources.repository.secrets }" "${ resources.repository.visitor }" )
+                                                            SUBSTITUTION=( )
+                                                            cat > "$PRIVATE_OUTPUT/month.sh" <<EOF
+                                                                MONTH="$MONTH"
+                                                                GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                            EOF
+                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
+                                                            do
+                                                                INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
+                                                                export GIT_DIR="$INPUT_REPO_INPUT/git"
+                                                                export GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree"
+                                                                git add .
+                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                git push origin HEAD
+                                                                INPUT_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
+                                                                INPUT_COMMIT_HASH="$( git rev-parse HEAD )"
+                                                                OLD_HASH="$( git config --get promote.input )"
+                                                                NEW_HASH="$OLD_HASH?rev=$INPUT_COMMIT_HASH"
+                                                                SUBSTITUTION+=( "-e" "s#$OLD_HASH#$NEW_HASH#" )
+                                                                INPUT_REPO_OUTPUT="$( "$INPUT_REPO_SCRIPT" "$INPUT_BRANCH" "$INPUT_COMMIT_HASH" )"
+                                                                export GIT_DIR="$INPUT_REPO_OUTPUT/git"
+                                                                export GIT_WORK_TREE="$INPUT_REPO_OUTPUT/work-tree"
+                                                                git fetch origin
+                                                                if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
+                                                                then
+                                                                    git checkout -b "$MONTH" origin/main
+                                                                else
+                                                                    git checkout "$MONTH"
+                                                                fi
+                                                                git merge "$INPUT_COMMIT_HASH" --no-edit
+                                                                cat >> "$PRIVATE_OUTPUT/month.sh" <<EOF
+                                                            GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                            EOF
+                                                            done
+                                                            chmod 0500 "$PRIVATE_OUTPUT/month.sh"
+                                                            export GIT_DIR="$PRIVATE_OUTPUT/git"
+                                                            export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
+                                                            SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$SOURCE"
+                                                            CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$CHECK"
+                                                            BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD_VM"
+                                                            export QEMU_OPTS="-virtfs local,path=$BUILD_VM/test,mount_tag=test_folder,security_model=none"
+                                                            "$BUILD_VM/result/bin/run-nixos-vm"
+                                                            [[ -f "$BUILD_VM/test" ]] || exit 64
+                                                            BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.build-vm-with-bootloader } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD_VM_WITH_BOOTLOADER"
+                                                            "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
+                                                            [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
+                                                            BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD"
+                                                            sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake "$( ${ resources.milestone.source } "$@" )" --verbose --print-build-logs --log-format raw --show-trace
+                                                            git fetch origin
+                                                            if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
+                                                            then
+                                                                git checkout -b "$MONTH" origin/main
+                                                            else
+                                                                git checkout "$MONTH"
+                                                            fi
+                                                            git merge "$PRIVATE_COMMIT_HASH" --no-edit
+                                                            "$PRIVATE_OUTPUT/month.sh"
+                                                        '' ;
+                                                }
                                         )
 									    (
 									        pkgs.writeShellApplication
@@ -520,8 +685,8 @@ EOF
                                                             if [[ "$SATISFACTORY_VM_2" == "n" ]]
                                                             then
                                                                 echo "Second run of the VM was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
+                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
                                                                 exit 64
                                                             fi
                                                             echo "#####"
@@ -628,34 +793,12 @@ EOF
                                                         '' ;
                                                 }
 									    )
-									    (
-									        pkgs.stdenv.mkDerivation
-									            {
-									                installPhase =
-									                    ''
-									                        mkdir --parents $out/bin
-									                        makeWrapper \
-									                            ${ pkgs.jetbrains.idea-community }/bin/idea-community \
-									                            $out/bin/private \
-									                            --add-flags "\$( ${  resources.repository.private } )" \
-									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
-									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F $DOT_SSH\"" \
-									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
-									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
-									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
-									                    '' ;
-									                name = "studio" ;
-                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                    src = ./. ;
-									            }
-									    )
 										( studio "studio-personal" resources.repository.personal )
 										( studio "studio-private" resources.repository.private )
 										( studio "studio-secret" resources.repository.secret )
 										( studio "studio-secrets" resources.repository.secrets )
 										( studio "studio-visitor" resources.repository.visitor )
 										pkgs.git
-										pkgs.yq-go
 										(
 											pkgs.writeShellApplication
 												{
@@ -663,7 +806,6 @@ EOF
 													text = resources.dot-ssh ;
 												}
 										)
-										pkgs.yq-go
 										(
 											pkgs.writeShellApplication
 												{
@@ -726,6 +868,10 @@ EOF
                                                                         recipient = lib.mkOption { default = "688A5A79ED45AED4D010D56452EDF74F9A9A6E20" ; type = lib.types.str ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/artifacts.git" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                milestone =
+                                                                    {
+                                                                        timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
+                                                                    } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
                                                                     {
@@ -747,10 +893,13 @@ EOF
                                                                         personal =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/personal.git" ; type = lib.types.str ; } ;
+                                                                                repo = lib.mkOption { default = "personal.git" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         private =
                                                                             {
+                                                                                user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
                                                                             } ;
