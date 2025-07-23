@@ -110,7 +110,7 @@ EOF
                                                         init-inputs = [ pkgs.nixos-rebuild ] ;
                                                         init-text =
                                                             ''
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$@" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$*" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
                                                             '' ;
                                                     } ;
                                             build-vm =
@@ -120,7 +120,7 @@ EOF
                                                         init-text =
                                                             ''
                                                                 cd "$SELF"
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$*" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
                                                                 mkdir --parents "$SELF/test"
                                                             '' ;
                                                     } ;
@@ -131,7 +131,7 @@ EOF
                                                         init-text =
                                                             ''
                                                                 cd "$SELF"
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$*" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
                                                                 mkdir --parents "$SELF/test"
                                                             '' ;
                                                     } ;
@@ -143,7 +143,7 @@ EOF
                                                             ''
                                                                 export NIX_SHOW_TRACE=1
                                                                 export NIX_LOG=trace
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$@" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ builtins.toString config.personal.milestone.timeout }
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$*" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ builtins.toString config.personal.milestone.timeout }
                                                             '' ;
                                                     } ;
                                             source =
@@ -155,7 +155,7 @@ EOF
                                                                 SOURCE_BRANCH="$1"
                                                                 SOURCE_COMMIT="$2"
                                                                 shift 2 &&
-                                                                SUBSTITUTION="$@"
+                                                                SUBSTITUTION=( "$@" )
                                                                 export GIT_DIR="$SELF/git"
                                                                 export GIT_WORK_TREE="$SELF/work-tree"
                                                                 mkdir --parents "$GIT_DIR"
