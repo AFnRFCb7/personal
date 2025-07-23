@@ -556,8 +556,8 @@ EOF
                                                                 NEW_HASH="$OLD_HASH?rev=$INPUT_COMMIT_HASH"
                                                                 SUBSTITUTION+=( "-e" "s#$OLD_HASH#$NEW_HASH#" )
                                                                 INPUT_REPO_OUTPUT="$( "$INPUT_REPO_SCRIPT" "$INPUT_BRANCH" "$INPUT_COMMIT_HASH" )"
-                                                                export GIT_DIR="${INPUT_REPO_OUTPUT}/git"
-                                                                export GIT_WORK_TREE="${INPUT_REPO_OUTPUT}/work-tree"
+                                                                export GIT_DIR="$INPUT_REPO_OUTPUT/git"
+                                                                export GIT_WORK_TREE="$INPUT_REPO_OUTPUT/work-tree"
                                                                 git fetch origin
                                                                 if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
                                                                 then
