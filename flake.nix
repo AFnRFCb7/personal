@@ -113,7 +113,7 @@ EOF
                                                                 time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$@" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
                                                             '' ;
                                                     } ;
-                                            build-virtual-machine =
+                                            build-vm =
                                                 ignore :
                                                     {
                                                         init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
@@ -124,7 +124,7 @@ EOF
                                                                 mkdir --parents "$SELF/test"
                                                             '' ;
                                                     } ;
-                                            build-virtual-machine-with-bootloader =
+                                            build-vm-with-bootloader =
                                                 ignore :
                                                     {
                                                         init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
