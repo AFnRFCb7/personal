@@ -197,11 +197,13 @@ EOF
 														                } ;
                                                                     in
                                                                         ''
-                                                                            if [[ "$#" == 1 ]]
+                                                                            if [[ "$#" == 2 ]]
                                                                             then
                                                                                 BRANCH="$1"
+                                                                                COMMIT_HASH="$2"
                                                                             else
                                                                                 BRANCH=
+                                                                                COMMIT_HASH=
                                                                             fi
                                                                             export GIT_DIR="$SELF/git"
                                                                             export GIT_WORK_TREE="$SELF/work-tree"
@@ -215,13 +217,13 @@ EOF
                                                                             git config user.name "${ config.personal.description }"
                                                                             ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
                                                                             git remote add origin ${ origin }
-                                                                            if [[ -z "$BRANCH" ]]
+                                                                            if [[ -z "$BRANCH" ]] || [ -z "$COMMIT_HASH" ]]
                                                                             then
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
                                                                             else
                                                                                 git fetch --depth 1 origin "$BRANCH"
-                                                                                git checkout "origin/$BRANCH"
+                                                                                git checkout "$COMMIT_HASH"
                                                                             fi
                                                                             git checkout -b "scratch/$( uuidgen )"
                                                                         '' ;
