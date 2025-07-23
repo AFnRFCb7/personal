@@ -434,6 +434,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             mkdir --parents $out/bin
+                                                                                                            makeWrapper ${ milestone }/bin/milestone $out/bin/milestone
                                                                                                             makeWrapper ${ promote }/bin/promote $out/bin/promote
                                                                                                         '' ;
                                                                                             name = "promotion" ;
