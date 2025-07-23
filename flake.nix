@@ -501,24 +501,11 @@ EOF
 													} ;
 									in
 									[
-									    (
-									        pkgs.writeShellApplication
-									            {
-									                name = "create-scratch-branch" ;
-									                runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
-									                text =
-									                    ''
-									                        git -C "$( ${ resources.repository.private } )/git" fetch origin main
-									                        git -C "$( ${ resources.repository.private } )/git" checkout origin/main
-									                        git -C "$( ${ resources.repository.private } )/git" checkout -b "scratch/$( uuidgen )"
-									                    '' ;
-									            }
-                                        )
                                         (
                                             pkgs.writeShellApplication
                                                 {
                                                     name = "promote" ;
-                                                    runtimeInputs = [ pkgs.gh pkgs.git ] ;
+                                                    runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
                                                     text =
                                                         ''
                                                             INCREMENT="$1"
@@ -779,34 +766,12 @@ EOF
                                                         '' ;
                                                 }
 									    )
-									    (
-									        pkgs.stdenv.mkDerivation
-									            {
-									                installPhase =
-									                    ''
-									                        mkdir --parents $out/bin
-									                        makeWrapper \
-									                            ${ pkgs.jetbrains.idea-community }/bin/idea-community \
-									                            $out/bin/private \
-									                            --add-flags "\$( ${  resources.repository.private } )" \
-									                            --run "export DOT_SSH=\"\$( ${ resources.dot-ssh } )/config\"" \
-									                            --run "export GIT_SSH_COMMAND=\"${ pkgs.openssh }/bin/ssh -F $DOT_SSH\"" \
-									                            --run "export PERSONAL=\"\$( ${ resources.repository.personal } )\"" \
-									                            --run "export GIT_DIR=\"\$( ${ resources.repository.private } )/git\"" \
-									                            --run "export GIT_WORK_TREE=\"\$( ${ resources.repository.private } )/work-tree\""
-									                    '' ;
-									                name = "studio" ;
-                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                    src = ./. ;
-									            }
-									    )
 										( studio "studio-personal" resources.repository.personal )
 										( studio "studio-private" resources.repository.private )
 										( studio "studio-secret" resources.repository.secret )
 										( studio "studio-secrets" resources.repository.secrets )
 										( studio "studio-visitor" resources.repository.visitor )
 										pkgs.git
-										pkgs.yq-go
 										(
 											pkgs.writeShellApplication
 												{
@@ -814,7 +779,6 @@ EOF
 													text = resources.dot-ssh ;
 												}
 										)
-										pkgs.yq-go
 										(
 											pkgs.writeShellApplication
 												{
