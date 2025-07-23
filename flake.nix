@@ -115,12 +115,12 @@
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
                                                                                             mkdir --parents "$GIT_DIR"
                                                                                             mkdir --parents "$GIT_WORK_TREE"
-                                                                                            # git init
-                                                                                            # DOT_SSH=$( ${ resources.dot-ssh } )/config
-                                                                                            # git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
-                                                                                            # git config user.email ${ config.personal.email }
-                                                                                            # git config user.name "${ config.personal.name }"
-                                                                                            # git remote add origin "${ origin }"
+                                                                                            git init
+                                                                                            DOT_SSH=$( ${ resources.dot-ssh } )/config
+                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
+                                                                                            git config user.email ${ config.personal.email }
+                                                                                            git config user.name "${ config.personal.name }"
+                                                                                            git remote add origin "${ origin }"
                                                                                             # INPUT="$( "${ input-script }" )"
                                                                                             # GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             # GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
