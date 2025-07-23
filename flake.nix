@@ -581,6 +581,7 @@ EOF
                                                             export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
                                                             SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
                                                             CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$CHECK"
                                                             BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
                                                             cd "$BUILD_VM"
                                                             export QEMU_OPTS="-virtfs local,path=$BUILD_VM/test,mount_tag=test_folder,security_model=none"
