@@ -573,8 +573,8 @@ EOF
                                                                 fi
                                                                 git merge "$INPUT_COMMIT_HASH" --no-edit
                                                                 cat >> "$PRIVATE_OUTPUT/month.sh" <<EOF
-                                                                GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
-                                                                EOF
+                                                            GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                            EOF
                                                             done
                                                             chmod 0500 "$PRIVATE_OUTPUT/month.sh"
                                                             export GIT_DIR="$PRIVATE_OUTPUT/git"
