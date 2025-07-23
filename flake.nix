@@ -551,7 +551,7 @@ EOF
                                                                 MONTH="$MONTH"
                                                                 GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
                                                             EOF
-                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringSep "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
+                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
                                                             do
                                                                 INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
                                                                 export GIT_DIR="$INPUT_REPO_INPUT/git"
