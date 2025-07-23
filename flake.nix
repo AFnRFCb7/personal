@@ -440,6 +440,7 @@
                                                                                             name = "promotion" ;
                                                                                             nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
                                                                                             src = ./. ;
+                                                                                        }
                                                                                 )
                                                                                 ( studio "studio-personal" resources.repository.personal )
                                                                                 ( studio "studio-private" resources.repository.private )
