@@ -127,7 +127,7 @@
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
-                                                                                            git checkout $COMMIT
+                                                                                            git checkout "$COMMIT"
                                                                                         '' ;
                                                                                 } ;
                                                                         in
