@@ -515,193 +515,82 @@ EOF
 									            }
                                         )
                                         (
-                                            pkgs.stdenv.mkDerivation
+                                            pkgs.writeShellApplication
                                                 {
-                                                    installPhase =
-                                                        let
-                                                            snapshot =
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "snapshot" ;
-                                                                        runtimeInputs = [ ] ;
-                                                                        text =
-                                                                            ''
-                                                                                REPOSITORY="$1"
-                                                                                SCRATCH="$2"
-                                                                                INPUT="$( "REPOSITORY" )"
-                                                                                GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout -b "$SCRATCH" > /dev/null 2>&1
-                                                                                GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add . > /dev/null 2>&1
-                                                                                GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin HEAD > /dev/null 2>&1
-                                                                                OUTPUT="$( ${ resources.repository.personal } "$SCRATCH" )"
-                                                                                echo "$OUTPUT"
-                                                                            '' ;
-                                                                    } ;
-                                                            launch =
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "launch" ;
-                                                                        runtimeInputs = [ ] ;
-                                                                        text =
-                                                                            ''
-                                                                                cd "$( ${ resources.milestone } )"
-                                                                            '' ;
-                                                                    } ;
-                                                            stage =
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "stage" ;
-                                                                        runtimeInputs = [ ] ;
-                                                                        text =
-                                                                            ''  
-                                                                                REPOSITORY="$1"
-                                                                                export GIT_DIR="$REPOSITORY/git"
-                                                                                export GIT_WORK_TREE="$REPOSITORY/work-tree"
-                                                                                cd "$GIT_WORK_TREE"
-                                                                                gh auth login --with-token < ${ _secrets."github-token.asc.age" }
-                                                                                git fetch origin main
-                                                                                if ! git diff --quiet origin/main
-                                                                                then
-                                                                                    # 1. Select issue
-                                                                                    mapfile -t ISSUES < <( gh issue list --limit 20 --json number,title,milestone --template '{{range .}}{{.number}}: {{.title}}{{if .milestone}} (Due: {{.milestone.dueOn}}){{end}}{{"\n"}}{{end}}' )
-                                                                                    if [ "${ builtins.concatStringsSep "" [ "$" "{" "#ISSUES[@]" "}" ] } -eq 0 ]
-                                                                                    then
-                                                                                        echo "No open issues found."
-                                                                                        exit 1
-                                                                                    fi
-                                                                                    echo "Select an issue to link this PR to:"
-                                                                                    select ISSUE in "${ builtins.concatStringsSep "" [ "$" "{" "ISSUES[@]" "}" ] }"
-                                                                                    do
-                                                                                        if [[ -n "$ISSUE" ]]
-                                                                                        then
-                                                                                            ISSUE_NUMBER="${ builtins.concatStringsSep "" [ "$" "{" "ISSUE%%:*" "}" ] }"
-                                                                                        fi
-                                                                                    done
-                                                                                    # 2. Get milestone due date
-                                                                                    MILESTONE_DATE="$( gh issue view "$ISSUE_NUMBER" --json milestone --jq '.milestone.dueOn' | cut -d'T' -f1 )"
-                                                                                    if [[ -z "$MILESTONE_DATE" ]]
-                                                                                    then
-                                                                                        echo "Issue has no milestone. Aborting."
-                                                                                        exit 1
-                                                                                    fi
-                                                                                    MILESTONE_BRANCH="milestone/$MILESTONE_DATE"
-                                                                                    ISSUE_BRANCH="issue/$ISSUE_NUMBER"
-                                                                                    # 3. Create and push issue branch
-                                                                                    git checkout -b "$ISSUE_BRANCH" origin/main
-                                                                                    git commit -a
-                                                                                    git push -u origin "$ISSUE_BRANCH"
-                                                                                    # 4. Create milestone branch if needed
-                                                                                    if ! git ls-remote --exit-code --heads origin "$MILESTONE_BRANCH"
-                                                                                    then
-                                                                                        git checkout -b "$MILESTONE_BRANCH" origin/main
-                                                                                        git push -u origin "$MILESTONE_BRANCH"
-                                                                                    fi
-                                                                                    # 5. Squash into milestone branch
-                                                                                    git checkout "$MILESTONE_BRANCH"
-                                                                                    git merge --squash "$ISSUE_BRANCH"
-                                                                                    git commit -m "Closes #$ISSUE_NUMBER"
-                                                                                    git push origin "$MILESTONE_BRANCH"
-
-                                                                                    # 6. Create PR from issue branch into milestone branch
-                                                                                    PR_URL=$( gh pr create --base "$MILESTONE_BRANCH" --head "$ISSUE_BRANCH" --title "Resolve issue #$ISSUE_NUMBER" --body "Closes #$ISSUE_NUMBER" )
-                                                                                    echo "PR created: $PR_URL"
-
-                                                                                    # 7. Merge PR
-                                                                                    gh pr merge "$PR_URL" --squash --delete-branch
-
-                                                                                    # 8. Close the issue
-                                                                                    gh issue close "$ISSUE_NUMBER"
-
-                                                                                fi
-                                                                                gh auth logout
-                                                                            '' ;
-                                                                    } ;
-                                                            promote =
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "promote" ;
-                                                                        runtimeInputs = [ pkgs.gh pkgs.git ] ;
-                                                                        text =
-                                                                            ''
-                                                                                INCREMENT="$1"
-                                                                                MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
-                                                                                PRIVATE_INPUT="$( ${ resources.repository.private } )"
-                                                                                export GIT_DIR="$PRIVATE_INPUT/git"
-                                                                                export GIT_WORK_TREE="$PRIVATE_INPUT/work-tree"
-                                                                                git add .
-                                                                                git commit -am "" --allow-empty --allow-empty-message
-                                                                                PRIVATE_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
-                                                                                PRIVATE_COMMIT_HASH="$( git rev-parse HEAD )"
-                                                                                PRIVATE_OUTPUT="$( ${ resources.repository.private } "$PRIVATE_BRANCH" "$PRIVATE_REPOSITORY" )"
-                                                                                INPUT_REPO_SCRIPTS=( "${ resources.repository.applications }" "${ resources.repository.personal }" "${ resources.repository.secret }" "${ resources.repository.secrets }" "${ resources.repository.visitor }" )
-                                                                                SUBSTITUTION=( )
-                                                                                cat > "$PRIVATE_OUTPUT/month.sh" <<EOF
-                                                                                    MONTH="$MONTH"
-                                                                                    GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
-                                                                                EOF
-                                                                                for INPUT_REPO_SCRIPT in "${ builtins.concatStringString "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
-                                                                                do
-                                                                                    INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
-                                                                                    export GIT_DIR="$INPUT_REPO_INPUT/git"
-                                                                                    export GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree"
-                                                                                    git add .
-                                                                                    git commit -am "" --allow-empty --allow-empty-message
-                                                                                    git push origin HEAD
-                                                                                    INPUT_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
-                                                                                    INPUT_COMMIT_HASH="$( git rev-parse HEAD )"
-                                                                                    OLD_HASH="$( git config --get promote.input )"
-                                                                                    NEW_HASH="$OLD_HASH?rev=$INPUT_COMMIT_HASH"
-                                                                                    SUBSTITUTION+=( "-e" "s#$OLD_HASH#$NEW_HASH#" )
-                                                                                    INPUT_REPO_OUTPUT="$( "$INPUT_REPO_SCRIPT" "$INPUT_BRANCH" "$INPUT_COMMIT_HASH" )"
-                                                                                    export GIT_DIR="${INPUT_REPO_OUTPUT}/git"
-                                                                                    export GIT_WORK_TREE="${INPUT_REPO_OUTPUT}/work-tree"
-                                                                                    git fetch origin
-                                                                                    if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
-                                                                                    then
-                                                                                        git checkout -b "$MONTH" origin/main
-                                                                                    else
-                                                                                        git checkout "$MONTH"
-                                                                                    fi
-                                                                                    git merge "$INPUT_COMMIT_HASH" --no-edit
-                                                                                    cat >> "$PRIVATE_OUTPUT/month.sh" <<EOF
-                                                                                    GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
-                                                                                    EOF
-                                                                                done
-                                                                                chmod 0500 "$PRIVATE_OUTPUT/month.sh"
-                                                                                export GIT_DIR="$PRIVATE_OUTPUT/git"
-                                                                                export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
-                                                                                SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                                                CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                                                BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                                                cd "$BUILD_VM"
-                                                                                export QEMU_OPTS="-virtfs local,path=$BUILD_VM/test,mount_tag=test_folder,security_model=none"
-                                                                                "$BUILD_VM/result/bin/run-nixos-vm"
-                                                                                [[ -f "$BUILD_VM/test" ]] || exit 64
-                                                                                BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.build-vm-with-bootloader } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                                                cd "$BUILD_VM_WITH_BOOTLOADER"
-                                                                                "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
-                                                                                [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
-                                                                                BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                                                sudo time timeout ${ config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
-                                                                                git fetch origin
-                                                                                if ! git show-ref --quiet refs/remotes/origin/$MONTH
-                                                                                then
-                                                                                    git checkout -b "$MONTH" origin/main
-                                                                                else
-                                                                                    git checkout "$MONTH"
-                                                                                fi
-                                                                                git merge "$PRIVATE_COMMIT_HASH" --no-edit
-                                                                                "$PRIVATE_OUTPUT/month.sh"
-                                                                            '' ;
-                                                                    } ;
-                                                        in
+                                                    name = "promote" ;
+                                                    runtimeInputs = [ pkgs.gh pkgs.git ] ;
+                                                    text =
                                                         ''
-                                                            mkdir --parents $out/bin
-                                                            makeWrapper ${ promote }/bin/promote $out/bin/promote
+                                                            INCREMENT="$1"
+                                                            MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
+                                                            PRIVATE_INPUT="$( ${ resources.repository.private } )"
+                                                            export GIT_DIR="$PRIVATE_INPUT/git"
+                                                            export GIT_WORK_TREE="$PRIVATE_INPUT/work-tree"
+                                                            git add .
+                                                            git commit -am "" --allow-empty --allow-empty-message
+                                                            PRIVATE_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
+                                                            PRIVATE_COMMIT_HASH="$( git rev-parse HEAD )"
+                                                            PRIVATE_OUTPUT="$( ${ resources.repository.private } "$PRIVATE_BRANCH" "$PRIVATE_REPOSITORY" )"
+                                                            INPUT_REPO_SCRIPTS=( "${ resources.repository.applications }" "${ resources.repository.personal }" "${ resources.repository.secret }" "${ resources.repository.secrets }" "${ resources.repository.visitor }" )
+                                                            SUBSTITUTION=( )
+                                                            cat > "$PRIVATE_OUTPUT/month.sh" <<EOF
+                                                                MONTH="$MONTH"
+                                                                GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                            EOF
+                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringString "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
+                                                            do
+                                                                INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
+                                                                export GIT_DIR="$INPUT_REPO_INPUT/git"
+                                                                export GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree"
+                                                                git add .
+                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                git push origin HEAD
+                                                                INPUT_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
+                                                                INPUT_COMMIT_HASH="$( git rev-parse HEAD )"
+                                                                OLD_HASH="$( git config --get promote.input )"
+                                                                NEW_HASH="$OLD_HASH?rev=$INPUT_COMMIT_HASH"
+                                                                SUBSTITUTION+=( "-e" "s#$OLD_HASH#$NEW_HASH#" )
+                                                                INPUT_REPO_OUTPUT="$( "$INPUT_REPO_SCRIPT" "$INPUT_BRANCH" "$INPUT_COMMIT_HASH" )"
+                                                                export GIT_DIR="${INPUT_REPO_OUTPUT}/git"
+                                                                export GIT_WORK_TREE="${INPUT_REPO_OUTPUT}/work-tree"
+                                                                git fetch origin
+                                                                if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
+                                                                then
+                                                                    git checkout -b "$MONTH" origin/main
+                                                                else
+                                                                    git checkout "$MONTH"
+                                                                fi
+                                                                git merge "$INPUT_COMMIT_HASH" --no-edit
+                                                                cat >> "$PRIVATE_OUTPUT/month.sh" <<EOF
+                                                                GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                                EOF
+                                                            done
+                                                            chmod 0500 "$PRIVATE_OUTPUT/month.sh"
+                                                            export GIT_DIR="$PRIVATE_OUTPUT/git"
+                                                            export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
+                                                            SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD_VM"
+                                                            export QEMU_OPTS="-virtfs local,path=$BUILD_VM/test,mount_tag=test_folder,security_model=none"
+                                                            "$BUILD_VM/result/bin/run-nixos-vm"
+                                                            [[ -f "$BUILD_VM/test" ]] || exit 64
+                                                            BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.build-vm-with-bootloader } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD_VM_WITH_BOOTLOADER"
+                                                            "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
+                                                            [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
+                                                            BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            sudo time timeout ${ config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
+                                                            git fetch origin
+                                                            if ! git show-ref --quiet refs/remotes/origin/$MONTH
+                                                            then
+                                                                git checkout -b "$MONTH" origin/main
+                                                            else
+                                                                git checkout "$MONTH"
+                                                            fi
+                                                            git merge "$PRIVATE_COMMIT_HASH" --no-edit
+                                                            "$PRIVATE_OUTPUT/month.sh"
                                                         '' ;
-                                                    name = "promotion" ;
-                                                    nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                    src = ./. ;
                                                 }
                                         )
 									    (
