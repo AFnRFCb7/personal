@@ -591,9 +591,10 @@ EOF
                                                             "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
                                                             [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
                                                             BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD"
                                                             sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
                                                             git fetch origin
-                                                            if ! git show-ref --quiet refs/remotes/origin/$MONTH
+                                                            if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
                                                             then
                                                                 git checkout -b "$MONTH" origin/main
                                                             else
