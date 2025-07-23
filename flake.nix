@@ -241,7 +241,7 @@ EOF
 												{
 													applications = repository config.personal.repository.personal.remote "github:AFnRFCb7/applications" ;
 													personal = repository config.personal.repository.personal.remote "github:AFnRFCb7/personal" ;
-													private = repository config.personal.repository.private.remote "" ;
+													private = repository config.personal.repository.private.remote "github:AFnRFCb7/private" ; # FIXME
 													secret = repository config.personal.repository.secret.remote "github:AFnRFCb7/secret" ;
 													secrets = repository config.personal.repository.secrets.remote "github:AFnRFCb7/secrets" ;
 													visitor = repository config.personal.repository.visitor.remote "github:AFnRFCb7/personal" ;
