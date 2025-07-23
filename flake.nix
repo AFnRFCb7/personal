@@ -103,10 +103,80 @@ EOF
 														git checkout ${ config.personal.pass.branch }
 													'' ;
 											} ;
+                                    milestone =
+                                        {
+                                            build =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                time timeout ${ config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$@" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
+                                                            '' ;
+                                                    } ;
+                                            build-virtual-machine =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                cd "$SELF"
+                                                                time timeout ${ config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                mkdir --parents "$SELF/test"
+                                                            '' ;
+                                                    } ;
+                                            build-virtual-machine-with-bootloader =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                cd "$SELF"
+                                                                time timeout ${ config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                mkdir --parents "$SELF/test"
+                                                            '' ;
+                                                    } ;
+                                            check =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                        init-text =
+                                                            ''
+                                                                export NIX_SHOW_TRACE=1
+                                                                export NIX_LOG=trace
+                                                                time timeout ${ config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$@" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ config.personal.milestone.timeout }
+                                                            '' ;
+                                                    } ;
+                                            source =
+                                                ignore :
+                                                    {
+                                                        init-inputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
+                                                        init-text =
+                                                            ''
+                                                                SOURCE_BRANCH="$1"
+                                                                SOURCE_COMMIT="$2"
+                                                                shift 2 &&
+                                                                SUBSTITUTION="$@"
+                                                                export GIT_DIR="$SELF/git"
+                                                                export GIT_WORK_TREE="$SELF/work-tree"
+                                                                mkdir --parents "$GIT_DIR"
+                                                                mkdir --parents "$GIT_WORK_TREE"
+                                                                git init
+                                                                DOT_SSH="$( "${ resources.dot-ssh }" )/config"
+                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
+                                                                git config user.email ${ config.personal.email }
+                                                                git config user.name "${ config.personal.description }"
+                                                                git remote add origin ${ config.personal.repository.private.remote }
+                                                                git fetch --depth 1 origin "$SOURCE_BRANCH"
+                                                                git checkout "$SOURCE_COMMIT"
+                                                                sed -i "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" "$GIT_WORK_TREE/flake.nix"
+                                                            '' ;
+                                                    } ;
+                                        } ;
 									repository =
 										let
 											repository =
-												origin : ignore :
+												origin : flake-input : ignore :
 													{
 														init-inputs = [ pkgs.coreutils pkgs.git ] ;
 														init-text =
@@ -141,6 +211,7 @@ EOF
                                                                             mkdir --parents "$GIT_WORK_TREE"
                                                                             git init
                                                                             git config core.sshCommand ${ ssh }/bin/ssh
+                                                                            git config promote.input ${ flake-input }
                                                                             git config user.email ${ config.personal.email }
                                                                             git config user.name "${ config.personal.description }"
                                                                             ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
@@ -159,11 +230,11 @@ EOF
 													} ;
 											in
 												{
-													personal = repository config.personal.repository.personal.remote ;
-													private = repository config.personal.repository.private.remote ;
-													secret = repository config.personal.repository.secret.remote ;
-													secrets = repository config.personal.repository.secrets.remote ;
-													visitor = repository config.personal.repository.visitor.remote ;
+													personal = repository config.personal.repository.personal.remote "github:AFnRFCb7/personal" ;
+													private = repository config.personal.repository.private.remote "" ;
+													secret = repository config.personal.repository.secret.remote "github:AFnRFCb7/secret" ;
+													secrets = repository config.personal.repository.secrets.remote "github:AFnRFCb7/secrets" ;
+													visitor = repository config.personal.repository.visitor.remote "github:AFnRFCb7/personal" ;
 												} ;
                                     temporary-directory =
                                         ignore :
@@ -549,296 +620,83 @@ EOF
                                                                 pkgs.writeShellApplication
                                                                     {
                                                                         name = "promote" ;
-                                                                        runtimeInputs = [ snapshot stage pkgs.git ] ;
+                                                                        runtimeInputs = [ pkgs.gh pkgs.git ] ;
                                                                         text =
                                                                             ''
-                                                                                PRIVATE_1="$( ${ resources.repository.private } )"
-                                                                                echo "PRIVATE_1=$PRIVATE_1"
-                                                                                SCRATCH="scratch/$( uuidgen )"
-                                                                                echo "SCRATCH=$SCRATCH"
-                                                                                GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git checkout -b "$SCRATCH"
-                                                                                GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git add .
-                                                                                GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git push origin HEAD
-                                                                                echo "COMMITED AND PUSHED TO PRIVATE_1"
-                                                                                PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" "$( GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git rev-parse HEAD )" )
-                                                                                export GIT_DIR="$PRIVATE_2/git"
-                                                                                export GIT_WORK_TREE="$PRIVATE_2/work-tree"
-                                                                                echo "PRIVATE_2=$PRIVATE_2"
-                                                                                git rm -r --ignore-unmatch inputs/*
-                                                                                APPLICATION_2="$( snapshot ${ resources.repository.application } "$SCRATCH" )"
-                                                                                PERSONAL_2="$( snapshot ${ resources.repository.personal } "$SCRATCH" )"
-                                                                                SECRET_2="$( snapshot ${ resources.repository.secret } "$SCRATCH" )"
-                                                                                SECRETS_2="$( snapshot ${ resources.repository.secrets } "$SCRATCH" )"
-                                                                                VISITOR_2="$( snapshot ${ resources.repository.visitor } "$SCRATCH" )"
-                                                                                declare -A WORK_TREES=(
-                                                                                    [applications]="$APPLICATION_2/work-tree"
-                                                                                    [personal]="$PERSONAL_2/work-tree"
-                                                                                    [secret]="$SECRET_2/work-tree"
-                                                                                    [secrets]="$SECRETS_2/work-tree"
-                                                                                    [visitor]="$VISITOR_2/work-tree"
-                                                                                )
-                                                                                OVERRIDE_INPUTS=()
-                                                                                UPDATE_INPUTS=()
-                                                                                for REPO in "${ builtins.concatStringsSep "" [ "$" "{" "!WORK_TREES[@]}" "}" ] }
+                                                                                INCREMENT="$1"
+                                                                                MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
+                                                                                PRIVATE_INPUT="$( ${ resources.repository.private } )"
+                                                                                export GIT_DIR="$PRIVATE_INPUT/git"
+                                                                                export GIT_WORK_TREE="$PRIVATE_INPUT/work-tree"
+                                                                                git add .
+                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                PRIVATE_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
+                                                                                PRIVATE_COMMIT_HASH="$( git rev-parse HEAD )"
+                                                                                PRIVATE_OUTPUT="$( ${ resources.repository.private } "$PRIVATE_BRANCH" "$PRIVATE_REPOSITORY" )"
+                                                                                INPUT_REPO_SCRIPTS=( "${ resources.repository.applications }" "${ resources.repository.personal }" "${ resources.repository.secret }" "${ resources.repository.secrets }" "${ resources.repository.visitor }" )
+                                                                                SUBSTITUTION=( )
+                                                                                cat > "$PRIVATE_OUTPUT/month.sh" <<EOF
+                                                                                    MONTH="$MONTH"
+                                                                                    GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                                                EOF
+                                                                                for INPUT_REPO_SCRIPT in "${ builtins.concatStringString "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
                                                                                 do
-                                                                                    OVERRIDE_INPUTS+=(--override-input "$REPO" "${ builtins.concatStringsSep "" [ "$" "{" "WORK_TREES[$REPO]" "}" ] }" )
-                                                                                    UPDATE_INPUTS+=(--update-input "$REPO")
-                                                                                done
-                                                                                # echo
-                                                                                # echo "#####"
-                                                                                # echo "nix flake check"
-                                                                                # cd "$PRIVATE_1/work-tree"
-                                                                                # export NIX_SHOW_TRACE=1
-                                                                                # export NIX_LOG=trace
-                                                                                # nix flake check "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }" --print-build-logs --show-trace
-                                                                                # echo "STATUS=$?"
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo build vm
-                                                                                BUILD_VM="$( ${ resources.temporary-directory } build-vm "$PRIVATE_2" "$PERSONAL_2" )"
-                                                                                cd "$BUILD_VM"
-                                                                                date
-                                                                                echo time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                echo "STATUS=$?"
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo run vm 1
-                                                                                echo $( pwd )/result/bin/run-nixos-vm
-                                                                                ./result/bin/run-nixos-vm
-                                                                                OPTIONS=( "Yes" "No" )
-                                                                                PS3="Was the VM first run satisfactory? Please enter your choice: "
-                                                                                select OPTION in "${OPTIONS[@]}"
-                                                                                do
-                                                                                    case "$OPTION" in
-                                                                                        Yes)
-                                                                                            SATISFACTORY_VM_1="y"
-                                                                                            ;;
-                                                                                        No)
-                                                                                            SATISFACTORY_VM_1="n"
-                                                                                            ;;
-                                                                                        *)
-                                                                                            echo "Invalid choice, please select 1 or 2."
-                                                                                            ;;
-                                                                                    esac
-                                                                                done
-                                                                                if [[ "$SATISFACTORY_VM_1" == "n" ]]
-                                                                                then
-                                                                                    echo "First Run of the VM was unsatisfactory." > failure.txt
-                                                                                    git commit --allow-empty -e -F "$( pwd )/failure.txt"
+                                                                                    INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
+                                                                                    export GIT_DIR="$INPUT_REPO_INPUT/git"
+                                                                                    export GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree"
+                                                                                    git add .
+                                                                                    git commit -am "" --allow-empty --allow-empty-message
                                                                                     git push origin HEAD
-                                                                                    exit 64
-                                                                                fi
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo run vm 2
-                                                                                echo $( pwd )/result/bin/run-nixos-vm
-                                                                                ./result/bin/run-nixos-vm
-                                                                                PS3="Was the VM second run satisfactory? Please enter your choice: "
-                                                                                select OPTION in "${OPTIONS[@]}"
-                                                                                do
-                                                                                    case "$OPTION" in
-                                                                                        Yes)
-                                                                                            SATISFACTORY_VM_2="y"
-                                                                                            ;;
-                                                                                        No)
-                                                                                            SATISFACTORY_VM_2="n"
-                                                                                            ;;
-                                                                                        *)
-                                                                                            echo "Invalid choice, please select 1 or 2."
-                                                                                            ;;
-                                                                                    esac
-                                                                                done
-                                                                                if [[ "$SATISFACTORY_VM_2" == "n" ]]
-                                                                                then
-                                                                                    echo "Second run of the VM was unsatisfactory." > failure.txt
-                                                                                    git commit --allow-empty -e -F "$( pwd )/failure.txt"
-                                                                                    git push origin HEAD
-                                                                                    exit 64
-                                                                                fi
-                                                                                echo "#####"
-                                                                                BUILD_VM_WITH_BOOTLOADER="$( ${ resources.temporary-directory } build-vm-with-bootloader "$PRIVATE_2" "$PERSONAL_2" )"
-                                                                                cd "$BUILD_VM_WITH_BOOTLOADER"
-                                                                                date
-                                                                                time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                echo "STATUS=$?"
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo run vm with bootloader 1
-                                                                                echo $( pwd )/result/bin/run-nixos-vm
-                                                                                ./result/bin/run-nixos-vm
-                                                                                PS3="Was the VM with bootloader first run satisfactory? Please enter your choice: "
-                                                                                select OPTION in "${OPTIONS[@]}"
-                                                                                do
-                                                                                    case "$OPTION" in
-                                                                                        Yes)
-                                                                                            SATISFACTORY_VM_WITH_BOOTLOADER_1="y"
-                                                                                            ;;
-                                                                                        No)
-                                                                                            SATISFACTORY_VM_WITH_BOOTLOADER_1="n"
-                                                                                            ;;
-                                                                                        *)
-                                                                                            echo "Invalid choice, please select 1 or 2."
-                                                                                            ;;
-                                                                                    esac
-                                                                                done
-                                                                                if [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" == "n" ]]
-                                                                                then
-                                                                                    echo "First Run of the VM with bootloader was unsatisfactory." > "$( pwd )/failure.txt"
-                                                                                    git commit --allow-empty -e -F failure.txt
-                                                                                    git push origin HEAD
-                                                                                    exit 64
-                                                                                fi
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo run vm-with-bootloader 2
-                                                                                echo $( pwd )/result/bin/run-nixos-vm
-                                                                                ./result/bin/run-nixos-vm
-                                                                                PS3="Was the VM with bootloader second run satisfactory? Please enter your choice: "
-                                                                                select OPTION in "${OPTIONS[@]}"
-                                                                                do
-                                                                                    case "$OPTION" in
-                                                                                        Yes)
-                                                                                            SATISFACTORY_VM_WITH_BOOTLOADER_2="y"
-                                                                                            ;;
-                                                                                        No)
-                                                                                            SATISFACTORY_VM_WITH_BOOTLOADER_2="n"
-                                                                                            ;;
-                                                                                        *)
-                                                                                            echo "Invalid choice, please select 1 or 2."
-                                                                                            ;;
-                                                                                    esac
-                                                                                done
-                                                                                if [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" == "n" ]]
-                                                                                then
-                                                                                    echo "Second run of the VM with bootloader was unsatisfactory." > failure.txt
-                                                                                    git commit --allow-empty -e -F "$( pwd )/failure.txt"
-                                                                                    git push origin HEAD
-                                                                                    exit 64
-                                                                                fi
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo build
-                                                                                date
-                                                                                BUILD_1="$( ${ resources.temporary-directory } build_1 "$PRIVATE_2" "$PERSONAL_2" )"
-                                                                                cd "$BUILD_1"
-                                                                                echo time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                echo "STATUS=$?"
-                                                                                echo
-                                                                                echo "#####"
-                                                                                echo test
-                                                                                date
-                                                                                sudo time timeout 10m nix-collect-garbage
-                                                                                sudo time timeout 10m nix-store --verify --check-contents --repair
-                                                                                date
-                                                                                echo sudo time timeout 10m nixos-rebuild test --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                sudo time timeout 10m nixos-rebuild test --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                echo "STATUS=$?"
-                                                                                PS3="Was the test satisfactory? Please enter your choice: "
-                                                                                select OPTION in "${OPTIONS[@]}"
-                                                                                do
-                                                                                    case "$OPTION" in
-                                                                                        Yes)
-                                                                                            SATISFACTORY_TEST="y"
-                                                                                            ;;
-                                                                                        No)
-                                                                                            SATISFACTORY_TEST="n"
-                                                                                            ;;
-                                                                                        *)
-                                                                                            echo "Invalid choice, please select 1 or 2."
-                                                                                            ;;
-                                                                                    esac
-                                                                                done
-                                                                                if [[ "$SATISFACTORY_TEST" == "n" ]]
-                                                                                then
-                                                                                    echo "test was unsatisfactory." > failure.txt
-                                                                                    git commit --allow-empty -e -F "$( pwd )/failure.txt"
-                                                                                    git push origin HEAD
-                                                                                    exit 64
-                                                                                else
-                                                                                    echo
-                                                                                    echo "#####"
-                                                                                    echo "READY FOR PROMOTION"
-                                                                                    MILESTONE_DATE=$( date -d "$(date +%Y-%m-01) +1 month" +%Y-%m )
-                                                                                    MILESTONE_BRANCH="milestone/$MILESTONE_DATE"
-                                                                                    if ! git ls-remote --exit-code --heads origin "$MILESTONE_BRANCH" >/dev/null
+                                                                                    INPUT_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
+                                                                                    INPUT_COMMIT_HASH="$( git rev-parse HEAD )"
+                                                                                    OLD_HASH="$( git config --get promote.input )"
+                                                                                    NEW_HASH="$OLD_HASH?rev=$INPUT_COMMIT_HASH"
+                                                                                    SUBSTITUTION+=( "-e" "s#$OLD_HASH#$NEW_HASH#" )
+                                                                                    INPUT_REPO_OUTPUT="$( "$INPUT_REPO_SCRIPT" "$INPUT_BRANCH" "$INPUT_COMMIT_HASH" )"
+                                                                                    export GIT_DIR="${INPUT_REPO_OUTPUT}/git"
+                                                                                    export GIT_WORK_TREE="${INPUT_REPO_OUTPUT}/work-tree"
+                                                                                    git fetch origin
+                                                                                    if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
                                                                                     then
-                                                                                        echo "Milestone branch does not exist. Creating from origin/main..."
-                                                                                        git fetch origin main
-                                                                                        git checkout -b "$MILESTONE_BRANCH" origin/main
-                                                                                        git push origin "$MILESTONE_BRANCH"
+                                                                                        git checkout -b "$MONTH" origin/main
                                                                                     else
-                                                                                        git fetch origin "$MILESTONE_BRANCH"
-                                                                                        git checkout "$MILESTONE_BRANCH"
+                                                                                        git checkout "$MONTH"
                                                                                     fi
-                                                                                    stage "$APPLICATION_2"
-                                                                                    stage "$PERSONAL_2"
-                                                                                    stage "$SECRET_2"
-                                                                                    stage "$SECRETS_2"
-                                                                                    stage "$VISITOR_2"
-                                                                                    sed -i -E "/^( *)(application|personal|secret|secrets|visitor)[[:space:]]*\\.[[:space:]]*url[[:space:]]*=/{s#(url = \"github:[^\"?]+)(\")#\1?rev=$MILESTONE_BRANCH\2#}" flake.nix
-                                                                                    BUILD_1="$( ${ resources.temporary-directory } build_1 "$PRIVATE_2" "$PERSONAL_2" )"
-                                                                                    cd "$BUILD_1"
-                                                                                    echo time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                    time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace "${ builtins.concatStringsSep "" [ "$" "{" "UPDATE_INPUTS[@]" "}" ] }"
-                                                                                    git merge --squash "$ISSUE_BRANCH"
-                                                                                    git commit -m "Closes #$ISSUE_NUMBER"
-                                                                                    git push origin "$MILESTONE_BRANCH"
+                                                                                    git merge "$INPUT_COMMIT_HASH" --no-edit
+                                                                                    cat >> "$PRIVATE_OUTPUT/month.sh" <<EOF
+                                                                                    GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
+                                                                                    EOF
+                                                                                done
+                                                                                chmod 0500 "$PRIVATE_OUTPUT/month.sh"
+                                                                                export GIT_DIR="$PRIVATE_OUTPUT/git"
+                                                                                export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
+                                                                                SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                                                CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                                                BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                                                cd "$BUILD_VM"
+                                                                                export QEMU_OPTS="-virtfs local,path=$BUILD_VM/test,mount_tag=test_folder,security_model=none"
+                                                                                "$BUILD_VM/result/bin/run-nixos-vm"
+                                                                                [[ -f "$BUILD_VM/test" ]] || exit 64
+                                                                                BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.build-vm-with-bootloader } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                                                cd "$BUILD_VM_WITH_BOOTLOADER"
+                                                                                "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
+                                                                                [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
+                                                                                BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                                                sudo time timeout ${ config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
+                                                                                git fetch origin
+                                                                                if ! git show-ref --quiet refs/remotes/origin/$MONTH
+                                                                                then
+                                                                                    git checkout -b "$MONTH" origin/main
+                                                                                else
+                                                                                    git checkout "$MONTH"
                                                                                 fi
+                                                                                git merge "$PRIVATE_COMMIT_HASH" --no-edit
+                                                                                "$PRIVATE_OUTPUT/month.sh"
                                                                             '' ;
-                                                                    } ;
-                                                            schedule =
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "schedule-issue" ;
-                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.libuuid pkgs.yq ] ;
-                                                                        text =
-                                                                            ''
-                                                                                REPO="$1"
-                                                                                ESTIMATE="$2"
-                                                                                TITLE="$3"
-                                                                                read -r -d '' BODY
-                                                                                case "$REPO" in
-                                                                                    personal|secrets|secret|application|visitor)
-                                                                                    ;;
-                                                                                *)
-                                                                                    echo "❌ Invalid repo: '$REPO'. Must be one of: personal, secrets, secret, application, visitor."
-                                                                                    exit 1
-                                                                                    ;;
-                                                                                esac
-                                                                                if ! [[ "$ESTIMATE" =~ ^[1-9][0-9]*$ ]]
-                                                                                then
-                                                                                    echo "❌ Invalid estimate: '$ESTIMATE'. Must be a positive integer (1 or greater)."
-                                                                                    exit 1
-                                                                                fi
-                                                                                REPO_URL="git@github.com:${ config.personal.repository.private.owner }/$REPO.git"
-                                                                                TARGET_DATE="$( date -d "+${ESTIMATE} days" +%Y-%m-%d )"
-                                                                                NEXT_MONTH_FIRST_DAY="$( date -d "$TARGET_DATE +1 month" +%Y-%m-01 )"
-                                                                                MILESTONE_NAME="$( date -d "$NEXT_MONTH_FIRST_DAY" +%Y-%m )"
-                                                                                gh auth login --with-token < ${ _secrets."github-token.asc.age" }
-                                                                                EXISTING_MILESTONE_ID="$( gh milestone list --repo "${ config.personal.repository.private.owner }/$REPO" --json number,title --jq ".[] | select(.title==\"$MILESTONE_NAME\") | .number" )"
-                                                                                if [[ -z "$EXISTING_MILESTONE_ID" ]]
-                                                                                then
-                                                                                    CREATED_MILESTONE_JSON="$( gh milestone create "$MILESTONE_NAME"  --due-date "$TARGET_DATE" --repo "${ config.personal.repository.private.owner }/$REPO" --json number,title )"
-                                                                                    EXISTING_MILESTONE_ID="$( echo "$CREATED_MILESTONE_JSON" | jq -r '.number' )"
-                                                                                fi
-                                                                                LABEL_NAME="complete:false"
-                                                                                EXISTING_LABEL="$( gh label list --repo "${ config.personal.repository.private.owner }/$REPO" --json name --jq ".[] | select(.name == \"$LABEL_NAME\") | .name" )"
-                                                                                if [[ -z "$EXISTING_LABEL" ]]
-                                                                                then
-                                                                                    gh label create "$LABEL_NAME" --color "ededed" --description "Issue is not complete" --repo "${ config.personal.repository.private.owner }/$REPO"
-                                                                                fi
-                                                                                gh issue create --repo "${ config.personal.repository.private.owner }/$REPO" --title "$TITLE" --body "$BODY" --milestone "$EXISTING_MILESTONE_ID" --label "complete:false" --json number,url
-                                                                                gh auth logout
-                                                                            ''
                                                                     } ;
                                                         in
                                                         ''
                                                             mkdir --parents $out/bin
-                                                            makeWrapper ${ schedule }/bin/schedule $out/bin/schedule
                                                             makeWrapper ${ promote }/bin/promote $out/bin/promote
                                                         '' ;
                                                     name = "promotion" ;
@@ -1129,6 +987,10 @@ EOF
                                                                         file = lib.mkOption { default = "ledger.txt" ; type = lib.types.str ; } ;
                                                                         recipient = lib.mkOption { default = "688A5A79ED45AED4D010D56452EDF74F9A9A6E20" ; type = lib.types.str ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/artifacts.git" ; type = lib.types.str ; } ;
+                                                                    } ;
+                                                                milestone =
+                                                                    {
+                                                                        timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
                                                                     } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
