@@ -133,14 +133,14 @@
                                                                                 } ;
                                                                         in
                                                                             {
-                                                                                private = repository config.personal.repository.private.origin resources.repository.private true ;
+                                                                                private = repository config.personal.repository.private.remote resources.repository.private true ;
                                                                                 inputs =
                                                                                     {
-                                                                                        application = repository config.personal.repository.application.origin resources.repository.application false ;
-                                                                                        personal = repository config.personal.repository.personal.origin resources.repository.personal false ;
-                                                                                        secret = repository config.personal.repository.secret.origin resources.repository.secret false ;
-                                                                                        secrets = repository config.personal.repository.secrets.origin resources.repository.secrets false ;
-                                                                                        visitor = repository config.personal.repository.visitor.origin resources.repository.visitor false ;
+                                                                                        application = repository config.personal.repository.application.remote resources.repository.application false ;
+                                                                                        personal = repository config.personal.repository.personal.remote resources.repository.personal false ;
+                                                                                        secret = repository config.personal.repository.secret.remote resources.repository.secret false ;
+                                                                                        secrets = repository config.personal.repository.secrets.remote resources.repository.secrets false ;
+                                                                                        visitor = repository config.personal.repository.visitor.remote resources.repository.visitor false ;
                                                                                     } ;
                                                                             } ;
                                                             } ;
