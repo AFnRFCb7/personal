@@ -623,7 +623,7 @@ EOF
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                             GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git push origin HEAD
                                                             echo "COMMITED AND PUSHED TO PRIVATE_1"
-                                                            PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" "$( GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git rev-parse HEAD )" )
+                                                            PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" )
                                                             echo "PRIVATE_2=$PRIVATE_2"
                                                             GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git rm -r --ignore-unmatch inputs/*
                                                             PERSONAL_1="$( ${ resources.repository.personal } )"
@@ -633,7 +633,7 @@ EOF
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                             GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push origin HEAD
                                                             echo "COMMITED AND PUSHED TO PERSONAL_1"
-                                                            PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" "$( GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git rev-parse HEAD )" )"
+                                                            PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" )"
                                                             echo "PERSONAL_2=$PERSONAL_2"
                                                             GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin "$SCRATCH"
                                                             mkdir --parents "$PRIVATE_2/work-tree/inputs"
