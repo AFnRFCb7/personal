@@ -594,7 +594,7 @@ EOF
                                                             [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
                                                             BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
                                                             cd "$BUILD"
-                                                            sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
+                                                            sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake "$( ${ resources.milestone.source } "$@" )" --verbose --print-build-logs --log-format raw --show-trace
                                                             git fetch origin
                                                             if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
                                                             then
