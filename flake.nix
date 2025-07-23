@@ -501,6 +501,23 @@ EOF
 													} ;
 									in
 									[
+									    (
+									        pkgs.writeShellApplication
+									            {
+									                name = "launch" ;
+									                runtimeInputs = [ pkgs.nixos-rebuild ] ;
+									                text =
+									                    ''
+                                                            INCREMENT="$1"
+                                                            MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
+                                                            PRIVATE="$( ${ resources.repository.private } "$MONTH" )"
+                                                            BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
+                                                            cd "$BUILD"
+                                                            sudo time timeout ${ config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
+
+									                    '' ;
+									            }
+									    )
                                         (
                                             pkgs.writeShellApplication
                                                 {
