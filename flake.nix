@@ -110,7 +110,7 @@ EOF
                                                         init-inputs = [ pkgs.nixos-rebuild ] ;
                                                         init-text =
                                                             ''
-                                                                time timeout ${ config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$@" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$@" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
                                                             '' ;
                                                     } ;
                                             build-virtual-machine =
@@ -120,7 +120,7 @@ EOF
                                                         init-text =
                                                             ''
                                                                 cd "$SELF"
-                                                                time timeout ${ config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
                                                                 mkdir --parents "$SELF/test"
                                                             '' ;
                                                     } ;
@@ -131,7 +131,7 @@ EOF
                                                         init-text =
                                                             ''
                                                                 cd "$SELF"
-                                                                time timeout ${ config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$@" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
                                                                 mkdir --parents "$SELF/test"
                                                             '' ;
                                                     } ;
@@ -143,7 +143,7 @@ EOF
                                                             ''
                                                                 export NIX_SHOW_TRACE=1
                                                                 export NIX_LOG=trace
-                                                                time timeout ${ config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$@" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ config.personal.milestone.timeout }
+                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$@" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ builtins.toString config.personal.milestone.timeout }
                                                             '' ;
                                                     } ;
                                             source =
@@ -514,7 +514,7 @@ EOF
                                                             PRIVATE="$( ${ resources.repository.private } "$MONTH" )"
                                                             BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
                                                             cd "$BUILD"
-                                                            sudo time timeout ${ config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
+                                                            sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
 
 									                    '' ;
 									            }
@@ -585,7 +585,7 @@ EOF
                                                             "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
                                                             [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
                                                             BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                            sudo time timeout ${ config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
+                                                            sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake $( ${ resources.milestone.source } "$@" ) --verbose --print-build-logs --log-format raw --show-trace
                                                             git fetch origin
                                                             if ! git show-ref --quiet refs/remotes/origin/$MONTH
                                                             then
