@@ -225,7 +225,7 @@ EOF
                                                                             then
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
-                                                                            elif [[ ! -z "$BRANCH" ]] && [[ ! -z "$COMMIT_HASH" ]]
+                                                                            elif [[ -n "$BRANCH" ]] && [[ -n "$COMMIT_HASH" ]]
                                                                             then
                                                                                 git fetch --depth 1 origin "$BRANCH"
                                                                                 git checkout "$COMMIT_HASH"
