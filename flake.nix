@@ -128,7 +128,6 @@
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout $COMMIT
-                                                                                            ${ if sed then "# " else "" } sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-E 's/([[:alnum:]_]+\.url[[:space:]]*=[[:space:]]*")([^"]+)(")/\1\2?ref=XXXX\3/'' ) resources.milestone.source.inputs ) ) } $SELF/work-tree/flake.nix
                                                                                         '' ;
                                                                                 } ;
                                                                         in
