@@ -221,7 +221,7 @@ EOF
                                                                             git config user.name "${ config.personal.description }"
                                                                             ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
                                                                             git remote add origin ${ origin }
-                                                                            if [[ -z "$BRANCH" ]] || [ -z "$COMMIT_HASH" ]]
+                                                                            if [[ -z "$BRANCH" ]] || [[ -z "$COMMIT_HASH" ]]
                                                                             then
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
