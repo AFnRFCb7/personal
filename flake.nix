@@ -543,8 +543,6 @@
                                                                                                                             esac
                                                                                                                         done
                                                                                                                         # shellcheck disable=SC2068
-                                                                                                                        echo "SOURCE=\"\$( ${ resources.milestone.source.private } \"$SHIFT\" ${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] } )"
-                                                                                                                        # shellcheck disable=SC2068
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$SHIFT" ${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] } )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
                                                                                                                         export NIX_LOG=trace
