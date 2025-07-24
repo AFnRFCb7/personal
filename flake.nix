@@ -454,8 +454,8 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        CHECK="$( ${ resources.milestone.check } "$1" )"
-                                                                                                                        echo "$CHECK"
+                                                                                                                        SOURCE="$( ${ resources.milestone.check } "$1" )"
+                                                                                                                        echo "$SOURCE"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
