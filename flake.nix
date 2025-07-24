@@ -130,7 +130,7 @@
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
-                                                                                            sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#?ref=main#?ref=REVISION_TOKEN#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"
+                                                                                            sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#?ref=main#?ref=$( GIT_DIR=${ value }/git GIT_WORK_TREE=${ value }/work-tree git HEAD )#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"
                                                                                         '' ;
                                                                                 } ;
                                                                         in
