@@ -539,15 +539,15 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } $@ )"
+                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
                                                                                                                         export NIX_LOG=trace
                                                                                                                         export NIX_SHOW_TRACE=1
                                                                                                                         cd "$SOURCE/work-tree"
                                                                                                                         nix flake check --print-build-logs --verbose --verbose --verbose
-                                                                                                                        # CHECK="$( ${ resources.milestone.check } $@ )"
+                                                                                                                        # CHECK="$( ${ resources.milestone.check } "$@" )"
                                                                                                                         # echo "CHECK=$CHECK"
-                                                                                                                        # BUILD_VM="$( ${ resources.milestone.virtual-machine.build } $@ )"
+                                                                                                                        # BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$@" )"
                                                                                                                         # echo "BUILD_VM=$BUILD_VM"
                                                                                                                     '' ;
                                                                                                             } ;
