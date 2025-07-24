@@ -180,7 +180,7 @@
                                                                                                             echo OVERRIDE_INPUTS requires 3 parameters >&2
                                                                                                             exit 64
                                                                                                         fi
-                                                                                                        OVERRIDE_INPUTS+=( "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" )
+                                                                                                        OVERRIDE_INPUTS+=( "s#\($2.url.*?ref=\)main\(\".*\)\$#\1$3\2#" )
                                                                                                         shift 3
                                                                                                         ;;
                                                                                                     *)
