@@ -171,6 +171,7 @@
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
                                                                                             INPUT="$( ${ input-script } )"
+                                                                                            echo "6c8eae170b2d25ee60133ca22312536b704b106b66e57929ffbfeb422a20e4f1d3d77d269342944396f881811aa034ae766757d28428e8e4648f2f790b74acd5 INPUT=$INPUT"
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
