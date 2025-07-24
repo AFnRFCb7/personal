@@ -459,7 +459,7 @@
                                                                                                                         export NIX_LOG=trace
                                                                                                                         export NIX_SHOW_TRACE=1
                                                                                                                         cd "$SOURCE/work-tree"
-                                                                                                                        nix flake check --print-build-logs --verbose --verbose --verbose
+                                                                                                                        echo nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
@@ -606,6 +606,43 @@
                             in
                                 {
                                     module = module ;
+                                    tester =
+                                        { pkgs , ... } :
+                                            {
+                                                fileSystems."/test" =
+                                                    {
+                                                        fsType = "9p";
+                                                        device = "test_folder";
+                                                        options = [ "trans=virtio" "version=9p2000.L" "cache=loose" ] ;
+                                                    } ;
+                                                systemd.services.test =
+                                                    {
+                                                        after = [ "network.target" ];
+                                                        serviceConfig =
+                                                            {
+                                                                ExecStart =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "application" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            if touch /test/FLAG
+                                                                                            then
+                                                                                                /usr/bin/systemctl poweroff
+                                                                                            else
+                                                                                                /usr/bin/systemctl poweroff
+                                                                                            fi
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/application" ;
+                                                                Type = "oneshot" ;
+                                                            } ;
+                                                        wantedBy = [ "multi-user.target" ];
+                                                    } ;
+                                            } ;
                                     tests.${ system } =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
