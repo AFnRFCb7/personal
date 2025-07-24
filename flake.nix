@@ -518,7 +518,7 @@
                                                                                                                         do
                                                                                                                             case "$1" in
                                                                                                                                 --shift)
-                                                                                                                                    if [[ "$#" != 2 ]]
+                                                                                                                                    if [[ "$#" -lt 2 ]]
                                                                                                                                     then
                                                                                                                                         echo SHIFT requires 2 parameters >&2
                                                                                                                                         exit 64
@@ -527,7 +527,7 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --override-input)
-                                                                                                                                    if [[ "$#" != 3 ]]
+                                                                                                                                    if [[ "$#" -lt 3 ]]
                                                                                                                                     then
                                                                                                                                         echo OVERRIDE_INPUTS requires 3 parameters >&2
                                                                                                                                         exit 64
