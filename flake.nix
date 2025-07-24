@@ -142,7 +142,7 @@
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
-                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#?ref=main#?ref=$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
+                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*\)?ref=main#?ref=\1?ref=$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                         '' ;
                                                                                 } ;
                                                                         in
@@ -152,7 +152,7 @@
                                                                                     {
                                                                                         # applications = repository config.personal.repository.applications.remote resources.repository.applications false ;
                                                                                         personal = repository config.personal.repository.personal.remote resources.repository.personal false ;
-                                                                                        # secret = repository config.personal.repository.secret.remote resources.repository.secret false ;
+                                                                                        secret = repository config.personal.repository.secret.remote resources.repository.secret false ;
                                                                                         secrets = repository config.personal.repository.secrets.remote resources.repository.secrets false ;
                                                                                         visitor = repository config.personal.repository.visitor.remote resources.repository.visitor false ;
                                                                                     } ;
