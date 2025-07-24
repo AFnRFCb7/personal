@@ -155,7 +155,7 @@
                                                                 source =
                                                                     let
                                                                         repository =
-                                                                            origin : input-script : sed : ignore :
+                                                                            name : origin : input-script : sed : ignore :
                                                                                 {
                                                                                     init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                     init-text =
