@@ -504,6 +504,10 @@
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
+                                                                        application =
+                                                                            {
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/application.git" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
