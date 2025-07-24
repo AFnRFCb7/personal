@@ -155,13 +155,13 @@
                                                                 source =
                                                                     let
                                                                         repository =
-                                                                            origin : input-script : sed : ignore :
+                                                                            name : origin : input-script : sed : ignore :
                                                                                 {
                                                                                     init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             SHIFT=0
-                                                                                            OVERRIDE_INPUTS=( )
+                                                                                            INPUT=
                                                                                             while [[ "$#" -gt 0 ]]
                                                                                             do
                                                                                                 case "$1" in
@@ -175,12 +175,10 @@
                                                                                                         shift 2
                                                                                                         ;;
                                                                                                     --override-input)
-                                                                                                        if [[ "$#" -lt 3 ]]
+                                                                                                        if [[ ${ name } == "$2" ]]
                                                                                                         then
-                                                                                                            echo OVERRIDE_INPUTS requires 3 parameters >&2
-                                                                                                            exit 64
+                                                                                                            INPUT="$3"
                                                                                                         fi
-                                                                                                        OVERRIDE_INPUTS+=( "s#\($2.url.*?ref=\)main\(\".*\)\$#\1$3\2#" )
                                                                                                         shift 3
                                                                                                         ;;
                                                                                                     *)
@@ -200,7 +198,10 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
-                                                                                            INPUT="$( ${ input-script } )"
+                                                                                            if [[ -z "$INPUT" ]]
+                                                                                            then
+                                                                                                INPUT="$( ${ input-script } )"
+                                                                                            fi
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
@@ -210,10 +211,10 @@
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
                                                                                             ${ if sed then "# shellcheck disable=SC2027,SC2086,SC2068" else "#" }
                                                                                             ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
-                                                                                            for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                            do
-                                                                                                ${ if sed then "" else "echo" } sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
-                                                                                            done
+                                                                                            # for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
+                                                                                            # do
+                                                                                            #     ${ if sed then "" else "echo" } sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
+                                                                                            # done
                                                                                         '' ;
                                                                                 } ;
                                                                         in
