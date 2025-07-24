@@ -607,8 +607,8 @@
                                     tests.${ system } =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-					    in
-						{			
+					                        in
+						                        {
                                                 } ;
                                 } ;
             } ;
