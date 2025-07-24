@@ -123,12 +123,13 @@
                                                                                             git remote add origin "${ origin }"
                                                                                             INPUT="$( "${ input-script }" )"
                                                                                             echo "$INPUT"
-                                                                                            # GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
-                                                                                            # GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                            # BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
-                                                                                            # git fetch origin "$BRANCH"
-                                                                                            # COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
-                                                                                            # git checkout "$COMMIT"
+                                                                                            GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
+                                                                                            GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                            BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
+                                                                                            git fetch origin "$BRANCH"
+                                                                                            COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
+                                                                                            git checkout "$COMMIT"
+                                                                                            echo ${ if sed then "sed -i ${ builtins.concatStringsSep ''-e "s#\(${ name }.url.*\".*\)\"#\1\"#"'' ( builtins.attrValues ( builtins.mapAttrs ( name : value ) resources.milestone.source.inputs ) ) }" else "#" }
                                                                                         '' ;
                                                                                 } ;
                                                                         in
