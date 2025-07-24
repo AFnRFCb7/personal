@@ -211,11 +211,11 @@
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
                                                                                             ${ if sed then "# shellcheck disable=SC2027,SC2086,SC2068" else "#" }
                                                                                             ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
-                                                                                            for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
-                                                                                            do
-                                                                                                sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
-                                                                                                shift
-                                                                                            done
+                                                                                            # for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
+                                                                                            # do
+                                                                                            #     sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
+                                                                                            #     shift
+                                                                                            # done
                                                                                         '' ;
                                                                                 } ;
                                                                         in
