@@ -162,6 +162,7 @@
                                                                                         ''
                                                                                             SHIFT=0
                                                                                             ARGS=( )
+                                                                                            INPUT=
                                                                                             while [[ "$#" -gt 0 ]]
                                                                                             do
                                                                                                 case "$1" in
@@ -180,6 +181,10 @@
                                                                                                         then
                                                                                                             echo OVERRIDE_INPUTS requires 3 parameters >&2
                                                                                                             exit 64
+                                                                                                        fi
+                                                                                                        if [[ "${ name }" == "$2" ]]
+                                                                                                        then
+                                                                                                            INPUT="$3"
                                                                                                         fi
                                                                                                         ARGS+=( "--override-input $2 $3" )
                                                                                                         shift 3
@@ -201,7 +206,10 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
-                                                                                            INPUT="$( ${ input-script } )"
+                                                                                            if [[ -z "$INPUT" ]]
+                                                                                            then
+                                                                                                INPUT="$( ${ input-script } )"
+                                                                                            fi
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
