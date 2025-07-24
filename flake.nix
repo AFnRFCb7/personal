@@ -454,7 +454,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        SOURCE="$( ${ resources.milestone.check } "$1" )"
+                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } "$1" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
                                                                                                                     '' ;
                                                                                                             } ;
