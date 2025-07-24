@@ -19,8 +19,8 @@
                                     {
                                         fileSystems."/test" =
                                             {
-                                                fsType = "9p";
-                                                device = "test_folder";
+                                                fsType = "9p" ;
+                                                device = "test" ;
                                                 options = [ "trans=virtio" "version=9p2000.L" "cache=loose" ] ;
                                             } ;
                                         systemd.services.test =
@@ -200,11 +200,22 @@
                                                                         build =
                                                                             ignore :
                                                                                 {
-                                                                                    init-inputs = [ ] ;
+                                                                                    init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
                                                                                             nixos-rebuild build-vm --flake $( ${ resources.milestone.source.private } "$1" )/work-tree#tester
+                                                                                        '' ;
+                                                                                } ;
+                                                                        run =
+                                                                            ignore :
+                                                                                {
+                                                                                    init-inputs [ pkgs.coreutils ] ;
+                                                                                    init-text =
+                                                                                        ''
+                                                                                            mkdir --parents "$SELF/test"
+                                                                                            export QEMU_OPTS="-virtfs local,path=$SELF/test,mount_tag=test,security_model=none"
+                                                                                            ${ resources.milestone.virtual-machines.build }/result/bin/run-nixos-vm
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
@@ -494,10 +505,14 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$1" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
-                                                                                                                        export NIX_LOG=trace
-                                                                                                                        export NIX_SHOW_TRACE=1
-                                                                                                                        cd "$SOURCE/work-tree"
-                                                                                                                        nix flake check --print-build-logs --verbose --verbose --verbose
+                                                                                                                        # export NIX_LOG=trace
+                                                                                                                        # export NIX_SHOW_TRACE=1
+                                                                                                                        # cd "$SOURCE/work-tree"
+                                                                                                                        # nix flake check --print-build-logs --verbose --verbose --verbose
+                                                                                                                        CHECK="$( ${ resources.milestone.check } "$1" )"
+                                                                                                                        echo "$CHECK"
+                                                                                                                        BUILD_VM="$( ${ resources.milestone.virtual-machine.build "$1" )"
+                                                                                                                        echo "$BUILD_VM"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
