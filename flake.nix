@@ -112,7 +112,7 @@
                                                                                     cd "$SELF"
                                                                                     export NIX_LOG=trace
                                                                                     export NIX_SHOW_TRACE=1
-                                                                                    nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$1" )/work-tree"
+                                                                                    echo nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$1" )/work-tree"
                                                                                 '' ;
                                                                         } ;
                                                                 source =
@@ -455,7 +455,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.check } "$1" )"
-                                                                                                                        echo "$SOURCE"
+                                                                                                                        head "$SOURCE/work-tree/flake.nix"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
