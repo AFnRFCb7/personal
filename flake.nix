@@ -131,9 +131,9 @@
                                                                                             git checkout "$COMMIT"
                                                                                             sed \
                                                                                                 -i \
-                                                                                                -e "s|^\(.*\)# ${ main-on }\$|# ${ main-off }\1|" \
-                                                                                                -e "s|# ${ milestone-off }\(.*\)\$|\1 #${ milestone-on }|" \
-                                                                                                -e "s|${ revision }|1fd1bea320f7c6aecd1eb6a560ba4b9180e91ab0adc099c32d05286a745a629937fa8a7503327972536bf4c1a19a153219e4b53aa33d391948a084b95bf3d80c|" \
+                                                                                                -e "s|^\(.*\)# ${ config.personal.inputs.main-on }\$|# ${ config.personal.inputs.main-off }\1|" \
+                                                                                                -e "s|# ${ config.personal.inputs.milestone-off }\(.*\)\$|\1 #${ config.personal.inputs.milestone-on }|" \
+                                                                                                -e "s|${ config.personal.inputs.revision }|1fd1bea320f7c6aecd1eb6a560ba4b9180e91ab0adc099c32d05286a745a629937fa8a7503327972536bf4c1a19a153219e4b53aa33d391948a084b95bf3d80c|" \
                                                                                                 "$GIT_WORK_TREE/flake.nix"
                                                                                         '' ;
                                                                                 } ;
