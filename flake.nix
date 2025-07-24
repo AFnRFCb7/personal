@@ -103,6 +103,18 @@
                                                                 } ;
                                                         milestone =
                                                             {
+                                                                check =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ pkgs.coreutils pkgs.nix ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    cd "$SELF"
+                                                                                    export NIX_LOG=trace
+                                                                                    export NIX_SHOW_TRACE=1
+                                                                                    nix flake check --print-build-logs --verbose --verbose --verbose $( ${ resources.milestone.source.private "$1" )
+                                                                                '' ;
+                                                                        } ;
                                                                 source =
                                                                     let
                                                                         repository =
@@ -145,6 +157,19 @@
                                                                                         visitor = repository config.personal.repository.visitor.remote resources.repository.visitor false ;
                                                                                     } ;
                                                                             } ;
+                                                                virtual-machine =
+                                                                    {
+                                                                        build =
+                                                                            ignore :
+                                                                                {
+                                                                                    init-inputs = [ ] ;
+                                                                                    init-text =
+                                                                                        ''
+                                                                                            cd "$SELF"
+                                                                                            nixos-rebuild build-vm --flake $( ${ resources.milestone.source.private } "$1" )/work-tree#tester
+                                                                                        '' ;
+                                                                                } ;
+                                                                    } ;
                                                             } ;
                                                         repository =
                                                             let
@@ -429,9 +454,8 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        MILESTONE="$( ${ milestone }/bin/milestone "$1" )"
-                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } "$MILESTONE" )"
-                                                                                                                        echo "$SOURCE"
+                                                                                                                        CHECK="$( ${ resources.milestone.check } "$1" )"
+                                                                                                                        echo "$CHECK"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
