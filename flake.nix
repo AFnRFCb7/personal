@@ -129,7 +129,12 @@
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
-                                                                                            ${ if sed then "echo ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name } === ${ value }'' ) resources.milestone.source.inputs ) ) }" else "# " }
+                                                                                            sed \
+                                                                                                -i \
+                                                                                                -e "s|^\(.*\)# ${ main-on }\$|# ${ main-off }\1|" \
+                                                                                                -e "s|# ${ milestone-off }\(.*\)\$|\1 #${ milestone-on }|" \
+                                                                                                -e "s|${ revision }|1fd1bea320f7c6aecd1eb6a560ba4b9180e91ab0adc099c32d05286a745a629937fa8a7503327972536bf4c1a19a153219e4b53aa33d391948a084b95bf3d80c|" \
+                                                                                                "$GIT_WORK_TREE/flake.nix"
                                                                                         '' ;
                                                                                 } ;
                                                                         in
@@ -474,6 +479,14 @@
                                                                 email = lib.mkOption { type = lib.types.str ; } ;
                                                                 github = lib.mkOption { type = lib.types.path ; } ;
                                                                 git-crypt = lib.mkOption { default = "" ; type = lib.types.str ; } ;
+                                                                inputs =
+                                                                    {
+                                                                        main-off = lib.mkOption { default = "2b4089c055570df1fb70398d50f1404d125aaa36475d85cc6d8fd2ec7d46047ca912a86ff6709b9e2a929719be9e463093c7d925243cbd9db75f7dfefea1dbe0" ; type = lib.types.str ; } ;
+                                                                        main-on = lib.mkOption { default = "cc73ebe6bbcaf395ab8c215a31c09c731abc2c0e8a457d7c8335bd5ede769f8db56f21facf2fe87e45ab5b1f735df78e149b1999ff5d347e1f9e9dc6bf82b905" ; type = lib.types.str ; } ;
+                                                                        milestone-off = lib.mkOption { default = "7de191948d9835eb76b0d675f26fa8bf2a4fc9c9a63315ecb3f09b82c80ac3eb227258a14114175b627b8d2fbb8f1d9a622fd8ff04d0744c53e9d2fedeaff96f" ; type = lib.types.str ; } ;
+                                                                        milestone-on = lib.mkOption { default = "7de191948d9835eb76b0d675f26fa8bf2a4fc9c9a63315ecb3f09b82c80ac3eb227258a14114175b627b8d2fbb8f1d9a622fd8ff04d0744c53e9d2fedeaff96f" ; type = lib.types.str ; } ;
+                                                                        revision = lib.mkOption { default = "aa916f7d28b9813003790426ff3059ad5d8d2c9b7cdc8983da8c474b1fe899544b398a1a22966dde3cd4282e56ee4764d93e6ada1eab13b0f7bf03ca9693a623" ; type = lib.type.str ; } ;
+                                                                    } ;
                                                                 jrnl =
                                                                     {
                                                                         branch = lib.mkOption { default = "artifact/26cd15c3965a659263334b9ffc8b01020a1e5b6fe84fddc66c98b51" ; type = lib.types.str ; } ;
