@@ -485,7 +485,7 @@
                                                                         main-on = lib.mkOption { default = "cc73ebe6bbcaf395ab8c215a31c09c731abc2c0e8a457d7c8335bd5ede769f8db56f21facf2fe87e45ab5b1f735df78e149b1999ff5d347e1f9e9dc6bf82b905" ; type = lib.types.str ; } ;
                                                                         milestone-off = lib.mkOption { default = "7de191948d9835eb76b0d675f26fa8bf2a4fc9c9a63315ecb3f09b82c80ac3eb227258a14114175b627b8d2fbb8f1d9a622fd8ff04d0744c53e9d2fedeaff96f" ; type = lib.types.str ; } ;
                                                                         milestone-on = lib.mkOption { default = "7de191948d9835eb76b0d675f26fa8bf2a4fc9c9a63315ecb3f09b82c80ac3eb227258a14114175b627b8d2fbb8f1d9a622fd8ff04d0744c53e9d2fedeaff96f" ; type = lib.types.str ; } ;
-                                                                        revision = lib.mkOption { default = "aa916f7d28b9813003790426ff3059ad5d8d2c9b7cdc8983da8c474b1fe899544b398a1a22966dde3cd4282e56ee4764d93e6ada1eab13b0f7bf03ca9693a623" ; type = lib.type.str ; } ;
+                                                                        revision = lib.mkOption { default = "aa916f7d28b9813003790426ff3059ad5d8d2c9b7cdc8983da8c474b1fe899544b398a1a22966dde3cd4282e56ee4764d93e6ada1eab13b0f7bf03ca9693a623" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 jrnl =
                                                                     {
