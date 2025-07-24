@@ -219,11 +219,11 @@
                                                                                 private = repository config.personal.repository.private.remote resources.repository.private true ;
                                                                                 inputs =
                                                                                     {
-                                                                                        # applications = repository config.personal.repository.applications.remote resources.repository.applications false ;
-                                                                                        personal = repository config.personal.repository.personal.remote resources.repository.personal false ;
-                                                                                        secret = repository config.personal.repository.secret.remote resources.repository.secret false ;
-                                                                                        secrets = repository config.personal.repository.secrets.remote resources.repository.secrets false ;
-                                                                                        visitor = repository config.personal.repository.visitor.remote resources.repository.visitor false ;
+                                                                                        # applications = repository "applications" config.personal.repository.applications.remote resources.repository.applications false ;
+                                                                                        personal = repository "personal" config.personal.repository.personal.remote resources.repository.personal false ;
+                                                                                        secret = repository "secret" config.personal.repository.secret.remote resources.repository.secret false ;
+                                                                                        secrets = repository "secrets" config.personal.repository.secrets.remote resources.repository.secrets false ;
+                                                                                        visitor = repository "visitor" config.personal.repository.visitor.remote resources.repository.visitor false ;
                                                                                     } ;
                                                                             } ;
                                                                 virtual-machine =
