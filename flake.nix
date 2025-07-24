@@ -160,7 +160,35 @@
                                                                                     init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            SHIFT="$1"
+                                                                                            SHIFT=0
+                                                                                            OVERRIDE_INPUTS=( )
+                                                                                            while [[ "$#" -gt 0 ]]
+                                                                                            do
+                                                                                                case "$1" in
+                                                                                                    --shift)
+                                                                                                        if [[ "$#" -lt 2 ]]
+                                                                                                        then
+                                                                                                            echo SHIFT requires 2 parameters >&2
+                                                                                                            exit 64
+                                                                                                        fi
+                                                                                                        SHIFT="$2"
+                                                                                                        shift 2
+                                                                                                        ;;
+                                                                                                    --override-input)
+                                                                                                        if [[ "$#" -lt 3 ]]
+                                                                                                        then
+                                                                                                            echo OVERRIDE_INPUTS requires 3 parameters >&2
+                                                                                                            exit 64
+                                                                                                        fi
+                                                                                                        OVERRIDE_INPUTS+=( "$2" "$3" )
+                                                                                                        shift 3
+                                                                                                        ;;
+                                                                                                    *)
+                                                                                                        echo "Unsupported Option $1" >&2
+                                                                                                        exit 64
+                                                                                                        ;;
+                                                                                                esac
+                                                                                            done
                                                                                             echo "SHIFT=$SHIFT"
                                                                                             shift
                                                                                             export GIT_DIR="$SELF/git"
@@ -183,7 +211,7 @@
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
                                                                                             ${ if sed then "# shellcheck disable=SC2027,SC2086,SC2068" else "#" }
-                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1\$( GIT_DIR=\$( ${ value } "$*" )/git GIT_WORK_TREE=\$( ${ value } "$*" )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
+                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1\$( GIT_DIR=\$( ${ value } )/git GIT_WORK_TREE=\$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                             while [[ "$#" -gt 0 ]]
                                                                                             do
                                                                                                 sed -i -e "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" "$GIT_WORK_TREE/flake.nix"
@@ -511,45 +539,15 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        SHIFT=0
-                                                                                                                        OVERRIDE_INPUTS=( )
-                                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            case "$1" in
-                                                                                                                                --shift)
-                                                                                                                                    if [[ "$#" -lt 2 ]]
-                                                                                                                                    then
-                                                                                                                                        echo SHIFT requires 2 parameters >&2
-                                                                                                                                        exit 64
-                                                                                                                                    fi
-                                                                                                                                    SHIFT="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --override-input)
-                                                                                                                                    if [[ "$#" -lt 3 ]]
-                                                                                                                                    then
-                                                                                                                                        echo OVERRIDE_INPUTS requires 3 parameters >&2
-                                                                                                                                        exit 64
-                                                                                                                                    fi
-                                                                                                                                    OVERRIDE_INPUTS+=( "$2" "$3" )
-                                                                                                                                    shift 3
-                                                                                                                                    ;;
-                                                                                                                                *)
-                                                                                                                                    echo "Unsupported Option $1" >&2
-                                                                                                                                    exit 64
-                                                                                                                                    ;;
-                                                                                                                            esac
-                                                                                                                        done
-                                                                                                                        # shellcheck disable=SC2068
-                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } "$SHIFT" ${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] } )"
+                                                                                                                        SOURCE="$( ${ resources.milestone.source.private } $@ )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
                                                                                                                         export NIX_LOG=trace
                                                                                                                         export NIX_SHOW_TRACE=1
                                                                                                                         cd "$SOURCE/work-tree"
                                                                                                                         nix flake check --print-build-logs --verbose --verbose --verbose
-                                                                                                                        # CHECK="$( ${ resources.milestone.check } "$SHIFT" "${ builtins.concatStringsSep " " [ "$" "{" "OVERIDE_INPUTS[@]" "}" ] }" )"
+                                                                                                                        # CHECK="$( ${ resources.milestone.check } $@ )"
                                                                                                                         # echo "CHECK=$CHECK"
-                                                                                                                        # BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$SHIFT" "${ builtins.concatStringsSep " " [ "$" "{" "OVERIDE_INPUTS" "}" ] }" )"
+                                                                                                                        # BUILD_VM="$( ${ resources.milestone.virtual-machine.build } $@ )"
                                                                                                                         # echo "BUILD_VM=$BUILD_VM"
                                                                                                                     '' ;
                                                                                                             } ;
