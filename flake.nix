@@ -541,7 +541,7 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-                                                                                                                        echo "SOURCE=\"\$( ${ resources.milestone.source.private } "$SHIFT" "${ builtins.concatStringsSep " " [ "$" "{" "OVERIDE_INPUTS[@]" "}" ] }" )"
+                                                                                                                        echo "SOURCE=\"\$( ${ resources.milestone.source.private } \"$SHIFT\" \"${ builtins.concatStringsSep " " [ "$" "{" "OVERIDE_INPUTS[@]" "}" ] }\" )"
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$SHIFT" "${ builtins.concatStringsSep " " [ "$" "{" "OVERIDE_INPUTS[@]" "}" ] }" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
                                                                                                                         export NIX_LOG=trace
