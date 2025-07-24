@@ -456,6 +456,8 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$1" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
+                                                                                                                        CHECK="$( ${ resources.milestone.check } "$1" )"
+                                                                                                                        echo "$CHECK"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
