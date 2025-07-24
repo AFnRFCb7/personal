@@ -511,7 +511,7 @@
                                                                                                                         # nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                                                         CHECK="$( ${ resources.milestone.check } "$1" )"
                                                                                                                         echo "$CHECK"
-                                                                                                                        BUILD_VM="$( ${ resources.milestone.virtual-machine.build "$1" )"
+                                                                                                                        BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$1" )"
                                                                                                                         echo "$BUILD_VM"
                                                                                                                     '' ;
                                                                                                             } ;
