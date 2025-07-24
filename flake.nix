@@ -181,7 +181,6 @@
                                                                                                             echo OVERRIDE_INPUTS requires 3 parameters >&2
                                                                                                             exit 64
                                                                                                         fi
-                                                                                                        OVERRIDE_INPUTS+=( "s#\($2.url.*?ref=\)main\(\".*\)\$#\1$3\2#" )
                                                                                                         ARGS+=( "--override-input $2 $3" )
                                                                                                         shift 3
                                                                                                         ;;
