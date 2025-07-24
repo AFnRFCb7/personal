@@ -451,13 +451,15 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "promote" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$1" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
-                                                                                                                        CHECK="$( ${ resources.milestone.check } "$1" )"
-                                                                                                                        echo "$CHECK"
+                                                                                                                        export NIX_LOG=trace
+                                                                                                                        export NIX_SHOW_TRACE=1
+                                                                                                                        cd "$SOURCE/work-tree"
+                                                                                                                        nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
