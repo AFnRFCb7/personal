@@ -175,7 +175,7 @@
                                                                                                         shift 2
                                                                                                         ;;
                                                                                                     --override-input)
-                                                                                                        if [[ ${ name } == "$2" ]]
+                                                                                                        if [[ "${ name }" == "$2" ]]
                                                                                                         then
                                                                                                             INPUT="$3"
                                                                                                         fi
