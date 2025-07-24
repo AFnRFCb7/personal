@@ -505,14 +505,14 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$1" )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
-                                                                                                                        # export NIX_LOG=trace
-                                                                                                                        # export NIX_SHOW_TRACE=1
-                                                                                                                        # cd "$SOURCE/work-tree"
-                                                                                                                        # nix flake check --print-build-logs --verbose --verbose --verbose
-                                                                                                                        CHECK="$( ${ resources.milestone.check } "$1" )"
-                                                                                                                        echo "CHECK=$CHECK"
-                                                                                                                        BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$1" )"
-                                                                                                                        echo "BUILD_VM=$BUILD_VM"
+                                                                                                                        export NIX_LOG=trace
+                                                                                                                        export NIX_SHOW_TRACE=1
+                                                                                                                        cd "$SOURCE/work-tree"
+                                                                                                                        nix flake check --print-build-logs --verbose --verbose --verbose
+                                                                                                                        # CHECK="$( ${ resources.milestone.check } "$1" )"
+                                                                                                                        # echo "CHECK=$CHECK"
+                                                                                                                        # BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$1" )"
+                                                                                                                        # echo "BUILD_VM=$BUILD_VM"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
