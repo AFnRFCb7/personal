@@ -161,11 +161,13 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             SHIFT="$1"
+                                                                                            echo "SHIFT=$SHIFT"
                                                                                             shift
                                                                                             SED_EXPR=( )
                                                                                             while [[ "$#" -gt 0 ]]
                                                                                             do
                                                                                                 SED_EXPR+=( "-e" "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" )
+                                                                                                echo "OVERRIDE $1 $2"
                                                                                             done
                                                                                             export GIT_DIR="$SELF/git"
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
