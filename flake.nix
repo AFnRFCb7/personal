@@ -129,12 +129,8 @@
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
-                                                                                            sed \
-                                                                                                -i \
-                                                                                                -e "s|^\(.*\)# ${ config.personal.inputs.main-on }\$|# ${ config.personal.inputs.main-off }\1|" \
-                                                                                                -e "s|# ${ config.personal.inputs.milestone-off }\(.*\)\$|\1 #${ config.personal.inputs.milestone-on }|" \
-                                                                                                -e "s|${ config.personal.inputs.revision }|1fd1bea320f7c6aecd1eb6a560ba4b9180e91ab0adc099c32d05286a745a629937fa8a7503327972536bf4c1a19a153219e4b53aa33d391948a084b95bf3d80c|" \
-                                                                                                "$GIT_WORK_TREE/flake.nix"
+                                                                                            ${ if sed then "git fetch origin scratch/d27be567-f09e-447e-8abf-c375e6b64311 && git checkout origin/scratch/d27be567-f09e-447e-8abf-c375e6b64311" else "# " }
+                                                                                            sed -i -E "s#?rev=main#?rev=REVISION_TOKEN#" $GIT_WORK_TREE/flake.nix"
                                                                                         '' ;
                                                                                 } ;
                                                                         in
