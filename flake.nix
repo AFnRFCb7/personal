@@ -210,7 +210,7 @@
                                                                         run =
                                                                             ignore :
                                                                                 {
-                                                                                    init-inputs [ pkgs.coreutils ] ;
+                                                                                    init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             mkdir --parents "$SELF/test"
