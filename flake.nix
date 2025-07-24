@@ -529,10 +529,10 @@
                                                                                                                                 --override-input)
                                                                                                                                     if [[ "$#" != 3 ]]
                                                                                                                                     then
-                                                                                                                                        echo OVERRIDE_INPUT requires 3 parameters >&2
+                                                                                                                                        echo OVERRIDE_INPUTS requires 3 parameters >&2
                                                                                                                                         exit 64
                                                                                                                                     fi
-                                                                                                                                    OVERRIDE_INPUT+=( "$2" "$3" )
+                                                                                                                                    OVERRIDE_INPUTS+=( "$2" "$3" )
                                                                                                                                     shift 3
                                                                                                                                     ;;
                                                                                                                                 *)
