@@ -172,7 +172,7 @@
                                                                                                             exit 64
                                                                                                         fi
                                                                                                         SHIFT="$2"
-                                                                                                        shift 2
+                                                                                                        shift  2
                                                                                                         ;;
                                                                                                     --override-input)
                                                                                                         if [[ "${ name }" == "$2" ]]
