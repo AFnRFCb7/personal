@@ -129,7 +129,6 @@
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
-                                                                                            ${ if sed then "git fetch origin" else "# " }
                                                                                             sed \
                                                                                                 -i \
                                                                                                 -e "s|^\(.*\)# ${ config.personal.inputs.main-on }\$|# ${ config.personal.inputs.main-off }\1|" \
