@@ -112,7 +112,7 @@
                                                                                     cd "$SELF"
                                                                                     export NIX_LOG=trace
                                                                                     export NIX_SHOW_TRACE=1
-                                                                                    nix flake check --print-build-logs --verbose --verbose --verbose $( ${ resources.milestone.source.private "$1" )
+                                                                                    nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$1" )"
                                                                                 '' ;
                                                                         } ;
                                                                 source =
