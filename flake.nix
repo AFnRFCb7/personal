@@ -129,7 +129,7 @@
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
-                                                                                            ${ if sed then "sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#${ name }#N${ name }V${ value }#"'' ) resources.milestone.source.inputs ) ) }" else "#" }
+                                                                                            ${ if sed then "echo ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }" ) resources.milestone.source.inputs ) ) }" else "# " }
                                                                                         '' ;
                                                                                 } ;
                                                                         in
