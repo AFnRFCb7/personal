@@ -182,14 +182,8 @@
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
-                                                                                            ${ if sed then "# shellcheck disable=SC2027,SC2086,SC2068" else "#" }
+                                                                                            ${ if sed then "# shellcheck disable=SC2027,SC2086" else "#" }
                                                                                             ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
-                                                                                            # while [[ "$#" -gt 0 ]]
-                                                                                            # do
-                                                                                            #     echo c3746cddcfd2b12c5470036ba387997ff719e305eb9d45b3cf3a6b9e851720a9ed754f3c294d4212d35deb7b6f6ea5e0fbbcc77dcee2b92600a154fd033698af sed -i -e "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" "$GIT_WORK_TREE/flake.nix"
-                                                                                            #   # sed -i -e "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" "$GIT_WORK_TREE/flake.nix"
-                                                                                            #     shift 2
-                                                                                            # done
                                                                                         '' ;
                                                                                 } ;
                                                                         in
