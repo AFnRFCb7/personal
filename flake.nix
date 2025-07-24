@@ -213,7 +213,6 @@
                                                                                             for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
                                                                                             do
                                                                                                 ${ if sed then "" else "echo" } sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
-                                                                                                shift
                                                                                             done
                                                                                         '' ;
                                                                                 } ;
