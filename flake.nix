@@ -168,6 +168,7 @@
                                                                                             do
                                                                                                 SED_EXPR+=( "-e" "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" )
                                                                                                 echo "OVERRIDE $1 $2"
+                                                                                                shift 2
                                                                                             done
                                                                                             export GIT_DIR="$SELF/git"
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
@@ -542,7 +543,7 @@
                                                                                                                             esac
                                                                                                                         done
                                                                                                                         # shellcheck disable=SC2068
-                                                                                                                        echo "SOURCE=\"\$( ${ resources.milestone.source.private } \"$SHIFT\" ${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] } )"
+                                                                                                                        echo "SOURCE=\"\$( ${ resources.milestone.source.private } \"$SHIFT\" ${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] } )"
                                                                                                                         # shellcheck disable=SC2068
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$SHIFT" ${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] } )"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
