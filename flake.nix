@@ -212,7 +212,7 @@
                                                                                             ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                             for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
                                                                                             do
-                                                                                                sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
+                                                                                                ${ if sed then ''sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                                 shift
                                                                                             done
                                                                                         '' ;
