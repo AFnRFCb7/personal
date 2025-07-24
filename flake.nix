@@ -129,6 +129,7 @@
                                                                                             git fetch origin "$BRANCH"
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
+                                                                                            ${ if sed then "git fetch origin scratch/d27be567-f09e-447e-8abf-c375e6b64311 && git checkout origin/scratch/d27be567-f09e-447e-8abf-c375e6b64311" else "# " }
                                                                                             sed \
                                                                                                 -i \
                                                                                                 -e "s|^\(.*\)# ${ config.personal.inputs.main-on }\$|# ${ config.personal.inputs.main-off }\1|" \
