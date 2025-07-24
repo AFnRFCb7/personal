@@ -201,7 +201,6 @@
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
                                                                                             INPUT="$( ${ input-script } )"
-                                                                                            echo "89a09d4702c033dda62f632ace37e46f2cb735199aa70d6c757859566d51bf2ab743e10d4786a483aa78db585324b7edf95fe249c10527f5143fa82792d8c179 INPUT_SCRIPT=${ input-script } INPUT=$INPUT"
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
@@ -213,6 +212,7 @@
                                                                                             ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                             for OVERRIDE_INPUT in "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[@]" "}" ] }"
                                                                                             do
+                                                                                                echo "AXXXX sed -i -e \"$OVERRIDE_INPUT\" \"$GIT_WORK_TREE/flake.nix\"  XXXXB"
                                                                                                 sed -i -e "$OVERRIDE_INPUT" "$GIT_WORK_TREE/flake.nix"
                                                                                                 shift
                                                                                             done
