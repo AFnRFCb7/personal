@@ -204,7 +204,7 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
-                                                                                            nixos-rebuild build-vm --flake $( ${ resources.milestone.source.private } "$1" )/work-tree#tester
+                                                                                            nixos-rebuild build-vm --flake "$( ${ resources.milestone.source.private } "$1" )/work-tree#tester"
                                                                                         '' ;
                                                                                 } ;
                                                                         run =
