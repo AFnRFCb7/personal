@@ -160,7 +160,6 @@
                                                                                     init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            ${ builtins.trace input-script "#" }
                                                                                             export GIT_DIR="$SELF/git"
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
                                                                                             mkdir --parents "$GIT_DIR"
@@ -171,7 +170,7 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
-                                                                                            INPUT="$( "${ input-script }" )"
+                                                                                            INPUT="$( ${ input-script } )"
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
