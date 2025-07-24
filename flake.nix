@@ -186,7 +186,7 @@
                                                                                             ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR=$( ${ value } )/git GIT_WORK_TREE=$( ${ value } )/work-tree ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                             while [[ "$#" -gt 0 ]]
                                                                                             do
-                                                                                                sed -i -e "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#"
+                                                                                                sed -i -e "s#\($1.url.*?ref=\)main\(\".*\)\$#\1$2\2#" "$GIT_WORK_TREE/flake.nix"
                                                                                                 shift 2
                                                                                             done
                                                                                         '' ;
