@@ -145,6 +145,7 @@
                                                                             init-inputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                             init-text =
                                                                                 ''
+                                                                                    echo 43774525ec1a64ace6df2a57be5889a694af790cfa0bf5460faac960e9016ddbfb638f690de243d86a877ef4a3af3634b3ff951e7a54db2935e0f672785d27fa
                                                                                     export NIX_LOG=trace
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     cd "$( ${ resources.milestone.source.private } "$@" )/work-tree"
