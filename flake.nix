@@ -15,7 +15,7 @@
                     } :
                         let
                             tester =
-                                { pkgs , ... } :
+                                { config , pkgs , ... } :
                                     {
                                         boot.kernelModules = [ "9p" "9pnet" "9pnet_virtio" ] ;
                                         fileSystems."/tmp/xchng" =
