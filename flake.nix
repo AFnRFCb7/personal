@@ -267,10 +267,7 @@
                                                                                         ''
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             mkdir --parents "$SHARED_DIR"
-                                                                                            cat > /tmp/DEBUG <<EOF
-                                                                                            VM=\$( ${ resources.milestone.virtual-machine.build } )
-                                                                                            EOF
-                                                                                            VM=$( ${ resources.milestone.virtual-machine.build } )
+                                                                                            VM=$( ${ resources.milestone.virtual-machine.build } "$@" )
                                                                                             "$VM/result/bin/run-nixos-vm" -nographic
                                                                                         '' ;
                                                                                 } ;
