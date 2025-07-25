@@ -137,7 +137,7 @@
                                                                             init-text =
                                                                                 ''
                                                                                     cd "$SELF"
-                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace
+                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
                                                                                 '' ;
                                                                         } ;
                                                                 check =
@@ -267,9 +267,8 @@
                                                                                     init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            echo 6e82a815-c0c0-4298-9af9-68b2442a767d > /tmp/DEBUG
                                                                                             cd "$SELF"
-                                                                                            echo ecbd6d66-5e1b-4ee9-8b48-04a184070060 >> /tmp/DEBUG
+                                                                                            echo ecbd6d66-5e1b-4ee9-8b48-04a184070060 > /tmp/DEBUG
                                                                                             nixos-rebuild build-vm-with-boot-loader --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace >> /tmp/DEBUG 2>&1
                                                                                             echo 23a27f24-575c-4f4c-ade0-0b95b1aa0c05 >> /tmp/DEBUG
                                                                                         '' ;
