@@ -233,7 +233,7 @@
                                                                                         git -C "$dir" merge "origin/$MILESTONE"
                                                                                       else
                                                                                         echo "Directory doesn't exist or not a git repo. Cloning..."
-                                                                                        repo_url="${GIT_BASE_URL}/${key}.git"
+                                                                                        repo_url="$GIT_BASE_URL/$key.git"
                                                                                         git clone --branch "$MILESTONE" "$repo_url" "$dir"
                                                                                       fi
                                                                                     done
