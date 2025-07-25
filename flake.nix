@@ -257,8 +257,8 @@
                                                                                     init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            mkdir --parents "$SELF/test"
-                                                                                            export QEMU_OPTS="-virtfs local,path=$SELF/test,mount_tag=test,security_model=none"
+                                                                                            export TMPDIR="$SELF/test"
+                                                                                            mkdir --parents "$TMPDIR"
                                                                                             ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm
                                                                                         '' ;
                                                                                 } ;
