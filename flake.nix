@@ -138,7 +138,7 @@
                                                                             init-text =
                                                                                 ''
                                                                                     cd "$SELF"
-                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
+                                                                                    time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
                                                                                 '' ;
                                                                         } ;
                                                                 check =
@@ -150,7 +150,7 @@
                                                                                     export NIX_LOG=trace
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     cd "$( ${ resources.milestone.source.private } "$@" )/work-tree"
-                                                                                    nix flake check --print-build-logs --verbose --verbose --verbose
+                                                                                    time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                 '' ;
                                                                         } ;
                                                                 configuration =
@@ -273,7 +273,7 @@
                                                                             init-inputs = [ ] ;
                                                                             init-text =
                                                                                 ''
-                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
+                                                                                    time timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
                                                                                 '' ;
                                                                         } ;
                                                                 virtual-machine-with-bootloader =
@@ -285,9 +285,7 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
-                                                                                            echo ecbd6d66-5e1b-4ee9-8b48-04a184070060 > /tmp/DEBUG
-                                                                                            nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace >> /tmp/DEBUG 2>&1
-                                                                                            echo 23a27f24-575c-4f4c-ade0-0b95b1aa0c05 >> /tmp/DEBUG
+                                                                                            time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace >> /tmp/DEBUG 2>&1
                                                                                         '' ;
                                                                                 } ;
                                                                         run =
@@ -300,7 +298,7 @@
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             mkdir --parents "$SHARED_DIR"
                                                                                             VM=$( ${ resources.milestone.virtual-machine-with-bootloader.build } "$@" )
-                                                                                            "$VM/result/bin/run-nixos-vm" -nographic
+                                                                                            time timeout ${ builtins.toString config.personal.milestone.timeout } "$VM/result/bin/run-nixos-vm" -nographic
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
@@ -313,7 +311,7 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
-                                                                                            nixos-rebuild build-vm --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace
+                                                                                            time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace
                                                                                         '' ;
                                                                                 } ;
                                                                         run =
@@ -326,7 +324,7 @@
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             mkdir --parents "$SHARED_DIR"
                                                                                             VM=$( ${ resources.milestone.virtual-machine.build } "$@" )
-                                                                                            "$VM/result/bin/run-nixos-vm" -nographic
+                                                                                            time timeout ${ builtins.toString config.personal.milestone.timeout } "$VM/result/bin/run-nixos-vm" -nographic
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
