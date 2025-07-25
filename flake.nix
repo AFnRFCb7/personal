@@ -597,7 +597,7 @@
                                                                                                                         RUN_VM="$( ${ resources.milestone.virtual-machine.run } "$@" )"
                                                                                                                         echo "RUN_VM=$RUN_VM"
                                                                                                                         BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machine-with-bootloader.build } "$@" )"
-                                                                                                                        echo "BUILD_VM=$BUILD_VM"
+                                                                                                                        echo "BUILD_VM_WITH_BOOTLOADER=$BUILD_VM_WITH_BOOTLOADER"
                                                                                                                         RUN_VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machine-with-bootloader.run } "$@" )"
                                                                                                                         echo "RUN_VM_WITH_BOOTLOADER=$RUN_VM_WITH_BOOTLOADER"
                                                                                                                     '' ;
