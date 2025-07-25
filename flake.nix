@@ -130,6 +130,16 @@
                                                                 } ;
                                                         milestone =
                                                             {
+                                                                build =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    cd "$SELF"
+                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace
+                                                                                '' ;
+                                                                        } ;
                                                                 check =
                                                                     ignore :
                                                                         {
@@ -197,6 +207,8 @@
                                                                                     echo "BUILD_VM=$BUILD_VM"
                                                                                     RUN_VM="$( ${ resources.milestone.virtual-machine.run } "$@" )"
                                                                                     echo "RUN_VM=$RUN_VM"
+                                                                                    BUILD="$( ${ resources.milestone.build } "$@" )"
+                                                                                    echo "BUILD=$BUILD"
                                                                                 '' ;
                                                                         } ;
                                                                 source =
