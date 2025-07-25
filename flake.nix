@@ -202,6 +202,7 @@
                                                                             init-packages = [ pkgs.coreutils ] ;
                                                                             init-text =
                                                                                 ''
+                                                                                    CONFIGURATION="$1"
                                                                                     SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                     echo "$SOURCE"
                                                                                     CHECK="$( ${ resources.milestone.check } "$@" )"
@@ -218,6 +219,7 @@
                                                                                     echo "BUILD=$BUILD"
                                                                                     TEST="$( ${ resources.milestone.build } "$@" )"
                                                                                     echo "TEST=$TEST"
+                                                                                    MILESTONE="$( date --date "$( date +%Y-%m-1 ) + 1 month " +%Y-%m )"
                                                                                 '' ;
                                                                         } ;
                                                                 source =
