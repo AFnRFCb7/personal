@@ -165,7 +165,7 @@
                                                                                             ARGS="$@"
                                                                                             while [[ "$INDEX" -lt "$#" ]]
                                                                                             do
-                                                                                                ARG="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX]" "}" ] }"
+                                                                                                ARG="${ builtins.concatStringsSep "" [ "$" "{" "ARG[INDEX]" "}" ] }"
                                                                                                 if [[ "$ARG" == "--override-input" ]]
                                                                                                 then
                                                                                                     NAME="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX+1]" "}" ] }"
