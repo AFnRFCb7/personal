@@ -151,6 +151,42 @@
                                                                                     nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                 '' ;
                                                                         } ;
+                                                                configuration =
+                                                                    ignore :
+                                                                        {
+                                                                            init-text =
+                                                                                ''
+                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                    do
+                                                                                        SHIFT=0
+                                                                                        echo "override-input:" > "$SELF/configuration.yaml"
+                                                                                        case "$1" in
+                                                                                            --shift)
+                                                                                                if [[ "$#" -lt 2 ]]
+                                                                                                then
+                                                                                                    echo SHIFT needs one argument >&2
+                                                                                                    exit 64
+                                                                                                fi
+                                                                                                SHIFT="$2"
+                                                                                                shift 2
+                                                                                                ;;
+                                                                                            --override-input)
+                                                                                                if [[ "$#" -lt 3 ]]
+                                                                                                then
+                                                                                                    echo OVERRIDE_INPUT needs two arguments &>2
+                                                                                                    exit 64
+                                                                                                fi
+                                                                                                echo "  $2: $3" >> "$SELF/configuration.yaml"
+                                                                                                shift 3
+                                                                                                ;;
+                                                                                            *)
+                                                                                                shift
+                                                                                                ;;
+                                                                                        esac
+                                                                                    done
+                                                                                    echo "shift: $SHIFT" >> "$SELF/configuration.yaml"
+                                                                                '' ;
+                                                                        } ;
                                                                 source =
                                                                     let
                                                                         repository =
@@ -541,6 +577,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             mkdir --parents $out/bin
+                                                                                                            makeWrapper ${ resources.milestone.configuration } $out/bin/configuration
                                                                                                             makeWrapper ${ milestone }/bin/milestone $out/bin/milestone
                                                                                                             makeWrapper ${ promote }/bin/promote $out/bin/promote
                                                                                                         '' ;
