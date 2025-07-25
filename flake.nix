@@ -206,12 +206,16 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
+                                                                                            echo "84fb26cb-4105-4a5f-be7a-bf5b3806239f" > /tmp/DEBUG
                                                                                             INPUTP="$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
+                                                                                            echo "59f57e79-bede-40ae-b397-1c4196e2dccb $INPUTP" >> /tmp/DEBUG
                                                                                             INPUT="$( echo -n "$INPUTP" )"
+                                                                                            echo "7b7bf5ed-70cc-48ac-bfd5-e031ab1f9b14" >> /tmp/DEBUG
                                                                                             if [[ -z "$INPUT" ]]
                                                                                             then
                                                                                                 INPUT="$( ${ input-script } )"
                                                                                             fi
+                                                                                            echo "561cc4f2-7014-4a65-8ead-121ab958a928" >> /tmp/DEBUG
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
