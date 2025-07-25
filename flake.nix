@@ -156,7 +156,7 @@
                                                                         {
                                                                             init-text =
                                                                                 ''
-                                                                                    echo "override-input:" > "$SELF/configuration.yaml"
+                                                                                    echo "overrides:" > "$SELF/configuration.yaml"
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
                                                                                         SHIFT=0
@@ -195,25 +195,7 @@
                                                                                     init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            INPUT=
-                                                                                            INDEX=0
-                                                                                            ARGS=( "$@" )
-                                                                                            while [[ "$INDEX" -lt "$#" ]]
-                                                                                            do
-                                                                                                ARG="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX]" "}" ] }"
-                                                                                                if [[ "$ARG" == "--override-input" ]]
-                                                                                                then
-                                                                                                    NAME="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX+1]" "}" ] }"
-                                                                                                    VALUE="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX+2]" "}" ] }"
-                                                                                                    if [[ "$NAME" == "${ name }" ]]
-                                                                                                    then
-                                                                                                        INPUT="$VALUE"
-                                                                                                    fi
-                                                                                                    ((INDEX+=3))
-                                                                                                else
-                                                                                                    ((INDEX+=1))
-                                                                                                fi
-                                                                                            done
+                                                                                            CONFIGURATION="$1"
                                                                                             export GIT_DIR="$SELF/git"
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
                                                                                             mkdir --parents "$GIT_DIR"
@@ -224,6 +206,7 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
+                                                                                            INPUT="$( yq "overrides.${ name }" "$CONFIGURATION" )"
                                                                                             if [[ -z "$INPUT" ]]
                                                                                             then
                                                                                                 INPUT="$( ${ input-script } )"
