@@ -208,9 +208,9 @@
                                                                                             git remote add origin "${ origin }"
                                                                                             echo "84fb26cb-4105-4a5f-be7a-bf5b3806239f" > /tmp/DEBUG
                                                                                             cat >> /tmp/DEBUG <<EOF
-                                                                                            INPUTP="\$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
+                                                                                            INPUTP="\$( yq --raw-output ".overrides.${ name }" "$CONFIGURATION" )"
                                                                                             EOF
-                                                                                            INPUTP="$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
+                                                                                            INPUTP="$( yq --raw-output ".overrides.${ name }" "$CONFIGURATION" )"
                                                                                             echo "59f57e79-bede-40ae-b397-1c4196e2dccb $INPUTP" >> /tmp/DEBUG
                                                                                             INPUT="$( echo -n "$INPUTP" )"
                                                                                             echo "7b7bf5ed-70cc-48ac-bfd5-e031ab1f9b14" >> /tmp/DEBUG
