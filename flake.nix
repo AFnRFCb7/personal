@@ -35,7 +35,7 @@
                                                                                 '' ;
                                                                         } ;
                                                                 in "${ application }/bin/application" ;
-                                                        RequiresMountsFor [ "/tmp/shared" ] ;
+                                                        RequiresMountsFor = [ "/tmp/shared" ] ;
                                                         Type = "oneshot" ;
                                                         User = config.personal.name ;
                                                     } ;
