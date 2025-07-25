@@ -206,12 +206,8 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
-                                                                                            echo "25f341cf-e015-4520-8096-5ad41a5df34b CONFIGURATION=$CONFIGURATION" > /tmp/DEBUG
-                                                                                            cat >> /tmp/DEBUG <<EOF
-                                                                                            INPUT="\$( yq --raw-output "overrides[${ name }]" "$CONFIGURATION" )"
-                                                                                            EOF
-                                                                                            INPUT="$( yq --raw-output "overrides[${ name }]" "$CONFIGURATION" )"
-                                                                                            echo "9590a08e-7f96-4fc7-ab6d-7de43ce68879" >> /tmp/DEBUG
+                                                                                            INPUTP="$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
+                                                                                            INPUT="$( echo -n "$INPUTP" )
                                                                                             if [[ -z "$INPUT" ]]
                                                                                             then
                                                                                                 INPUT="$( ${ input-script } )"
