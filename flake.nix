@@ -39,12 +39,8 @@
                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
-                                                                                    if touch /tmp/xchng/FLAG
-                                                                                    then
-                                                                                        /usr/bin/systemctl poweroff
-                                                                                    else
-                                                                                        /usr/bin/systemctl poweroff
-                                                                                    fi
+                                                                                    touch /tmp/xchng/FLAG || true
+                                                                                    /usr/bin/systemctl poweroff
                                                                                 '' ;
                                                                         } ;
                                                                 in "${ application }/bin/application" ;
