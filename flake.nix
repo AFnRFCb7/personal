@@ -247,6 +247,32 @@
                                                                                         visitor = repository "visitor" config.personal.repository.visitor.remote resources.repository.visitor false ;
                                                                                     } ;
                                                                             } ;
+                                                                virtual-machine-with-bootloader =
+                                                                    {
+                                                                        build =
+                                                                            ignore :
+                                                                                {
+                                                                                    init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                                    init-text =
+                                                                                        ''
+                                                                                            cd "$SELF"
+                                                                                            nixos-rebuild build-vm-with-boot-loader --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace
+                                                                                        '' ;
+                                                                                } ;
+                                                                        run =
+                                                                            ignore :
+                                                                                {
+                                                                                    init-inputs = [ pkgs.coreutils ] ;
+                                                                                    init-text =
+                                                                                        ''
+                                                                                            cd "$SELF"
+                                                                                            export SHARED_DIR="$SELF/test"
+                                                                                            mkdir --parents "$SHARED_DIR"
+                                                                                            VM=$( ${ resources.milestone.virtual-machine.build } "$@" )
+                                                                                            "$VM/result/bin/run-nixos-vm" -nographic
+                                                                                        '' ;
+                                                                                } ;
+                                                                    } ;
                                                                 virtual-machine =
                                                                     {
                                                                         build =
@@ -256,7 +282,7 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
-                                                                                            nixos-rebuild build-vm --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester"
+                                                                                            nixos-rebuild build-vm --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace
                                                                                         '' ;
                                                                                 } ;
                                                                         run =
@@ -265,6 +291,7 @@
                                                                                     init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
+                                                                                            cd "$SELF"
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             mkdir --parents "$SHARED_DIR"
                                                                                             VM=$( ${ resources.milestone.virtual-machine.build } "$@" )
@@ -569,6 +596,10 @@
                                                                                                                         echo "BUILD_VM=$BUILD_VM"
                                                                                                                         RUN_VM="$( ${ resources.milestone.virtual-machine.run } "$@" )"
                                                                                                                         echo "RUN_VM=$RUN_VM"
+                                                                                                                        BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machine-with-bootloader.build } "$@" )"
+                                                                                                                        echo "BUILD_VM=$BUILD_VM"
+                                                                                                                        RUN_VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machine-with-bootloader.run } "$@" )"
+                                                                                                                        echo "RUN_VM_WITH_BOOTLOADER=$RUN_VM_WITH_BOOTLOADER"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
