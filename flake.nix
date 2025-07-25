@@ -37,7 +37,6 @@
                                                                 in "${ application }/bin/application" ;
                                                         RequiresMountsFor = [ "/tmp/shared" ] ;
                                                         Type = "oneshot" ;
-                                                        User = config.personal.name ;
                                                     } ;
                                                 wantedBy = [ "multi-user.target" ];
                                             } ;
