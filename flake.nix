@@ -17,17 +17,10 @@
                             tester =
                                 { config , pkgs , ... } :
                                     {
-                                        boot.kernelModules = [ "9p" "9pnet" "9pnet_virtio" ] ;
-                                        fileSystems."/test" =
-                                            {
-                                                fsType = "9p" ;
-                                                device = "shared" ;
-                                                options = [ "trans=virtio" "version=9p2000.L" "cache=loose" ] ;
-                                            } ;
                                         systemd.services.test =
                                             {
-                                                after = [ "test.mount" ] ;
-                                                requires = [ "test.mount" ] ;
+                                                after = [ "shared.mount" ] ;
+                                                requires = [ "shared.mount" ] ;
                                                 serviceConfig =
                                                     {
                                                         ExecStart =
@@ -39,7 +32,7 @@
                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
-                                                                                    touch /tmp/xchng/FLAG || true
+                                                                                    touch /tmp/shared/FLAG || true
                                                                                     /usr/bin/systemctl poweroff
                                                                                 '' ;
                                                                         } ;
@@ -257,9 +250,9 @@
                                                                                     init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            export TEST="$SELF/test"
-                                                                                            mkdir --parents "$TEST"
-                                                                                            ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm -virtfs local,path="$TEST",security_model=none,mount_tag=test
+                                                                                            export SHARED_DIR="$SELF/test"
+                                                                                            mkdir --parents "$SHARED_DIR"
+                                                                                            ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm -nographic
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
