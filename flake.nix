@@ -214,7 +214,7 @@
                                                                                             echo "59f57e79-bede-40ae-b397-1c4196e2dccb $INPUTP" >> /tmp/DEBUG
                                                                                             INPUT="$( echo -n "$INPUTP" )"
                                                                                             echo "7b7bf5ed-70cc-48ac-bfd5-e031ab1f9b14" >> /tmp/DEBUG
-                                                                                            if [[ -z "$INPUT" ]]
+                                                                                            if [[ "$INPUT" != "null" ]]
                                                                                             then
                                                                                                 INPUT="$( ${ input-script } )"
                                                                                             fi
