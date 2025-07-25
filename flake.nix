@@ -260,6 +260,7 @@
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
+                                                                                            sed -i "s#\(personal.url.*?ref=\)main\(\".*\)#\1$( ${ resources.milestone.source.inputs.personal } "$@" )\2#" "$SELF/work-tree/flake.nix"
                                                                                         '' ;
                                                                                 } ;
                                                                         in
