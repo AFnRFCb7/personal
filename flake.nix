@@ -156,10 +156,10 @@
                                                                         {
                                                                             init-text =
                                                                                 ''
+                                                                                    echo "override-input:" > "$SELF/configuration.yaml"
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
                                                                                         SHIFT=0
-                                                                                        echo "override-input:" > "$SELF/configuration.yaml"
                                                                                         case "$1" in
                                                                                             --shift)
                                                                                                 if [[ "$#" -lt 2 ]]
