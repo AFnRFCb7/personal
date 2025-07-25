@@ -160,42 +160,24 @@
                                                                                     init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            SHIFT=0
-                                                                                            ARGS=( )
                                                                                             INPUT=
-                                                                                            while [[ "$#" -gt 0 ]]
+                                                                                            INDEX=0
+                                                                                            while [[ "${INDEX" -lt "$#" ]]
                                                                                             do
-                                                                                                case "$1" in
-                                                                                                    --shift)
-                                                                                                        if [[ "$#" -lt 2 ]]
-                                                                                                        then
-                                                                                                            echo SHIFT requires 2 parameters >&2
-                                                                                                            exit 64
-                                                                                                        fi
-                                                                                                        SHIFT="$2"
-                                                                                                        ARGS+=( "--shift $SHIFT" )
-                                                                                                        shift 2
-                                                                                                        ;;
-                                                                                                    --override-input)
-                                                                                                        if [[ "$#" -lt 3 ]]
-                                                                                                        then
-                                                                                                            echo OVERRIDE_INPUTS requires 3 parameters >&2
-                                                                                                            exit 64
-                                                                                                        fi
-                                                                                                        if [[ "${ name }" == "$2" ]]
-                                                                                                        then
-                                                                                                            INPUT="$3"
-                                                                                                        fi
-                                                                                                        ARGS+=( "--override-input $2 $3" )
-                                                                                                        shift 3
-                                                                                                        ;;
-                                                                                                    *)
-                                                                                                        echo "Unsupported Option $1" >&2
-                                                                                                        exit 64
-                                                                                                        ;;
-                                                                                                esac
+                                                                                                ARG="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX]" "}" ] }"
+                                                                                                if [[ "$ARG" == "--override-input" ]]
+                                                                                                then
+                                                                                                    NAME="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX+1]" "}" ] }"
+                                                                                                    VALUE="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX+2]" "}" ] }"
+                                                                                                    if [[ "$NAME" == "${ name }" ]]
+                                                                                                    then
+                                                                                                        INPUT="$VALUE"
+                                                                                                    fi
+                                                                                                    ((INDEX+=3))
+                                                                                                else
+                                                                                                    ((INDEX++))
+                                                                                                fi
                                                                                             done
-                                                                                            echo "SHIFT=$SHIFT"
                                                                                             export GIT_DIR="$SELF/git"
                                                                                             export GIT_WORK_TREE="$SELF/work-tree"
                                                                                             mkdir --parents "$GIT_DIR"
@@ -218,7 +200,7 @@
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
                                                                                             ${ if sed then "# shellcheck disable=SC2027,SC2086,SC2068" else "#" }
-                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR="$( ${ value } "${ builtins.concatStringsSep "" [ "$" "{" "ARGS{@}" "}" ] }" )/git" GIT_WORK_TREE="$( ${ value } "${ builtins.concatStringsSep "" [ "$" "{" "ARGS{@}" "}" ] }" )/work-tree" ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
+                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR="$( ${ value } "$@" )/git" GIT_WORK_TREE="$( ${ value } "$@" )/work-tree" ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                         '' ;
                                                                                 } ;
                                                                         in
