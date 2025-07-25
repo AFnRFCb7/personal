@@ -27,16 +27,17 @@
                                                                     pkgs.writeShellApplication
                                                                         {
                                                                             name = "application" ;
-                                                                            runtimeInputs = [ pkgs.coreutils pkgs.systemd ] ;
+                                                                            runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
                                                                                     touch /tmp/shared/FLAG || true
-                                                                                    systemctl poweroff
+                                                                                    ${ pkgs.systemd }/bin/systemctl poweroff
                                                                                 '' ;
                                                                         } ;
                                                                 in "${ application }/bin/application" ;
                                                         RequiresMountsFor = [ "/tmp/shared" ] ;
                                                         Type = "oneshot" ;
+                                                        User = config.personal.name ;
                                                     } ;
                                                 wantedBy = [ "multi-user.target" ];
                                             } ;
@@ -259,6 +260,15 @@
                                                                                         visitor = repository "visitor" config.personal.repository.visitor.remote resources.repository.visitor false ;
                                                                                     } ;
                                                                             } ;
+                                                                test =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
+                                                                                '' ;
+                                                                        } ;
                                                                 virtual-machine-with-bootloader =
                                                                     {
                                                                         build =
@@ -463,13 +473,7 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
-                                                                        %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.umount }/bin/umount
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.mount }/bin/mount
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.unixtools.fsck }/bin/fsck
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.e2fsprogs }/bin/mkfs.ext4
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.coreutils }/bin/chown
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.systemd }/bin/systemctl
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
                                                                     '' ;
                                                             } ;
