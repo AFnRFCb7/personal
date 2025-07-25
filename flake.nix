@@ -161,7 +161,7 @@
                                                                 configuration =
                                                                     ignore :
                                                                         {
-                                                                            init-packages = [ pkgs.coreutils ] ;
+                                                                            init-inputs = [ pkgs.coreutils ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     mkdir --parents "$SELF/inputs"
