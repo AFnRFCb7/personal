@@ -147,6 +147,7 @@
                                                                             init-inputs = [ pkgs.coreutils pkgs.nix pkgs.time ] ;
                                                                             init-text =
                                                                                 ''
+                                                                                    # shellcheck disable=SC2129
                                                                                     echo b7841f2a-4454-4faf-a52c-5c417e3d497a > /tmp/DEBUG
                                                                                     export NIX_LOG=trace
                                                                                     echo 6b8434e7-1cd7-40f4-8218-e09ea422927d >> /tmp/DEBUG
