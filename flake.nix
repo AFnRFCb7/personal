@@ -45,7 +45,7 @@
                                                                         } ;
                                                                 in "${ application }/bin/application" ;
                                                         Type = "oneshot" ;
-                                                        User = config.personal.user ;
+                                                        User = config.personal.name ;
                                                     } ;
                                                 wantedBy = [ "multi-user.target" ];
                                             } ;
