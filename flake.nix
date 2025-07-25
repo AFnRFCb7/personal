@@ -182,6 +182,7 @@
                                                                                                 shift
                                                                                                 ;;
                                                                                         esac
+                                                                                    done
                                                                                 '' ;
                                                                         } ;
                                                                 promote =
