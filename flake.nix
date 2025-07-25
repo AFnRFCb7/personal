@@ -152,6 +152,7 @@
                                                                                     echo 6b8434e7-1cd7-40f4-8218-e09ea422927d >> /tmp/DEBUG
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     echo c1bf2545-13b2-4a2f-bf19-ae7a8b66822f >> /tmp/DEBUG
+                                                                                    cat $( ${ resources.milestone.source.private } "$@" )/work-tree/flake.nix >> /tmp/DEBUG
                                                                                     echo time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$@" )/work-tree" >> /tmp/DEBUG 2>&1
                                                                                     time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$@" )/work-tree"
                                                                                     echo af4690ae-c213-46fa-a9d6-31d538d036b0 >> /tmp/DEBUG
