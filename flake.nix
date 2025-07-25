@@ -162,7 +162,7 @@
                                                                                         ''
                                                                                             INPUT=
                                                                                             INDEX=0
-                                                                                            while [[ "${INDEX" -lt "$#" ]]
+                                                                                            while [[ "$INDEX" -lt "$#" ]]
                                                                                             do
                                                                                                 ARG="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX]" "}" ] }"
                                                                                                 if [[ "$ARG" == "--override-input" ]]
