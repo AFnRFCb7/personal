@@ -26,7 +26,8 @@
                                             } ;
                                         systemd.services.test =
                                             {
-                                                after = [ "network.target" ];
+                                                after = [ "test.mount" ] ;
+                                                requires = [ "test.mount" ] ;
                                                 serviceConfig =
                                                     {
                                                         ExecStart =
