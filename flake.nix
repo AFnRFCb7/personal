@@ -265,6 +265,7 @@
                                                                                     init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
+# shellcheck disable=SC2129
                                                                                             echo a6cb9010-50cc-48c9-a93d-8a82f0a71421 > /tmp/DEBUG
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             echo c4a13718-4023-4cf1-b048-a40f47c63aca >> /tmp/DEBUG
