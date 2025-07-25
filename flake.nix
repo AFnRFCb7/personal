@@ -220,6 +220,23 @@
                                                                                     TEST="$( ${ resources.milestone.build } "$@" )"
                                                                                     echo "TEST=$TEST"
                                                                                     MILESTONE="$( date --date "$( date +%Y-%m-1 ) + 1 month " +%Y-%m )"
+                                                                                    mapfile -t overrides < <(yq e '.overrides | to_entries | .[] | "\(.key) \(.value)"' "$CONFIGURATION")
+                                                                                    for entry in "${overrides[@]}"; do
+                                                                                      key=$(awk '{print $1}' <<< "$entry")
+                                                                                      dir=$(awk '{print $2}' <<< "$entry")
+
+                                                                                      echo "Processing override '$key' at '$dir'"
+
+                                                                                      if [ -d "$dir/.git" ]; then
+                                                                                        echo "Directory exists and is a git repo. Fetching and merging $MILESTONE..."
+                                                                                        git -C "$dir" fetch origin "$MILESTONE"
+                                                                                        git -C "$dir" merge "origin/$MILESTONE"
+                                                                                      else
+                                                                                        echo "Directory doesn't exist or not a git repo. Cloning..."
+                                                                                        repo_url="${GIT_BASE_URL}/${key}.git"
+                                                                                        git clone --branch "$MILESTONE" "$repo_url" "$dir"
+                                                                                      fi
+                                                                                    done
                                                                                 '' ;
                                                                         } ;
                                                                 source =
