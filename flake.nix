@@ -176,7 +176,7 @@
                                                                                                     fi
                                                                                                     ((INDEX+=3))
                                                                                                 else
-                                                                                                    ((INDEX++))
+                                                                                                    ((INDEX+=1))
                                                                                                 fi
                                                                                             done
                                                                                             export GIT_DIR="$SELF/git"
