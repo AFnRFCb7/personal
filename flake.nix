@@ -19,8 +19,6 @@
                                     {
                                         systemd.services.test =
                                             {
-                                                after = [ "shared.mount" ] ;
-                                                requires = [ "shared.mount" ] ;
                                                 serviceConfig =
                                                     {
                                                         ExecStart =
@@ -37,6 +35,7 @@
                                                                                 '' ;
                                                                         } ;
                                                                 in "${ application }/bin/application" ;
+                                                        RequiresMountsFor [ "/tmp/shared" ] ;
                                                         Type = "oneshot" ;
                                                         User = config.personal.name ;
                                                     } ;
