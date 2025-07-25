@@ -526,7 +526,7 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                                                         echo "$SOURCE"
-                                                                                                                        # head "$SOURCE/work-tree/flake.nix"
+                                                                                                                        head "$SOURCE/work-tree/flake.nix"
                                                                                                                         # export NIX_LOG=trace
                                                                                                                         # export NIX_SHOW_TRACE=1
                                                                                                                         # cd "$SOURCE/work-tree"
