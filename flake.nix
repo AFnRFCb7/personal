@@ -269,7 +269,7 @@
                                                                                         ''
                                                                                             cd "$SELF"
                                                                                             echo ecbd6d66-5e1b-4ee9-8b48-04a184070060 > /tmp/DEBUG
-                                                                                            nixos-rebuild build-vm-with-boot-loader --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace >> /tmp/DEBUG 2>&1
+                                                                                            nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#tester" --show-trace >> /tmp/DEBUG 2>&1
                                                                                             echo 23a27f24-575c-4f4c-ade0-0b95b1aa0c05 >> /tmp/DEBUG
                                                                                         '' ;
                                                                                 } ;
@@ -282,7 +282,7 @@
                                                                                             cd "$SELF"
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             mkdir --parents "$SHARED_DIR"
-                                                                                            VM=$( ${ resources.milestone.virtual-machine.build } "$@" )
+                                                                                            VM=$( ${ resources.milestone.virtual-machine.build-with-bootloader } "$@" )
                                                                                             "$VM/result/bin/run-nixos-vm" -nographic
                                                                                         '' ;
                                                                                 } ;
