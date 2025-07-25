@@ -150,7 +150,7 @@
                                                                                     export NIX_LOG=trace
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     cd "$( ${ resources.milestone.source.private } "$@" )/work-tree"
-                                                                                    time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose
+                                                                                    nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                 '' ;
                                                                         } ;
                                                                 configuration =
