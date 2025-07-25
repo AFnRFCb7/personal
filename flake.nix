@@ -18,10 +18,10 @@
                                 { pkgs , ... } :
                                     {
                                         boot.kernelModules = [ "9p" "9pnet" "9pnet_virtio" ] ;
-                                        fileSystems."/test" =
+                                        fileSystems."/tmp/xchng" =
                                             {
                                                 fsType = "9p" ;
-                                                device = "test" ;
+                                                device = "shared" ;
                                                 options = [ "trans=virtio" "version=9p2000.L" "cache=loose" ] ;
                                             } ;
                                         systemd.services.test =
@@ -39,7 +39,7 @@
                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
-                                                                                    if touch /test/FLAG
+                                                                                    if touch /tmp/xchng/FLAG
                                                                                     then
                                                                                         /usr/bin/systemctl poweroff
                                                                                     else
