@@ -192,7 +192,7 @@
                                                                                     echo "overrides:" >> "$SELF/configuration.yaml"
                                                                                     for key in "${ builtins.concatStringsSep "" [ "$" "{" "!overrides[@]" "}" ] }"
                                                                                     do
-                                                                                        echo "  $key: ${overrides[$key]}" >> "$SELF/configuration.yaml"
+                                                                                        echo "  $key: ${ builtins.concatStringsSep "" [ "$" "{" "overrides[$key]" "}" ] }" >> "$SELF/configuration.yaml"
                                                                                     done
                                                                                 '' ;
                                                                         } ;
