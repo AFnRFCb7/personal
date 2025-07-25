@@ -150,7 +150,7 @@
                                                                                     export NIX_LOG=trace
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     echo c1bf2545-13b2-4a2f-bf19-ae7a8b66822f > /tmp/DEBUG
-                                                                                    cat $( ${ resources.milestone.source.private } "$@" )/work-tree/flake.nix >> /tmp/DEBUG
+                                                                                    cat "$( ${ resources.milestone.source.private } "$@" )/work-tree/flake.nix" >> /tmp/DEBUG
                                                                                     cat >> /tmp/DEBUG <<EOF
                                                                                     time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose "\$( ${ resources.milestone.source.private } "$@" )/work-tree"
                                                                                     EOF
