@@ -535,6 +535,8 @@
                                                                                                                         echo "CHECK=$CHECK"
                                                                                                                         BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$@" )"
                                                                                                                         echo "BUILD_VM=$BUILD_VM"
+                                                                                                                        RUN_VM="$( ${ resources.milestone.virtual-machine.run } "$@" )"
+                                                                                                                        echo "RUN_VM=$RUN_VM"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
