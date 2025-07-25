@@ -207,7 +207,9 @@
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
                                                                                             echo "25f341cf-e015-4520-8096-5ad41a5df34b CONFIGURATION=$CONFIGURATION" > /tmp/DEBUG
-                                                                                            echo "605ea793-2cce-4e78-82d2-68f8900ce1e0 INPUT=\"\$( yq --raw-ouput \"overrides[${ name }]\" \"$CONFIGURATION\" )\"" >> /tmp/DEBUG
+                                                                                            cat >> /tmp/DEBUG <<EOF
+                                                                                            INPUT="\$( yq --raw-ouput "overrides[${ name }]" "$CONFIGURATION" )"
+                                                                                            EOF
                                                                                             INPUT="$( yq --raw-ouput "overrides[${ name }]" "$CONFIGURATION" )"
                                                                                             echo "9590a08e-7f96-4fc7-ab6d-7de43ce68879" >> /tmp/DEBUG
                                                                                             if [[ -z "$INPUT" ]]
