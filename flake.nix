@@ -185,10 +185,10 @@
                                                                                         esac
                                                                                     done
                                                                                     echo "shift: $SHIFT" >> "$SELF/configuration.yaml"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[personal]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secret]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[personal]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secret]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
                                                                                     echo "overrides:" >> "$SELF/configuration.yaml"
                                                                                     for key in "${!overrides[@]}"; do
                                                                                         echo "  $key: ${overrides[$key]}" >> "$SELF/configuration.yaml"
