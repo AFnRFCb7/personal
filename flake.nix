@@ -192,7 +192,7 @@
                                                                         repository =
                                                                             name : origin : input-script : sed : ignore :
                                                                                 {
-                                                                                    init-inputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                    init-inputs = [ pkgs.coreutils pkgs.git pkgs.yq ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             CONFIGURATION="$1"
