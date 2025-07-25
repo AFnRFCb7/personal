@@ -218,11 +218,15 @@
                                                                                             then
                                                                                                 INPUT="$( ${ input-script } )"
                                                                                             fi
-                                                                                            echo "561cc4f2-7014-4a65-8ead-121ab958a928" >> /tmp/DEBUG
+                                                                                            echo "561cc4f2-7014-4a65-8ead-121ab958a928 $INPUT" >> /tmp/DEBUG
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
+                                                                                            echo 0794b65a-cb03-4105-a558-be0300255f40 >> /tmp/DEBUG
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                            echo fa783e00-7cb4-4023-b133-620062b62ea9 >> /tmp/DEBUG
                                                                                             BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )"
+                                                                                            echo e124eccc-aa7e-4a6c-8c31-b3344722f8d6 >> /tmp/DEBUG
                                                                                             git fetch origin "$BRANCH"
+                                                                                            echo 6a9337f5-d9ce-4609-97e6-881844daa9c5 >> /tmp/DEBUG
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
