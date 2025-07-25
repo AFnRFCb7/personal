@@ -279,6 +279,7 @@
                                                                                             "$VM/result/bin/run-nixos-vm" -nographic
                                                                                             echo d5f6a6f4-96cb-43f4-b965-262ccb5a7a45 >> /tmp/DEBUG
                                                                                             # shellcheck enable=SC2129
+                                                                                            true
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
