@@ -221,7 +221,7 @@
                                                                                     echo "TEST=$TEST"
                                                                                     MILESTONE="$( date --date "$( date +%Y-%m-1 ) + 1 month " +%Y-%m )"
                                                                                     mapfile -t overrides < <(yq e '.overrides | to_entries | .[] | "\(.key) \(.value)"' "$CONFIGURATION")
-                                                                                    for entry in "${overrides[@]}"; do
+                                                                                    for entry in "${ builtins.concatStringsSep "" [ "$" "{" "overrides[@]" "}" ] }"; do
                                                                                       key=$(awk '{print $1}' <<< "$entry")
                                                                                       dir=$(awk '{print $2}' <<< "$entry")
 
