@@ -186,9 +186,9 @@
                                                                                     done
                                                                                     echo "shift: $SHIFT" >> "$SELF/configuration.yaml"
                                                                                     : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[personal]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secret]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secret]:=$( ${ resources.milestone.source.inputs.secret } )" "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.secrets } )" "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.visitor } )" "}" ] }"
                                                                                     echo "overrides:" >> "$SELF/configuration.yaml"
                                                                                     for key in "${ builtins.concatStringsSep "" [ "$" "{" "!overrides[@]" "}" ] }"
                                                                                     do
