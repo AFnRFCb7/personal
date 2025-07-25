@@ -17,6 +17,7 @@
                             tester =
                                 { pkgs , ... } :
                                     {
+                                        boot.kernelModules = [ "9p" "9pnet" "9pnet_virtio" ] ;
                                         fileSystems."/test" =
                                             {
                                                 fsType = "9p" ;
