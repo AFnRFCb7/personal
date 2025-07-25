@@ -207,6 +207,9 @@
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
                                                                                             echo "84fb26cb-4105-4a5f-be7a-bf5b3806239f" > /tmp/DEBUG
+                                                                                            cat >> /tmp/DEBUG <<EOF
+                                                                                            INPUTP="\$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
+                                                                                            EOFO
                                                                                             INPUTP="$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
                                                                                             echo "59f57e79-bede-40ae-b397-1c4196e2dccb $INPUTP" >> /tmp/DEBUG
                                                                                             INPUT="$( echo -n "$INPUTP" )"
