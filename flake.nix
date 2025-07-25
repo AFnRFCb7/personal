@@ -162,7 +162,7 @@
                                                                                         ''
                                                                                             INPUT=
                                                                                             INDEX=0
-                                                                                            ARGS="$@"
+                                                                                            ARGS=( "$@" )
                                                                                             while [[ "$INDEX" -lt "$#" ]]
                                                                                             do
                                                                                                 ARG="${ builtins.concatStringsSep "" [ "$" "{" "ARG[INDEX]" "}" ] }"
