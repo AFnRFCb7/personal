@@ -172,7 +172,7 @@
                                                                                                     VALUE="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX+2]" "}" ] }"
                                                                                                     if [[ "$NAME" == "${ name }" ]]
                                                                                                     then
-                                                                                                        echo "ae273a4b944cf03ec2ebb82afbd059a276ea866e4e9d6aea0262890d1f3826618b99fff3c2611928cbecc45ac3636cee92eede085b8951c8fba8941da47545f7  ${ name } $NAME $VALUE"
+                                                                                                        INPUT="$VALUE"
                                                                                                     fi
                                                                                                     ((INDEX+=3))
                                                                                                 else
