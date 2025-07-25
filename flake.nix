@@ -282,7 +282,7 @@
                                                                                             cd "$SELF"
                                                                                             export SHARED_DIR="$SELF/test"
                                                                                             mkdir --parents "$SHARED_DIR"
-                                                                                            VM=$( ${ resources.milestone.virtual-machine.build-with-bootloader } "$@" )
+                                                                                            VM=$( ${ resources.milestone.virtual-machine-with-bootloader.build } "$@" )
                                                                                             "$VM/result/bin/run-nixos-vm" -nographic
                                                                                         '' ;
                                                                                 } ;
