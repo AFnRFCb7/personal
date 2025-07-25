@@ -525,6 +525,7 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                                                         echo "$SOURCE"
+                                                                                                                        head "$SOURCE"
                                                                                                                         CHECK="$( ${ resources.milestone.check } "$@" )"
                                                                                                                         echo "CHECK=$CHECK"
                                                                                                                         BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$@" )"
