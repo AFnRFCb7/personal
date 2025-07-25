@@ -18,7 +18,7 @@
                                 { config , pkgs , ... } :
                                     {
                                         boot.kernelModules = [ "9p" "9pnet" "9pnet_virtio" ] ;
-                                        fileSystems."/tmp/xchng" =
+                                        fileSystems."/test" =
                                             {
                                                 fsType = "9p" ;
                                                 device = "shared" ;
@@ -257,9 +257,9 @@
                                                                                     init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            export TMPDIR="$SELF/test"
-                                                                                            mkdir --parents "$TMPDIR"
-                                                                                            ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm
+                                                                                            export TEST="$SELF/test"
+                                                                                            mkdir --parents "$TEST"
+                                                                                            ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm -virtfs local,path="$TEST",security_model=none,mount_tag=test
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
