@@ -147,12 +147,9 @@
                                                                             init-inputs = [ pkgs.coreutils pkgs.nix pkgs.time ] ;
                                                                             init-text =
                                                                                 ''
-                                                                                    # shellcheck disable=SC2129,SC2046
-                                                                                    echo b7841f2a-4454-4faf-a52c-5c417e3d497a > /tmp/DEBUG
                                                                                     export NIX_LOG=trace
-                                                                                    echo 6b8434e7-1cd7-40f4-8218-e09ea422927d >> /tmp/DEBUG
                                                                                     export NIX_SHOW_TRACE=1
-                                                                                    echo c1bf2545-13b2-4a2f-bf19-ae7a8b66822f >> /tmp/DEBUG
+                                                                                    echo c1bf2545-13b2-4a2f-bf19-ae7a8b66822f > /tmp/DEBUG
                                                                                     cat $( ${ resources.milestone.source.private } "$@" )/work-tree/flake.nix >> /tmp/DEBUG
                                                                                     echo time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$@" )/work-tree" >> /tmp/DEBUG 2>&1
                                                                                     time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose "$( ${ resources.milestone.source.private } "$@" )/work-tree"
