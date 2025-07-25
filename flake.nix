@@ -173,6 +173,7 @@
                                                                                                 INPUT="$3"
                                                                                                 ln --symbolic "$INPUT" "$SELF/inputs/$NAME"
                                                                                                 shift 3
+                                                                                                ;;
                                                                                             --shift)
                                                                                                 SHIFT="$1"
                                                                                                 echo "$SHIFT" > "$SELF/shift"
