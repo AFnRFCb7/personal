@@ -134,7 +134,7 @@
                                                                 build =
                                                                     ignore :
                                                                         {
-                                                                            init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                            init-inputs = [ pkgs.nixos-rebuild pkgs.time ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     cd "$SELF"
@@ -144,7 +144,7 @@
                                                                 check =
                                                                     ignore :
                                                                         {
-                                                                            init-inputs = [ pkgs.coreutils pkgs.nix ] ;
+                                                                            init-inputs = [ pkgs.coreutils pkgs.nix pkgs.time ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     export NIX_LOG=trace
@@ -290,7 +290,7 @@
                                                                 test =
                                                                     ignore :
                                                                         {
-                                                                            init-inputs = [ ] ;
+                                                                            init-inputs = [ pkgs.coreutils pkgs.time ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     time timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.private } "$@" )/work-tree#user" --show-trace
@@ -301,7 +301,7 @@
                                                                         build =
                                                                             ignore :
                                                                                 {
-                                                                                    init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                                    init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild pkgs.time ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
@@ -311,7 +311,7 @@
                                                                         run =
                                                                             ignore :
                                                                                 {
-                                                                                    init-inputs = [ pkgs.coreutils ] ;
+                                                                                    init-inputs = [ pkgs.coreutils pkgs.time ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
@@ -327,7 +327,7 @@
                                                                         build =
                                                                             ignore :
                                                                                 {
-                                                                                    init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                                    init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild pkgs.time ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
@@ -337,7 +337,7 @@
                                                                         run =
                                                                             ignore :
                                                                                 {
-                                                                                    init-inputs = [ pkgs.coreutils ] ;
+                                                                                    init-inputs = [ pkgs.coreutils pkgs.time ] ;
                                                                                     init-text =
                                                                                         ''
                                                                                             cd "$SELF"
