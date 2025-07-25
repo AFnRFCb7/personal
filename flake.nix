@@ -525,7 +525,7 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                                                         echo "$SOURCE"
-                                                                                                                        head "$SOURCE"
+                                                                                                                        head "$SOURCE/work-tree/flake.nix"
                                                                                                                         CHECK="$( ${ resources.milestone.check } "$@" )"
                                                                                                                         echo "CHECK=$CHECK"
                                                                                                                         BUILD_VM="$( ${ resources.milestone.virtual-machine.build } "$@" )"
