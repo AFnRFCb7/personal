@@ -158,27 +158,25 @@
                                                                         {
                                                                             init-text =
                                                                                 ''
-                                                                                    echo "overrides:" > "$SELF/configuration.yaml"
+                                                                                    declare -A overrides=()
+                                                                                    SHIFT=0
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
-                                                                                        SHIFT=0
                                                                                         case "$1" in
                                                                                             --shift)
-                                                                                                if [[ "$#" -lt 2 ]]
-                                                                                                then
-                                                                                                    echo SHIFT needs one argument >&2
+                                                                                                if [[ "$#" -lt 2 ]]; then
+                                                                                                    echo "SHIFT needs one argument" >&2
                                                                                                     exit 64
                                                                                                 fi
                                                                                                 SHIFT="$2"
                                                                                                 shift 2
                                                                                                 ;;
                                                                                             --override-input)
-                                                                                                if [[ "$#" -lt 3 ]]
-                                                                                                then
-                                                                                                    echo OVERRIDE_INPUT needs two arguments >&2
+                                                                                                if [[ "$#" -lt 3 ]]; then
+                                                                                                    echo "OVERRIDE_INPUT needs two arguments" >&2
                                                                                                     exit 64
                                                                                                 fi
-                                                                                                echo "  $2: $3" >> "$SELF/configuration.yaml"
+                                                                                                overrides["$2"]="$3"
                                                                                                 shift 3
                                                                                                 ;;
                                                                                             *)
@@ -187,6 +185,14 @@
                                                                                         esac
                                                                                     done
                                                                                     echo "shift: $SHIFT" >> "$SELF/configuration.yaml"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[personal]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secret]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
+                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.personal } ) "}" ] }"
+                                                                                    echo "overrides:" >> "$SELF/configuration.yaml"
+                                                                                    for key in "${!overrides[@]}"; do
+                                                                                        echo "  $key: ${overrides[$key]}" >> "$SELF/configuration.yaml"
+                                                                                    done
                                                                                 '' ;
                                                                         } ;
                                                                 promote =
