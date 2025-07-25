@@ -207,7 +207,7 @@
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
                                                                                             INPUTP="$( yq --raw-output ".overrides[${ name }]" "$CONFIGURATION" )"
-                                                                                            INPUT="$( echo -n "$INPUTP" )
+                                                                                            INPUT="$( echo -n "$INPUTP" )"
                                                                                             if [[ -z "$INPUT" ]]
                                                                                             then
                                                                                                 INPUT="$( ${ input-script } )"
