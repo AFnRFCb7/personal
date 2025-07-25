@@ -542,6 +542,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        echo A
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                                                         echo "$SOURCE"
                                                                                                                         head "$SOURCE/work-tree/flake.nix"
