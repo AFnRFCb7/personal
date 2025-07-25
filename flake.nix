@@ -162,13 +162,14 @@
                                                                                         ''
                                                                                             INPUT=
                                                                                             INDEX=0
+                                                                                            ARGS="$@"
                                                                                             while [[ "$INDEX" -lt "$#" ]]
                                                                                             do
                                                                                                 ARG="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX]" "}" ] }"
                                                                                                 if [[ "$ARG" == "--override-input" ]]
                                                                                                 then
-                                                                                                    NAME="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX+1]" "}" ] }"
-                                                                                                    VALUE="${ builtins.concatStringsSep "" [ "$" "{" "@[INDEX+2]" "}" ] }"
+                                                                                                    NAME="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX+1]" "}" ] }"
+                                                                                                    VALUE="${ builtins.concatStringsSep "" [ "$" "{" "ARGS[INDEX+2]" "}" ] }"
                                                                                                     if [[ "$NAME" == "${ name }" ]]
                                                                                                     then
                                                                                                         INPUT="$VALUE"
