@@ -248,9 +248,16 @@
                                                                                     init-inputs = [ pkgs.coreutils ] ;
                                                                                     init-text =
                                                                                         ''
+                                                                                            echo a6cb9010-50cc-48c9-a93d-8a82f0a71421 > /tmp/DEBUG
                                                                                             export SHARED_DIR="$SELF/test"
+                                                                                            echo c4a13718-4023-4cf1-b048-a40f47c63aca >> /tmp/DEBUG
                                                                                             mkdir --parents "$SHARED_DIR"
+                                                                                            echo 176849c1-fa91-4af1-b10e-4fe71f4d67e4 >> /tmp/DEBUG
+                                                                                            cat >> /tmp/DEBUG <<EOF
                                                                                             ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm -nographic
+                                                                                            EOF
+                                                                                            ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm -nographic
+                                                                                            echo d5f6a6f4-96cb-43f4-b965-262ccb5a7a45 >> /tmp/DEBUG
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
