@@ -27,11 +27,11 @@
                                                                     pkgs.writeShellApplication
                                                                         {
                                                                             name = "application" ;
-                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                            runtimeInputs = [ pkgs.coreutils pkgs.systemd ] ;
                                                                             text =
                                                                                 ''
                                                                                     touch /tmp/shared/FLAG || true
-                                                                                    /usr/bin/systemctl poweroff
+                                                                                    systemctl poweroff
                                                                                 '' ;
                                                                         } ;
                                                                 in "${ application }/bin/application" ;
