@@ -219,6 +219,9 @@
                                                                                                 INPUT="$( ${ input-script } )"
                                                                                             fi
                                                                                             echo "561cc4f2-7014-4a65-8ead-121ab958a928 $INPUT" >> /tmp/DEBUG
+                                                                                            cat >> /tmp/DEBUG <<EOF
+                                                                                            GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
+                                                                                            EOF
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                             echo 0794b65a-cb03-4105-a558-be0300255f40 >> /tmp/DEBUG
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
