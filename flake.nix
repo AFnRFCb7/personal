@@ -190,7 +190,8 @@
                                                                                     : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
                                                                                     : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
                                                                                     echo "overrides:" >> "$SELF/configuration.yaml"
-                                                                                    for key in "${!overrides[@]}"; do
+                                                                                    for key in "${ builtins.concatStringsSep "" [ "$" "{" "!overrides[@]" "}" ] }"
+                                                                                    do
                                                                                         echo "  $key: ${overrides[$key]}" >> "$SELF/configuration.yaml"
                                                                                     done
                                                                                 '' ;
