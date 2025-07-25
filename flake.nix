@@ -236,7 +236,7 @@
                                                                                         ''
                                                                                             mkdir --parents "$SELF/test"
                                                                                             export QEMU_OPTS="-virtfs local,path=$SELF/test,mount_tag=test,security_model=none"
-                                                                                            ${ resources.milestone.virtual-machines.build }/result/bin/run-nixos-vm
+                                                                                            ${ resources.milestone.virtual-machine.build }/result/bin/run-nixos-vm
                                                                                         '' ;
                                                                                 } ;
                                                                     } ;
