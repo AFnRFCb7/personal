@@ -154,7 +154,8 @@
                                                                                     echo c1bf2545-13b2-4a2f-bf19-ae7a8b66822f >> /tmp/DEBUG
                                                                                     cd "$( ${ resources.milestone.source.private } "$@" )/work-tree"
                                                                                     echo 2fc55bae-40d1-43f4-b3a7-f45654d38f1a >> /tmp/DEBUG
-                                                                                    time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose >> /tmp/DEBUG 2>&1
+                                                                                    echo time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose >> /tmp/DEBUG 2>&1
+                                                                                    time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check --print-build-logs --verbose --verbose --verbose
                                                                                     echo af4690ae-c213-46fa-a9d6-31d538d036b0 >> /tmp/DEBUG
                                                                                 '' ;
                                                                         } ;
