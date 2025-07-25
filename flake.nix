@@ -173,7 +173,7 @@
                                                                                             --override-input)
                                                                                                 if [[ "$#" -lt 3 ]]
                                                                                                 then
-                                                                                                    echo OVERRIDE_INPUT needs two arguments &>2
+                                                                                                    echo OVERRIDE_INPUT needs two arguments >&2
                                                                                                     exit 64
                                                                                                 fi
                                                                                                 echo "  $2: $3" >> "$SELF/configuration.yaml"
