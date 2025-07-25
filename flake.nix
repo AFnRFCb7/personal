@@ -277,6 +277,7 @@
                                                                                             cat >> /tmp/DEBUG <<EOF
                                                                                             VM=\$( ${ resources.milestone.virtual-machine.build } )
                                                                                             EOF
+                                                                                            echo 1234e0e8-255e-43e3-ab88-8250332104d2 >> /tmp/DEBUG
                                                                                             VM=$( ${ resources.milestone.virtual-machine.build } )
                                                                                             "$VM/result/bin/run-nixos-vm" -nographic
                                                                                             echo d5f6a6f4-96cb-43f4-b965-262ccb5a7a45 >> /tmp/DEBUG
