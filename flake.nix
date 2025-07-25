@@ -161,44 +161,26 @@
                                                                 configuration =
                                                                     ignore :
                                                                         {
+                                                                            init-packages = [ pkgs.coreutils ] ;
                                                                             init-text =
                                                                                 ''
-                                                                                    declare -A overrides=()
-                                                                                    SHIFT=0
+                                                                                    mkdir --parents "$SELF/inputs"
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
                                                                                         case "$1" in
-                                                                                            --shift)
-                                                                                                if [[ "$#" -lt 2 ]]; then
-                                                                                                    echo "SHIFT needs one argument" >&2
-                                                                                                    exit 64
-                                                                                                fi
-                                                                                                SHIFT="$2"
-                                                                                                shift 2
-                                                                                                ;;
                                                                                             --override-input)
-                                                                                                if [[ "$#" -lt 3 ]]; then
-                                                                                                    echo "OVERRIDE_INPUT needs two arguments" >&2
-                                                                                                    exit 64
-                                                                                                fi
-                                                                                                overrides["$2"]="$3"
+                                                                                                NAME="$2"
+                                                                                                INPUT="$3"
+                                                                                                ln --symbolic "$INPUT" "$SELF/inputs/$NAME"
                                                                                                 shift 3
+                                                                                            --shift)
+                                                                                                SHIFT="$1"
+                                                                                                echo "$SHIFT" > "$SELF/shift"
                                                                                                 ;;
                                                                                             *)
                                                                                                 shift
                                                                                                 ;;
                                                                                         esac
-                                                                                    done
-                                                                                    echo "shift: $SHIFT" >> "$SELF/configuration.yaml"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[personal]:=$( ${ resources.milestone.source.inputs.personal } )" "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secret]:=$( ${ resources.milestone.source.inputs.secret } )" "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[secrets]:=$( ${ resources.milestone.source.inputs.secrets } )" "}" ] }"
-                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "overrides[visitor]:=$( ${ resources.milestone.source.inputs.visitor } )" "}" ] }"
-                                                                                    echo "overrides:" >> "$SELF/configuration.yaml"
-                                                                                    for key in "${ builtins.concatStringsSep "" [ "$" "{" "!overrides[@]" "}" ] }"
-                                                                                    do
-                                                                                        echo "  $key: ${ builtins.concatStringsSep "" [ "$" "{" "overrides[$key]" "}" ] }" >> "$SELF/configuration.yaml"
-                                                                                    done
                                                                                 '' ;
                                                                         } ;
                                                                 promote =
@@ -263,10 +245,10 @@
                                                                                             git config user.email ${ config.personal.email }
                                                                                             git config user.name "${ config.personal.name }"
                                                                                             git remote add origin "${ origin }"
-                                                                                            INPUTP="$( yq --raw-output ".overrides.${ name }" "$CONFIGURATION" )"
-                                                                                            INPUT="$( echo -n "$INPUTP" )"
-                                                                                            if [[ "$INPUT" == "null" ]]
+                                                                                            if [[ -L "$CONFIGURATION/inputs/${ name }" ]]
                                                                                             then
+                                                                                                INPUT="$CONFIGURATION/inputs/${ name }"
+                                                                                            else
                                                                                                 INPUT="$( ${ input-script } )"
                                                                                             fi
                                                                                             GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
@@ -276,8 +258,6 @@
                                                                                             COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )"
                                                                                             git checkout "$COMMIT"
                                                                                             ${ if sed then "git fetch origin scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc && git checkout scratch/f91bb4c0-5c10-41f0-bb3c-cab9bd3ee3fc" else "# " }
-                                                                                            ${ if sed then "# shellcheck disable=SC2027,SC2086,SC2068" else "#" }
-                                                                                            ${ if sed then ''sed -i ${ builtins.concatStringsSep " " ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''-e "s#\(${ name }.url.*?ref=\)main\(\".*\)\$#\1$( GIT_DIR="$( ${ value } "$@" )/git" GIT_WORK_TREE="$( ${ value } "$@" )/work-tree" ${ pkgs.git }/bin/git rev-parse HEAD )\2#"'' ) resources.milestone.source.inputs ) ) } "$GIT_WORK_TREE/flake.nix"'' else "# " }
                                                                                         '' ;
                                                                                 } ;
                                                                         in
@@ -633,7 +613,7 @@
                                                                                                                     ''
                                                                                                                         SOURCE="$( ${ resources.milestone.source.private } "$@" )"
                                                                                                                         echo "$SOURCE"
-                                                                                                                        head "$SOURCE/work-tree/flake.nix"
+                                                                                                                        # head "$SOURCE/work-tree/flake.nix"
                                                                                                                         # export NIX_LOG=trace
                                                                                                                         # export NIX_SHOW_TRACE=1
                                                                                                                         # cd "$SOURCE/work-tree"
