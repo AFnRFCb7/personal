@@ -112,7 +112,7 @@
                                                                                     date --date "@$(( ${ epoch } * ( $( date +%s ) / ${ epoch } ) ))" +%Y-%m-%d
                                                                                 '' ;
                                                                 } ;
-                                                        in "${ milestone }/bin/milestone"
+                                                        in "${ milestone }/bin/milestone" ;
                                                 post-commit =
                                                     let
                                                         post-commit =
@@ -272,6 +272,7 @@
                                                                                                             git checkout origin/main
                                                                                                             git checkout -b "$MILESTONE"
                                                                                                             git push -u origin "$MILESTONE"
+                                                                                                        fi
                                                                                                         git checkout -b "scratch/$( uuidgen )"
                                                                                                     '' ;
                                                                                             } ;
