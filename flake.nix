@@ -252,7 +252,7 @@
                                                                                                         git checkout -b scratch/$( uuidgen )
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "${ setup }/bin/setup"
+                                                                                    in "${ setup }/bin/setup" ;
                                                                         } ;
                                                                 secret =
                                                                     git
