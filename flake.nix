@@ -97,6 +97,22 @@
                                                             release-inputs = release-inputs ;
                                                             release-text = release-text ;
                                                         } ;
+                                                milestone =
+                                                    let
+                                                        milestone =
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "milestone" ;
+                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                    text =
+                                                                        let
+                                                                            epoch = builtins.toString ( config.personal.milestone.epoch ) ;
+                                                                            in
+                                                                                ''
+                                                                                    date --date "@$(( ${ epoch } * ( $( date +%s ) / ${ epoch } ) ))" +%Y-%m-%d
+                                                                                '' ;
+                                                                } ;
+                                                        in "${ milestone }/bin/milestone"
                                                 post-commit =
                                                     let
                                                         post-commit =
@@ -247,8 +263,15 @@
                                                                                                 runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        git fetch origin main
-                                                                                                        git checkout origin/main
+                                                                                                        MILESTONE="$( ${ milestone } )"
+                                                                                                        if git fetch origin "$MILESTONE"
+                                                                                                        then
+                                                                                                            git checkout "origin/$MILESTONE"
+                                                                                                        else
+                                                                                                            git fetch origin main
+                                                                                                            git checkout origin/main
+                                                                                                            git checkout -b "$MILESTONE"
+                                                                                                            git push -u origin "$MILESTONE"
                                                                                                         git checkout -b "scratch/$( uuidgen )"
                                                                                                     '' ;
                                                                                             } ;
@@ -518,6 +541,7 @@
                                                                     } ;
                                                                 milestone =
                                                                     {
+                                                                        epoch = lib.mkOption { default = 60 * 60 * 24 * 7 ; type = lib.types.int ; } ;
                                                                         timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
                                                                     } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
