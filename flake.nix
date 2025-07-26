@@ -79,7 +79,6 @@
                                                                     export GIT_DIR="$SELF/git"
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
                                                                     HOMEY="$SELF/home"
-                                                                    LINKS_DIR="$SELF/links"
                                                                     mkdir --parents "$GIT_DIR"
                                                                     mkdir --parents "$GIT_WORK_TREE"
                                                                     mkdir --parents "$HOMEY"
