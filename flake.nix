@@ -249,7 +249,7 @@
                                                                                                     ''
                                                                                                         git fetch origin main
                                                                                                         git checkout origin/main
-                                                                                                        git checkout -b scratch/$( uuidgen )
+                                                                                                        git checkout -b "scratch/$( uuidgen )"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
