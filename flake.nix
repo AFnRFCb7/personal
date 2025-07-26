@@ -242,6 +242,7 @@
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
+                                                                            links = { root = "/" ; } ;
                                                                             remotes = { origin = config.personal.repository.private.remote ; } ;
                                                                             setup = checkout ;
                                                                         } ;
