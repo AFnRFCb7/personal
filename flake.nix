@@ -254,29 +254,7 @@
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
                                                                             remotes = { origin = config.personal.repository.private.remote ; } ;
-                                                                            setup =
-                                                                                let
-                                                                                    setup =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "setup" ;
-                                                                                                runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        MILESTONE="$( ${ milestone } )"
-                                                                                                        if git fetch origin "$MILESTONE"
-                                                                                                        then
-                                                                                                            git checkout "origin/$MILESTONE"
-                                                                                                        else
-                                                                                                            git fetch origin main
-                                                                                                            git checkout origin/main
-                                                                                                            git checkout -b "$MILESTONE"
-                                                                                                            git push -u origin "$MILESTONE"
-                                                                                                        fi
-                                                                                                        git checkout -b "scratch/$( uuidgen )"
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ setup }/bin/setup" ;
+                                                                            setup = checkout ;
                                                                         } ;
                                                                 secret =
                                                                     git
