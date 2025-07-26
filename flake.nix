@@ -275,10 +275,10 @@
                                                                                                         fi
                                                                                                         git checkout -b "scratch/$( uuidgen )"
                                                                                                         mkdir --parents "$SELF/links"
-                                                                                                        ln --symbolic "$( ${ resources.repository.personal } )" $SELF/links/personal
-                                                                                                        ln --symbolic "$( ${ resources.repository.secret } )" $SELF/links/secret
-                                                                                                        ln --symbolic "$( ${ resources.repository.secrets } )" $SELF/links/secrets
-                                                                                                        ln --symbolic "$( ${ resources.repository.visitor } )" $SELF/links/visitor
+                                                                                                        ln --symbolic "$( ${ resources.repository.personal } )" "$SELF/links/personal"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secret } )" "$SELF/links/secret"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secrets } )" "$SELF/links/secrets"
+                                                                                                        ln --symbolic "$( ${ resources.repository.visitor } )" "$SELF/links/visitor"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;                                                                                
