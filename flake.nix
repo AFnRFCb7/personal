@@ -49,15 +49,15 @@
                                                                     runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                     text =
                                                                         ''
-                                                                            MONTH="month/$( date +%Y-%m-1 )"
-                                                                            if git fetch origin "$MONTH"
+                                                                            MILESTONE="$( ${ milestone } )"
+                                                                            if git fetch origin "$MILESTONE"
                                                                             then
-                                                                                git checkout "origin/$MONTH"
+                                                                                git checkout "origin/$MILESTONE"
                                                                             else
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
-                                                                                git checkout -b "$MONTH"
-                                                                                git push -u origin "$MONTH"
+                                                                                git checkout -b "$MILESTONE"
+                                                                                git push -u origin "$MILESTONE"
                                                                             fi
                                                                             git checkout -b "scratch/$( uuidgen )"
                                                                         '' ;
