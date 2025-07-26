@@ -215,6 +215,45 @@
                                                                                     } ;
                                                                             in "${ setup }/bin/setup" ;
                                                                 } ;
+                                                        milestone =
+                                                            {
+                                                                snapshot =
+                                                                    ignore :
+                                                                        {
+                                                                            init-input = [ pkgs.coreutils pkgs.git ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                    do
+                                                                                        case "$1" in
+                                                                                            --input)
+                                                                                                LINK="$2"
+                                                                                                NAME="$( basename "$LINK" )"
+                                                                                                mkdir --parents "$SELF/inputs/$NAME"
+                                                                                                export GIT_DIR="$LINK/git"
+                                                                                                export GIT_WORK_TREE="$LINK/work-tree"
+                                                                                                git remote --verbose | head --lines 1 | cut --delimiter " " --fields 2 > "$SELF/inputs/$NAME/remote"
+                                                                                                git rev-parse --abbrev-ref HEAD > "$SELF/inputs/$NAME/branch"
+                                                                                                git rev-parse HEAD > "$SELF/inputs/$NAME/commit"
+                                                                                                shift 2
+                                                                                                ;;
+                                                                                            --private)
+                                                                                                LINK="$2"
+                                                                                                mkdir --parents "$SELF/private"
+                                                                                                export GIT_DIR="$LINK/git"
+                                                                                                export GIT_WORK_TREE="$LINK/work-tree"
+                                                                                                git remote --verbose | head --lines 1 | cut --delimiter " " --fields 2 > "$SELF/private/remote"
+                                                                                                git rev-parse --abbrev-ref HEAD > "$SELF/private/branch"
+                                                                                                git rev-parse HEAD > "$SELF/private/commit"
+                                                                                                shift 2
+                                                                                                ;;
+                                                                                            *)
+                                                                                                shift
+                                                                                                ;;
+                                                                                    done
+                                                                                '' ;
+                                                                        } ;
+                                                            } ;
                                                         repository =
                                                             {
                                                                 applications =
@@ -249,6 +288,19 @@
                                                                             configs =
                                                                                 {
                                                                                     "core.sshCommand" = ssh ;
+                                                                                    "milestone.promote" =
+                                                                                        let
+                                                                                            promote =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "promote" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/links/personal" --input "$SELF/links/secret"  --input "$SELF/links/secrets" --input "$SELF/links/visitor" --private "$SELF"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "!${ promote }/bin/promote" ;
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
