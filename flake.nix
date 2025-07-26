@@ -62,7 +62,7 @@
                                                                             git checkout -b "scratch/$( uuidgen )"
                                                                         '' ;
                                                                 } ;
-                                                        in "${ checkout }/bin/checkout"
+                                                        in "${ checkout }/bin/checkout" ;
                                                 git =
                                                     {
                                                         configs ? { } ,
@@ -135,7 +135,7 @@
                                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
                                                                     src = ./. ;
                                                                 } ;
-                                                        in "${ ssh }/bin/ssh"
+                                                        in "${ ssh }/bin/ssh" ;
                                                 tree =
                                                     {
                                                         dot-gnupg =
@@ -286,7 +286,7 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value path ) ) ; } tree ;
+							                    in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; system = system ; } // ( value path ) ) ; } tree ;
                                         in
                                             {
                                                 config =
