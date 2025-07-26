@@ -46,7 +46,7 @@
                                                             pkgs.writeShellApplication
                                                                 {
                                                                     name = "checkout" ;
-                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                    runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                     text =
                                                                         ''
                                                                             MONTH="month/$( date +%Y-%m-1 )"
