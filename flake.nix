@@ -238,7 +238,21 @@
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
                                                                             remotes = { origin = config.personal.repository.private.remote ; } ;
-                                                                            setup = checkout ;
+                                                                            setup =
+                                                                                let
+                                                                                    setup =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        git fetch origin main
+                                                                                                        git checkout origin/main
+                                                                                                        git checkout -b scratch/$( uuidgen )
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ setup }/bin/setup"
                                                                         } ;
                                                                 secret =
                                                                     git
