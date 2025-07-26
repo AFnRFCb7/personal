@@ -67,7 +67,6 @@
                                                     {
                                                         configs ? { } ,
                                                         hooks ? { } ,
-                                                        links ? { } ,
                                                         remotes ? { } ,
                                                         setup ? null ,
                                                         release-inputs ? [ ] ,
@@ -84,19 +83,17 @@
                                                                     mkdir --parents "$GIT_DIR"
                                                                     mkdir --parents "$GIT_WORK_TREE"
                                                                     mkdir --parents "$HOMEY"
-                                                                    mkdir --parents "$LINKS_DIR"
                                                                     cat > "$SELF/.envrc" <<EOF
                                                                     export GIT_DIR="$GIT_DIR"
                                                                     export GIT_WORK_TREE="$GIT_WORK_TREE"
                                                                     export HOME="$HOMEY"
-                                                                    export LINKS_DIR="$LINKS_DIR"
                                                                     export SELF="$SELF"
                                                                     EOF
                                                                     git init
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$LINKS_DIR/${ name }"'' ) links ) ) }
-                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                     ${ if builtins.typeOf setup == "string" then setup else "" }
                                                                 '' ;
                                                             release-inputs = release-inputs ;
@@ -242,7 +239,6 @@
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
-                                                                            links = { root = "/" ; } ;
                                                                             remotes = { origin = config.personal.repository.private.remote ; } ;
                                                                             setup = checkout ;
                                                                         } ;
