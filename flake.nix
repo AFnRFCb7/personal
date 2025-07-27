@@ -287,7 +287,8 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        git fetch remote "$ZBRANCH"
+                                                                                                        git fetch remote
+                                                                                                        # git fetch remote "$ZBRANCH"
                                                                                                         # git checkout "ZCOMMIT"
                                                                                                     '' ;
                                                                                             } ;
