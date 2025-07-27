@@ -270,7 +270,7 @@
                                                                                 } ;
                                                                             remotes =
                                                                                 {
-                                                                                    local = ""$LOCO/root/local" ;
+                                                                                    local = "$LOCO/root/local" ;
                                                                                     remote = ''$( < "$LOCO/root/remote" )'' ;
                                                                                 } ;
                                                                             setup =
