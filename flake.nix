@@ -270,8 +270,8 @@
                                                                                 {
                                                                                     LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                    ZBRANCH = ''$( < "$LOCO/private/branch" )'' ;
-                                                                                    # ZCOMMIT = ''$( cat "$LOCO/private/commit" )'' ;
+                                                                                    ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
+                                                                                    # ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
