@@ -212,6 +212,43 @@
                                                                                     } ;
                                                                             in "${ setup }/bin/setup" ;
                                                                 } ;
+                                                        milestone =
+                                                            {
+                                                                snapshot =
+                                                                    ignore :
+                                                                        {
+                                                                            init-text =
+                                                                                ''
+                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                    do
+                                                                                        case "$1" in
+                                                                                            --link)
+                                                                                                TYPE="$2"
+                                                                                                DIR="$3"
+                                                                                                COMMIT="$4"
+                                                                                                NAME="$( basename "$DIR" )"
+                                                                                                if [[ "$TYPE" == "root" ]]
+                                                                                                then
+                                                                                                    ROOT="$SELF/private"
+                                                                                                else
+                                                                                                    ROOT="$SELF/inputs/$NAME
+                                                                                                fi
+                                                                                                mkdir --parents "$ROOT"
+                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref "$COMMIT" > "$ROOT/branch"
+                                                                                                echo "$COMMIT" > "$ROOT/commit"
+                                                                                                echo "$NAME" > "ROOT/name"
+                                                                                                ln --symbolic "$DIR" "$ROOT/local"
+                                                                                                git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
+                                                                                                shift 4
+                                                                                                ;;
+                                                                                            *)
+                                                                                                shift
+                                                                                                ;;
+                                                                                        esac
+                                                                                    done
+                                                                                '' ;
+                                                                        } ;
+                                                            } ;
                                                         repository =
                                                             {
                                                                 applications =
@@ -245,6 +282,25 @@
                                                                         {
                                                                             configs =
                                                                                 {
+                                                                                    alias.promote =
+                                                                                        let
+                                                                                            promote =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "promote" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                commit ( )
+                                                                                                                    {
+                                                                                                                        REPO="$1"
+                                                                                                                        GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
+                                                                                                                    }
+                                                                                                                SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                find "$SNAPSHOT" -type f -exec cat {} \;
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            in "!${ promote }/bin/promote" ;
                                                                                     "core.sshCommand" = ssh ;
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
