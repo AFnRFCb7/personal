@@ -258,7 +258,7 @@
                                                                                                             git push -u origin "$MONTH"
                                                                                                         fi
                                                                                                         git setup -b "scratch/$( uuidgen )"
-                                                                                                        mkdir --parents "$SELF/input"
+                                                                                                        mkdir --parents "$SELF/inputs"
                                                                                                         ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
                                                                                                         ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
                                                                                                     '' ;
