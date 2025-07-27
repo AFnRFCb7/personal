@@ -260,7 +260,11 @@
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
-                                                                            hooks = { post-commit = post-commit ; } ;
+                                                                            remotes =
+                                                                                {
+                                                                                    local = ''$( ${ resources.milestone.snapshot } "$@" )/private/local'' ;
+                                                                                    origin = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )'' ;
+                                                                                } ;
                                                                             remotes = { origin = config.personal.repository.applications.remote ; } ;
                                                                             setup = checkout ;
                                                                         } ;
@@ -276,11 +280,8 @@
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
-                                                                            remotes =
-                                                                                {
-                                                                                    local = '''$( ${ resources.milestone.snapshot } "$@" )/private/local'' ;
-                                                                                    origin = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )'' ;
-                                                                                } ;
+                                                                            hooks = { post-commit = post-commit ; } ;
+                                                                            remotes = { origin = config.personal.repository.applications.remote ; } ;
                                                                             setup =
                                                                                 let
                                                                                     setup =
