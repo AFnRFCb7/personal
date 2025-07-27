@@ -264,7 +264,7 @@
                                                                             remotes =
                                                                                 {
                                                                                     # local = ''$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
-                                                                                    remote = ''$( cat "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
+                                                                                    remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                 } ;
                                                                             setup = checkout ;
                                                                         } ;
