@@ -267,7 +267,7 @@
                                                                                 } ;
                                                                             environments =
                                                                                 {
-                                                                                    LOCO1 = ''${ resources.milestone.snapshot } "@"'' ;
+                                                                                    LOCO1 = ''${ resources.milestone.snapshot }'' ;
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
                                                                                     # ZBRANCH = ''$( cat "$LOCO/private/branch" )'' ;
                                                                                 } ;
