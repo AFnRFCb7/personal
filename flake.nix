@@ -282,7 +282,7 @@
                                                                         {
                                                                             configs =
                                                                                 {
-                                                                                    alias.promote =
+                                                                                    "alias.promote" =
                                                                                         let
                                                                                             promote =
                                                                                                 pkgs.writeShellApplication
