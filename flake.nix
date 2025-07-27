@@ -236,7 +236,7 @@
                                                                                                 mkdir --parents "$ROOT"
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref HEAD > "$ROOT/branch"
                                                                                                 echo "$COMMIT" > "$ROOT/commit"
-                                                                                                echo "$NAME" > "ROOT/name"
+                                                                                                echo "$NAME" > "$ROOT/name"
                                                                                                 ln --symbolic "$DIR" "$ROOT/local"
                                                                                                 git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
                                                                                                 shift 4
