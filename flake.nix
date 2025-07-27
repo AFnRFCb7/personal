@@ -278,7 +278,7 @@
                                                                                                         git fetch local
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "${ setup }/bin/setup"
+                                                                                    in "${ setup }/bin/setup" ;
                                                                         } ;
                                                             } ;
                                                         repository =
@@ -359,6 +359,7 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        #
                                                                                                         MILESTONE="$( ${ milestone } )"
                                                                                                         if git fetch origin "$MILESTONE"
                                                                                                         then
