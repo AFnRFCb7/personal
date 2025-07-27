@@ -275,7 +275,6 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        git fetch local
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
@@ -359,7 +358,6 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        #
                                                                                                         MILESTONE="$( ${ milestone } )"
                                                                                                         if git fetch origin "$MILESTONE"
                                                                                                         then
