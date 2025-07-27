@@ -223,6 +223,7 @@
                                                                             init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                             init-text =
                                                                                 ''
+                                                                                    # shellcheck disable=SC2016
                                                                                     AWK_CMD='{print $2}'
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
