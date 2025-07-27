@@ -232,7 +232,10 @@
                                                                                                 mkdir --parents "$SELF/inputs/$NAME"
                                                                                                 export GIT_DIR="$LINK/git"
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
-                                                                                                git remote --verbose | head --lines 1 | cut --delimiter " " --fields 2 > "$SELF/inputs/$NAME/remote"
+                                                                                                git add .
+                                                                                                git commit -am "" --allow-empty --allow-empty-message || true
+                                                                                                echo "$NAME" > "$SELF/inputs/$NAME/name"
+                                                                                                git remote --verbose | head --lines 1 | awk '{print $2}' > "$SELF/inputs/$NAME/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/inputs/$NAME/branch"
                                                                                                 git rev-parse HEAD > "$SELF/inputs/$NAME/commit"
                                                                                                 shift 2
@@ -242,7 +245,9 @@
                                                                                                 mkdir --parents "$SELF/private"
                                                                                                 export GIT_DIR="$LINK/git"
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
-                                                                                                git remote --verbose | head --lines 1 | cut --delimiter " " --fields 2 > "$SELF/private/remote"
+                                                                                                git add .
+                                                                                                git commit -am "" --allow-empty --allow-empty-message || true
+                                                                                                git remote --verbose | head --lines 1 | awk '{print $2}' > "$SELF/private/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/private/branch"
                                                                                                 git rev-parse HEAD > "$SELF/private/commit"
                                                                                                 shift 2
