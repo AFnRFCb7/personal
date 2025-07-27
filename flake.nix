@@ -240,15 +240,11 @@
                                                                                                 shift 2
                                                                                                 ;;
                                                                                             --private)
-                                                                                                LINK="$2"
-                                                                                                mkdir --parents "$SELF/private"
-                                                                                                export GIT_DIR="$LINK/git"
-                                                                                                export GIT_WORK_TREE="$LINK/work-tree"
-                                                                                                git add .
-                                                                                                git commit -am "" --allow-empty --allow-empty-message || true
-                                                                                                git rev-parse --abbrev-ref HEAD > "$SELF/private/branch"
-                                                                                                git rev-parse HEAD > "$SELF/private/commit"
-                                                                                                shift 2
+                                                                                                BRANCH="$2"
+                                                                                                COMMIT="$3"
+                                                                                                echo "$BRANCH" > "$SELF/private/branch"
+                                                                                                echo "$COMMIT" > "$SELF/private/commit"
+                                                                                                shift 3
                                                                                                 ;;
                                                                                             *)
                                                                                                 shift
@@ -300,8 +296,9 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                git commit -am "" --allow-empty --allow-empty-message || true
                                                                                                                 # ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --input "$SELF/inputs/secrets" --input "$SELF/inputs/visitor" --private "$SELF"
-                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --private "$SELF"
+                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --private "$( git rev-parse --abbrev-ref HEAD )" "$( git rev-parse HEAD )"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
