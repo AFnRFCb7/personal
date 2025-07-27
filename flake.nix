@@ -263,7 +263,7 @@
                                                                                                         ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
                                                                                                     '' ;
                                                                                             } ;
-                                                                                        in "${ setup }/bin/setup"                                                                            
+                                                                                        in "${ setup }/bin/setup" ;
                                                                         } ;
                                                                 secret =
                                                                     git
