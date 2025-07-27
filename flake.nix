@@ -67,7 +67,6 @@
                                                     {
                                                         configs ? { } ,
                                                         hooks ? { } ,
-                                                        links ? { } ,
                                                         remotes ? { } ,
                                                         setup ? null ,
                                                         release-inputs ? [ ] ,
@@ -80,22 +79,18 @@
                                                                     export GIT_DIR="$SELF/git"
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
                                                                     HOMEY="$SELF/home"
-                                                                    LINKS_DIR="$SELF/links"
                                                                     mkdir --parents "$GIT_DIR"
                                                                     mkdir --parents "$GIT_WORK_TREE"
                                                                     mkdir --parents "$HOMEY"
-                                                                    mkdir --parents "$LINKS_DIR"
                                                                     cat > "$SELF/.envrc" <<EOF
                                                                     export GIT_DIR="$GIT_DIR"
                                                                     export GIT_WORK_TREE="$GIT_WORK_TREE"
                                                                     export HOME="$HOMEY"
-                                                                    export LINKS_DIR="$LINKS_DIR"
                                                                     export SELF="$SELF"
                                                                     EOF
                                                                     git init
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks${ name }"'' ) hooks ) ) }
-                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$LINKS_DIR/${ name }"'' ) links ) ) }
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                     ${ if builtins.typeOf setup == "string" then setup else "" }
                                                                 '' ;
@@ -243,7 +238,32 @@
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
                                                                             remotes = { origin = config.personal.repository.private.remote ; } ;
-                                                                            setup = checkout ;
+                                                                            setup =
+                                                                                let
+                                                                                    setup =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        MONTH="month/$( date +%Y-%m-1 )"
+                                                                                                        if git fetch origin "$MONTH"
+                                                                                                        then
+                                                                                                            git checkout "origin/$MONTH"
+                                                                                                        else
+                                                                                                            git fetch origin main
+                                                                                                            git checkout origin/main
+                                                                                                            git checkout -b "$MONTH"
+                                                                                                            git push -u origin "$MONTH"
+                                                                                                        fi
+                                                                                                        git setup -b "scratch/$( uuidgen )"
+                                                                                                        mkdir --parents "$SELF/input"
+                                                                                                        ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ setup }/bin/setup"                                                                            
                                                                         } ;
                                                                 secret =
                                                                     git
