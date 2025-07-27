@@ -234,7 +234,7 @@
                                                                                                     ROOT="$SELF/inputs/$NAME"
                                                                                                 fi
                                                                                                 mkdir --parents "$ROOT"
-                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref "$COMMIT" > "$ROOT/branch"
+                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref HEAD > "$ROOT/branch"
                                                                                                 echo "$COMMIT" > "$ROOT/commit"
                                                                                                 echo "$NAME" > "ROOT/name"
                                                                                                 ln --symbolic "$DIR" "$ROOT/local"
