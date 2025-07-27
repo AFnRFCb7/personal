@@ -10,7 +10,6 @@
                         nixpkgs ,
 			            secret ,
                         secrets ,
-                        rev ,
                         private ,
                         system ,
                         visitor
