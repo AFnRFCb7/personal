@@ -220,7 +220,7 @@
                                                                 snapshot =
                                                                     ignore :
                                                                         {
-                                                                            init-input = [ pkgs.coreutils pkgs.git ] ;
+                                                                            init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     while [[ "$#" -gt 0 ]]
