@@ -79,7 +79,7 @@
                                                             init-text =
                                                                 ''
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value }"'' ) environments ) ) }
-                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="$${ name }"'' ) environments ) ) }
+                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="$${ name }"'' ) environments ) ) }
                                                                     export GIT_DIR="$SELF/git"
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
                                                                     HOMEY="$SELF/home"
@@ -91,7 +91,7 @@
                                                                     export GIT_WORK_TREE="$GIT_WORK_TREE"
                                                                     export HOME="$HOMEY"
                                                                     export SELF="$SELF"
-                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="$${ name }"'' ) environments ) ) }
+                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" "{" name "}" ] }"'' ) environments ) ) }
                                                                     EOF
                                                                     git init
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
