@@ -66,7 +66,7 @@
                                                 git =
                                                     {
                                                         configs ? { } ,
-                                                        environment ? { } ,
+                                                        environments ? { } ,
                                                         hooks ? { } ,
                                                         remotes ? { } ,
                                                         setup ? null ,
@@ -264,7 +264,7 @@
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
-                                                                            environment =
+                                                                            environments =
                                                                                 {
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
                                                                                 } ;
