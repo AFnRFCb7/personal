@@ -233,13 +233,14 @@
                                                                                                 export GIT_DIR="$LINK/git"
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
                                                                                                 git add .
-                                                                                                git commit -am "" --allow-empty-message || true
+                                                                                                git commit -am "" --allow-empty-message > /dev/null 2>&1 || true
                                                                                                 echo "$NAME" > "$SELF/inputs/$NAME/name"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/inputs/$NAME/branch"
                                                                                                 git rev-parse HEAD > "$SELF/inputs/$NAME/commit"
                                                                                                 shift 2
                                                                                                 ;;
                                                                                             --private)
+                                                                                                mkdir --parents "$SELF/private"
                                                                                                 BRANCH="$2"
                                                                                                 COMMIT="$3"
                                                                                                 echo "$BRANCH" > "$SELF/private/branch"
@@ -296,7 +297,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git commit -am "" --allow-empty-message || true
+                                                                                                                git commit -am "" --allow-empty-message > /dev/null 2>&1 || true
                                                                                                                 # ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --input "$SELF/inputs/secrets" --input "$SELF/inputs/visitor" --private "$SELF"
                                                                                                                 ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --private "$( git rev-parse --abbrev-ref HEAD )" "$( git rev-parse HEAD )"
                                                                                                             '' ;
