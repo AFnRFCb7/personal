@@ -267,6 +267,7 @@
                                                                             environments =
                                                                                 {
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
+                                                                                    BRANCH = "$( cat "$LOCO/private/branch" )" ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
@@ -282,6 +283,7 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        git fetch remote "$BRANCH"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
