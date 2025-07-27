@@ -224,7 +224,7 @@
                                                                             init-text =
                                                                                 ''
                                                                                     # shellcheck disable=SC1083,SC2086,SC2016
-                                                                                    AWK_CMD='{print $2}'
+                                                                                    AWK_CMD='{ print $2 }'
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
                                                                                         case "$1" in
@@ -249,7 +249,6 @@
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
                                                                                                 git add .
                                                                                                 git commit -am "" --allow-empty --allow-empty-message || true
-                                                                                                # shellcheck disable=SC1083,SC2086
                                                                                                 git remote --verbose | head --lines 1 | awk "$AWK_CMD" > "$SELF/private/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/private/branch"
                                                                                                 git rev-parse HEAD > "$SELF/private/commit"
