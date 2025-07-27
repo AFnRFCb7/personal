@@ -298,7 +298,8 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/links/personal" --input "$SELF/links/secret"  --input "$SELF/links/secrets" --input "$SELF/links/visitor" --private "$SELF"
+                                                                                                                # ${ resources.milestone.snapshot } --input "$SELF/links/personal" --input "$SELF/links/secret" --input "$SELF/links/secrets" --input "$SELF/links/visitor" --private "$SELF"
+                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/links/personal" --input "$SELF/links/secret"--private "$SELF"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
