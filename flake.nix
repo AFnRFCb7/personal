@@ -66,6 +66,7 @@
                                                 git =
                                                     {
                                                         configs ? { } ,
+                                                        environment ? { } ,
                                                         hooks ? { } ,
                                                         remotes ? { } ,
                                                         setup ? null ,
@@ -76,6 +77,7 @@
                                                             init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                             init-text =
                                                                 ''
+                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value }"'' ) environments ) ) }
                                                                     export GIT_DIR="$SELF/git"
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
                                                                     HOMEY="$SELF/home"
@@ -87,6 +89,7 @@
                                                                     export GIT_WORK_TREE="$GIT_WORK_TREE"
                                                                     export HOME="$HOMEY"
                                                                     export SELF="$SELF"
+                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }=${ name }''" ) environments ) ) }
                                                                     EOF
                                                                     git init
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
@@ -261,10 +264,14 @@
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
+                                                                            environment =
+                                                                                {
+                                                                                    LOCO = "$( ${ resources.milestone.snapshot } "$@" )" ;
+                                                                                } ;
                                                                             remotes =
                                                                                 {
-                                                                                    local = ''\$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
-                                                                                    # remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
+                                                                                    local = ""$LOCO/root/local" ;
+                                                                                    remote = ''$( < "$LOCO/root/remote" )'' ;
                                                                                 } ;
                                                                             setup =
                                                                                 let
@@ -275,7 +282,6 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        git fetch local
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
