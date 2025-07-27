@@ -49,15 +49,15 @@
                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                     text =
                                                                         ''
-                                                                            MONTH="month/$( date +%Y-%m-1 )"
-                                                                            if git fetch origin "$MONTH"
+                                                                            MILESTONE="$( ${ milestone } )"
+                                                                            if git fetch origin "$MILESTONE"
                                                                             then
-                                                                                git checkout "origin/$MONTH"
+                                                                                git checkout "origin/$MILESTONE"
                                                                             else
                                                                                 git fetch origin main
                                                                                 git checkout origin/main
-                                                                                git checkout -b "$MONTH"
-                                                                                git push -u origin "$MONTH"
+                                                                                git checkout -b "$MILESTONE"
+                                                                                git push -u origin "$MILESTONE"
                                                                             fi
                                                                             git checkout -b "scratch/$( uuidgen )"
                                                                         '' ;
@@ -97,6 +97,19 @@
                                                             release-inputs = release-inputs ;
                                                             release-text = release-text ;
                                                         } ;
+                                                milestone =
+                                                    let
+                                                        milestone =
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "milestone" ;
+                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                    text =
+                                                                        ''
+                                                                            date --date "@$(( ${ builtins.toString config.personal.milestone.epoch } * ( "$( date +%s )" / ${ builtins.toString config.personal.milestone.epoch } ) ))" "+${ config.personal.milestone.format }"
+                                                                        '' ;
+                                                                } ;
+                                                            in "${ milestone }/bin/milestone"
                                                 post-commit =
                                                     let
                                                         post-commit =
@@ -247,15 +260,15 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        MONTH="month/$( date +%Y-%m-1 )"
-                                                                                                        if git fetch origin "$MONTH"
+                                                                                                        MILESTONE="$( ${ milestone } )"
+                                                                                                        if git fetch origin "$MILESTONE"
                                                                                                         then
-                                                                                                            git checkout "origin/$MONTH"
+                                                                                                            git checkout "origin/$MILESTONE"
                                                                                                         else
                                                                                                             git fetch origin main
                                                                                                             git checkout origin/main
-                                                                                                            git checkout -b "$MONTH"
-                                                                                                            git push -u origin "$MONTH"
+                                                                                                            git checkout -b "$MILESTONE"
+                                                                                                            git push -u origin "$MILESTONE"
                                                                                                         fi
                                                                                                         git setup -b "scratch/$( uuidgen )"
                                                                                                         mkdir --parents "$SELF/inputs"
@@ -529,6 +542,8 @@
                                                                     } ;
                                                                 milestone =
                                                                     {
+                                                                        epoch = lib.mkOption { default = 60 * 60 * 24 * 7 ; type = lib.types.int ; } ;
+                                                                        format = lib.mkOption { default = "weekly/%Y-%m-%d" ; type = lib.types.str ; } ;
                                                                         timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
                                                                     } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
