@@ -263,9 +263,8 @@
                                                                             remotes =
                                                                                 {
                                                                                     local = ''$( ${ resources.milestone.snapshot } "$@" )/private/local'' ;
-                                                                                    remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )'' ;
+                                                                                    remote = ''$( cat "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )'' ;
                                                                                 } ;
-                                                                            remotes = { origin = config.personal.repository.applications.remote ; } ;
                                                                             setup = checkout ;
                                                                         } ;
                                                             } ;
