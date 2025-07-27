@@ -267,7 +267,7 @@
                                                                             environments =
                                                                                 {
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                    BRANCH = '''$( cat "$LOCO/private/branch" )'' ;
+                                                                                    BRANCH = ''$( cat "$LOCO/private/branch" )'' ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
