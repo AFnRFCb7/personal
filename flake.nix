@@ -263,8 +263,8 @@
                                                                                 } ;
                                                                             remotes =
                                                                                 {
-                                                                                    # local = ''$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
-                                                                                    remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
+                                                                                    local = ''$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
+                                                                                    # remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                 } ;
                                                                             setup = checkout ;
                                                                         } ;
