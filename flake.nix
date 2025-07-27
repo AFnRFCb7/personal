@@ -10,6 +10,7 @@
                         nixpkgs ,
 			            secret ,
                         secrets ,
+                        rev ,
                         system ,
                         visitor
                     } :
@@ -429,7 +430,7 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; system = system ; } // ( value path ) ) ; } tree ;
+							                    in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs.rev path rev self.rev secret.rev system visitors.rev ] ; system = system ; } // ( value path ) ) ; } tree ;
                                         in
                                             {
                                                 config =
