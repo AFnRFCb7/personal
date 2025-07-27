@@ -266,7 +266,18 @@
                                                                                     local = ''$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
                                                                                     # remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                 } ;
-                                                                            setup = checkout ;
+                                                                            setup =
+                                                                                let
+                                                                                    setup =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        git fetch local
+                                                                                                    '' ;
+                                                                                            } ;
                                                                         } ;
                                                             } ;
                                                         repository =
