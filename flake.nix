@@ -235,8 +235,6 @@
                                                                                                 git add .
                                                                                                 git commit -am "" --allow-empty --allow-empty-message || true
                                                                                                 echo "$NAME" > "$SELF/inputs/$NAME/name"
-                                                                                                # read -r _ url _ < <( git remote --verbose | head --lines 1 )
-                                                                                                # printf "%s\n" "\"$url\"" > "$SELF/inputs/$NAME/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/inputs/$NAME/branch"
                                                                                                 git rev-parse HEAD > "$SELF/inputs/$NAME/commit"
                                                                                                 shift 2
@@ -248,8 +246,6 @@
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
                                                                                                 git add .
                                                                                                 git commit -am "" --allow-empty --allow-empty-message || true
-                                                                                                # read -r _ url _ < <( git remote --verbose | head --lines 1 )
-                                                                                                # printf "%s\n" "\"$url\"" > "$SELF/private/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/private/branch"
                                                                                                 git rev-parse HEAD > "$SELF/private/commit"
                                                                                                 shift 2
