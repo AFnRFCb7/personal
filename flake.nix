@@ -250,6 +250,7 @@
                                                                                         esac
                                                                                     done
                                                                                 '' ;
+                                                                            lease = 60 * 60 ;
                                                                         } ;
                                                                 source =
                                                                     git
