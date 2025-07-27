@@ -296,8 +296,7 @@
                                                                                                                         REPO="$1"
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
-                                                                                                                SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                find "$SNAPSHOT" -type f -exec cat {} \;
+
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
