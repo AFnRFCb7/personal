@@ -296,12 +296,11 @@
                                                                                                                         REPO="$1"
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
-                                                                                                                SNAPSHOT="$( "WRONG_1" --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                 echo "$SNAPSHOT"
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            # in "!${ promote.outPath }/bin/promote" ;
-                                                                                            in "WRONG2/bin/promote" ;
+                                                                                            in "!${ promote.outPath }/bin/promote" ;
                                                                                     "core.sshCommand" = ssh ;
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
