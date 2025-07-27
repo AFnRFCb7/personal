@@ -250,6 +250,7 @@
                                                                                             *)
                                                                                                 shift
                                                                                                 ;;
+                                                                                        esac
                                                                                     done
                                                                                 '' ;
                                                                         } ;
