@@ -268,7 +268,7 @@
                                                                             environments =
                                                                                 {
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                    ZBRANCH = ''$( cat "$LOCO/private/branch" )'' ;
+                                                                                    # ZBRANCH = ''$( cat "$LOCO/private/branch" )'' ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
@@ -284,7 +284,8 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        git fetch remote "$ZBRANCH"
+                                                                                                        # git fetch remote "$ZBRANCH"
+                                                                                                        exit 99
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
