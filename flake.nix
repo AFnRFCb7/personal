@@ -301,7 +301,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 # ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --input "$SELF/inputs/secrets" --input "$SELF/inputs/visitor" --private "$SELF"
-                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret"--private "$SELF"
+                                                                                                                ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --private "$SELF"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
