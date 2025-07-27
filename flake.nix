@@ -224,7 +224,7 @@
                                                                             init-text =
                                                                                 ''
                                                                                     # shellcheck disable=SC1083,SC2086,SC2016
-                                                                                    AWK_CMD='{ print $2 }'
+                                                                                    AWK_CMD='{ print "\"" $2 "\"" }'
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
                                                                                         case "$1" in
