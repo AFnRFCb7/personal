@@ -231,7 +231,7 @@
                                                                                                 then
                                                                                                     ROOT="$SELF/private"
                                                                                                 else
-                                                                                                    ROOT="$SELF/inputs/$NAME
+                                                                                                    ROOT="$SELF/inputs/$NAME"
                                                                                                 fi
                                                                                                 mkdir --parents "$ROOT"
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref "$COMMIT" > "$ROOT/branch"
