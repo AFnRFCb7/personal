@@ -266,7 +266,7 @@
                                                                                 } ;
                                                                             environment =
                                                                                 {
-                                                                                    LOCO = "$( ${ resources.milestone.snapshot } "$@" )" ;
+                                                                                    LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
