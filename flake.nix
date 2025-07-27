@@ -278,6 +278,7 @@
                                                                                                         git fetch local
                                                                                                     '' ;
                                                                                             } ;
+                                                                                    in "${ setup }/bin/setup"
                                                                         } ;
                                                             } ;
                                                         repository =
