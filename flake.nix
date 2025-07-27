@@ -109,7 +109,7 @@
                                                                             date --date "@$(( ${ builtins.toString config.personal.milestone.epoch } * ( "$( date +%s )" / ${ builtins.toString config.personal.milestone.epoch } ) ))" "+${ config.personal.milestone.format }"
                                                                         '' ;
                                                                 } ;
-                                                            in "${ milestone }/bin/milestone"
+                                                            in "${ milestone }/bin/milestone" ;
                                                 post-commit =
                                                     let
                                                         post-commit =
