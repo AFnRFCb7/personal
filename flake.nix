@@ -263,7 +263,7 @@
                                                                                 } ;
                                                                             remotes =
                                                                                 {
-                                                                                    local = ''$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
+                                                                                    local = ''\$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
                                                                                     # remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                 } ;
                                                                             setup =
@@ -275,6 +275,7 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        git fetch local
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
