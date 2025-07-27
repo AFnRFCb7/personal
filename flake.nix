@@ -288,8 +288,7 @@
                                                                         {
                                                                             configs =
                                                                                 {
-                                                                                    "core.sshCommand" = ssh ;
-                                                                                    "milestone.promote" =
+                                                                                    "alias.promote" =
                                                                                         let
                                                                                             promote =
                                                                                                 pkgs.writeShellApplication
@@ -303,6 +302,7 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
+                                                                                    "core.sshCommand" = ssh ;
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
@@ -328,11 +328,11 @@
                                                                                                             git push -u origin "$MILESTONE"
                                                                                                         fi
                                                                                                         git checkout -b "scratch/$( uuidgen )"
-                                                                                                        mkdir --parents "$SELF/links"
-                                                                                                        ln --symbolic "$( ${ resources.repository.personal } )" "$SELF/links/personal"
-                                                                                                        ln --symbolic "$( ${ resources.repository.secret } )" "$SELF/links/secret"
-                                                                                                        ln --symbolic "$( ${ resources.repository.secrets } )" "$SELF/links/secrets"
-                                                                                                        ln --symbolic "$( ${ resources.repository.visitor } )" "$SELF/links/visitor"
+                                                                                                        mkdir --parents "$SELF/inputs"
+                                                                                                        ln --symbolic "$( ${ resources.repository.personal } )" "$SELF/inputs/personal"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secret } )" "$SELF/inputs/secret"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secrets } )" "$SELF/inputs/secrets"
+                                                                                                        ln --symbolic "$( ${ resources.repository.visitor } )" "$SELF/inputs/visitor"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;                                                                                
