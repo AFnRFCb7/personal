@@ -230,7 +230,7 @@
                                                                                                 NAME="$( basename "$DIR" )"
                                                                                                 if [[ "$TYPE" == "root" ]]
                                                                                                 then
-                                                                                                    ROOT="$SELF/private"
+                                                                                                    ROOT="$SELF/root"
                                                                                                 else
                                                                                                     ROOT="$SELF/inputs/$NAME"
                                                                                                 fi
@@ -262,8 +262,8 @@
                                                                                 } ;
                                                                             remotes =
                                                                                 {
-                                                                                    local = ''$( ${ resources.milestone.snapshot } "$@" )/private/local'' ;
-                                                                                    remote = ''$( cat "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )'' ;
+                                                                                    local = ''$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
+                                                                                    remote = ''$( cat "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                 } ;
                                                                             setup = checkout ;
                                                                         } ;
