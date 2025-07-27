@@ -223,8 +223,6 @@
                                                                             init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                                             init-text =
                                                                                 ''
-                                                                                    # shellcheck disable=SC1083,SC2086,SC2016
-                                                                                    AWK_CMD='{ print "\"" $2 "\"" }'
                                                                                     while [[ "$#" -gt 0 ]]
                                                                                     do
                                                                                         case "$1" in
@@ -237,7 +235,7 @@
                                                                                                 git add .
                                                                                                 git commit -am "" --allow-empty --allow-empty-message || true
                                                                                                 echo "$NAME" > "$SELF/inputs/$NAME/name"
-                                                                                                git remote --verbose | head --lines 1 | awk "$AWK_CMD" > "$SELF/inputs/$NAME/remote"
+                                                                                                git remote --verbose | head --lines 1 | awk '{ print "\"" $2 "\"" }' > "$SELF/inputs/$NAME/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/inputs/$NAME/branch"
                                                                                                 git rev-parse HEAD > "$SELF/inputs/$NAME/commit"
                                                                                                 shift 2
@@ -249,7 +247,7 @@
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
                                                                                                 git add .
                                                                                                 git commit -am "" --allow-empty --allow-empty-message || true
-                                                                                                git remote --verbose | head --lines 1 | awk "$AWK_CMD" > "$SELF/private/remote"
+                                                                                                git remote --verbose | head --lines 1 | awk '{ print "\"" $2 "\"" }' > "$SELF/private/remote"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/private/branch"
                                                                                                 git rev-parse HEAD > "$SELF/private/commit"
                                                                                                 shift 2
