@@ -278,8 +278,8 @@
                                                                                 } ;
                                                                             remotes =
                                                                                 {
-                                                                                    local = "$( ${ resources.milestone.snapshot } "$@" )/private/local" ;
-                                                                                    origin = "$( < "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )" ;
+                                                                                    local = '''$( ${ resources.milestone.snapshot } "$@" )/private/local'' ;
+                                                                                    origin = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )'' ;
                                                                                 } ;
                                                                             setup =
                                                                                 let
