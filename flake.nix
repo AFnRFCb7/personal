@@ -288,7 +288,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "promote" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 commit ( )
@@ -300,7 +300,7 @@
                                                                                                                 echo "$SNAPSHOT"
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            in "!${ promote.outPath }/bin/promote" ;
+                                                                                            in "!${ promote }/bin/promote" ;
                                                                                     "core.sshCommand" = ssh ;
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
