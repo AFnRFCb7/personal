@@ -242,6 +242,8 @@
                                                                                                 shift 4
                                                                                                 ;;
                                                                                             *)
+                                                                                                mkdir --parents "$SELF/garbage"
+                                                                                                echo "$1" > "$( mktemp "$SELF/garbage/XXXXXXXX" )"
                                                                                                 shift
                                                                                                 ;;
                                                                                         esac
