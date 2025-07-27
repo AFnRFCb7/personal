@@ -270,7 +270,7 @@
                                                                                                             git checkout -b "$MILESTONE"
                                                                                                             git push -u origin "$MILESTONE"
                                                                                                         fi
-                                                                                                        git setup -b "scratch/$( uuidgen )"
+                                                                                                        git checkout -b "scratch/$( uuidgen )"
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
                                                                                                         ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
