@@ -270,8 +270,8 @@
                                                                                 {
                                                                                     LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                    ZBRANCH = ''$( cat "$LOCO/private/branch" )'' ;
-                                                                                    ZCOMMIT = ''$( cat "$LOCO/private/commit" )'' ;
+                                                                                    ZBRANCH = ''$( < "$LOCO/private/branch" )'' ;
+                                                                                    # ZCOMMIT = ''$( cat "$LOCO/private/commit" )'' ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
@@ -288,7 +288,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         git fetch remote "$ZBRANCH"
-                                                                                                        git checkout "ZCOMMIT"
+                                                                                                        # git checkout "ZCOMMIT"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
