@@ -78,7 +78,7 @@
                                                             init-text =
                                                                 ''
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value }"'' ) environments ) ) }
-                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="$${ name }"'' ) environments ) ) }
+                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="$${ name }"'' ) environments ) ) }
                                                                     export GIT_DIR="$SELF/git"
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
                                                                     HOMEY="$SELF/home"
