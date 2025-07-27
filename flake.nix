@@ -646,6 +646,12 @@
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
+                                                                        applications =
+                                                                            {
+                                                                                user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/applications" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
