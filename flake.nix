@@ -217,6 +217,7 @@
                                                                 snapshot =
                                                                     ignore :
                                                                         {
+                                                                            init-inputs = [ pkgs.coreutils ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     while [[ "$#" -gt 0 ]]
@@ -250,6 +251,19 @@
                                                                                     done
                                                                                 '' ;
                                                                         } ;
+                                                                source =
+                                                                    git
+                                                                        {
+                                                                            configs =
+                                                                                {
+                                                                                    "core.sshCommand" = ssh ;
+                                                                                    "user.email" = config.personal.email ;
+                                                                                    "user.name" = config.personal.description ;
+                                                                                } ;
+                                                                            hooks = { post-commit = post-commit ; } ;
+                                                                            remotes = { origin = config.personal.repository.applications.remote ; } ;
+                                                                            setup = checkout ;
+                                                                        } ;
                                                             } ;
                                                         repository =
                                                             {
@@ -262,9 +276,23 @@
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
-                                                                            hooks = { post-commit = post-commit ; } ;
-                                                                            remotes = { origin = config.personal.repository.applications.remote ; } ;
-                                                                            setup = checkout ;
+                                                                            remotes =
+                                                                                {
+                                                                                    local = "$( ${ resources.milestone.snapshot } "$@" )/private/local" ;
+                                                                                    origin = "$( < "$( ${ resources.milestone.snapshot } "$@" )/private/remote" )" ;
+                                                                                } ;
+                                                                            setup =
+                                                                                let
+                                                                                    setup =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ setup }/bin/setup" ;
                                                                         } ;
                                                                 personal =
                                                                     git
