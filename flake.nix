@@ -328,7 +328,7 @@
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
                                                                                                                 SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                echo "$SNAPSHOT"
+                                                                                                                echo "$SOURCE"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
