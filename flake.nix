@@ -233,7 +233,7 @@
                                                                                                 export GIT_DIR="$LINK/git"
                                                                                                 export GIT_WORK_TREE="$LINK/work-tree"
                                                                                                 git add .
-                                                                                                git commit -am "" --allow-empty --allow-empty-message || true
+                                                                                                git commit -am "" --allow-empty-message || true
                                                                                                 echo "$NAME" > "$SELF/inputs/$NAME/name"
                                                                                                 git rev-parse --abbrev-ref HEAD > "$SELF/inputs/$NAME/branch"
                                                                                                 git rev-parse HEAD > "$SELF/inputs/$NAME/commit"
@@ -296,7 +296,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git commit -am "" --allow-empty --allow-empty-message || true
+                                                                                                                git commit -am "" --allow-empty-message || true
                                                                                                                 # ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --input "$SELF/inputs/secrets" --input "$SELF/inputs/visitor" --private "$SELF"
                                                                                                                 ${ resources.milestone.snapshot } --input "$SELF/inputs/personal" --input "$SELF/inputs/secret" --private "$( git rev-parse --abbrev-ref HEAD )" "$( git rev-parse HEAD )"
                                                                                                             '' ;
