@@ -356,7 +356,7 @@
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
                                                                                                                 SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                echo "$SOURCE"
+                                                                                                                ln --symbolic "$SOURCE" "$SELF/promote"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
@@ -388,7 +388,7 @@
                                                                                                         git checkout -b "scratch/$( uuidgen )"
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
-                                                                                                        # ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
