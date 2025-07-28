@@ -285,7 +285,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "setup" ;
-                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                runtimeInputs = [ pkgs.git pkgs.gnused ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         # git fetch remote
