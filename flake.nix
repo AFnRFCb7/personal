@@ -360,10 +360,16 @@
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
                                                                                                                 mkdir --parents "$SELF/promote"
-                                                                                                                SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$SNAPSHOT" "$SELF/promote/snapshot"
-                                                                                                                SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$SOURCE" "$SELF/promote/source"
+                                                                                                                if [[ ! -e "$SELF/promote/snapshot" ]]
+                                                                                                                then
+                                                                                                                    SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$SNAPSHOT" "$SELF/promote/snapshot"
+                                                                                                                fi
+                                                                                                                if [[ ! -e "$SELF/promote/source" ]]
+                                                                                                                then
+                                                                                                                    SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$SOURCE" "$SELF/promote/source"
+                                                                                                                fi
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
