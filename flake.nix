@@ -355,8 +355,11 @@
                                                                                                                         REPO="$1"
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
+                                                                                                                mkdir --parents "$SELF/promote"
+                                                                                                                SNAPSHOT="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$SNAPSHOT" "$SELF/promote/snapshot"
                                                                                                                 SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$SOURCE" "$SELF/promote"
+                                                                                                                ln --symbolic "$SOURCE" "$SELF/promote/source"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
