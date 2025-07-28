@@ -289,7 +289,7 @@
                                                                                                     ''
                                                                                                         git fetch remote
                                                                                                         echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
-                                                                                                        git fetch remote "$ZBRANCH" > /tmp/DEBUG
+                                                                                                        git fetch remote "$ZBRANCH"
                                                                                                         # git fetch remote "$ZBRANCH"
                                                                                                         # git checkout "ZCOMMIT"
                                                                                                     '' ;
