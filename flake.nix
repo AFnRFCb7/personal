@@ -288,6 +288,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         git fetch remote
+                                                                                                        echo "8ec7f68e-9f3b-4c57-b078-4e07a035f6ed $ZBRANCH 2579a121-9eac-4b7f-b389-7311e3676a47" > /tmp/DEBUG
                                                                                                         # git fetch remote "$ZBRANCH"
                                                                                                         # git checkout "ZCOMMIT"
                                                                                                     '' ;
