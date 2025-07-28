@@ -296,13 +296,7 @@
                                                                                                         cat >> /tmp/DEBUG <<EOF
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d
                                                                                                         EOF
-                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
-                                                                                                        do
-                                                                                                            cat >> /tmp/DEBUG <<EOF
-                                                                                                        sed -i "s#\($( < "$DIR/name" ).url.*?ref=\)main#\1$( < "$DIR/name" )#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                        EOF
-                                                                                                            sed -i "s#\($( < "$DIR/name" ).url.*?ref=\)main#\1$( < "$DIR/name" )#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                        done
+                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d exec sed -i "s#\($( < "{}/name" ).url.*?ref=\)main#\1$( < "{}/name" )#" "$GIT_WORK_TREE/flake.nix" \;
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
