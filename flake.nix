@@ -294,7 +294,7 @@
                                                                                                         git checkout "$ZCOMMIT"
                                                                                                         echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
                                                                                                         cat >> /tmp/DEBUG <<EOF
-                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
+                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d
                                                                                                         EOF
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                         do
