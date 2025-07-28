@@ -272,7 +272,7 @@
                                                                                     LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
                                                                                     LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
                                                                                     ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
-                                                                                    # ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
+                                                                                    ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
@@ -291,7 +291,7 @@
                                                                                                         # git fetch remote
                                                                                                         # echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
-                                                                                                        # git checkout "$ZCOMMIT"
+                                                                                                        git checkout "$ZCOMMIT"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
