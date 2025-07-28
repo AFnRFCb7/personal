@@ -293,10 +293,11 @@
                                                                                                         echo 809fd56f-5e3c-4be5-aabd-b675e60cefb6 >> /tmp/DEBUG
                                                                                                         git checkout "$ZCOMMIT"
                                                                                                         echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
-                                                                                                        cat >> /tmp/DEBUG <<EOF
-                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d
-                                                                                                        EOF
-                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d exec sed -i "s#\($( < "{}/name" ).url.*?ref=\)main#\1$( < "{}/name" )#" "$GIT_WORK_TREE/flake.nix" \;
+                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
+                                                                                                          NAME=$( < "$DIR/name" )
+                                                                                                          echo "sed -i \"s#\(${NAME}.url.*?ref=\)main#\1${NAME}#\" \"$GIT_WORK_TREE/flake.nix\"" >> /tmp/DEBUG
+                                                                                                          sed -i "s#\(${NAME}.url.*?ref=\)main#\1${NAME}#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        done
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
