@@ -288,10 +288,11 @@
                                                                                                 runtimeInputs = [ pkgs.git pkgs.gnused ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        # git fetch remote
-                                                                                                        # echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
+                                                                                                        echo be39e8eb-d8c3-47b1-ae28-6e819d768a7a >> /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
+                                                                                                        echo 809fd56f-5e3c-4be5-aabd-b675e60cefb6 >> /tmp/DEBUG
                                                                                                         git checkout "$ZCOMMIT"
+                                                                                                        echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
                                                                                                         cat >> /tmp/DEBUG <<EOF
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                         EOF
@@ -370,11 +371,13 @@
                                                                                                                 then
                                                                                                                     SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$SNAPSHOT" "$SELF/promote/snapshot"
+                                                                                                                    echo 6c6f5fda-c41a-4175-8061-4e1d77e110d4 >> /tmp/DEBUG
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/source" ]]
                                                                                                                 then
                                                                                                                     SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$SOURCE" "$SELF/promote/source"
+                                                                                                                    echo 080fb2b6-8f47-43ba-b73d-3064645e7805 >> /tmp/DEBUG
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
