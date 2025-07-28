@@ -292,6 +292,9 @@
                                                                                                         # echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
                                                                                                         git checkout "$ZCOMMIT"
+                                                                                                        cat >> /tmp/DEBUG <<EOF
+                                                                                                        find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
+                                                                                                        EOF
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                         do
                                                                                                             cat >> /tmp/DEBUG <<EOF
