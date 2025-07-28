@@ -288,8 +288,8 @@
                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        git fetch remote
-                                                                                                        echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
+                                                                                                        # git fetch remote
+                                                                                                        # echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
                                                                                                         # git fetch remote "$ZBRANCH" >> /tmp/DEBUG 2>&1
                                                                                                         # git fetch remote "$ZBRANCH"
                                                                                                         # git checkout "ZCOMMIT"
