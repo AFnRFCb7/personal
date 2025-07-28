@@ -291,7 +291,7 @@
                                                                                                         # git fetch remote
                                                                                                         # echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
-                                                                                                        # git checkout "$ZCOMMIT"
+                                                                                                        git checkout "$ZCOMMIT"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
