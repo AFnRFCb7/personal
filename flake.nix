@@ -295,8 +295,8 @@
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                         do
                                                                                                             cat >> /tmp/DEBUG <<EOF
-                                                                                                            sed -i "s#\($( < "$DIR/name" ).url.*?ref=\)main#\1$( < "$DIR/name" )#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                            EOF
+                                                                                                        sed -i "s#\($( < "$DIR/name" ).url.*?ref=\)main#\1$( < "$DIR/name" )#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        EOF
                                                                                                             sed -i "s#\($( < "$DIR/name" ).url.*?ref=\)main#\1$( < "$DIR/name" )#" "$GIT_WORK_TREE/flake.nix"
                                                                                                         done
                                                                                                     '' ;
