@@ -292,6 +292,10 @@
                                                                                                         # echo git fetch remote "$ZBRANCH" > /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
                                                                                                         git checkout "$ZCOMMIT"
+                                                                                                        find $LOCO/root/local/inputs -mindepth 1 -maxdepth 1 -type l | while read LINK
+                                                                                                        do
+                                                                                                            sed -i "s#\($( ).url.*?ref=\)main#\1$ZCOMMIT#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        done
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
