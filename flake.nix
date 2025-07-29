@@ -294,7 +294,7 @@
                                                                                                         echo "c515cbcf-5f3c-4308-ba71-a5291c096f78 $REMOTE $COMMIT" > /tmp/DEBUG
                                                                                                         git remote --verbose >> /tmp/DEBUG 2>&1
                                                                                                         git fetch remote "$REMOTE" >> /tmp/DEBUG 2>&1
-                                                                                                        echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
+                                                                                                        # echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
                                                                                                         # echo "6b476b13-9c5c-4a50-a95b-c50b02cf8e7d" >> /tmp/DEBUG
                                                                                                         find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
