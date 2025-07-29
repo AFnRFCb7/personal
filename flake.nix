@@ -296,10 +296,10 @@
                                                                                                         git fetch remote "$REMOTE" >> /tmp/DEBUG 2>&1
                                                                                                         echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
-                                                                                                        echo "6b476b13-9c5c-4a50-a95b-c50b02cf8e7d" >> /tmp/DEBUG
+                                                                                                        # echo "6b476b13-9c5c-4a50-a95b-c50b02cf8e7d" >> /tmp/DEBUG
                                                                                                         find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                         do
-                                                                                                            echo "6e491a5e-3257-46e5-a009-e652051fe60b" >> /tmp/DEBUG
+                                                                                                            # echo "6e491a5e-3257-46e5-a009-e652051fe60b" >> /tmp/DEBUG
                                                                                                             NAME="$( < "$DIR/name" )"
                                                                                                             COMMIT="$( < "$DIR/commit" )"
                                                                                                             sed -i "s#\($NAME\.url.*?ref=\)main#\1$COMMIT#" "$GIT_WORK_TREE/flake.nix"
