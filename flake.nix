@@ -294,8 +294,9 @@
                                                                                                         git checkout "$ZCOMMIT"
                                                                                                         echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
-                                                                                                          NAME=$( < "$DIR/name" )
-                                                                                                          sed -i "s#\($NAME\.url.*?ref=\)main#\1XXXX#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                          NAME="$( < "$DIR/name" )"
+                                                                                                          COMMIT="$( < "$DIR/commit" )"
+                                                                                                          sed -i "s#\($NAME\.url.*?ref=\)main#\1$COMMIT#" "$GIT_WORK_TREE/flake.nix"
                                                                                                         done
                                                                                                     '' ;
                                                                                             } ;
