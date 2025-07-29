@@ -295,8 +295,8 @@
                                                                                                         echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
                                                                                                           NAME=$( < "$DIR/name" )
-                                                                                                          echo "sed -i \"s#\(${NAME}.url.*?ref=\)main#\1${NAME}#\" \"$GIT_WORK_TREE/flake.nix\"" >> /tmp/DEBUG
-                                                                                                          sed -i "s#\(${NAME}.url.*?ref=\)main#\1${NAME}#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                          echo "sed -i \"s#\($NAME\.url.*?ref=\)main#\1${NAME}#\" \"$GIT_WORK_TREE/flake.nix\"" >> /tmp/DEBUG
+                                                                                                          sed -i "s#\($NAME\.url.*?ref=\)main#\1${NAME}#" "$GIT_WORK_TREE/flake.nix"
                                                                                                         done
                                                                                                     '' ;
                                                                                             } ;
