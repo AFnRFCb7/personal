@@ -291,7 +291,6 @@
                                                                                                         echo "fa2bdc45-bb63-49fb-bd3b-b490b28743d6" > /tmp/DEBUG
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         REMOTE="$( < "$LOCO20/root/remote" )"
-                                                                                                        find "$LOCO20/root" -maxdepth 1 -type f >> /tmp/DEBUG
                                                                                                         COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                         echo "c515cbcf-5f3c-4308-ba71-a5291c096f78 $REMOTE $COMMIT" >> /tmp/DEBUG
                                                                                                         git fetch remote "$REMOTE" >> /tmp/DEBUG 2>&1
