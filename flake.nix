@@ -290,7 +290,7 @@
                                                                                                     ''
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         find "$LOCO20" -type f >> /tmp/DEBUG
-                                                                                                        REMOTE="$( < "LOCO20/root/remote )"
+                                                                                                        REMOTE="$( < "$LOCO20/root/remote" )"
                                                                                                         git fetch remote "$REMOTE"
                                                                                                         git checkout "$COMMIT"
                                                                                                         find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
