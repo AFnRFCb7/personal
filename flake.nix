@@ -289,7 +289,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         echo d402b200-e9e3-439b-801c-359176f67db6 > /tmp/DEBUG
-                                                                                                        LOCO20="$( < "$( ${ resources.milestone.snapshot } "$@" )"
+                                                                                                        LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         echo 8e607fb4-c657-4339-8499-a3697f41e1a3 >> /tmp/DEBUG
                                                                                                         find "$LOCO20" -type f >> /tmp/DEBUG
                                                                                                         echo be39e8eb-d8c3-47b1-ae28-6e819d768a7a >> /tmp/DEBUG
