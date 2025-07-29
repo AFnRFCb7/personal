@@ -301,7 +301,7 @@
                                                                                                         done
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "${ setup }/bin/setup $@" ;
+                                                                                    in "${ setup }/bin/setup \"$@\"" ;
                                                                         } ;
                                                             } ;
                                                         repository =
