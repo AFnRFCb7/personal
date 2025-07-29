@@ -285,13 +285,17 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "setup" ;
-                                                                                                runtimeInputs = [ pkgs.git pkgs.gnused ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        echo d402b200-e9e3-439b-801c-359176f67db6 > /tmp/DEBUG
+                                                                                                        LOCO20="$( < "$( ${ resources.milestone.snapshot } "$@" )"
+                                                                                                        echo 8e607fb4-c657-4339-8499-a3697f41e1a3 >> /tmp/DEBUG
+                                                                                                        find "$LOCO20" -type f >> /tmp/DEBUG
                                                                                                         echo be39e8eb-d8c3-47b1-ae28-6e819d768a7a >> /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
                                                                                                         echo 809fd56f-5e3c-4be5-aabd-b675e60cefb6 >> /tmp/DEBUG
-                                                                                                        git checkout "$( < "$( ${ resources.milestone.snapshot } "$@" )/root/commit" )"
+                                                                                                        git checkout "$( < "$LOCO20/root/commit" )"
                                                                                                         echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
                                                                                                           NAME="$( < "$DIR/name" )"
