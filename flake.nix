@@ -291,12 +291,9 @@
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         REMOTE="$( < "$LOCO20/root/remote" )"
                                                                                                         COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                        # echo "c515cbcf-5f3c-4308-ba71-a5291c096f78 $REMOTE $COMMIT" > /tmp/DEBUG
-                                                                                                        # git remote --verbose >> /tmp/DEBUG 2>&1
-                                                                                                        git config --get core.sshCommand >> /tmp/DEBUG 2>&1
-                                                                                                        git fetch "$REMOTE" >> /tmp/DEBUG 2>&1
-                                                                                                        # echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
-                                                                                                        git checkout "$COMMIT"
+                                                                                                        git fetch "$REMOTE"
+                                                                                                        echo "90170a8e-b7a3-44b9-b881-878b08926451 $REMOTE $COMMIT" >> /tmp/DEBUG
+                                                                                                        git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
                                                                                                         # echo "6b476b13-9c5c-4a50-a95b-c50b02cf8e7d" >> /tmp/DEBUG
                                                                                                         find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                         do
