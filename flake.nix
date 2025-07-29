@@ -304,6 +304,19 @@
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup \"$@\"" ;
                                                                         } ;
+                                                                check =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs [ pkgs.nix ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    export NIX_DEBUG=1
+                                                                                    export NIX_SHOW_STATS=1
+                                                                                    export NIX_SHOW_TRACE=1
+                                                                                    export NIX_LOG=stderr
+                                                                                    nix --log-format raw --show-trace -vvv flake check ${ resources.milestone.source }/work-tree
+                                                                                '' ;
+                                                                        } ;
                                                             } ;
                                                         repository =
                                                             {
@@ -358,6 +371,8 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                mkdir --paretns "$SELF/promote"
+                                                                                                                ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
                                                                                                                 commit ( )
                                                                                                                     {
                                                                                                                         REPO="$1"
@@ -367,14 +382,18 @@
                                                                                                                 if [[ ! -e "$SELF/promote/snapshot" ]]
                                                                                                                 then
                                                                                                                     SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$SNAPSHOT" "$SELF/promote/snapshot"
+                                                                                                                    ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
                                                                                                                     echo 6c6f5fda-c41a-4175-8061-4e1d77e110d4 >> /tmp/DEBUG
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/source" ]]
                                                                                                                 then
                                                                                                                     SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$SOURCE" "$SELF/promote/source"
-                                                                                                                    echo 080fb2b6-8f47-43ba-b73d-3064645e7805 >> /tmp/DEBUG
+                                                                                                                    ln --symbolic "$SOURCE" "$ROOT/source"
+                                                                                                                fi
+                                                                                                                if [[ ! -e "$SELF/promote/check" ]]
+                                                                                                                then
+                                                                                                                    CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$CHECK" "$ROOT/check"
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
@@ -408,6 +427,8 @@
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
                                                                                                         ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
+                                                                                                        ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
+                                                                                                        ln --symbolic "$( ${ resources.repository.visitor } "$@" )" "$SELF/inputs/visitor"
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
