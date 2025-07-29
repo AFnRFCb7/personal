@@ -293,6 +293,7 @@
                                                                                                         REMOTE="$( < "$LOCO20/root/remote" )"
                                                                                                         find "$LOCO20/root" -maxdepth 1 -type f >> /tmp/DEBUG
                                                                                                         COMMIT="$( < "$LOCO20/root/commit" )"
+                                                                                                        echo "c515cbcf-5f3c-4308-ba71-a5291c096f78 $REMOTE $COMMIT" >> /tmp/DEBUG
                                                                                                         git fetch remote "$REMOTE"
                                                                                                         echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
