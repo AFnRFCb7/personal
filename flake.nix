@@ -288,10 +288,12 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        echo "45235c5e-b8ec-40bc-b528-fb7dd5b19475" > /tmp/DEBUG
+                                                                                                        echo "fa2bdc45-bb63-49fb-bd3b-b490b28743d6" > /tmp/DEBUG
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         REMOTE="$( < "$LOCO20/root/remote" )"
+                                                                                                        COMMIT="$( < "$LOC020/root/commit" )"
                                                                                                         git fetch remote "$REMOTE"
+                                                                                                        echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
                                                                                                         echo "6b476b13-9c5c-4a50-a95b-c50b02cf8e7d" >> /tmp/DEBUG
                                                                                                         find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
