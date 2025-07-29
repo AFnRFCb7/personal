@@ -290,8 +290,9 @@
                                                                                                     ''
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         REMOTE="$( < "$LOCO20/root/remote" )"
+                                                                                                        BRANCH="$( < "$LOCO20/root/branch" )"
                                                                                                         COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                        git fetch "$REMOTE"
+                                                                                                        git fetch "$REMOTE" "$BRANCH"
                                                                                                         echo "90170a8e-b7a3-44b9-b881-878b08926451 $REMOTE $COMMIT" >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
                                                                                                         # echo "6b476b13-9c5c-4a50-a95b-c50b02cf8e7d" >> /tmp/DEBUG
