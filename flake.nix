@@ -288,7 +288,7 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        echo "d402b200-e9e3-439b-801c-359176f67db6 ${ resources.milestone.snapshot } $@" > /tmp/DEBUG
+                                                                                                        echo "d402b200-e9e3-439b-801c-359176f67db6 ${ resources.milestone.snapshot } $*" > /tmp/DEBUG
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         echo "8e607fb4-c657-4339-8499-a3697f41e1a3 $LOCO20" >> /tmp/DEBUG
                                                                                                         find "$LOCO20" -type f >> /tmp/DEBUG
