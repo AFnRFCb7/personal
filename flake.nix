@@ -292,7 +292,6 @@
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         echo 8e607fb4-c657-4339-8499-a3697f41e1a3 >> /tmp/DEBUG
                                                                                                         find "$LOCO20" -type f >> /tmp/DEBUG
-                                                                                                        echo be39e8eb-d8c3-47b1-ae28-6e819d768a7a >> /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
                                                                                                         git checkout "$( < "$LOCO20/root/commit" )"
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
