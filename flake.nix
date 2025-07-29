@@ -291,7 +291,7 @@
                                                                                                         echo be39e8eb-d8c3-47b1-ae28-6e819d768a7a >> /tmp/DEBUG
                                                                                                         git fetch remote "$ZBRANCH"
                                                                                                         echo 809fd56f-5e3c-4be5-aabd-b675e60cefb6 >> /tmp/DEBUG
-                                                                                                        git checkout "$( cat "$LOCO/root/commit" )"
+                                                                                                        git checkout "$( < "$( ${ resources.milestone.snapshot } "$@" )/root/commit" )"
                                                                                                         echo 525f9eb7-bbab-4b71-a677-ef78b9cf9dbb >> /tmp/DEBUG
                                                                                                         find "$LOCO/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR; do
                                                                                                           NAME="$( < "$DIR/name" )"
