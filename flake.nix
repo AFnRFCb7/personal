@@ -291,8 +291,9 @@
                                                                                                         LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                         REMOTE="$( < "$LOCO20/root/remote" )"
                                                                                                         COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                        echo "c515cbcf-5f3c-4308-ba71-a5291c096f78 $REMOTE $COMMIT" > /tmp/DEBUG
+                                                                                                        # echo "c515cbcf-5f3c-4308-ba71-a5291c096f78 $REMOTE $COMMIT" > /tmp/DEBUG
                                                                                                         git remote --verbose >> /tmp/DEBUG 2>&1
+                                                                                                        git config --get core.sshCommand >> /tmp/DEBUG 2>&1
                                                                                                         git fetch remote "$REMOTE" >> /tmp/DEBUG 2>&1
                                                                                                         # echo "90170a8e-b7a3-44b9-b881-878b08926451" >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
