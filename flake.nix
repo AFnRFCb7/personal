@@ -312,15 +312,18 @@
                                                                                                                 REMOTE="$( < "$LOCO20/root/remote" )"
                                                                                                                 BRANCH="$( < "$LOCO20/root/branch" )"
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                                git fetch "$REMOTE" "$BRANCH"
+                                                                                                                git fetch remote "$( ${ milestone } )"
+                                                                                                                git fetch remote "$BRANCH"
                                                                                                                 git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
                                                                                                                     NAME="$( < "$DIR/name" )"
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\)main#\1$COMMIT#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
+                                                                                                                git commit -am "" --allow-empty-message
+                                                                                                                git rebase "remote/$( ${ milestone } )"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ setup }/bin/setup" ;
