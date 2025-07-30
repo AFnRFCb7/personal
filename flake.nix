@@ -274,54 +274,53 @@
                                                                 source =
                                                                     {
                                                                         root =
-                                                                            {
-                                                                                git =
-                                                                                    {
-                                                                                        configs =
-                                                                                            {
-                                                                                                "core.sshCommand" = ssh ;
-                                                                                                "user.email" = config.personal.email ;
-                                                                                                "user.name" = config.personal.description ;
-                                                                                            } ;
-                                                                                        environments =
-                                                                                            {
-                                                                                                LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
-                                                                                                LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                                ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
-                                                                                                ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
-                                                                                            } ;
-                                                                                        remotes =
-                                                                                            {
-                                                                                                local = "$LOCO/root/local" ;
-                                                                                                remote = ''$( < "$LOCO/root/remote" )'' ;
-                                                                                            } ;
-                                                                                        setup =
-                                                                                            let
-                                                                                                setup =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
-                                                                                                                    REMOTE="$( < "$LOCO20/root/remote" )"
-                                                                                                                    BRANCH="$( < "$LOCO20/root/branch" )"
-                                                                                                                    COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                                    git fetch "$REMOTE" "$BRANCH"
-                                                                                                                    git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
-                                                                                                                    find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
-                                                                                                                    do
-                                                                                                                        NAME="$( < "$DIR/name" )"
-                                                                                                                        COMMIT="$( < "$DIR/commit" )"
-                                                                                                                        sed -i "s#\($NAME\.url.*?ref=\)main#\1$COMMIT#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                    done
-                                                                                                                    date +%s > "$GIT_WORK_TREE/current-time.nix"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ setup }/bin/setup \"$@\"" ;
-                                                                                    } ;
-                                                                            } ;
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "core.sshCommand" = ssh ;
+                                                                                            "user.email" = config.personal.email ;
+                                                                                            "user.name" = config.personal.description ;
+                                                                                        } ;
+                                                                                    environments =
+                                                                                        {
+                                                                                            LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
+                                                                                            LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
+                                                                                            ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
+                                                                                            ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            local = "$LOCO/root/local" ;
+                                                                                            remote = ''$( < "$LOCO/root/remote" )'' ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            setup =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
+                                                                                                                REMOTE="$( < "$LOCO20/root/remote" )"
+                                                                                                                BRANCH="$( < "$LOCO20/root/branch" )"
+                                                                                                                COMMIT="$( < "$LOCO20/root/commit" )"
+                                                                                                                git fetch "$REMOTE" "$BRANCH"
+                                                                                                                git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
+                                                                                                                find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
+                                                                                                                do
+                                                                                                                    NAME="$( < "$DIR/name" )"
+                                                                                                                    COMMIT="$( < "$DIR/commit" )"
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\)main#\1$COMMIT#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                done
+                                                                                                                date +%s > "$GIT_WORK_TREE/current-time.nix"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ setup }/bin/setup \"$@\"" ;
+                                                                                } ;
+                                                                    } ;
                                                                 virtual-machines =
                                                                     let
                                                                         virtual-machine =
