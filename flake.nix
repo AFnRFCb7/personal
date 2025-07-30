@@ -97,7 +97,7 @@
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                    ${ if builtins.typeOf setup == "string" then "exec ${ setup }" else "" }
+                                                                    ${ if builtins.typeOf setup == "string" then "exec ${ setup } \"$@\"" else "" }
                                                                 '' ;
                                                             release-inputs = release-inputs ;
                                                             release-text = release-text ;
@@ -323,7 +323,7 @@
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            in "${ setup }/bin/setup \"$@\"" ;
+                                                                                            in "${ setup }/bin/setup" ;
                                                                                 } ;
                                                                     } ;
                                                                 virtual-machines =
