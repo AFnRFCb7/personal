@@ -347,6 +347,7 @@
                                                                                                 SHARED_DIR="$SELF/test"
                                                                                                 export SHARED_DIR
                                                                                                 mkdir --parents "$SHARED_DIR"
+                                                                                                "$SELF/result/bin/run-nixos-vm -no-graphic"
                                                                                             fi
                                                                                         '' ;
                                                                                 } ;
@@ -834,7 +835,7 @@
                                                                     {
                                                                         serviceConfig =
                                                                             {
-                                                                                ExecStart = "${ pkgs.coreutils }/bin/true" ;
+                                                                                ExecStart = "${ pkgs.coreutils }/bin/touch /tmp/shared/FLAG" ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
