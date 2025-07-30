@@ -785,11 +785,21 @@
                                             user = user ;
                                             tester = { ... } : { } ;
                                         } ;
-                                    tests.${ system } =
+                                    checks.${ system } =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
 					                        in
 						                        {
+						                            foobar =
+						                                pkgs.stdenv.mkDerivation
+						                                    {
+						                                        installPhase =
+						                                            ''
+						                                                touch $out
+						                                            '' ;
+                                                                name = "foobar" ;
+                                                                src = ./. ;
+						                                    } ;
                                                 } ;
                                 } ;
             } ;
