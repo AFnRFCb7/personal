@@ -350,7 +350,7 @@
                                                                                                 echo 6d883f4c-e968-4eff-a2b1-85b671f4a948 >> /tmp/DEBUG
                                                                                                 export NIX_DEBUG=1
                                                                                                 echo cf797c47-c739-414f-b46f-bc2752c2e32c >> /tmp/DEBUG
-                                                                                                nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$DIRECTORY/work-tree" --verbose --show-trace
+                                                                                                nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$DIRECTORY/work-tree#tester" --verbose --show-trace >> /tmp/DEBUG 2>&1
                                                                                                 echo 4881be74-e87b-4667-97b5-f8714e8f915e >> /tmp/DEBUG
                                                                                             fi
                                                                                         '' ;
