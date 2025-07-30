@@ -229,7 +229,12 @@
                                                                                     export NIX_SHOW_STATS=1
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     export NIX_LOG=stderr
-                                                                                    nix --log-format raw --show-trace -vvv flake check "$( ${ resources.milestone.source.root } "$@" )/work-tree" > /tmp/DEBUG 2>&1
+                                                                                    if nix --log-format raw --show-trace -vvv flake check "$( ${ resources.milestone.source.root } "$@" )/work-tree" > "$SELF/standard-output" 2> "$SELF/standard-error"
+                                                                                    then
+                                                                                        echo "$?" > "$SELF/status"
+                                                                                    else
+                                                                                        echo "$?" > "$SELF/status"
+                                                                                    fi
                                                                                 '' ;
                                                                         } ;
                                                                 snapshot =
