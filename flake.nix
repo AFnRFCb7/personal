@@ -317,6 +317,28 @@
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup \"$@\"" ;
                                                                         } ;
+                                                                virtual-machines =
+                                                                    let
+                                                                        virtual-machine =
+                                                                            bootloader :
+                                                                                {
+                                                                                    build =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                                                init-text =
+                                                                                                    ''
+                                                                                                        export NIX_SHOW_STATS=5
+                                                                                                        export NIX_DEBUG=1
+                                                                                                        nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source } "$@" )" --verbose --show-trace
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                } ;
+                                                                        in
+                                                                            {
+                                                                                virtual-machine = virtual-machine false ;
+                                                                                virtual-machine-with-bootloader = virtual-machine true ;
+                                                                            } ;
                                                             } ;
                                                         repository =
                                                             {
@@ -394,6 +416,11 @@
                                                                                                                 then
                                                                                                                     CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$CHECK" "$ROOT/check"
+                                                                                                                fi
+                                                                                                                if [[ ! -e "$SELF/promote/vm" ]]
+                                                                                                                then
+                                                                                                                    VM="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$BUID_VM" "$ROOT/build_vm"
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
