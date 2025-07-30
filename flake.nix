@@ -458,7 +458,7 @@
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
                                                                                                         ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
-                                                                                                        ln --symbolic "$( ${ resources.repository.secrets } "$@" )" "$SELF/inputs/secrets"
+                                                                                                        # ln --symbolic "$( ${ resources.repository.secrets } "$@" )" "$SELF/inputs/secrets"
                                                                                                         ln --symbolic "$( ${ resources.repository.visitor } "$@" )" "$SELF/inputs/visitor"
                                                                                                     '' ;
                                                                                             } ;
