@@ -334,7 +334,7 @@
                                                                                                     ''
                                                                                                         export NIX_SHOW_STATS=5
                                                                                                         export NIX_DEBUG=1
-                                                                                                        nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source } "$@" )" --verbose --show-trace
+                                                                                                        nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source.root } "$@" )" --verbose --show-trace
                                                                                                     '' ;
                                                                                             } ;
                                                                                 } ;
