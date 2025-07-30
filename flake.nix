@@ -413,7 +413,7 @@
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/source" ]]
                                                                                                                 then
-                                                                                                                    SOURCE="$( ${ resources.milestone.source } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$SOURCE" "$ROOT/source"
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/check" ]]
