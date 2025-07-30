@@ -229,7 +229,7 @@
                                                                                     export NIX_SHOW_STATS=1
                                                                                     export NIX_SHOW_TRACE=1
                                                                                     export NIX_LOG=stderr
-                                                                                    nix --log-format raw --show-trace -vvv flake check "$( "${ resources.milestone.source }/work-tree" "$@" )/work-tree" > /tmp/DEBUG 2>&1
+                                                                                    nix --log-format raw --show-trace -vvv flake check "$( ${ resources.milestone.source } "$@" )/work-tree" > /tmp/DEBUG 2>&1
                                                                                 '' ;
                                                                         } ;
                                                                 snapshot =
