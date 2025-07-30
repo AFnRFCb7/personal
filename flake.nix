@@ -219,6 +219,19 @@
                                                                 } ;
                                                         milestone =
                                                             {
+                                                                check =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ pkgs.nix ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    export NIX_DEBUG=1
+                                                                                    export NIX_SHOW_STATS=1
+                                                                                    export NIX_SHOW_TRACE=1
+                                                                                    export NIX_LOG=stderr
+                                                                                    nix --log-format raw --show-trace -vvv flake check "$( "${ resources.milestone.source }/work-tree "$@" )"
+                                                                                '' ;
+                                                                        } ;
                                                                 snapshot =
                                                                     ignore :
                                                                         {
@@ -303,19 +316,6 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup \"$@\"" ;
-                                                                        } ;
-                                                                check =
-                                                                    ignore :
-                                                                        {
-                                                                            init-inputs = [ pkgs.nix ] ;
-                                                                            init-text =
-                                                                                ''
-                                                                                    export NIX_DEBUG=1
-                                                                                    export NIX_SHOW_STATS=1
-                                                                                    export NIX_SHOW_TRACE=1
-                                                                                    export NIX_LOG=stderr
-                                                                                    nix --log-format raw --show-trace -vvv flake check ${ resources.milestone.source }/work-tree
-                                                                                '' ;
                                                                         } ;
                                                             } ;
                                                         repository =
