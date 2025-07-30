@@ -343,17 +343,11 @@
                                                                                             else
                                                                                                 export NIX_SHOW_STATS=5
                                                                                                 export NIX_DEBUG=1
-                                                                                                # echo 2636c8bb-e470-4816-a6e9-6839959971e2 > /tmp/DEBUG
                                                                                                 nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
-                                                                                                # echo e5a06d49-ac85-4694-b980-7466fd32e1af >> /tmp/DEBUG
                                                                                                 SHARED_DIR="$SELF/test"
-                                                                                                # echo e2f0cd77-a38a-46ce-b8b5-a20d8af85b7d >> /tmp/DEBUG
                                                                                                 export SHARED_DIR
-                                                                                                # echo eda3d900-b76a-4db6-bcbc-046ff7b96993 >> /tmp/DEBUG
                                                                                                 mkdir --parents "$SHARED_DIR"
-                                                                                                echo 72127ac8-6549-40ee-a8b2-562b61ab5af6 >> /tmp/DEBUG
                                                                                                 "$SELF/result/bin/run-nixos-vm -no-graphic" >> /tmp/DEBUG 2>&1
-                                                                                                echo f27e9afa-f364-4f33-8fb2-49daca49e24b >> /tmp/DEBUG
                                                                                             fi
                                                                                         '' ;
                                                                                 } ;
