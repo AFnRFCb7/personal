@@ -329,24 +329,20 @@
                                                                 virtual-machines =
                                                                     let
                                                                         virtual-machine =
-                                                                            bootloader :
+                                                                            bootloader : ignore :
                                                                                 {
-                                                                                    build =
-                                                                                        ignore :
-                                                                                            {
-                                                                                                init-inputs = [ pkgs.nixos-rebuild ] ;
-                                                                                                init-text =
-                                                                                                    ''
-                                                                                                        if [[ "( < ""$( "${ resources.milestone.source.root } "$@" )/status" )" != 0 ]]
-                                                                                                        then
-                                                                                                            exit 64
-                                                                                                        else
-                                                                                                            export NIX_SHOW_STATS=5
-                                                                                                            export NIX_DEBUG=1
-                                                                                                            nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source.root } "$@" )" --verbose --show-trace
-                                                                                                        fi
-                                                                                                    '' ;
-                                                                                            } ;
+                                                                                    init-inputs = [ pkgs.nixos-rebuild ] ;
+                                                                                    init-text =
+                                                                                        ''
+                                                                                            if [[ "( < ""$( "${ resources.milestone.source.root } "$@" )/status" )" != 0 ]]
+                                                                                            then
+                                                                                                exit 64
+                                                                                            else
+                                                                                                export NIX_SHOW_STATS=5
+                                                                                                export NIX_DEBUG=1
+                                                                                                nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source.root } "$@" )" --verbose --show-trace
+                                                                                            fi
+                                                                                        '' ;
                                                                                 } ;
                                                                         in
                                                                             {
@@ -433,8 +429,8 @@
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/vm" ]]
                                                                                                                 then
-                                                                                                                    BUILD_VM="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$BUILD_VM" "$ROOT/build_vm"
+                                                                                                                    VM="$( ${ resources.milestone.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$BUILD_VM" "$ROOT/vm"
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
