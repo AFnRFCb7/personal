@@ -275,7 +275,7 @@
                                                                     {
                                                                         root =
                                                                             {
-                                                                                git
+                                                                                git =
                                                                                     {
                                                                                         configs =
                                                                                             {
@@ -316,6 +316,7 @@
                                                                                                                         COMMIT="$( < "$DIR/commit" )"
                                                                                                                         sed -i "s#\($NAME\.url.*?ref=\)main#\1$COMMIT#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                     done
+                                                                                                                    date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ setup }/bin/setup \"$@\"" ;
