@@ -231,9 +231,16 @@
                                                                                     export NIX_LOG=stderr
                                                                                     if nix --log-format raw --show-trace -vvv flake check "$( ${ resources.milestone.source.root } "$@" )/work-tree" > "$SELF/standard-output" 2> "$SELF/standard-error"
                                                                                     then
-                                                                                        echo "$?" > "$SELF/status"
+                                                                                        STATUS="$?"
                                                                                     else
-                                                                                        echo "$?" > "$SELF/status"
+                                                                                        STATUS="$?"
+                                                                                    fi
+                                                                                    echo "$STATUS" > "$SELF/status"
+                                                                                    if [[ "$STATUS" == 0 ]]
+                                                                                    then
+                                                                                        exit 0
+                                                                                    else
+                                                                                        exit 64
                                                                                     fi
                                                                                 '' ;
                                                                         } ;
