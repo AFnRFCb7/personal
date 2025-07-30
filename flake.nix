@@ -309,7 +309,6 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
-                                                                                                                REMOTE="$( < "$LOCO20/root/remote" )"
                                                                                                                 BRANCH="$( < "$LOCO20/root/branch" )"
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 git fetch remote "$( ${ milestone } )"
