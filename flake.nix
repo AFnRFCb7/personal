@@ -423,7 +423,7 @@
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/vm" ]]
                                                                                                                 then
-                                                                                                                    VM="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    BUILD_VM="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$BUID_VM" "$ROOT/build_vm"
                                                                                                                 fi
                                                                                                             '' ;
