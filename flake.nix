@@ -837,7 +837,7 @@
                                                                     {
                                                                         serviceConfig =
                                                                             {
-                                                                                ExecStart = "${ pkgs.coreutils }/bin/touch /tmp/shared/FLAG" ;
+                                                                                ExecStart = "${ pkgs.coreutils }/bin/echo 0 /tmp/shared/status" ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
