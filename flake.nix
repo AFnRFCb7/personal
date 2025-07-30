@@ -847,7 +847,7 @@
                                                                                                     text =
                                                                                                         ''
                                                                                                             echo 0 > /tmp/shared/status
-                                                                                                        ''
+                                                                                                        '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                                 User = config.personal.name ;
