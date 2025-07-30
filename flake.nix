@@ -335,7 +335,7 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             echo 29d916e4-2b08-4b97-b3c8-c9db0d4b874e > /tmp/DEBUG
-                                                                                            DIRECTORY="$( ${ resources.milestone.source.root } "$@" )"
+                                                                                            DIRECTORY="$( ${ resources.milestone.check } "$@" )"
                                                                                             echo 5166362f-215f-4fb6-933b-a098159a6e16 >> /tmp/DEBUG
                                                                                             ls "$DIRECTORY" >> /tmp/DEBUG 2>&1
                                                                                             STATUS="$( < "$DIRECTORY/status" )"
