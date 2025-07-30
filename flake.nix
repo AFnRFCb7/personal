@@ -347,7 +347,7 @@
                                                                                                 SHARED_DIR="$SELF/test"
                                                                                                 export SHARED_DIR
                                                                                                 mkdir --parents "$SHARED_DIR"
-                                                                                                "$SELF/result/bin/run-nixos-vm" -no-graphic >> /tmp/DEBUG 2>&1
+                                                                                                "$SELF/result/bin/run-nixos-vm" -nographic >> /tmp/DEBUG 2>&1
                                                                                             fi
                                                                                         '' ;
                                                                                 } ;
