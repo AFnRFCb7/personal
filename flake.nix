@@ -335,7 +335,8 @@
                                                                                     init-text =
                                                                                         ''
                                                                                             DIRECTORY="$( ${ resources.milestone.source.root } "$@" )"
-                                                                                            if [[ "( < "$DIRECTORY/status" )" != 0 ]]
+                                                                                            STATUS="$( < "$DIRECTORY/status" )"
+                                                                                            if [[ "$STATUS" != 0 ]]
                                                                                             then
                                                                                                 exit 64
                                                                                             else
