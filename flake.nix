@@ -371,7 +371,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                mkdir --paretns "$SELF/promote"
+                                                                                                                mkdir --parents "$SELF/promote"
                                                                                                                 ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
                                                                                                                 commit ( )
                                                                                                                     {
