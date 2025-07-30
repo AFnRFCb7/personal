@@ -352,7 +352,7 @@
                                                                                                 echo eda3d900-b76a-4db6-bcbc-046ff7b96993 >> /tmp/DEBUG
                                                                                                 mkdir --parents "$SHARED_DIR"
                                                                                                 echo 72127ac8-6549-40ee-a8b2-562b61ab5af6 >> /tmp/DEBUG
-                                                                                                "$SELF/result/bin/run-nixos-vm -no-graphic"
+                                                                                                "$SELF/result/bin/run-nixos-vm -no-graphic" >> /tmp/DEBUG 2>&1
                                                                                                 echo f27e9afa-f364-4f33-8fb2-49daca49e24b >> /tmp/DEBUG
                                                                                             fi
                                                                                         '' ;
