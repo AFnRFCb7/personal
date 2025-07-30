@@ -334,9 +334,9 @@
                                                                                     init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            DIRECTORY="$( ${ resources.milestone.check } "$@" )"
-                                                                                            ls "$DIRECTORY" >> /tmp/DEBUG 2>&1
-                                                                                            STATUS="$( < "$DIRECTORY/status" )"
+                                                                                            cd "$SELF"
+                                                                                            CHECK="$( ${ resources.milestone.check } "$@" )"
+                                                                                            STATUS="$( < "$CHECK/status" )"
                                                                                             if [[ "$STATUS" != 0 ]]
                                                                                             then
                                                                                                 exit 64
