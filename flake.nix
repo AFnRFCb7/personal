@@ -846,7 +846,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo 0 > /tmp/shared/status
+                                                                                                            echo 1 > /tmp/shared/status
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
