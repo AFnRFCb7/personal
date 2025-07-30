@@ -278,6 +278,39 @@
                                                                         } ;
                                                                 source =
                                                                     {
+                                                                        inputs =
+                                                                            let
+                                                                                xxx =
+                                                                                    ignore :
+                                                                                        git
+                                                                                            {
+                                                                                                configs =
+                                                                                                    {
+                                                                                                        "core.sshCommand" = ssh ;
+                                                                                                        "user.email" = config.personal.email ;
+                                                                                                        "user.name" = config.personal.description ;
+                                                                                                    } ;
+                                                                                                remotes =
+                                                                                                    {
+                                                                                                        local = "$( < "$( ${ resources.milestone.snapshot } "$@" )/root/local" ;
+                                                                                                        remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
+                                                                                                    } ;
+                                                                                                setup =
+                                                                                                    let
+                                                                                                        setup =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ setup }/bin/setup"
+                                                                                            } ;
+                                                                                in
+                                                                                    {
+                                                                                    } ;
                                                                         root =
                                                                             git
                                                                                 {
