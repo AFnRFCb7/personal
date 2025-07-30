@@ -834,7 +834,7 @@
 						                                        installPhase =
 						                                            ''
 						                                                touch $out
-						                                                exit 99
+						                                                exit 0
 						                                            '' ;
                                                                 name = "foobar" ;
                                                                 src = ./. ;
