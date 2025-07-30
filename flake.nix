@@ -454,7 +454,7 @@
                                                                                                             echo 9f3bf371-358d-472d-b2c0-bacaca0e80c2 >> /tmp/DEBUG
                                                                                                         else
                                                                                                             echo f38d35cb-d919-41a0-a837-5cc2d4561331 >> /tmp/DEBUG
-                                                                                                            git fetch origin main
+                                                                                                            git fetch origin main > /tmp/DEBUG 2>&1
                                                                                                             echo 6271f293-5ceb-4d33-af0e-8b70ec31cdf4 >> /tmp/DEBUG
                                                                                                             git checkout origin/main
                                                                                                             echo c8b0ea6d-fbad-4e7f-b220-71a954473708 >> /tmp/DEBUG
