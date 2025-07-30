@@ -231,16 +231,9 @@
                                                                                     export NIX_LOG=stderr
                                                                                     if nix --log-format raw --show-trace -vvv flake check "$( ${ resources.milestone.source.root } "$@" )/work-tree" > "$SELF/standard-output" 2> "$SELF/standard-error"
                                                                                     then
-                                                                                        STATUS="$?"
+                                                                                        echo "$?" > "$SELF/status"
                                                                                     else
-                                                                                        STATUS="$?"
-                                                                                    fi
-                                                                                    echo "$STATUS" > "$SELF/status"
-                                                                                    if [[ "$STATUS" == 0 ]]
-                                                                                    then
-                                                                                        exit 0
-                                                                                    else
-                                                                                        exit 64
+                                                                                        echo "$?" > "$SELF/status"
                                                                                     fi
                                                                                 '' ;
                                                                         } ;
@@ -344,9 +337,14 @@
                                                                                                 init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                                 init-text =
                                                                                                     ''
-                                                                                                        export NIX_SHOW_STATS=5
-                                                                                                        export NIX_DEBUG=1
-                                                                                                        nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source.root } "$@" )" --verbose --show-trace
+                                                                                                        if [[ "( < ""$( "${ resources.milestone.source.root } "$@" )/status" )" != 0 ]]
+                                                                                                        then
+                                                                                                            exit 64
+                                                                                                        else
+                                                                                                            export NIX_SHOW_STATS=5
+                                                                                                            export NIX_DEBUG=1
+                                                                                                            nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( "${ resources.milestone.source.root } "$@" )" --verbose --show-trace
+                                                                                                        fi
                                                                                                     '' ;
                                                                                             } ;
                                                                                 } ;
