@@ -441,6 +441,11 @@
                                                                                                                     VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$VM" "$ROOT/vm"
                                                                                                                 fi
+                                                                                                                if [[ ! -e "$SELF/promote/vm-with-bootloader" ]]
+                                                                                                                then
+                                                                                                                    VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
+                                                                                                                fi
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
@@ -846,7 +851,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo 1 > /tmp/shared/status
+                                                                                                            echo 0 > /tmp/shared/status
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
