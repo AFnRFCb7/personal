@@ -334,22 +334,16 @@
                                                                                     init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            echo 29d916e4-2b08-4b97-b3c8-c9db0d4b874e > /tmp/DEBUG
                                                                                             DIRECTORY="$( ${ resources.milestone.check } "$@" )"
-                                                                                            echo 5166362f-215f-4fb6-933b-a098159a6e16 >> /tmp/DEBUG
                                                                                             ls "$DIRECTORY" >> /tmp/DEBUG 2>&1
                                                                                             STATUS="$( < "$DIRECTORY/status" )"
-                                                                                            echo 0bebef2c-56c4-47d5-afe5-5cff1cd65e0a >> /tmp/DEBUG
                                                                                             if [[ "$STATUS" != 0 ]]
                                                                                             then
-                                                                                                echo fd36d6dc-e041-42d3-8363-2bea68a408e0 >> /tmp/DEBUG
                                                                                                 exit 64
                                                                                             else
-                                                                                                echo a4628e84-4daf-4fab-8416-9b0a590975d1 >> /tmp/DEBUG
                                                                                                 export NIX_SHOW_STATS=5
-                                                                                                echo 6d883f4c-e968-4eff-a2b1-85b671f4a948 >> /tmp/DEBUG
                                                                                                 export NIX_DEBUG=1
-                                                                                                echo cf797c47-c739-414f-b46f-bc2752c2e32c >> /tmp/DEBUG
+                                                                                                echo cf797c47-c739-414f-b46f-bc2752c2e32c > /tmp/DEBUG
                                                                                                 nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$DIRECTORY/work-tree#tester" --verbose --show-trace >> /tmp/DEBUG 2>&1
                                                                                                 echo 4881be74-e87b-4667-97b5-f8714e8f915e >> /tmp/DEBUG
                                                                                             fi
