@@ -432,7 +432,7 @@
                                                                                                                 if [[ ! -e "$SELF/promote/vm" ]]
                                                                                                                 then
                                                                                                                     VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$BUILD_VM" "$ROOT/vm"
+                                                                                                                    ln --symbolic "$VM" "$ROOT/vm"
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
