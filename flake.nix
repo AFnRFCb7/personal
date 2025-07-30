@@ -837,7 +837,19 @@
                                                                     {
                                                                         serviceConfig =
                                                                             {
-                                                                                ExecStart = "${ pkgs.coreutils }/bin/echo 0 /tmp/shared/status" ;
+                                                                                ExecStart =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "application" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo 0 > /tmp/shared/status
+                                                                                                        ''
+                                                                                                } ;
+                                                                                        in "${ application }/bin/application" ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
