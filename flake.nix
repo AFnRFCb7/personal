@@ -334,7 +334,7 @@
                                                                                     init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                     init-text =
                                                                                         ''
-                                                                                            if [[ "( < ""$( "${ resources.milestone.source.root } "$@" )/status" )" != 0 ]]
+                                                                                            if [[ "( < "$( "${ resources.milestone.source.root } "$@" )/status" )" != 0 ]]
                                                                                             then
                                                                                                 exit 64
                                                                                             else
