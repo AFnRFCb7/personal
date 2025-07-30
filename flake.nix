@@ -292,7 +292,7 @@
                                                                                                     } ;
                                                                                                 remotes =
                                                                                                     {
-                                                                                                        local = "$( < "$( ${ resources.milestone.snapshot } "$@" )/root/local" ;
+                                                                                                        local = '''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
                                                                                                         remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                                     } ;
                                                                                                 setup =
