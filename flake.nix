@@ -227,7 +227,7 @@
                                                                                 ''
                                                                                     VM="$( ${ resources.milestone.virtual-machines.virtual-machine } "$@" )"
                                                                                     VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } "$@" )"
-                                                                                    if [[ "$( < "$VM/test/status" ) != 0 ]] || [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" != 0 ]]
+                                                                                    if [[ "$( < "$VM/test/status" )" != 0 ]] || [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" != 0 ]]
                                                                                     then
                                                                                         exit 64
                                                                                     fi
