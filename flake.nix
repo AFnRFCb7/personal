@@ -376,7 +376,9 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo "9c8d13ec-9d06-4b39-8433-70bd1db0c6e4" >> /tmp/DEBUG
                                                                                                                 LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
+                                                                                                                echo "903c4914-21e3-408f-a3b1-0fabace7cd33" >> /tmp/DEBUG
                                                                                                                 BRANCH="$( < "$LOCO20/root/branch" )"
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 git fetch remote "$( ${ milestone } )"
