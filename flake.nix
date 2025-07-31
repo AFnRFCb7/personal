@@ -298,10 +298,6 @@
                                                                                             "user.email" = config.personal.email ;
                                                                                             "user.name" = config.personal.description ;
                                                                                         } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            remote = ''$1'' ;
-                                                                                        } ;
                                                                                     setup =
                                                                                         let
                                                                                             setup =
@@ -311,14 +307,16 @@
                                                                                                         runtimeInputs = [ ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo 8793c25a-ada2-4738-b35b-46ac64b5a159 >> /tmp/DEBUG
+                                                                                                                REMOTE="$1"
                                                                                                                 echo 1a042782-21c2-4cf0-909f-9bcd40de5dc3 >> /tmp/DEBUG
                                                                                                                 BRANCH="$2"
                                                                                                                 echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
                                                                                                                 COMMIT="$3"
                                                                                                                 echo fae40f57-c740-4d9e-b9df-a761456fba55 >> /tmp/DEBUG
-                                                                                                                git fetch remote "$( ${ milestone } )"
+                                                                                                                git fetch "$REMOTE" "$( ${ milestone } )"
                                                                                                                 echo 3017afd0-33e1-4476-8970-c571e8d372de >> /tmp/DEBUG
-                                                                                                                git fetch remote "$BRANCH"
+                                                                                                                git fetch "$REMOTE" "$BRANCH"
                                                                                                                 echo 277bf4b9-b4fa-4b42-999e-3efa872beec6 >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo 6a3abc05-199c-46dd-aee6-07d0ea53e83d >> /tmp/DEBUG
@@ -377,10 +375,10 @@
                                                                                                                     echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
                                                                                                                     echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $BRANCH $COMMIT" >> /tmp/DEBUG
-                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
-                                                                                                                    echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
-                                                                                                                    Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                    # REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
+                                                                                                                    # echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
+                                                                                                                    # Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
