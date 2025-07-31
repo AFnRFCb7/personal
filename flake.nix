@@ -219,6 +219,17 @@
                                                                 } ;
                                                         milestone =
                                                             {
+                                                                build =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ pkgs.nixos-rebuild ];
+                                                                            init-text =
+                                                                                ''
+                                                                                    export NIX_SHOW_STATS=5
+                                                                                    export NIX_DEBUG=1
+                                                                                    nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
+                                                                                '' ;
+                                                                        } ;
                                                                 check =
                                                                     ignore :
                                                                         {
@@ -290,8 +301,7 @@
                                                                                             } ;
                                                                                         remotes =
                                                                                             {
-                                                                                                local = '''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
-                                                                                                remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
+                                                                                                remote = ''$1'' ;
                                                                                             } ;
                                                                                         setup =
                                                                                             let
@@ -302,8 +312,9 @@
                                                                                                             runtimeInputs = [ ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    BRANCH="$1"
-                                                                                                                    COMMIT="$2" )"
+                                                                                                                    REMOTE="$1"
+                                                                                                                    BRANCH="$2"
+                                                                                                                    COMMIT="$3"
                                                                                                                     git fetch remote "$( ${ milestone } )"
                                                                                                                     git fetch remote "$BRANCH"
                                                                                                                     git checkout "$BRANCH"
