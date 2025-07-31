@@ -385,11 +385,11 @@
                                                                                                                     BRANCH="$( < "$DIR/branch" )"
                                                                                                                     echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    # echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $BRANCH $COMMIT" >> /tmp/DEBUG
-                                                                                                                    # REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
-                                                                                                                    # echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
-                                                                                                                    # Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                    echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $BRANCH $COMMIT" >> /tmp/DEBUG
+                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
+                                                                                                                    echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
+                                                                                                                    Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                     echo 1df7b567-e55c-4398-8d46-7c13048f8f50 >> /tmp/DEBUG
                                                                                                                 done
                                                                                                                 echo e638057a-baa5-4b90-9c87-6639896dd053 >> /tmp/DEBUG
