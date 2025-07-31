@@ -314,6 +314,9 @@
                                                                                             "user.email" = config.personal.email ;
                                                                                             "user.name" = config.personal.description ;
                                                                                         } ;
+                                                                                        {
+                                                                                            remote = "$1" ;
+                                                                                        } ;
                                                                                     setup =
                                                                                         let
                                                                                             setup =
