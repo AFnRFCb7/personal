@@ -290,40 +290,39 @@
                                                                 source =
                                                                     {
                                                                         input =
-                                                                            ignore :
-                                                                                git
-                                                                                    {
-                                                                                        configs =
-                                                                                            {
-                                                                                                "core.sshCommand" = ssh ;
-                                                                                                "user.email" = config.personal.email ;
-                                                                                                "user.name" = config.personal.description ;
-                                                                                            } ;
-                                                                                        remotes =
-                                                                                            {
-                                                                                                remote = ''$1'' ;
-                                                                                            } ;
-                                                                                        setup =
-                                                                                            let
-                                                                                                setup =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "setup" ;
-                                                                                                            runtimeInputs = [ ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    REMOTE="$1"
-                                                                                                                    BRANCH="$2"
-                                                                                                                    COMMIT="$3"
-                                                                                                                    git fetch remote "$( ${ milestone } )"
-                                                                                                                    git fetch remote "$BRANCH"
-                                                                                                                    git checkout "$BRANCH"
-                                                                                                                    git rebase "remote/$( ${ milestone } )"
-                                                                                                                    git commit -am "" --allow-empty --allow-empty-commit
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ setup }/bin/setup" ;
-                                                                                    } ;
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "core.sshCommand" = ssh ;
+                                                                                            "user.email" = config.personal.email ;
+                                                                                            "user.name" = config.personal.description ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            remote = ''$1'' ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            setup =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                REMOTE="$1"
+                                                                                                                BRANCH="$2"
+                                                                                                                COMMIT="$3"
+                                                                                                                git fetch remote "$( ${ milestone } )"
+                                                                                                                git fetch remote "$BRANCH"
+                                                                                                                git checkout "$BRANCH"
+                                                                                                                git rebase "remote/$( ${ milestone } )"
+                                                                                                                git commit -am "" --allow-empty --allow-empty-commit
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ setup }/bin/setup" ;
+                                                                                } ;
                                                                         root =
                                                                             git
                                                                                 {
