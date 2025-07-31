@@ -428,6 +428,11 @@
                                                                                                 "$SELF/result/bin/run-nixos-vm" -nographic >> /tmp/DEBUG 2>&1
                                                                                             fi
                                                                                         '' ;
+                                                                                    release-inputs = [ pkgs.nix ] ;
+                                                                                    release-text =
+                                                                                        ''
+                                                                                            nix-collect-garbage
+                                                                                        '' ;
                                                                                 } ;
                                                                         in
                                                                             {
