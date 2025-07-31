@@ -278,38 +278,40 @@
                                                                         } ;
                                                                 source =
                                                                     {
-                                                                        inputs =
-                                                                            let
-                                                                                xxx =
-                                                                                    ignore :
-                                                                                        git
-                                                                                            {
-                                                                                                configs =
-                                                                                                    {
-                                                                                                        "core.sshCommand" = ssh ;
-                                                                                                        "user.email" = config.personal.email ;
-                                                                                                        "user.name" = config.personal.description ;
-                                                                                                    } ;
-                                                                                                remotes =
-                                                                                                    {
-                                                                                                        local = '''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
-                                                                                                        remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
-                                                                                                    } ;
-                                                                                                setup =
-                                                                                                    let
-                                                                                                        setup =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "setup" ;
-                                                                                                                    runtimeInputs = [ ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ setup }/bin/setup" ;
-                                                                                            } ;
-                                                                                in
+                                                                        input =
+                                                                            ignore :
+                                                                                git
                                                                                     {
+                                                                                        configs =
+                                                                                            {
+                                                                                                "core.sshCommand" = ssh ;
+                                                                                                "user.email" = config.personal.email ;
+                                                                                                "user.name" = config.personal.description ;
+                                                                                            } ;
+                                                                                        remotes =
+                                                                                            {
+                                                                                                local = '''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/local'' ;
+                                                                                                remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
+                                                                                            } ;
+                                                                                        setup =
+                                                                                            let
+                                                                                                setup =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "setup" ;
+                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    BRANCH="$1"
+                                                                                                                    COMMIT="$2" )"
+                                                                                                                    git fetch remote "$( ${ milestone } )"
+                                                                                                                    git fetch remote "$BRANCH"
+                                                                                                                    git checkout "$BRANCH"
+                                                                                                                    git rebase "remote/$( ${ milestone } )"
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-commit
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ setup }/bin/setup" ;
                                                                                     } ;
                                                                         root =
                                                                             git
@@ -346,7 +348,7 @@
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 git fetch remote "$( ${ milestone } )"
                                                                                                                 git fetch remote "$BRANCH"
-                                                                                                                git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
+                                                                                                                git checkout "$COMMIT"
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
                                                                                                                     NAME="$( < "$DIR/name" )"
@@ -457,7 +459,6 @@
                                                                                                                 then
                                                                                                                     SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
-                                                                                                                    echo 6c6f5fda-c41a-4175-8061-4e1d77e110d4 >> /tmp/DEBUG
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/source" ]]
                                                                                                                 then
@@ -502,7 +503,7 @@
                                                                                                         then
                                                                                                             git checkout "origin/$MILESTONE"
                                                                                                         else
-                                                                                                            git fetch origin main > /tmp/DEBUG 2>&1
+                                                                                                            git fetch origin main
                                                                                                             git checkout origin/main
                                                                                                             git push -u origin "$MILESTONE"
                                                                                                         fi
