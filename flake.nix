@@ -315,7 +315,7 @@
                                                                                                                 COMMIT="$3"
                                                                                                                 echo fae40f57-c740-4d9e-b9df-a761456fba55 >> /tmp/DEBUG
                                                                                                                 git fetch "$REMOTE" "$( ${ milestone } )"
-                                                                                                                echo 3017afd0-33e1-4476-8970-c571e8d372de >> /tmp/DEBUG
+                                                                                                                echo "3017afd0-33e1-4476-8970-c571e8d372de REMOTE=$REMOTE BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                 git fetch "$REMOTE" "$BRANCH"
                                                                                                                 echo 277bf4b9-b4fa-4b42-999e-3efa872beec6 >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
