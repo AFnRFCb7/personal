@@ -334,7 +334,6 @@
                                                                                                                 echo "3017afd0-33e1-4476-8970-c571e8d372de REMOTE=$REMOTE BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                 git fetch "$REMOTE" "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 git checkout "$COMMIT"
-                                                                                                                echo 6a3abc05-199c-46dd-aee6-07d0ea53e83d >> /tmp/DEBUG
                                                                                                                 git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
                                                                                                                 echo d5b45c38-14c5-4021-87f6-1823e384956c >> /tmp/DEBUG
                                                                                                                 git commit -am "" --allow-empty --allow-empty-commit
