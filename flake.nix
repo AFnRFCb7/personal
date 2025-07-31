@@ -258,24 +258,40 @@
                                                                                     do
                                                                                         case "$1" in
                                                                                             --link)
+                                                                                                echo "f67d2ebc-8dd5-4c3b-a722-43b6543654fa" >> /tmp/DEBUG
                                                                                                 TYPE="$2"
+                                                                                                echo "2b51b3de-2155-4f14-b271-7308e891d816" >> /tmp/DEBUG
                                                                                                 DIR="$3"
+                                                                                                echo "1c788b68-2d14-4cfe-8f96-c66dcb915527" >> /tmp/DEBUG
                                                                                                 COMMIT="$4"
+                                                                                                echo "1c788b68-2d14-4cfe-8f96-c66dcb915527" >> /tmp/DEBUG
                                                                                                 NAME="$( basename "$DIR" )"
+                                                                                                echo "8d1b4c0d-31e0-4f95-b38a-9daccca811b3" >> /tmp/DEBUG
                                                                                                 if [[ "$TYPE" == "root" ]]
                                                                                                 then
+                                                                                                    echo "b81bd446-74d9-4eca-a71c-566d6eb01182" >> /tmp/DEBUG
                                                                                                     ROOT="$SELF/root"
                                                                                                 else
+                                                                                                    echo "2f1e5642-4d14-4cb8-a909-f1ebf2788539" >> /tmp/DEBUG
                                                                                                     ROOT="$SELF/inputs/$NAME"
                                                                                                 fi
+                                                                                                echo "fef42256-fad9-45b8-bed6-784f1d0877e8" >> /tmp/DEBUG
                                                                                                 mkdir --parents "$ROOT"
+                                                                                                echo "6713abfa-c66b-46db-9aee-1ab0c17f729a" >> /tmp/DEBUG
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref HEAD > "$ROOT/branch"
+                                                                                                echo "a9b64bf1-cb01-49b3-9e62-4925650928c9" >> /tmp/DEBUG
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git push origin HEAD
+                                                                                                echo "83aa88c9-2243-4031-be7f-04b87e888ce3" >> /tmp/DEBUG
                                                                                                 echo "$COMMIT" > "$ROOT/commit"
+                                                                                                echo "2aec2dba-3002-4680-a25b-56d8525db540" >> /tmp/DEBUG
                                                                                                 echo "$NAME" > "$ROOT/name"
+                                                                                                echo "a743025d-08bd-44db-98be-151217f3cfb7" >> /tmp/DEBUG
                                                                                                 ln --symbolic "$DIR" "$ROOT/local"
+                                                                                                echo "ee74064f-f41e-4347-ab62-ff12e8087b93" >> /tmp/DEBUG
                                                                                                 git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
+                                                                                                echo "ed240cad-4b80-4f8e-876c-9245cefba39f" >> /tmp/DEBUG
                                                                                                 shift 4
+                                                                                                echo "fb940d1d-8e21-4b85-bfca-351dd33b3d3e" >> /tmp/DEBUG
                                                                                                 ;;
                                                                                             *)
                                                                                                 mkdir --parents "$SELF/garbage"
