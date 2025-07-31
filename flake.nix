@@ -351,9 +351,13 @@
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
+                                                                                                                    REMOTE="( < "$DIR/remote" )"
                                                                                                                     NAME="$( < "$DIR/name" )"
+                                                                                                                    BRANCH="$( < "$DIR/branch" )"
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
+                                                                                                                    Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
