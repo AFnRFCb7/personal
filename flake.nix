@@ -314,6 +314,7 @@
                                                                                             "user.email" = config.personal.email ;
                                                                                             "user.name" = config.personal.description ;
                                                                                         } ;
+                                                                                    remotes =
                                                                                         {
                                                                                             remote = "$1" ;
                                                                                         } ;
