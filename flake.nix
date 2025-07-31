@@ -225,6 +225,12 @@
                                                                             init-inputs = [ pkgs.nixos-rebuild ];
                                                                             init-text =
                                                                                 ''
+                                                                                    VM="$( ${ resources.milestone.virtual-machines.virtual-machine } "$@" )"
+                                                                                    VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } "$@" )"
+                                                                                    if [[ "$( < "$VM/test/status" ) != 0 ]] || [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" != 0 ]]
+                                                                                    then
+                                                                                        exit 64
+                                                                                    fi
                                                                                     export NIX_SHOW_STATS=5
                                                                                     export NIX_DEBUG=1
                                                                                     nixos-rebuild build --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
@@ -398,6 +404,22 @@
                                                                                             in "${ setup }/bin/setup" ;
                                                                                 } ;
                                                                     } ;
+                                                                test =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ ];
+                                                                            init-text =
+                                                                                ''
+                                                                                    export NIX_SHOW_STATS=5
+                                                                                    export NIX_DEBUG=1
+                                                                                    BUILD="$( ${ resources.milestone.build } "$@" )"
+                                                                                    if [[ ! -d "$BUILD" ]]
+                                                                                    then
+                                                                                        exit 64
+                                                                                    fi
+                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
+                                                                                '' ;
+                                                                        } ;
                                                                 virtual-machines =
                                                                     let
                                                                         virtual-machine =
@@ -462,6 +484,7 @@
                                                                                                 runtimeInputs = [ ] ;
                                                                                                 text =
                                                                                                     ''
+
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
@@ -530,6 +553,11 @@
                                                                                                                 then
                                                                                                                     BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$BUILD" "$ROOT/build"
+                                                                                                                fi
+                                                                                                                if [[ ! -e "$SELF/promote/test" ]]
+                                                                                                                then
+                                                                                                                    TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$TEST" "$ROOT/test"
                                                                                                                 fi
                                                                                                             '' ;
 
