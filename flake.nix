@@ -316,7 +316,7 @@
                                                                                                                 COMMIT="$3"
                                                                                                                 git fetch remote "$( ${ milestone } )"
                                                                                                                 git fetch remote "$BRANCH"
-                                                                                                                git checkout "$BRANCH"
+                                                                                                                git checkout "$COMMIT"
                                                                                                                 git rebase "remote/$( ${ milestone } )"
                                                                                                                 git commit -am "" --allow-empty --allow-empty-commit
                                                                                                             '' ;
