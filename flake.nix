@@ -517,21 +517,36 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        echo e6904d58-dabc-46ba-8f06-8cd11d838e3c > /tmp/DEBUG
                                                                                                         MILESTONE="$( ${ milestone } )"
+                                                                                                        echo 781cec98-98fe-48fa-8561-397c86e6559e >> /tmp/DEBUG
                                                                                                         if git fetch origin "$MILESTONE"
                                                                                                         then
+                                                                                                            echo 26a909c5-b4d1-42fd-9ac2-21b4fe679027 >> /tmp/DEBUG
                                                                                                             git checkout "origin/$MILESTONE"
+                                                                                                            echo 90760b41-ff8c-472b-98e9-78a9e9290d70 >> /tmp/DEBUG
                                                                                                         else
+                                                                                                            echo 85852679-fbff-4df6-8a7a-c5acf52c8618 >> /tmp/DEBUG
                                                                                                             git fetch origin main
+                                                                                                            echo 541baa9a-e64f-4b99-b0ef-e8f142a90452 >> /tmp/DEBUG
                                                                                                             git checkout origin/main
+                                                                                                            echo c9e986b1-4354-4b70-88d6-d5a07296b505 >> /tmp/DEBUG
                                                                                                             git push -u origin "$MILESTONE"
+                                                                                                            echo 03b9e515-13f1-41d0-805d-d7fa99081d7a >> /tmp/DEBUG
                                                                                                         fi
+                                                                                                        echo 17060d98-1997-47cc-9245-cfa1b2c1b0db >> /tmp/DEBUG
                                                                                                         git checkout -b "scratch/$( uuidgen )"
+                                                                                                        echo 77062af7-0b9b-4303-b33a-52333ba0d8a9 >> /tmp/DEBUG
                                                                                                         mkdir --parents "$SELF/inputs"
+                                                                                                        echo fb1b6039-e97b-4e1f-9773-59ff6a3a0cf6 >> /tmp/DEBUG
                                                                                                         ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
+                                                                                                        echo 6105aa25-0db5-48f7-9455-75061c414941 >> /tmp/DEBUG
                                                                                                         ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
+                                                                                                        echo bdec44ba-c1bc-4371-9b62-9979a0364863 >> /tmp/DEBUG
                                                                                                         ln --symbolic "$( ${ resources.repository.secrets } "$@" )" "$SELF/inputs/secrets"
+                                                                                                        echo 553fb241-28b2-4fc8-bd25-e2652035fde9 >> /tmp/DEBUG
                                                                                                         ln --symbolic "$( ${ resources.repository.visitor } "$@" )" "$SELF/inputs/visitor"
+                                                                                                        echo 06ed1bc1-ad48-43d4-afcc-47c333b5e343 >> /tmp/DEBUG
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
