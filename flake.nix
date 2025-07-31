@@ -368,7 +368,7 @@
                                                                                                                     BRANCH="$( < "$DIR/branch" )"
                                                                                                                     echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 COMMIT=$COMMIT" >> /tmp/DEBUG
+                                                                                                                    echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $BRANCH $COMMIT" >> /tmp/DEBUG
                                                                                                                     REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
                                                                                                                     echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
