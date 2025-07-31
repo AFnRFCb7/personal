@@ -360,8 +360,8 @@
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
-                                                                                                                    echo 00a80611-3e7b-4235-82ec-b67869ee404a >> /tmp/DEBUG
-                                                                                                                    REMOTE="( < "$DIR/remote" )"
+                                                                                                                    echo "00a80611-3e7b-4235-82ec-b67869ee404a DIR=$DIR" >> /tmp/DEBUG
+                                                                                                                    REMOTE="$( < "$DIR/remote" )"
                                                                                                                     echo "418440a9-6311-48c3-9b7b-7f378b4e9850 REMOTE=$REMOTE" >> /tmp/DEBUG
                                                                                                                     NAME="$( < "$DIR/name" )"
                                                                                                                     echo 8aca2d67-6b2e-411d-8327-991693e9d42c >> /tmp/DEBUG
