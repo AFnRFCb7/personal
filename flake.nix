@@ -247,6 +247,11 @@
                                                                                         echo "$?" > "$SELF/status"
                                                                                     fi
                                                                                 '' ;
+                                                                            release-inputs = [ pkgs.nix ] ;
+                                                                            release-text =
+                                                                                ''
+                                                                                    nix-collect-garbage
+                                                                                '' ;
                                                                         } ;
                                                                 snapshot =
                                                                     ignore :
