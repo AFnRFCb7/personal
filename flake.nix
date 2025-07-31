@@ -495,7 +495,13 @@
                                                                                                                     VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
                                                                                                                 fi
+                                                                                                                if [[ ! -e "$SELF/promote/build" ]]
+                                                                                                                then
+                                                                                                                    BUILD="$( ${ resources.milestone.virtual-machines.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$BUILD" "$ROOT/build"
+                                                                                                                fi
                                                                                                             '' ;
+
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
                                                                                     "core.sshCommand" = ssh ;
