@@ -288,7 +288,7 @@
                                                                                                 echo "a743025d-08bd-44db-98be-151217f3cfb7" >> /tmp/DEBUG
                                                                                                 ln --symbolic "$DIR" "$ROOT/local"
                                                                                                 echo "ee74064f-f41e-4347-ab62-ff12e8087b93" >> /tmp/DEBUG
-                                                                                                git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
+                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
                                                                                                 echo "ed240cad-4b80-4f8e-876c-9245cefba39f" >> /tmp/DEBUG
                                                                                                 shift 4
                                                                                                 echo "fb940d1d-8e21-4b85-bfca-351dd33b3d3e" >> /tmp/DEBUG
