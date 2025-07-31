@@ -530,6 +530,8 @@
                                                                                                             git fetch origin main
                                                                                                             echo 541baa9a-e64f-4b99-b0ef-e8f142a90452 >> /tmp/DEBUG
                                                                                                             git checkout origin/main
+                                                                                                            echo da8b6154-54cb-4001-98d7-7b25f942eb51 >> /tmp/DEBUG
+                                                                                                            git checkout -b "$MILESTONE"
                                                                                                             echo c9e986b1-4354-4b70-88d6-d5a07296b505 >> /tmp/DEBUG
                                                                                                             git push -u origin "$MILESTONE"
                                                                                                             echo 03b9e515-13f1-41d0-805d-d7fa99081d7a >> /tmp/DEBUG
