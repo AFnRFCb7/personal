@@ -366,7 +366,7 @@
                                                                                                                     NAME="$( < "$DIR/name" )"
                                                                                                                     BRANCH="$( < "$DIR/branch" )"
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    REPO="FINE"
+                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
                                                                                                                     sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                 done
@@ -497,7 +497,7 @@
                                                                                                                 fi
                                                                                                                 if [[ ! -e "$SELF/promote/build" ]]
                                                                                                                 then
-                                                                                                                    BUILD="$( ${ resources.milestone.virtual-machines.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$BUILD" "$ROOT/build"
                                                                                                                 fi
                                                                                                             '' ;
