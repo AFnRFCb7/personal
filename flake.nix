@@ -311,7 +311,6 @@
                                                                                                         runtimeInputs = [ ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                REMOTE="$1"
                                                                                                                 BRANCH="$2"
                                                                                                                 COMMIT="$3"
                                                                                                                 git fetch remote "$( ${ milestone } )"
