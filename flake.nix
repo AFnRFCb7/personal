@@ -401,13 +401,19 @@
                                                                                     init-inputs = [ pkgs.nixos-rebuild ] ;
                                                                                     init-text =
                                                                                         ''
+                                                                                            echo bd0aea00-a7c4-4d4f-97ae-b252488e00a8 >> /tmp/DEBUG
                                                                                             cd "$SELF"
+                                                                                            echo 2aea34b7-8fbf-4dba-b6b6-985921a7a076 >> /tmp/DEBUG
                                                                                             CHECK="$( ${ resources.milestone.check } "$@" )"
+                                                                                            echo d607f2b7-2ac6-488b-bc44-986c4cae596e >> /tmp/DEBUG
                                                                                             STATUS="$( < "$CHECK/status" )"
+                                                                                            echo 8dad7ee0-8317-4ee5-adee-71c6e206d562 >> /tmp/DEBUG
                                                                                             if [[ "$STATUS" != 0 ]]
                                                                                             then
+                                                                                                echo a1f0e611-2a85-4672-9cd3-b449a94e5527 >> /tmp/DEBUG
                                                                                                 exit 64
                                                                                             else
+                                                                                                echo ab1411ce-e3c0-4238-a5e8-fd27de52cd73 >> /tmp/DEBUG
                                                                                                 export NIX_SHOW_STATS=5
                                                                                                 export NIX_DEBUG=1
                                                                                                 nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace >> /tmp/DEBUG 2>&1
