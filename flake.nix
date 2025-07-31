@@ -311,13 +311,21 @@
                                                                                                         runtimeInputs = [ ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo 1a042782-21c2-4cf0-909f-9bcd40de5dc3 >> /tmp/DEBUG
                                                                                                                 BRANCH="$2"
+                                                                                                                echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
                                                                                                                 COMMIT="$3"
+                                                                                                                echo fae40f57-c740-4d9e-b9df-a761456fba55 >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
+                                                                                                                echo 3017afd0-33e1-4476-8970-c571e8d372de >> /tmp/DEBUG
                                                                                                                 git fetch remote "$BRANCH"
+                                                                                                                echo 277bf4b9-b4fa-4b42-999e-3efa872beec6 >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
+                                                                                                                echo 6a3abc05-199c-46dd-aee6-07d0ea53e83d >> /tmp/DEBUG
                                                                                                                 git rebase "remote/$( ${ milestone } )"
+                                                                                                                echo d5b45c38-14c5-4021-87f6-1823e384956c >> /tmp/DEBUG
                                                                                                                 git commit -am "" --allow-empty --allow-empty-commit
+                                                                                                                echo ca13f5fb-ebb3-4aae-8052-3ec844cadfd0 >> /tmp/DEBUG
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ setup }/bin/setup" ;
