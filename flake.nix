@@ -334,9 +334,9 @@
                                                                                                                 echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
                                                                                                                 COMMIT="$3"
                                                                                                                 echo fae40f57-c740-4d9e-b9df-a761456fba55 >> /tmp/DEBUG
-                                                                                                                git fetch "$REMOTE" "$( ${ milestone } )"
+                                                                                                                git fetch remote "$( ${ milestone } )"
                                                                                                                 echo "3017afd0-33e1-4476-8970-c571e8d372de REMOTE=$REMOTE BRANCH=$BRANCH" >> /tmp/DEBUG
-                                                                                                                git fetch "$REMOTE" "$BRANCH" >> /tmp/DEBUG 2>&1
+                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
                                                                                                                 echo d5b45c38-14c5-4021-87f6-1823e384956c >> /tmp/DEBUG
