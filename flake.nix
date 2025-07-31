@@ -360,11 +360,17 @@
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
+                                                                                                                    echo 00a80611-3e7b-4235-82ec-b67869ee404a >> /tmp/DEBUG
                                                                                                                     REMOTE="( < "$DIR/remote" )"
+                                                                                                                    echo 418440a9-6311-48c3-9b7b-7f378b4e9850 >> /tmp/DEBUG
                                                                                                                     NAME="$( < "$DIR/name" )"
+                                                                                                                    echo 8aca2d67-6b2e-411d-8327-991693e9d42c >> /tmp/DEBUG
                                                                                                                     BRANCH="$( < "$DIR/branch" )"
+                                                                                                                    echo 470125f2-b9bd-4ce0-8798-6816eb6739f4 >> /tmp/DEBUG
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
+                                                                                                                    echo 129e0f61-21b3-42c1-a3c5-84b324eb7221 >> /tmp/DEBUG
                                                                                                                     REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
+                                                                                                                    echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
                                                                                                                     sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                 done
