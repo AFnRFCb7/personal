@@ -332,7 +332,7 @@
                                                                                                                 echo fae40f57-c740-4d9e-b9df-a761456fba55 >> /tmp/DEBUG
                                                                                                                 git fetch "$REMOTE" "$( ${ milestone } )"
                                                                                                                 echo "3017afd0-33e1-4476-8970-c571e8d372de REMOTE=$REMOTE BRANCH=$BRANCH" >> /tmp/DEBUG
-                                                                                                                git fetch "$REMOTE" "$BRANCH"
+                                                                                                                git fetch "$REMOTE" "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 echo 277bf4b9-b4fa-4b42-999e-3efa872beec6 >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo 6a3abc05-199c-46dd-aee6-07d0ea53e83d >> /tmp/DEBUG
