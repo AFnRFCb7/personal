@@ -395,7 +395,7 @@
                                                                                             else
                                                                                                 export NIX_SHOW_STATS=5
                                                                                                 export NIX_DEBUG=1
-                                                                                                nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
+                                                                                                nixos-rebuild build --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
                                                                                                 SHARED_DIR="$SELF/test"
                                                                                                 export SHARED_DIR
                                                                                                 mkdir --parents "$SHARED_DIR"
