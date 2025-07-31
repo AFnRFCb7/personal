@@ -280,7 +280,7 @@
                                                                                                 echo "6713abfa-c66b-46db-9aee-1ab0c17f729a" >> /tmp/DEBUG
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref HEAD > "$ROOT/branch"
                                                                                                 echo "a9b64bf1-cb01-49b3-9e62-4925650928c9" >> /tmp/DEBUG
-                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git push origin HEAD
+                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git push origin HEAD >> /tmp/DEBUG 2>&1
                                                                                                 echo "83aa88c9-2243-4031-be7f-04b87e888ce3" >> /tmp/DEBUG
                                                                                                 echo "$COMMIT" > "$ROOT/commit"
                                                                                                 echo "2aec2dba-3002-4680-a25b-56d8525db540" >> /tmp/DEBUG
