@@ -496,36 +496,19 @@
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                     }
                                                                                                                 mkdir --parents "$SELF/promote"
-                                                                                                                if [[ ! -e "$SELF/promote/snapshot" ]]
-                                                                                                                then
-                                                                                                                    SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
+                                                                                                                SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
+                                                                                                                SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$SOURCE" "$ROOT/source"
+                                                                                                                CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$CHECK" "$ROOT/check"
+                                                                                                                VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$VM" "$ROOT/vm"
                                                                                                                 fi
-                                                                                                                if [[ ! -e "$SELF/promote/source" ]]
-                                                                                                                then
-                                                                                                                    SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$SOURCE" "$ROOT/source"
-                                                                                                                fi
-                                                                                                                if [[ ! -e "$SELF/promote/check" ]]
-                                                                                                                then
-                                                                                                                    CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$CHECK" "$ROOT/check"
-                                                                                                                fi
-                                                                                                                if [[ ! -e "$SELF/promote/vm" ]]
-                                                                                                                then
-                                                                                                                    VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$VM" "$ROOT/vm"
-                                                                                                                fi
-                                                                                                                if [[ ! -e "$SELF/promote/vm-with-bootloader" ]]
-                                                                                                                then
-                                                                                                                    VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
-                                                                                                                fi
-                                                                                                                if [[ ! -e "$SELF/promote/build" ]]
-                                                                                                                then
-                                                                                                                    BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$BUILD" "$ROOT/build"
-                                                                                                                fi
+                                                                                                                VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
+                                                                                                                BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                ln --symbolic "$BUILD" "$ROOT/build"
                                                                                                             '' ;
 
                                                                                                     } ;
