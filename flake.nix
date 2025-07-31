@@ -247,11 +247,11 @@
                                                                                         echo "$?" > "$SELF/status"
                                                                                     fi
                                                                                 '' ;
-                                                                            release-inputs = [ pkgs.nix ] ;
-                                                                            release-text =
-                                                                                ''
-                                                                                    nix-collect-garbage
-                                                                                '' ;
+                                                                            # release-inputs = [ pkgs.nix ] ;
+                                                                            # release-text =
+                                                                            #     ''
+                                                                            #         nix-collect-garbage
+                                                                            #     '' ;
                                                                         } ;
                                                                 snapshot =
                                                                     ignore :
@@ -428,11 +428,11 @@
                                                                                                 "$SELF/result/bin/run-nixos-vm" -nographic >> /tmp/DEBUG 2>&1
                                                                                             fi
                                                                                         '' ;
-                                                                                    release-inputs = [ pkgs.nix ] ;
-                                                                                    release-text =
-                                                                                        ''
-                                                                                            nix-collect-garbage
-                                                                                        '' ;
+                                                                                    # release-inputs = [ pkgs.nix ] ;
+                                                                                    # release-text =
+                                                                                    #     ''
+                                                                                    #         nix-collect-garbage
+                                                                                    #     '' ;
                                                                                 } ;
                                                                         in
                                                                             {
