@@ -728,14 +728,6 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
-                                                                        %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.umount }/bin/umount
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.mount }/bin/mount
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.unixtools.fsck }/bin/fsck
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.e2fsprogs }/bin/mkfs.ext4
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.coreutils }/bin/chown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
                                                                     '' ;
                                                             } ;
                                                         services =
