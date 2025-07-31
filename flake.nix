@@ -413,10 +413,10 @@
                                                                                                 echo a1f0e611-2a85-4672-9cd3-b449a94e5527 >> /tmp/DEBUG
                                                                                                 exit 64
                                                                                             else
-                                                                                                echo ab1411ce-e3c0-4238-a5e8-fd27de52cd73 >> /tmp/DEBUG
                                                                                                 export NIX_SHOW_STATS=5
                                                                                                 export NIX_DEBUG=1
                                                                                                 nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace >> /tmp/DEBUG 2>&1
+                                                                                                echo 5b0b936d-70be-4c4f-8024-79c69ae28d00 >> /tmp/DEBUG
                                                                                                 SHARED_DIR="$SELF/test"
                                                                                                 export SHARED_DIR
                                                                                                 mkdir --parents "$SHARED_DIR"
