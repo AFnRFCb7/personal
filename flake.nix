@@ -327,8 +327,8 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 echo 8793c25a-ada2-4738-b35b-46ac64b5a159 >> /tmp/DEBUG
-                                                                                                                REMOTE="$1"
-                                                                                                                echo 1a042782-21c2-4cf0-909f-9bcd40de5dc3 >> /tmp/DEBUG
+                                                                                                                # REMOTE="$1"
+                                                                                                                # echo 1a042782-21c2-4cf0-909f-9bcd40de5dc3 >> /tmp/DEBUG
                                                                                                                 BRANCH="$2"
                                                                                                                 echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
                                                                                                                 COMMIT="$3"
