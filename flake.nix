@@ -377,13 +377,13 @@
                                                                                                                 echo "af20862a-d41e-46fa-a06d-50602c219a6f \"$*\"" >> /tmp/DEBUG
                                                                                                                 LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                                 echo "049f6057-caba-4667-9718-4803af90fde3 \"$*\"" >> /tmp/DEBUG
-                                                                                                                BRANCH="$( < "$LOCO20/root/branch" )"
+                                                                                                                OUTER_BRANCH="$( < "$LOCO20/root/branch" )"
                                                                                                                 echo "1a2e8339-4f59-4a31-82a0-88720d11b12f \"$*\"" >> /tmp/DEBUG
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 echo "be948699-a478-49a1-97fa-f590809998b1 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
                                                                                                                 # echo "9fe3ab15-dcb8-4c20-9b10-acf2ae03a832 \"$*\"" >> /tmp/DEBUG
-                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
+                                                                                                                git fetch remote "$OUTER_BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 # echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
@@ -394,11 +394,11 @@
                                                                                                                     echo "3636e66b-9f29-44fe-a054-549c2be606e6 \"$*\"" >> /tmp/DEBUG
                                                                                                                     NAME="$( < "$DIR/name" )"
                                                                                                                     echo "ba974033-5f0a-4a1f-b1c3-b26ee62c713b \"$*\"" >> /tmp/DEBUG
-                                                                                                                    BRANCH="$( < "$DIR/branch" )"
-                                                                                                                    echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 BRANCH=$BRANCH" >> /tmp/DEBUG
+                                                                                                                    INNER_BRANCH="$( < "$DIR/branch" )"
+                                                                                                                    echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 INNER_BRANCH=$INNER_BRANCH" >> /tmp/DEBUG
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $BRANCH $COMMIT" >> /tmp/DEBUG
-                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
+                                                                                                                    echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $INNER_BRANCH $COMMIT" >> /tmp/DEBUG
+                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$INNER_BRANCH" "$COMMIT" )"
                                                                                                                     echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
                                                                                                                     cat >> /tmp/DEBUG <<EOF
