@@ -387,7 +387,7 @@
                                                                                                                 # echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
-                                                                                                                find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
+                                                                                                                find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d -print0 | while read -r DIR
                                                                                                                 do
                                                                                                                     echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
                                                                                                                     REMOTE="$( < "$DIR/remote" )"
