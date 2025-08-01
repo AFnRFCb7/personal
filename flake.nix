@@ -78,6 +78,7 @@
                                                             init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                             init-text =
                                                                 ''
+                                                                    echo "f5c38f20-6d3f-4eda-9a9a-887d7290d785 \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value }"'' ) environments ) ) }
                                                                     # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" "{" name "}" ] }"'' ) environments ) ) }
                                                                     export GIT_DIR="$SELF/git"
