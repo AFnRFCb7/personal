@@ -380,13 +380,13 @@
                                                                                                                 LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
                                                                                                                 echo "903c4914-21e3-408f-a3b1-0fabace7cd33" >> /tmp/DEBUG
                                                                                                                 BRANCH="$( < "$LOCO20/root/branch" )"
-                                                                                                                echo "fa744dfa-0906-42c3-b0f5-7dcf4613fdba" >> /tmp/DEBUG
+                                                                                                                # echo "fa744dfa-0906-42c3-b0f5-7dcf4613fdba" >> /tmp/DEBUG
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 git config --get core.sshCommand >> /tmp/DEBUG 2>&1
                                                                                                                 # echo "c693194e-595b-4073-b918-a2dfc87b3f88" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
                                                                                                                 git config --get core.sshCommand >> /tmp/DEBUG 2>&1
-                                                                                                                echo "448eb186-ef7a-4cf8-b2cc-d64f5c572b68 $BRANCH" >> /tmp/DEBUG
+                                                                                                                # echo "448eb186-ef7a-4cf8-b2cc-d64f5c572b68 $BRANCH" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 # echo "7412f36d-9b7f-4b49-94e5-9f0c5dabdf0d" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
