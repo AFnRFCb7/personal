@@ -333,7 +333,7 @@
                                                                                                                 echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
                                                                                                                 COMMIT="$3"
                                                                                                                 echo "826aff17-307b-4d28-9dcd-ccc78ef0aaea \"$*\"" >> /tmp/DEBUG
-                                                                                                                git fetch "$REMOTE" "$( ${ milestone } )"
+                                                                                                                git fetch remote "$( ${ milestone } )"
                                                                                                                 git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
