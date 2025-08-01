@@ -299,6 +299,10 @@
                                                                                             "user.email" = config.personal.email ;
                                                                                             "user.name" = config.personal.description ;
                                                                                         } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            remote = "$1" ;
+                                                                                        } ;
                                                                                     setup =
                                                                                         let
                                                                                             setup =
@@ -314,11 +318,11 @@
                                                                                                                 BRANCH="$2"
                                                                                                                 echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
                                                                                                                 COMMIT="$3"
-                                                                                                                echo fae40f57-c740-4d9e-b9df-a761456fba55 >> /tmp/DEBUG
+                                                                                                                echo "826aff17-307b-4d28-9dcd-ccc78ef0aaea \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch "$REMOTE" "$( ${ milestone } )"
-                                                                                                                echo "3017afd0-33e1-4476-8970-c571e8d372de REMOTE=$REMOTE BRANCH=$BRANCH" >> /tmp/DEBUG
-                                                                                                                git fetch "$REMOTE" "$BRANCH"
-                                                                                                                echo 277bf4b9-b4fa-4b42-999e-3efa872beec6 >> /tmp/DEBUG
+                                                                                                                echo "14b4d1c7-5648-465f-8285-e3dc6b4e3901 \"$*\"" >> /tmp/DEBUG
+                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&2
+                                                                                                                echo "ead396af-1814-4a6e-8ebd-46e89ef381b9 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo 6a3abc05-199c-46dd-aee6-07d0ea53e83d >> /tmp/DEBUG
                                                                                                                 git rebase "remote/$( ${ milestone } )"
