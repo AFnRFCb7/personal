@@ -80,13 +80,20 @@
                                                                 ''
                                                                     echo "f5c38f20-6d3f-4eda-9a9a-887d7290d785 \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value }"'' ) environments ) ) }
+                                                                    echo "3dd9d7e3-973c-4b81-85fc-998f8e98d392 \"$*\"" >> /tmp/DEBUG
                                                                     # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" "{" name "}" ] }"'' ) environments ) ) }
                                                                     export GIT_DIR="$SELF/git"
+                                                                    echo "42d82e23-3b53-478e-a23e-f00467a48f03 \"$*\"" >> /tmp/DEBUG
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
+                                                                    echo "e0f67777-994e-4cfe-b346-149a3f7fbdf9 \"$*\"" >> /tmp/DEBUG
                                                                     HOMEY="$SELF/home"
+                                                                    echo "6ccfc082-6ef4-4f29-aee8-850733d237b3 \"$*\"" >> /tmp/DEBUG
                                                                     mkdir --parents "$GIT_DIR"
+                                                                    echo "f279e9f5-fd5f-45c9-bf27-7a905c7e4faf \"$*\"" >> /tmp/DEBUG
                                                                     mkdir --parents "$GIT_WORK_TREE"
+                                                                    echo "859182e1-af67-4641-89d1-f2ae46fae1d0 \"$*\"" >> /tmp/DEBUG
                                                                     mkdir --parents "$HOMEY"
+                                                                    echo "8c14c42e-a6e0-4918-924f-621b1779327a \"$*\"" >> /tmp/DEBUG
                                                                     cat > "$SELF/.envrc" <<EOF
                                                                     export GIT_DIR="$GIT_DIR"
                                                                     export GIT_WORK_TREE="$GIT_WORK_TREE"
@@ -94,10 +101,15 @@
                                                                     export SELF="$SELF"
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" "{" name "}" ] }"'' ) environments ) ) }
                                                                     EOF
+                                                                    echo "377f944c-b542-40a6-a358-6fb8a078f089 \"$*\"" >> /tmp/DEBUG
                                                                     git init
+                                                                    echo "47407102-4ef3-4ece-8a29-29b2667c3a9e \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
+                                                                    echo "0e229449-fd20-4140-a7f3-d18872a559d9 \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
+                                                                    echo "a8eb6c30-b8c1-4c7a-8102-47a9bccb02de \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                    echo "9f99cc1f-a175-45b3-be5d-249458847c5a \"$*\"" >> /tmp/DEBUG
                                                                     ${ if builtins.typeOf setup == "string" then "exec ${ setup } \"$@\"" else "" }
                                                                 '' ;
                                                             release-inputs = release-inputs ;
