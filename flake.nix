@@ -554,7 +554,7 @@
                                                                                                                 if [[ -f "$CHECK/status" ]] && [[ "$( < "$CHECK/status" )" == 0 ]] && [[ -f "$VM/test/status" ]] && [[ "$( < "$VM/test/status" )" == 0 ]] && [[ -f "$VM_WITH_BOOTLOADER/test/status" ]] && [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" == 0 ]]
                                                                                                                 then
                                                                                                                     TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$BUILD" "$ROOT/test"
+                                                                                                                    ln --symbolic "$TEST" "$ROOT/test"
                                                                                                                 fi
 
                                                                                                             '' ;
