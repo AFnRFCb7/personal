@@ -335,10 +335,10 @@
                                                                                                                 echo "826aff17-307b-4d28-9dcd-ccc78ef0aaea \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
                                                                                                                 git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
-                                                                                                                git checkout "$COMMIT"
+                                                                                                                git checkout "$BRANCH"
                                                                                                                 git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                git push -u remote "$BRANCH" >> /tmp/DEBUG 2>&1
+                                                                                                                git push remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 echo ca13f5fb-ebb3-4aae-8052-3ec844cadfd0 >> /tmp/DEBUG
                                                                                                             '' ;
                                                                                                     } ;
