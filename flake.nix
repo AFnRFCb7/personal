@@ -387,7 +387,7 @@
                                                                                                                 # echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
-                                                                                                                find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d -print0 | while read -r DIR
+                                                                                                                find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
                                                                                                                     echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
                                                                                                                     REMOTE="$( < "$DIR/remote" )"
@@ -403,6 +403,7 @@
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
                                                                                                                     echo "5b93b550-1274-4df8-bb86-d7a7db667085 \"$*\" DIR=$DIR LOCO20=$LOCO20" >> /tmp/DEBUG
                                                                                                                     sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                    echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
