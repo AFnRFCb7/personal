@@ -390,24 +390,26 @@
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d >> /tmp/DEBUG
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
-                                                                                                                    echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
-                                                                                                                    REMOTE="$( < "$DIR/remote" )"
-                                                                                                                    echo "3636e66b-9f29-44fe-a054-549c2be606e6 \"$*\"" >> /tmp/DEBUG
-                                                                                                                    NAME="$( < "$DIR/name" )"
-                                                                                                                    echo "ba974033-5f0a-4a1f-b1c3-b26ee62c713b \"$*\"" >> /tmp/DEBUG
-                                                                                                                    INNER_BRANCH="$( < "$DIR/branch" )"
-                                                                                                                    echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 INNER_BRANCH=$INNER_BRANCH" >> /tmp/DEBUG
-                                                                                                                    COMMIT="$( < "$DIR/commit" )"
-                                                                                                                    echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $INNER_BRANCH $COMMIT" >> /tmp/DEBUG
-                                                                                                                    REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$INNER_BRANCH" "$COMMIT" )"
-                                                                                                                    echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
-                                                                                                                    Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
-                                                                                                                    cat >> /tmp/DEBUG <<EOF
+                                                                                                                    {
+                                                                                                                        echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
+                                                                                                                        REMOTE="$( < "$DIR/remote" )"
+                                                                                                                        echo "3636e66b-9f29-44fe-a054-549c2be606e6 \"$*\"" >> /tmp/DEBUG
+                                                                                                                        NAME="$( < "$DIR/name" )"
+                                                                                                                        echo "ba974033-5f0a-4a1f-b1c3-b26ee62c713b \"$*\"" >> /tmp/DEBUG
+                                                                                                                        INNER_BRANCH="$( < "$DIR/branch" )"
+                                                                                                                        echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 INNER_BRANCH=$INNER_BRANCH" >> /tmp/DEBUG
+                                                                                                                        COMMIT="$( < "$DIR/commit" )"
+                                                                                                                        echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $INNER_BRANCH $COMMIT" >> /tmp/DEBUG
+                                                                                                                        REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$INNER_BRANCH" "$COMMIT" )"
+                                                                                                                        echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
+                                                                                                                        Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
+                                                                                                                        cat >> /tmp/DEBUG <<EOF
                                                                                                                     b4902496-27b4-4743-87b8-820709c4500c
                                                                                                                 sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
                                                                                                                 EOF
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
-                                                                                                                    echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
+                                                                                                                        sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
+                                                                                                                        echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
+                                                                                                                    }
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
