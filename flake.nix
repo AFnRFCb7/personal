@@ -358,19 +358,26 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo "af20862a-d41e-46fa-a06d-50602c219a6f \"$*\"" >> /tmp/DEBUG
                                                                                                                 LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
+                                                                                                                echo "049f6057-caba-4667-9718-4803af90fde3 \"$*\"" >> /tmp/DEBUG
                                                                                                                 BRANCH="$( < "$LOCO20/root/branch" )"
+                                                                                                                echo "1a2e8339-4f59-4a31-82a0-88720d11b12f \"$*\"" >> /tmp/DEBUG
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
+                                                                                                                echo "be948699-a478-49a1-97fa-f590809998b1 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
+                                                                                                                echo "9fe3ab15-dcb8-4c20-9b10-acf2ae03a832 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$BRANCH"
+                                                                                                                echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
+                                                                                                                echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
                                                                                                                 do
-                                                                                                                    echo "00a80611-3e7b-4235-82ec-b67869ee404a DIR=$DIR" >> /tmp/DEBUG
+                                                                                                                    echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
                                                                                                                     REMOTE="$( < "$DIR/remote" )"
-                                                                                                                    echo "418440a9-6311-48c3-9b7b-7f378b4e9850 REMOTE=$REMOTE" >> /tmp/DEBUG
+                                                                                                                    echo "3636e66b-9f29-44fe-a054-549c2be606e6 \"$*\"" >> /tmp/DEBUG
                                                                                                                     NAME="$( < "$DIR/name" )"
-                                                                                                                    echo 8aca2d67-6b2e-411d-8327-991693e9d42c >> /tmp/DEBUG
+                                                                                                                    echo "ba974033-5f0a-4a1f-b1c3-b26ee62c713b \"$*\"" >> /tmp/DEBUG
                                                                                                                     BRANCH="$( < "$DIR/branch" )"
                                                                                                                     echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                     COMMIT="$( < "$DIR/commit" )"
@@ -472,14 +479,21 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo "3b7de200-6e7b-4e34-b14e-6b98e7b91fc9 \"$*\"" >> /tmp/DEBUG
                                                                                                                 mkdir --parents "$SELF/promote"
+                                                                                                                echo "627ac449-a60d-4c35-94f7-107c573aa511 \"$*\"" >> /tmp/DEBUG
                                                                                                                 ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
+                                                                                                                echo "e9a79846-6bfd-4fb8-a891-0a99971501dc \"$*\"" >> /tmp/DEBUG
                                                                                                                 commit ( )
                                                                                                                     {
+                                                                                                                        echo "2d8fddf5-6b07-4a98-ac43-0b52336373f0 \"$*\"" >> /tmp/DEBUG
                                                                                                                         REPO="$1"
+                                                                                                                        echo "1369c00c-4fc8-4eff-bedd-d1cc3d900228 \"$*\"" >> /tmp/DEBUG
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
+                                                                                                                        echo "69e1c788-3d03-432b-a4e7-1e8314813a50 \"$*\"" >> /tmp/DEBUG
                                                                                                                     }
                                                                                                                 mkdir --parents "$SELF/promote"
+                                                                                                                echo "5bd81eaf-1485-481d-b8d4-a1531694eec2 \"$*\"" >> /tmp/DEBUG
                                                                                                                 if [[ ! -e "$SELF/promote/snapshot" ]]
                                                                                                                 then
                                                                                                                     SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
