@@ -384,7 +384,7 @@
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 echo "c693194e-595b-4073-b918-a2dfc87b3f88" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
-                                                                                                                # echo "448eb186-ef7a-4cf8-b2cc-d64f5c572b68" >> /tmp/DEBUG
+                                                                                                                echo "448eb186-ef7a-4cf8-b2cc-d64f5c572b68 $BRANCH" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 # echo "7412f36d-9b7f-4b49-94e5-9f0c5dabdf0d" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
