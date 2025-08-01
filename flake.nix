@@ -410,7 +410,9 @@
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
+                                                                                                                echo "08ae5d87-e6d3-4ac6-9cce-1626a6eb64be \"$*\"" >> /tmp/DEBUG
                                                                                                                 git rebase "remote/$( ${ milestone } )"
+                                                                                                                echo "777cc8f7-65e5-4049-8a5d-081851fcf206 \"$*\"" >> /tmp/DEBUG
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ setup }/bin/setup" ;
