@@ -346,7 +346,6 @@
                                                                                     #     } ;
                                                                                     remotes =
                                                                                         {
-                                                                                            local = "$LOCO/root/local" ;
                                                                                             remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                         } ;
                                                                                     setup =
