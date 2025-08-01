@@ -320,7 +320,7 @@
                                                                                                                 COMMIT="$3"
                                                                                                                 echo "826aff17-307b-4d28-9dcd-ccc78ef0aaea \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch "$REMOTE" "$( ${ milestone } )"
-                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&2
+                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo 6a3abc05-199c-46dd-aee6-07d0ea53e83d >> /tmp/DEBUG
                                                                                                                 git rebase "remote/$( ${ milestone } )"
