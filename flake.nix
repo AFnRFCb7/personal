@@ -271,11 +271,13 @@
                                                                                                 fi
                                                                                                 mkdir --parents "$ROOT"
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref HEAD > "$ROOT/branch"
+                                                                                                echo "b81ae091-bfef-48db-b81b-33379ec5a61f \"$*\"" >> /tmp/DEBUG
                                                                                                 GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git push origin HEAD
+                                                                                                echo "efd58d64-30dd-4468-9599-ba665dd6f996 \"$*\"" >> /tmp/DEBUG
                                                                                                 echo "$COMMIT" > "$ROOT/commit"
                                                                                                 echo "$NAME" > "$ROOT/name"
                                                                                                 ln --symbolic "$DIR" "$ROOT/local"
-                                                                                                git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
+                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
                                                                                                 shift 4
                                                                                                 ;;
                                                                                             *)
