@@ -388,7 +388,8 @@
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d >> /tmp/DEBUG
-                                                                                                                find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
+                                                                                                                IFS=$'\n'
+                                                                                                                for DIR in $( find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d )
                                                                                                                 do
                                                                                                                     {
                                                                                                                         echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
@@ -411,6 +412,7 @@
                                                                                                                         echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
                                                                                                                     } || echo "bb3ade51-c363-485c-9f13-5dc67e48fc9b \"$*\"" >> /tmp/DEBUG
                                                                                                                 done
+                                                                                                                unset IFS
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
                                                                                                                 echo "08ae5d87-e6d3-4ac6-9cce-1626a6eb64be \"$*\"" >> /tmp/DEBUG
