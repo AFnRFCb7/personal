@@ -338,6 +338,7 @@
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                git push origin "$BRANCH"
                                                                                                                 echo ca13f5fb-ebb3-4aae-8052-3ec844cadfd0 >> /tmp/DEBUG
                                                                                                             '' ;
                                                                                                     } ;
@@ -500,9 +501,7 @@
                                                                                                                 echo "e9a79846-6bfd-4fb8-a891-0a99971501dc \"$*\"" >> /tmp/DEBUG
                                                                                                                 commit ( )
                                                                                                                     {
-                                                                                                                        echo "2d8fddf5-6b07-4a98-ac43-0b52336373f0 \"$*\"" >> /tmp/DEBUG
                                                                                                                         REPO="$1"
-                                                                                                                        echo "1369c00c-4fc8-4eff-bedd-d1cc3d900228 \"$*\"" >> /tmp/DEBUG
                                                                                                                         GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
                                                                                                                         echo "69e1c788-3d03-432b-a4e7-1e8314813a50 \"$*\"" >> /tmp/DEBUG
                                                                                                                     }
