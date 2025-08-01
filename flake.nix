@@ -240,7 +240,7 @@
                                                                                 ''
                                                                                     export NIX_SHOW_STATS=5
                                                                                     export NIX_DEBUG=1
-                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
+                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#user" --verbose --show-trace
                                                                                 '' ;
                                                                         } ;
                                                                 check =
@@ -439,7 +439,7 @@
                                                                                 ''
                                                                                     export NIX_SHOW_STATS=5
                                                                                     export NIX_DEBUG=1
-                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
+                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#user" --verbose --show-trace
                                                                                 '' ;
                                                                         } ;
                                                                 virtual-machines =
@@ -525,39 +525,56 @@
                                                                                                         name = "promote" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
-                                                                                                            ''
-                                                                                                                echo "3b7de200-6e7b-4e34-b14e-6b98e7b91fc9 \"$*\"" >> /tmp/DEBUG
-                                                                                                                mkdir --parents "$SELF/promote"
-                                                                                                                echo "627ac449-a60d-4c35-94f7-107c573aa511 \"$*\"" >> /tmp/DEBUG
-                                                                                                                ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
-                                                                                                                echo "e9a79846-6bfd-4fb8-a891-0a99971501dc \"$*\"" >> /tmp/DEBUG
-                                                                                                                commit ( )
-                                                                                                                    {
-                                                                                                                        REPO="$1"
-                                                                                                                        GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
-                                                                                                                        echo "69e1c788-3d03-432b-a4e7-1e8314813a50 \"$*\"" >> /tmp/DEBUG
-                                                                                                                    }
-                                                                                                                mkdir --parents "$SELF/promote"
-                                                                                                                echo "5bd81eaf-1485-481d-b8d4-a1531694eec2 \"$*\"" >> /tmp/DEBUG
-                                                                                                                SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
-                                                                                                                SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$SOURCE" "$ROOT/source"
-                                                                                                                CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$CHECK" "$ROOT/check"
-                                                                                                                VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$VM" "$ROOT/vm"
-                                                                                                                VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
-                                                                                                                BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                ln --symbolic "$BUILD" "$ROOT/build"
-                                                                                                                if [[ -f "$CHECK/status" ]] && [[ "$( < "$CHECK/status" )" == 0 ]] && [[ -f "$VM/test/status" ]] && [[ "$( < "$VM/test/status" )" == 0 ]] && [[ -f "$VM_WITH_BOOTLOADER/test/status" ]] && [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" == 0 ]]
-                                                                                                                then
-                                                                                                                    TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                    ln --symbolic "$TEST" "$ROOT/test"
-                                                                                                                fi
+                                                                                                            let
+                                                                                                                loop =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "loop" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    ROOT="$1"
+                                                                                                                                    DIR="$2"
+                                                                                                                                    NAME="$( basename "$DIR" )"
+                                                                                                                                    mkdir --parents "$ROOT/source/inputs"
+                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.inputs } $DIR" )" "$ROOT/source/input/$NAME"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                   in
+                                                                                                                        ''
+                                                                                                                            echo "3b7de200-6e7b-4e34-b14e-6b98e7b91fc9 \"$*\"" >> /tmp/DEBUG
+                                                                                                                            mkdir --parents "$SELF/promote"
+                                                                                                                            echo "627ac449-a60d-4c35-94f7-107c573aa511 \"$*\"" >> /tmp/DEBUG
+                                                                                                                            ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
+                                                                                                                            echo "e9a79846-6bfd-4fb8-a891-0a99971501dc \"$*\"" >> /tmp/DEBUG
+                                                                                                                            commit ( )
+                                                                                                                                {
+                                                                                                                                    REPO="$1"
+                                                                                                                                    GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
+                                                                                                                                    echo "69e1c788-3d03-432b-a4e7-1e8314813a50 \"$*\"" >> /tmp/DEBUG
+                                                                                                                                }
+                                                                                                                            mkdir --parents "$SELF/promote"
+                                                                                                                            echo "5bd81eaf-1485-481d-b8d4-a1531694eec2 \"$*\"" >> /tmp/DEBUG
+                                                                                                                            SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
+                                                                                                                            SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            ln --symbolic "$SOURCE" "$ROOT/source/root"
+                                                                                                                            find "$SNAPSHOT/inputs" -mindepth 1 -maxdepth 1 -type d -exec ${ loop }/bin/loop "$ROOT" {} \;
+                                                                                                                            CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            ln --symbolic "$CHECK" "$ROOT/check"
+                                                                                                                            VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            ln --symbolic "$VM" "$ROOT/vm"
+                                                                                                                            VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
+                                                                                                                            BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            ln --symbolic "$BUILD" "$ROOT/build"
+                                                                                                                            if [[ -f "$CHECK/status" ]] && [[ "$( < "$CHECK/status" )" == 0 ]] && [[ -f "$VM/test/status" ]] && [[ "$( < "$VM/test/status" )" == 0 ]] && [[ -f "$VM_WITH_BOOTLOADER/test/status" ]] && [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" == 0 ]]
+                                                                                                                            then
+                                                                                                                                TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                                ln --symbolic "$TEST" "$ROOT/test"
+                                                                                                                            fi
 
-                                                                                                            '' ;
+                                                                                                                        '' ;
 
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
