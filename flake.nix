@@ -431,6 +431,17 @@
                                                                                             in "${ setup }/bin/setup" ;
                                                                                 } ;
                                                                     } ;
+                                                                test =
+                                                                    ignore :
+                                                                        {
+                                                                            init-inputs = [ ];
+                                                                            init-text =
+                                                                                ''
+                                                                                    export NIX_SHOW_STATS=5
+                                                                                    export NIX_DEBUG=1
+                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
+                                                                                '' ;
+                                                                        } ;
                                                                 virtual-machines =
                                                                     let
                                                                         virtual-machine =
@@ -557,6 +568,11 @@
                                                                                                                 then
                                                                                                                     BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                     ln --symbolic "$BUILD" "$ROOT/build"
+                                                                                                                fi
+                                                                                                                if [[ ! -e "$SELF/promote/test" ]]
+                                                                                                                then
+                                                                                                                    TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                    ln --symbolic "$BUILD" "$ROOT/test"
                                                                                                                 fi
                                                                                                             '' ;
 
