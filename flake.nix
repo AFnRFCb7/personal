@@ -403,8 +403,8 @@
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
                                                                                                                     cat >> /tmp/DEBUG <<EOF
                                                                                                                     b4902496-27b4-4743-87b8-820709c4500c
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
-                                                                                                                    EOF
+                                                                                                                sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
+                                                                                                                EOF
                                                                                                                     sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
                                                                                                                     echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
                                                                                                                 done
