@@ -537,7 +537,7 @@
                                                                                                                                     DIR="$2"
                                                                                                                                     NAME="$( basename "$DIR" )"
                                                                                                                                     mkdir --parents "$ROOT/source/inputs"
-                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.inputs } $DIR" )" "$ROOT/source/inputs/$NAME"
+                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.input } $DIR" )" "$ROOT/source/inputs/$NAME"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                    in
