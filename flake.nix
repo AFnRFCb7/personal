@@ -337,17 +337,17 @@
                                                                                             "user.email" = config.personal.email ;
                                                                                             "user.name" = config.personal.description ;
                                                                                         } ;
-                                                                                    environments =
-                                                                                        {
-                                                                                            LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
-                                                                                            LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                            ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
-                                                                                            ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
-                                                                                        } ;
+                                                                                    # environments =
+                                                                                    #     {
+                                                                                    #         LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
+                                                                                    #         LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
+                                                                                    #         ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
+                                                                                    #         ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
+                                                                                    #     } ;
                                                                                     remotes =
                                                                                         {
                                                                                             local = "$LOCO/root/local" ;
-                                                                                            remote = ''$( < "$LOCO/root/remote" )'' ;
+                                                                                            remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
                                                                                         } ;
                                                                                     setup =
                                                                                         let
