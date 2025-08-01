@@ -382,9 +382,9 @@
                                                                                                                 COMMIT="$( < "$LOCO20/root/commit" )"
                                                                                                                 echo "be948699-a478-49a1-97fa-f590809998b1 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git fetch remote "$( ${ milestone } )"
-                                                                                                                echo "9fe3ab15-dcb8-4c20-9b10-acf2ae03a832 \"$*\"" >> /tmp/DEBUG
-                                                                                                                git fetch remote "$BRANCH"
-                                                                                                                echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
+                                                                                                                # echo "9fe3ab15-dcb8-4c20-9b10-acf2ae03a832 \"$*\"" >> /tmp/DEBUG
+                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
+                                                                                                                # echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
                                                                                                                 find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r DIR
