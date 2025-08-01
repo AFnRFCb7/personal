@@ -338,7 +338,7 @@
                                                                                                                 git checkout "$COMMIT"
                                                                                                                 git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                git push remote "$BRANCH" >> /tmp/DEBUG 2>&1
+                                                                                                                git push -u remote "$BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                 echo ca13f5fb-ebb3-4aae-8052-3ec844cadfd0 >> /tmp/DEBUG
                                                                                                             '' ;
                                                                                                     } ;
