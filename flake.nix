@@ -401,7 +401,10 @@
                                                                                                                     REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
                                                                                                                     echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
                                                                                                                     Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
-                                                                                                                    echo "5b93b550-1274-4df8-bb86-d7a7db667085 \"$*\" DIR=$DIR LOCO20=$LOCO20 ... s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"# ... $GIT_WORK_TREE/flake.nix ..." >> /tmp/DEBUG
+                                                                                                                    cat >> /tmp/DEBUG <<EOF
+                                                                                                                    b4902496-27b4-4743-87b8-820709c4500c
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
+                                                                                                                    EOF
                                                                                                                     sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
                                                                                                                     echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
                                                                                                                 done
