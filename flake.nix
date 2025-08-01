@@ -409,7 +409,7 @@
                                                                                                                 EOF
                                                                                                                         sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
                                                                                                                         echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
-                                                                                                                    }
+                                                                                                                    } || echo "bb3ade51-c363-485c-9f13-5dc67e48fc9b \"$*\"" >> /tmp/DEBUG
                                                                                                                 done
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 git commit -am "" --allow-empty-message
