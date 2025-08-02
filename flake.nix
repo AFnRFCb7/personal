@@ -537,7 +537,7 @@
                                                                                                                                     DIR="$2"
                                                                                                                                     NAME="$( basename "$DIR" )"
                                                                                                                                     mkdir --parents "$ROOT/source/inputs"
-                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.input } "$DIR" )" "$( mktemp --dry-run "$ROOT/source/inputs/XXXXXXXX )"
+                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.input } "$DIR" )" "$ROOT/source/inputs/$NAME"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                    in
@@ -558,6 +558,7 @@
                                                                                                                             SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                             ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
                                                                                                                             SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
+                                                                                                                            mkdir --parents "$ROOT/source"
                                                                                                                             ln --symbolic "$SOURCE" "$ROOT/source/root"
                                                                                                                             find "$SNAPSHOT/inputs" -mindepth 1 -maxdepth 1 -type d -exec ${ loop }/bin/loop "$ROOT" {} \;
                                                                                                                             CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
