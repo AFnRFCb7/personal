@@ -623,9 +623,18 @@
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
                                                                                                                         echo "Ran vm-with-bootloader $( date ) $( elapsed )"
+                                                                                                                    elif [[ "$?" == 124 ]]
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/run/status"
+                                                                                                                        echo "Timed out vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
                                                                                                                         echo "Failed to run vm-with-bootloader $( date ) $( elapsed )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                    if [[ ! -f "$ROOT/vm-with-bootloader/run/test/status" ]] || [[ "$( < "$ROOT/vm-with-bootloader/run/status" )" != 0 ]]
+                                                                                                                    then
+                                                                                                                        echo "vm-with-bootloader failed $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
