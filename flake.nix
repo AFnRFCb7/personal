@@ -587,9 +587,18 @@
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
                                                                                                                         echo "Ran vm $( date ) $( elapsed )"
+                                                                                                                    elif [[ "$?" == 124 ]]
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/vm/run/status"
+                                                                                                                        echo "Timed out vm $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
                                                                                                                         echo "Failed to run vm $( date ) $( elapsed )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                    if [[ ! -f "$ROOT/vm/run/test/status" ]] || [[ "$( < "$ROOT/vm/run/test/status" )" != 0 ]]
+                                                                                                                    then
+                                                                                                                        echo "vm failed $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
