@@ -530,6 +530,10 @@
                                                                                                                 echo "Starting $( date )"
                                                                                                                 mkdir --parents "$SELF/promote"
                                                                                                                 ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
+                                                                                                                export NIX_SHOW_STATS=5
+                                                                                                                export NIX_DEBUG=1
+                                                                                                                export NIX_SHOW_TRACE=1
+                                                                                                                export NIX_LOG=stderr
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 find "$SELF/input" -mindepth 1 -maxdepth 1 -type l | while read -r LINK
                                                                                                                 do
@@ -545,10 +549,6 @@
                                                                                                                 echo "Finished preparing source $( date )"
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/check"
-                                                                                                                    export NIX_DEBUG=1
-                                                                                                                    export NIX_SHOW_STATS=1
-                                                                                                                    export NIX_SHOW_TRACE=1
-                                                                                                                    export NIX_LOG=stderr
                                                                                                                     if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/check/status"
@@ -562,8 +562,6 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm/build"
                                                                                                                     cd "$ROOT/vm/build"
-                                                                                                                    export NIX_SHOW_STATS=5
-                                                                                                                    export NIX_DEBUG=1
                                                                                                                     if nixos-rebuild build-vm --flake ./work-tree#tester --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build/status"
@@ -575,9 +573,7 @@
                                                                                                                     fi
                                                                                                                 )
                                                                                                                 (
-                                                                                                                    SHARED_DIR="$ROOT/vm/run/test"
-                                                                                                                    export SHARED_DIR
-                                                                                                                    mkdir --parents "$SHARED_DIR"
+                                                                                                                    export SHARED_DIR="$ROOT/vm/run/test"
                                                                                                                     if "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
@@ -591,8 +587,6 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm-with-bootloader/build"
                                                                                                                     cd "$ROOT/vm/build-with-bootloader"
-                                                                                                                    export NIX_SHOW_STATS=5
-                                                                                                                    export NIX_DEBUG=1
                                                                                                                     if nixos-rebuild build-vm-with-bootloader --flake ./work-tree#tester --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build-with-bootloader/status"
@@ -620,8 +614,6 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/build"
                                                                                                                     cd "$ROOT/build"
-                                                                                                                    export NIX_SHOW_STATS=5
-                                                                                                                    export NIX_DEBUG=1
                                                                                                                     if nixos-rebuild build --flake ./work-tree#user --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/build/status"
@@ -635,8 +627,6 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/test"
                                                                                                                     cd "$ROOT/test"
-                                                                                                                    export NIX_SHOW_STATS=5
-                                                                                                                    export NIX_DEBUG=1
                                                                                                                     if sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake ./work-tree#user --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/test/status"
