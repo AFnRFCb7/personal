@@ -540,6 +540,8 @@
                                                                                                                     COMMIT_HASH="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD
                                                                                                                     sed -i "s#\($NAME\.url.*?ref=\).*\(\"\)#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
                                                                                                                 done
+                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                git push origin HEAD
                                                                                                                 echo "Finished preparing source $( date )"
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/check"
