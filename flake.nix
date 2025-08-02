@@ -672,7 +672,7 @@
                                                                                                                 git push -u origin "$SCRATCH"
                                                                                                                 echo "Pushed changes to root to $MILESTONE $( date )"
                                                                                                                 STOP="$( date +%s )" || exit 64
-                                                                                                                TIME="$(( "STOP" - "START" )) || exit 64
+                                                                                                                TIME="$(( STOP - START ))" || exit 64
                                                                                                                 echo "Promoted in $TIME at $( date )"
                                                                                                             '' ;
                                                                                                     } ;
