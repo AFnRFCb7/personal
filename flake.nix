@@ -549,7 +549,7 @@
                                                                                                                     export NIX_SHOW_STATS=1
                                                                                                                     export NIX_SHOW_TRACE=1
                                                                                                                     export NIX_LOG=stderr
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree" > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/check/status"
                                                                                                                         echo "Passed checks $( date )"
