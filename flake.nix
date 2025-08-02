@@ -526,6 +526,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                START=$( date +%s ) || exit 64
                                                                                                                 echo "Starting $( date )"
                                                                                                                 mkdir --parents "$SELF/promote"
                                                                                                                 ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
@@ -668,6 +669,9 @@
                                                                                                                 git checkout -b "$SCRATCH"
                                                                                                                 git push -u origin "$SCRATCH"
                                                                                                                 echo "Pushed changes to root to $MILESTONE $( date )"
+                                                                                                                STOP="$( date +%s )" || exit 64
+                                                                                                                TIME="$(( "STOP" - "START" )) || exit 64
+                                                                                                                echo "Promoted in $TIME at $( date )"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
