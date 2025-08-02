@@ -583,7 +583,7 @@
                                                                                                                     SHARED_DIR="$ROOT/vm/run/test"
                                                                                                                     export SHARED_DIR
                                                                                                                     mkdir --parents "SHARED_DIR"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout2 } "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
                                                                                                                         echo "Ran vm $( date ) $( elapsed )"
@@ -610,7 +610,7 @@
                                                                                                                     SHARED_DIR="$ROOT/vm-with-bootloader/run/test"
                                                                                                                     export SHARED_DIR
                                                                                                                     mkdir --parents "$SHARED_DIR"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout2 } "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
                                                                                                                         echo "Ran vm-with-bootloader $( date ) $( elapsed )"
@@ -994,6 +994,7 @@
                                                                         epoch = lib.mkOption { default = 60 * 60 * 24 * 7 ; type = lib.types.int ; } ;
                                                                         format = lib.mkOption { default = "weekly/%Y-%m-%d" ; type = lib.types.str ; } ;
                                                                         timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
+                                                                        timeout2 = lib.mkOption { default = 60 ; type = lib.types.int ; } ;
                                                                     } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
