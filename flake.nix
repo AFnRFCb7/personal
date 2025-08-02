@@ -583,6 +583,7 @@
                                                                                                                     SHARED_DIR="$ROOT/vm/run/test"
                                                                                                                     export SHARED_DIR
                                                                                                                     mkdir --parents "SHARED_DIR"
+                                                                                                                    cd "$ROOT/vm/run"
                                                                                                                     if timeout ${ builtins.toString config.personal.milestone.timeout2 } "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
@@ -621,6 +622,7 @@
                                                                                                                     SHARED_DIR="$ROOT/vm-with-bootloader/run/test"
                                                                                                                     export SHARED_DIR
                                                                                                                     mkdir --parents "$SHARED_DIR"
+                                                                                                                    cd "$ROOT/vm-with-bootloader/run"
                                                                                                                     if timeout ${ builtins.toString config.personal.milestone.timeout2 } "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
