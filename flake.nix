@@ -537,6 +537,7 @@
                                                                                                                                     DIR="$2"
                                                                                                                                     NAME="$( basename "$DIR" )"
                                                                                                                                     mkdir --parents "$ROOT/source/inputs"
+                                                                                                                                    echo "fe427d0e-f709-4655-9592-cc896a921a2d \"$*\"" >> /tmp/DEBUG
                                                                                                                                     SOURCE="$( ${ resources.milestone.source.input } "$DIR" )"
                                                                                                                                     echo "f628949c-aa9f-40ca-a490-37228cc65b65 \"$*\" SOURCE=$SOURCE" >> /tmp/DEBUG
                                                                                                                                     ln --symbolic "$SOURCE" "$ROOT/source/inputs/$NAME"
@@ -544,6 +545,7 @@
                                                                                                                         } ;
                                                                                                                    in
                                                                                                                         ''
+                                                                                                                            date
                                                                                                                             mkdir --parents "$SELF/promote"
                                                                                                                             ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
                                                                                                                             commit ( )
@@ -572,7 +574,7 @@
                                                                                                                                 TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                                 ln --symbolic "$TEST" "$ROOT/test"
                                                                                                                             fi
-
+                                                                                                                            date
                                                                                                                         '' ;
 
                                                                                                     } ;
