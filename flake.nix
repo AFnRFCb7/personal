@@ -523,63 +523,156 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "promote" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
-                                                                                                            let
-                                                                                                                loop =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "loop" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    ROOT="$1"
-                                                                                                                                    DIR="$2"
-                                                                                                                                    REMOTE="$( < "$DIR/remote" )"
-                                                                                                                                    BRANCH="$( < "$DIR/branch" )"
-                                                                                                                                    COMMIT="$( < "$DIR/commit" )"
-                                                                                                                                    NAME="$( basename "$DIR" )"
-                                                                                                                                    mkdir --parents "$ROOT/source/inputs"
-                                                                                                                                    echo "fe427d0e-f709-4655-9592-cc896a921a2d \"$*\"" >> /tmp/DEBUG
-                                                                                                                                    SOURCE="$( ${ resources.milestone.source.input } "$REMOTE" "$BRANCH" "$COMMIT" )"
-                                                                                                                                    echo "f628949c-aa9f-40ca-a490-37228cc65b65 \"$*\" SOURCE=$SOURCE" >> /tmp/DEBUG
-                                                                                                                                    ln --symbolic "$SOURCE" "$ROOT/source/inputs/$NAME"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                   in
-                                                                                                                        ''
-                                                                                                                            date
-                                                                                                                            mkdir --parents "$SELF/promote"
-                                                                                                                            ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
-                                                                                                                            commit ( )
-                                                                                                                                {
-                                                                                                                                    REPO="$1"
-                                                                                                                                    GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
-                                                                                                                                    echo "69e1c788-3d03-432b-a4e7-1e8314813a50 \"$*\"" >> /tmp/DEBUG
-                                                                                                                                }
-                                                                                                                            mkdir --parents "$SELF/promote"
-                                                                                                                            SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                            ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
-                                                                                                                            SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                            mkdir --parents "$ROOT/source"
-                                                                                                                            ln --symbolic "$SOURCE" "$ROOT/source/root"
-                                                                                                                            find "$SNAPSHOT/inputs" -mindepth 1 -maxdepth 1 -type d -exec ${ loop }/bin/loop "$ROOT" {} \;
-                                                                                                                            CHECK="$( ${ resources.milestone.check } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                            ln --symbolic "$CHECK" "$ROOT/check"
-                                                                                                                            VM="$( ${ resources.milestone.virtual-machines.virtual-machine } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                            ln --symbolic "$VM" "$ROOT/vm"
-                                                                                                                            VM_WITH_BOOTLOADER="$( ${ resources.milestone.virtual-machines.virtual-machine-with-bootloader } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                            ln --symbolic "$VM_WITH_BOOTLOADER" "$ROOT/vm-with-booloader"
-                                                                                                                            BUILD="$( ${ resources.milestone.build } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                            ln --symbolic "$BUILD" "$ROOT/build"
-                                                                                                                            if [[ -f "$CHECK/status" ]] && [[ "$( < "$CHECK/status" )" == 0 ]] && [[ -f "$VM/test/status" ]] && [[ "$( < "$VM/test/status" )" == 0 ]] && [[ -f "$VM_WITH_BOOTLOADER/test/status" ]] && [[ "$( < "$VM_WITH_BOOTLOADER/test/status" )" == 0 ]]
-                                                                                                                            then
-                                                                                                                                TEST="$( ${ resources.milestone.test } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
-                                                                                                                                ln --symbolic "$TEST" "$ROOT/test"
-                                                                                                                            fi
-                                                                                                                            date
-                                                                                                                        '' ;
-
+                                                                                                            ''
+                                                                                                                echo "Starting $( date )"
+                                                                                                                mkdir --parents "$SELF/promote"
+                                                                                                                ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
+                                                                                                                commit ( )
+                                                                                                                    {
+                                                                                                                        REPO="$1"
+                                                                                                                        GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
+                                                                                                                    }
+                                                                                                                find "$SELF/input" -mindepth 1 -maxdepth 1 -type l | while read -r LINK
+                                                                                                                do
+                                                                                                                    NAME="$( basename "$LINK" )"
+                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git add .
+                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push
+                                                                                                                    COMMIT_HASH="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD
+                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\(\"\)#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
+                                                                                                                done
+                                                                                                                echo "Finished preparing source $( date )"
+                                                                                                                (
+                                                                                                                    mkdir --parents "$ROOT/check"
+                                                                                                                    export NIX_DEBUG=1
+                                                                                                                    export NIX_SHOW_STATS=1
+                                                                                                                    export NIX_SHOW_TRACE=1
+                                                                                                                    export NIX_LOG=stderr
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree" > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/check/status"
+                                                                                                                        echo "Passed checks $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/check/status"
+                                                                                                                        echo "Failed checks $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                (
+                                                                                                                    mkdir --parents "$ROOT/vm/build"
+                                                                                                                    cd "$ROOT/vm/build"
+                                                                                                                    export NIX_SHOW_STATS=5
+                                                                                                                    export NIX_DEBUG=1
+                                                                                                                    if nixos-rebuild build-vm --flake ./work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/vm/build/status"
+                                                                                                                        echo "Built vm $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/vm/build/status"
+                                                                                                                        echo "Failed to build vm $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                (
+                                                                                                                    SHARED_DIR="$ROOT/vm/run/test"
+                                                                                                                    export SHARED_DIR
+                                                                                                                    mkdir --parents "$SHARED_DIR"
+                                                                                                                    if "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/vm/run/status"
+                                                                                                                        echo "Ran vm $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/vm/run/status"
+                                                                                                                        echo "Failed to run vm $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                (
+                                                                                                                    mkdir --parents "$ROOT/vm-with-bootloader/build"
+                                                                                                                    cd "$ROOT/vm/build-with-bootloader"
+                                                                                                                    export NIX_SHOW_STATS=5
+                                                                                                                    export NIX_DEBUG=1
+                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake ./work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/vm/build-with-bootloader/status"
+                                                                                                                        echo "Built vm-with-bootloader $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/vm/build-with-bootloader/status"
+                                                                                                                        echo "Failed to build vm-with-bootloader $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                (
+                                                                                                                    SHARED_DIR="$ROOT/vm-with-bootloader/run/test"
+                                                                                                                    export SHARED_DIR
+                                                                                                                    mkdir --parents "$SHARED_DIR"
+                                                                                                                    if "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/run/status"
+                                                                                                                        echo "Ran vm-with-bootloader $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/run/status"
+                                                                                                                        echo "Failed to run vm-with-bootloader $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                (
+                                                                                                                    mkdir --parents "$ROOT/build"
+                                                                                                                    cd "$ROOT/build"
+                                                                                                                    export NIX_SHOW_STATS=5
+                                                                                                                    export NIX_DEBUG=1
+                                                                                                                    if nixos-rebuild build --flake ./work-tree#user" --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/build/status"
+                                                                                                                        echo "Built $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/build/status"
+                                                                                                                        echo "Failed to build $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                (
+                                                                                                                    mkdir --parents "$ROOT/test"
+                                                                                                                    cd "$ROOT/test"
+                                                                                                                    export NIX_SHOW_STATS=5
+                                                                                                                    export NIX_DEBUG=1
+                                                                                                                    if sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake ./work-tree#user" --verbose --show-trace > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
+                                                                                                                    then
+                                                                                                                        echo "$?" > "$ROOT/test/status"
+                                                                                                                        echo "Tested $( date )"
+                                                                                                                    else
+                                                                                                                        echo "$?" > "$ROOT/test/status"
+                                                                                                                        echo "Failed to test $( date )"
+                                                                                                                        exit 64
+                                                                                                                    fi
+                                                                                                                )
+                                                                                                                MILESTONE="$( ${ milestone } )" || exit 64
+                                                                                                                SCRATCH="scratch/$( uuidgen )" || exit 64
+                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r INPUT
+                                                                                                                do
+                                                                                                                    BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git fetch origin "$MILESTONE"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout "$MILESTONE"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rebase "origin/$MILESTONE"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git merge --ff-only "$BRANCH"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin "$MILESTONE"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout -b "$SCRATCH"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push -u origin "$SCRATCH"
+                                                                                                                    NAME="$( basename "$INPUT" )" || exit 64
+                                                                                                                    echo "Pushed changes to input $NAME to $MILESTONE $( date )"
+                                                                                                                done
+                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                git fetch origin "$MILESTONE"
+                                                                                                                git checkout "$MILESTONE"
+                                                                                                                git rebase "origin/$MILESTONE"
+                                                                                                                git merge --ff-only "$BRANCH"
+                                                                                                                git push origin "$MILESTONE"
+                                                                                                                git checkout -b "$SCRATCH"
+                                                                                                                git push -u origin "$SCRATCH"
+                                                                                                                echo "Pushed changes to root to $MILESTONE $( date )"
+                                                                                                            '' ;
                                                                                                     } ;
                                                                                             in "!${ promote }/bin/promote" ;
                                                                                     "core.sshCommand" = ssh ;
