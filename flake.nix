@@ -537,7 +537,9 @@
                                                                                                                                     DIR="$2"
                                                                                                                                     NAME="$( basename "$DIR" )"
                                                                                                                                     mkdir --parents "$ROOT/source/inputs"
-                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.input } "$DIR" )" "$ROOT/source/inputs/$NAME"
+                                                                                                                                    SOURCE="$( ${ resources.milestone.source.input } "$DIR" )"
+                                                                                                                                    echo "f628949c-aa9f-40ca-a490-37228cc65b65 \"$*\" SOURCE=$SOURCE" >> /tmp/DEBUG
+                                                                                                                                    ln --symbolic "$SOURCE" "$ROOT/source/inputs/$NAME"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                    in
