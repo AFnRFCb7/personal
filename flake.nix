@@ -543,10 +543,11 @@
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push origin HEAD
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                     sed -i "s#\($NAME\.url[^?]*\?ref=\).*\(\"\)#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
+                                                                                                                    echo "Finished preparing source input $NAME $( date )"
                                                                                                                 done
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                 git push origin HEAD
-                                                                                                                echo "Finished preparing source $( date )"
+                                                                                                                echo "Finished preparing source root $( date )"
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/check"
                                                                                                                     if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
