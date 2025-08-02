@@ -595,7 +595,7 @@
                                                                                                                 )
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm-with-bootloader/build"
-                                                                                                                    cd "$ROOT/vm/build-with-bootloader"
+                                                                                                                    cd "$ROOT/vm-with-bootloader/build"
                                                                                                                     if nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build-with-bootloader/status"
