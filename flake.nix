@@ -598,10 +598,10 @@
                                                                                                                     cd "$ROOT/vm-with-bootloader/build"
                                                                                                                     if nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
-                                                                                                                        echo "$?" > "$ROOT/vm-build-with-bootloader/status"
+                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/build/status"
                                                                                                                         echo "Built vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                     else
-                                                                                                                        echo "$?" > "$ROOT/vm-build-with-bootloader/status"
+                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/build/status"
                                                                                                                         echo "Failed to build vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
