@@ -569,7 +569,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm/build"
                                                                                                                     cd "$ROOT/vm/build"
-                                                                                                                    if nixos-rebuild build-vm --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build/status"
                                                                                                                         echo "Built vm $( date ) $( elapsed )"
@@ -583,7 +583,7 @@
                                                                                                                     SHARED_DIR="$ROOT/vm/run/test"
                                                                                                                     export SHARED_DIR
                                                                                                                     mkdir --parents "SHARED_DIR"
-                                                                                                                    if "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
                                                                                                                         echo "Ran vm $( date ) $( elapsed )"
@@ -596,7 +596,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm-with-bootloader/build"
                                                                                                                     cd "$ROOT/vm-with-bootloader/build"
-                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/build/status"
                                                                                                                         echo "Built vm-with-bootloader $( date ) $( elapsed )"
@@ -610,7 +610,7 @@
                                                                                                                     SHARED_DIR="$ROOT/vm-with-bootloader/run/test"
                                                                                                                     export SHARED_DIR
                                                                                                                     mkdir --parents "$SHARED_DIR"
-                                                                                                                    if "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
                                                                                                                         echo "Ran vm-with-bootloader $( date ) $( elapsed )"
@@ -623,7 +623,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/build"
                                                                                                                     cd "$ROOT/build"
-                                                                                                                    if nixos-rebuild build --flake "$SELF/work-tree#user" --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$SELF/work-tree#user" --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/build/status"
                                                                                                                         echo "Built $( date ) $( elapsed )"
@@ -636,7 +636,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/test"
                                                                                                                     cd "$ROOT/test"
-                                                                                                                    if sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/test/status"
                                                                                                                         echo "Tested $( date ) $( elapsed )"
