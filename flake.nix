@@ -562,7 +562,7 @@
                                                                                                                     cd "$ROOT/vm/build"
                                                                                                                     export NIX_SHOW_STATS=5
                                                                                                                     export NIX_DEBUG=1
-                                                                                                                    if nixos-rebuild build-vm --flake ./work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
+                                                                                                                    if nixos-rebuild build-vm --flake ./work-tree#tester --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build/status"
                                                                                                                         echo "Built vm $( date )"
@@ -591,7 +591,7 @@
                                                                                                                     cd "$ROOT/vm/build-with-bootloader"
                                                                                                                     export NIX_SHOW_STATS=5
                                                                                                                     export NIX_DEBUG=1
-                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake ./work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
+                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake ./work-tree#tester --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build-with-bootloader/status"
                                                                                                                         echo "Built vm-with-bootloader $( date )"
