@@ -563,7 +563,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm/build"
                                                                                                                     cd "$ROOT/vm/build"
-                                                                                                                    if nixos-rebuild build-vm --flake ./work-tree#tester --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
+                                                                                                                    if nixos-rebuild build-vm --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build/status"
                                                                                                                         echo "Built vm $( date )"
@@ -588,7 +588,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/vm-with-bootloader/build"
                                                                                                                     cd "$ROOT/vm/build-with-bootloader"
-                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake ./work-tree#tester --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
+                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build-with-bootloader/status"
                                                                                                                         echo "Built vm-with-bootloader $( date )"
@@ -615,7 +615,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/build"
                                                                                                                     cd "$ROOT/build"
-                                                                                                                    if nixos-rebuild build --flake ./work-tree#user --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
+                                                                                                                    if nixos-rebuild build --flake "$SELF/work-tree#user" --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/build/status"
                                                                                                                         echo "Built $( date )"
@@ -628,7 +628,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/test"
                                                                                                                     cd "$ROOT/test"
-                                                                                                                    if sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake ./work-tree#user --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
+                                                                                                                    if sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/test/status"
                                                                                                                         echo "Tested $( date )"
