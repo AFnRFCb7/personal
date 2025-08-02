@@ -537,7 +537,7 @@
                                                                                                                                     DIR="$2"
                                                                                                                                     NAME="$( basename "$DIR" )"
                                                                                                                                     mkdir --parents "$ROOT/source/inputs"
-                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.input } "$DIR" )" "$ROOT/source/inputs/$NAME"
+                                                                                                                                    ln --symbolic "$( ${ resources.milestone.source.input } "$DIR" )" "$( mktemp --dry-run "$ROOT/source/inputs/XXXXXXXX )"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                    in
@@ -937,7 +937,7 @@
                                                                         secret =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/secret" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/secret.git" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                         secrets =
                                                                             {
