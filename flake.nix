@@ -637,7 +637,7 @@
                                                                                                                     cd "$ROOT/test"
                                                                                                                     export NIX_SHOW_STATS=5
                                                                                                                     export NIX_DEBUG=1
-                                                                                                                    if sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake ./work-tree#user --verbose --show-trace > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
+                                                                                                                    if sudo NIX_SHOW_STATUS="$NIX_SHOW_STATUS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake ./work-tree#user --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/test/status"
                                                                                                                         echo "Tested $( date )"
