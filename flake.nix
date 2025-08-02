@@ -538,7 +538,7 @@
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                    sed -i "s#\($NAME\.url.*?ref=\).*\(\"\)#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
+                                                                                                                    sed -i "s#\($NAME\.url[^?]*\?ref=\).*\(\"\)#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
                                                                                                                 done
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                 git push origin HEAD
