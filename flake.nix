@@ -535,12 +535,12 @@
                                                                                                                 export NIX_SHOW_TRACE=1
                                                                                                                 export NIX_LOG=stderr
                                                                                                                 date +%s > "$GIT_WORK_TREE/current-time.nix"
-                                                                                                                find "$SELF/input" -mindepth 1 -maxdepth 1 -type l | while read -r LINK
+                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r LINK
                                                                                                                 do
                                                                                                                     NAME="$( basename "$LINK" )"
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git add .
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push
+                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push origin HEAD
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                     sed -i "s#\($NAME\.url[^?]*\?ref=\).*\(\"\)#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
                                                                                                                 done
