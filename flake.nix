@@ -526,6 +526,12 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                elapsed ( )
+                                                                                                                    {
+                                                                                                                        STOP="$( date +%s )"
+                                                                                                                        ELAPSED=$(( STOP - START ))
+                                                                                                                        echo -n "elapsed $ELAPSED"
+                                                                                                                    }
                                                                                                                 START=$( date +%s ) || exit 64
                                                                                                                 echo "Starting $( date )"
                                                                                                                 mkdir --parents "$SELF/promote"
@@ -543,20 +549,20 @@
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push origin HEAD
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                     sed -i -E "s#($NAME\.url[^?]*\?ref=).*(\")#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
-                                                                                                                    echo "Finished preparing source input $NAME $( date )"
+                                                                                                                    echo "Finished preparing source input $NAME $( date ) $( elapsed )"
                                                                                                                 done
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                 git push origin HEAD
-                                                                                                                echo "Finished preparing source root $( date )"
+                                                                                                                echo "Finished preparing source root $( date ) $( elapsed )"
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/check"
                                                                                                                     if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/check/status"
-                                                                                                                        echo "Passed checks $( date )"
+                                                                                                                        echo "Passed checks $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/check/status"
-                                                                                                                        echo "Failed checks $( date )"
+                                                                                                                        echo "Failed checks $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
@@ -566,22 +572,24 @@
                                                                                                                     if nixos-rebuild build-vm --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build/status"
-                                                                                                                        echo "Built vm $( date )"
+                                                                                                                        echo "Built vm $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/vm/build/status"
-                                                                                                                        echo "Failed to build vm $( date )"
+                                                                                                                        echo "Failed to build vm $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
                                                                                                                 (
-                                                                                                                    export SHARED_DIR="$ROOT/vm/run/test"
+                                                                                                                    SHARED_DIR="$ROOT/vm/run/test"
+                                                                                                                    export SHARED_DIR
+                                                                                                                    mkdir --parents "SHARED_DIR"
                                                                                                                     if "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
-                                                                                                                        echo "Ran vm $( date )"
+                                                                                                                        echo "Ran vm $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/vm/run/status"
-                                                                                                                        echo "Failed to run vm $( date )"
+                                                                                                                        echo "Failed to run vm $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
@@ -591,10 +599,10 @@
                                                                                                                     if nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm/build-with-bootloader/status"
-                                                                                                                        echo "Built vm-with-bootloader $( date )"
+                                                                                                                        echo "Built vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/vm/build-with-bootloader/status"
-                                                                                                                        echo "Failed to build vm-with-bootloader $( date )"
+                                                                                                                        echo "Failed to build vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
@@ -605,10 +613,10 @@
                                                                                                                     if "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
-                                                                                                                        echo "Ran vm-with-bootloader $( date )"
+                                                                                                                        echo "Ran vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/vm-with-bootloader/run/status"
-                                                                                                                        echo "Failed to run vm-with-bootloader $( date )"
+                                                                                                                        echo "Failed to run vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
@@ -618,10 +626,10 @@
                                                                                                                     if nixos-rebuild build --flake "$SELF/work-tree#user" --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/build/status"
-                                                                                                                        echo "Built $( date )"
+                                                                                                                        echo "Built $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/build/status"
-                                                                                                                        echo "Failed to build $( date )"
+                                                                                                                        echo "Failed to build $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
@@ -631,10 +639,10 @@
                                                                                                                     if sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/test/status"
-                                                                                                                        echo "Tested $( date )"
+                                                                                                                        echo "Tested $( date ) $( elapsed )"
                                                                                                                     else
                                                                                                                         echo "$?" > "$ROOT/test/status"
-                                                                                                                        echo "Failed to test $( date )"
+                                                                                                                        echo "Failed to test $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
                                                                                                                 )
@@ -661,7 +669,7 @@
                                                                                                                 git push origin "$MILESTONE"
                                                                                                                 git checkout -b "$SCRATCH"
                                                                                                                 git push -u origin "$SCRATCH"
-                                                                                                                echo "Pushed changes to root to $MILESTONE $( date )"
+                                                                                                                echo "Pushed changes to root to $MILESTONE $( date ) $( elapsed )"
                                                                                                                 STOP="$( date +%s )" || exit 64
                                                                                                                 TIME="$(( STOP - START ))" || exit 64
                                                                                                                 echo "Promoted in $TIME at $( date )"
