@@ -529,11 +529,7 @@
                                                                                                                 echo "Starting $( date )"
                                                                                                                 mkdir --parents "$SELF/promote"
                                                                                                                 ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
-                                                                                                                commit ( )
-                                                                                                                    {
-                                                                                                                        REPO="$1"
-                                                                                                                        GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD
-                                                                                                                    }
+                                                                                                                date +%s > "$GIT_WORK_TREE/current-time.nix"
                                                                                                                 find "$SELF/input" -mindepth 1 -maxdepth 1 -type l | while read -r LINK
                                                                                                                 do
                                                                                                                     NAME="$( basename "$LINK" )"
