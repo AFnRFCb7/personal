@@ -412,8 +412,8 @@
                                                                                                                         OUTER_BRANCH="$( < "$LOCO20/root/branch" )"
                                                                                                                         echo "1a2e8339-4f59-4a31-82a0-88720d11b12f \"$*\"" >> /tmp/DEBUG
                                                                                                                         COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                                        echo "be948699-a478-49a1-97fa-f590809998b1 \"$*\"" >> /tmp/DEBUG
-                                                                                                                        git fetch remote "$( ${ milestone } )"
+                                                                                                                        # echo "be948699-a478-49a1-97fa-f590809998b1 \"$*\"" >> /tmp/DEBUG
+                                                                                                                        git fetch remote "$( ${ milestone } )" >> /tmp/DEBUG 2>&1
                                                                                                                         # echo "9fe3ab15-dcb8-4c20-9b10-acf2ae03a832 \"$*\"" >> /tmp/DEBUG
                                                                                                                         git fetch remote "$OUTER_BRANCH" >> /tmp/DEBUG 2>&1
                                                                                                                         # echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
@@ -542,11 +542,8 @@
                                                                                                                         } ;
                                                                                                                    in
                                                                                                                         ''
-                                                                                                                            echo "3b7de200-6e7b-4e34-b14e-6b98e7b91fc9 \"$*\"" >> /tmp/DEBUG
                                                                                                                             mkdir --parents "$SELF/promote"
-                                                                                                                            echo "627ac449-a60d-4c35-94f7-107c573aa511 \"$*\"" >> /tmp/DEBUG
                                                                                                                             ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
-                                                                                                                            echo "e9a79846-6bfd-4fb8-a891-0a99971501dc \"$*\"" >> /tmp/DEBUG
                                                                                                                             commit ( )
                                                                                                                                 {
                                                                                                                                     REPO="$1"
@@ -554,7 +551,6 @@
                                                                                                                                     echo "69e1c788-3d03-432b-a4e7-1e8314813a50 \"$*\"" >> /tmp/DEBUG
                                                                                                                                 }
                                                                                                                             mkdir --parents "$SELF/promote"
-                                                                                                                            echo "5bd81eaf-1485-481d-b8d4-a1531694eec2 \"$*\"" >> /tmp/DEBUG
                                                                                                                             SNAPSHOT="$( ${ resources.milestone.snapshot } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
                                                                                                                             ln --symbolic "$SNAPSHOT" "$ROOT/snapshot"
                                                                                                                             SOURCE="$( ${ resources.milestone.source.root } --link root "$SELF" "$( commit "$SELF" )" --link input "$SELF/inputs/personal" "$( commit "$SELF/inputs/personal" )" --link input "$SELF/inputs/secret" "$( commit "$SELF/inputs/secret" )" )"
