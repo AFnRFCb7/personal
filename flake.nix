@@ -535,10 +535,13 @@
                                                                                                                                 ''
                                                                                                                                     ROOT="$1"
                                                                                                                                     DIR="$2"
+                                                                                                                                    REMOTE="$( < "$DIR/remote" )"
+                                                                                                                                    BRANCH="$( < "$DIR/branch" )"
+                                                                                                                                    COMMIT="$( < "$DIR/commit" )"
                                                                                                                                     NAME="$( basename "$DIR" )"
                                                                                                                                     mkdir --parents "$ROOT/source/inputs"
                                                                                                                                     echo "fe427d0e-f709-4655-9592-cc896a921a2d \"$*\"" >> /tmp/DEBUG
-                                                                                                                                    SOURCE="$( ${ resources.milestone.source.input } "$DIR" )"
+                                                                                                                                    SOURCE="$( ${ resources.milestone.source.input } "$REMOTE" "BRANCH" "$COMMIT" )"
                                                                                                                                     echo "f628949c-aa9f-40ca-a490-37228cc65b65 \"$*\" SOURCE=$SOURCE" >> /tmp/DEBUG
                                                                                                                                     ln --symbolic "$SOURCE" "$ROOT/source/inputs/$NAME"
                                                                                                                                 '' ;
