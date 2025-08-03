@@ -597,7 +597,7 @@
                                                                                                                         echo "Failed to run vm $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
-                                                                                                                    if [[ -f "$ROOT/vm/run/test/status" ]] && [[ "$( < "$ROOT/vm/run/test/status" )" != 0 ]]
+                                                                                                                    if [[ -f "$ROOT/vm/run/test/status" ]] && [[ "$( < "$ROOT/vm/run/test/status" )" == 0 ]]
                                                                                                                     then
                                                                                                                         echo "vm passed $( date ) $( elapsed )"
                                                                                                                     else
@@ -636,7 +636,7 @@
                                                                                                                         echo "Failed to run vm-with-bootloader $( date ) $( elapsed )"
                                                                                                                         exit 64
                                                                                                                     fi
-                                                                                                                    if [[ -f "$ROOT/vm-with-bootloader/run/test/status" ]] && [[ "$( < "$ROOT/vm-with-bootloader/run/status" )" != 0 ]]
+                                                                                                                    if [[ -f "$ROOT/vm-with-bootloader/run/test/status" ]] && [[ "$( < "$ROOT/vm-with-bootloader/run/status" )" == 0 ]]
                                                                                                                     then
                                                                                                                         echo "vm-with-bootloader passed $( date ) $( elapsed )"
                                                                                                                     else
