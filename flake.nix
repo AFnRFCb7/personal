@@ -155,7 +155,7 @@
                                                                             makeWrapper \
                                                                                 ${ pkgs.openssh }/bin/ssh \
                                                                                 $out/bin/ssh \
-                                                                                --run "DOT_SSH=\"\$( ${ resources.dot-ssh } )\" || exit 64"
+                                                                                --run "DOT_SSH=\"\$( ${ resources.dot-ssh } )\" || exit 64" \
                                                                                 --add-flags "-F \$DOT_SSH/config"
                                                                         '' ;
                                                                     name = "ssh" ;
