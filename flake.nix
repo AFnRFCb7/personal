@@ -155,7 +155,8 @@
                                                                             makeWrapper \
                                                                                 ${ pkgs.openssh }/bin/ssh \
                                                                                 $out/bin/ssh \
-                                                                                --add-flags "-F \$( ${ resources.dot-ssh } )/config"
+                                                                                --run "DOT_SSH=\"\$( ${ resources.dot-ssh } )\" || exit 64"
+                                                                                --add-flags "-F \$DOT_SSH/config"
                                                                         '' ;
                                                                     name = "ssh" ;
                                                                     nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
@@ -232,246 +233,6 @@
                                                                 } ;
                                                         milestone =
                                                             {
-                                                                build =
-                                                                    ignore :
-                                                                        {
-                                                                            init-inputs = [ pkgs.nixos-rebuild ];
-                                                                            init-text =
-                                                                                ''
-                                                                                    export NIX_SHOW_STATS=5
-                                                                                    export NIX_DEBUG=1
-                                                                                    nixos-rebuild build --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#user" --verbose --show-trace
-                                                                                '' ;
-                                                                        } ;
-                                                                check =
-                                                                    ignore :
-                                                                        {
-                                                                            init-inputs = [ pkgs.nix ] ;
-                                                                            init-text =
-                                                                                ''
-                                                                                    export NIX_DEBUG=1
-                                                                                    export NIX_SHOW_STATS=1
-                                                                                    export NIX_SHOW_TRACE=1
-                                                                                    export NIX_LOG=stderr
-                                                                                    if nix --log-format raw --show-trace -vvv flake check "$( ${ resources.milestone.source.root } "$@" )/work-tree" > "$SELF/standard-output" 2> "$SELF/standard-error"
-                                                                                    then
-                                                                                        echo "$?" > "$SELF/status"
-                                                                                    else
-                                                                                        echo "$?" > "$SELF/status"
-                                                                                    fi
-                                                                                '' ;
-                                                                        } ;
-                                                                snapshot =
-                                                                    ignore :
-                                                                        {
-                                                                            init-inputs = [ pkgs.coreutils ] ;
-                                                                            init-text =
-                                                                                ''
-                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                    do
-                                                                                        case "$1" in
-                                                                                            --link)
-                                                                                                TYPE="$2"
-                                                                                                DIR="$3"
-                                                                                                COMMIT="$4"
-                                                                                                NAME="$( basename "$DIR" )"
-                                                                                                if [[ "$TYPE" == "root" ]]
-                                                                                                then
-                                                                                                    ROOT="$SELF/root"
-                                                                                                else
-                                                                                                    ROOT="$SELF/inputs/$NAME"
-                                                                                                fi
-                                                                                                mkdir --parents "$ROOT"
-                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git rev-parse --abbrev-ref HEAD > "$ROOT/branch"
-                                                                                                echo "b81ae091-bfef-48db-b81b-33379ec5a61f \"$*\"" >> /tmp/DEBUG
-                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git push origin HEAD
-                                                                                                echo "efd58d64-30dd-4468-9599-ba665dd6f996 \"$*\"" >> /tmp/DEBUG
-                                                                                                echo "$COMMIT" > "$ROOT/commit"
-                                                                                                echo "$NAME" > "$ROOT/name"
-                                                                                                ln --symbolic "$DIR" "$ROOT/local"
-                                                                                                GIT_DIR="$DIR/git" GIT_WORK_TREE="$DIR/work-tree" git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+#_#g" | cut --delimiter "_" --fields 2 > "$ROOT/remote"
-                                                                                                shift 4
-                                                                                                ;;
-                                                                                            *)
-                                                                                                mkdir --parents "$SELF/garbage"
-                                                                                                echo "$1" > "$( mktemp "$SELF/garbage/XXXXXXXX" )"
-                                                                                                shift
-                                                                                                ;;
-                                                                                        esac
-                                                                                    done
-                                                                                '' ;
-                                                                            lease = 60 * 60 ;
-                                                                        } ;
-                                                                source =
-                                                                    {
-                                                                        input =
-                                                                            git
-                                                                                {
-                                                                                    configs =
-                                                                                        {
-                                                                                            "core.sshCommand" = ssh ;
-                                                                                            "user.email" = config.personal.email ;
-                                                                                            "user.name" = config.personal.description ;
-                                                                                        } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            remote = "$1" ;
-                                                                                        } ;
-                                                                                    setup =
-                                                                                        let
-                                                                                            setup =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "setup" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                echo 8793c25a-ada2-4738-b35b-46ac64b5a159 >> /tmp/DEBUG
-                                                                                                                # REMOTE="$1"
-                                                                                                                # echo 1a042782-21c2-4cf0-909f-9bcd40de5dc3 >> /tmp/DEBUG
-                                                                                                                BRANCH="$2"
-                                                                                                                echo d4150d3c-ed90-47d1-b475-21e78f5a3a62 >> /tmp/DEBUG
-                                                                                                                COMMIT="$3"
-                                                                                                                echo "826aff17-307b-4d28-9dcd-ccc78ef0aaea \"$*\"" >> /tmp/DEBUG
-                                                                                                                git fetch remote "$( ${ milestone } )"
-                                                                                                                git fetch remote "$BRANCH" >> /tmp/DEBUG 2>&1
-                                                                                                                git checkout "$COMMIT"
-                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                git rebase "remote/$( ${ milestone } )" >> /tmp/DEBUG 2>&1
-                                                                                                                git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                git push -u remote "$BRANCH" >> /tmp/DEBUG 2>&1
-                                                                                                                echo ca13f5fb-ebb3-4aae-8052-3ec844cadfd0 >> /tmp/DEBUG
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ setup }/bin/setup" ;
-                                                                                } ;
-                                                                        root =
-                                                                            git
-                                                                                {
-                                                                                    configs =
-                                                                                        {
-                                                                                            "core.sshCommand" = ssh ;
-                                                                                            "user.email" = config.personal.email ;
-                                                                                            "user.name" = config.personal.description ;
-                                                                                        } ;
-                                                                                    # environments =
-                                                                                    #     {
-                                                                                    #         LOCO1 = builtins.trace resources.milestone.snapshot resources.milestone.snapshot ;
-                                                                                    #         LOCO = ''$( ${ resources.milestone.snapshot } "$@" )'' ;
-                                                                                    #         ZBRANCH = ''$( < "$LOCO/root/branch" )'' ;
-                                                                                    #         ZCOMMIT = ''$( cat "$LOCO/root/commit" )'' ;
-                                                                                    #     } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            remote = ''$( < "$( ${ resources.milestone.snapshot } "$@" )/root/remote" )'' ;
-                                                                                        } ;
-                                                                                    setup =
-                                                                                        let
-                                                                                            setup =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "setup" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.gnused ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                loop =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "loop" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    {
-                                                                                                                                        DIR="$1"
-                                                                                                                                        echo "b807ca77-cf45-4937-aa5c-07fa6312bafa \"$*\"" >> /tmp/DEBUG
-                                                                                                                                        REMOTE="$( < "$DIR/remote" )"
-                                                                                                                                        echo "3636e66b-9f29-44fe-a054-549c2be606e6 \"$*\"" >> /tmp/DEBUG
-                                                                                                                                        NAME="$( < "$DIR/name" )"
-                                                                                                                                        echo "ba974033-5f0a-4a1f-b1c3-b26ee62c713b \"$*\"" >> /tmp/DEBUG
-                                                                                                                                        INNER_BRANCH="$( < "$DIR/branch" )"
-                                                                                                                                        echo "470125f2-b9bd-4ce0-8798-6816eb6739f4 INNER_BRANCH=$INNER_BRANCH" >> /tmp/DEBUG
-                                                                                                                                        COMMIT="$( < "$DIR/commit" )"
-                                                                                                                                        echo "129e0f61-21b3-42c1-a3c5-84b324eb7221 ${ resources.milestone.source.input } $REMOTE $INNER_BRANCH $COMMIT" >> /tmp/DEBUG
-                                                                                                                                        REPO="$( ${ resources.milestone.source.input } "$REMOTE" "$INNER_BRANCH" "$COMMIT" )"
-                                                                                                                                        echo 7258034d-fa07-4e1a-8e32-99fcbc143a60 >> /tmp/DEBUG
-                                                                                                                                        Z_COMMIT="$( GIT_DIR="$REPO/git" GIT_WORK_TREE="$REPO/work-tree" git rev-parse HEAD )"
-                                                                                                                                        cat >> /tmp/DEBUG <<EOF
-                                                                                                                                    b4902496-27b4-4743-87b8-820709c4500c
-                                                                                                                                sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
-                                                                                                                                EOF
-                                                                                                                                        sed -i "s#\($NAME\.url.*?ref=\).*\"#\1$Z_COMMIT\"#" "$GIT_WORK_TREE/flake.nix" >> /tmp/DEBUG2 2>&1
-                                                                                                                                        echo "2c0c3a84-0e53-4ef4-b315-b1716662a48c \"$*\"" >> /tmp/DEBUG
-                                                                                                                                    } || echo "bb3ade51-c363-485c-9f13-5dc67e48fc9b \"$*\"" >> /tmp/DEBUG
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        echo "af20862a-d41e-46fa-a06d-50602c219a6f \"$*\"" >> /tmp/DEBUG
-                                                                                                                        LOCO20="$( ${ resources.milestone.snapshot } "$@" )"
-                                                                                                                        echo "049f6057-caba-4667-9718-4803af90fde3 \"$*\"" >> /tmp/DEBUG
-                                                                                                                        OUTER_BRANCH="$( < "$LOCO20/root/branch" )"
-                                                                                                                        echo "1a2e8339-4f59-4a31-82a0-88720d11b12f \"$*\"" >> /tmp/DEBUG
-                                                                                                                        COMMIT="$( < "$LOCO20/root/commit" )"
-                                                                                                                        # echo "be948699-a478-49a1-97fa-f590809998b1 \"$*\"" >> /tmp/DEBUG
-                                                                                                                        git fetch remote "$( ${ milestone } )" >> /tmp/DEBUG 2>&1
-                                                                                                                        # echo "9fe3ab15-dcb8-4c20-9b10-acf2ae03a832 \"$*\"" >> /tmp/DEBUG
-                                                                                                                        git fetch remote "$OUTER_BRANCH" >> /tmp/DEBUG 2>&1
-                                                                                                                        # echo "7e2eb856-cc20-4d75-89be-7a3bf88c5670 \"$*\"" >> /tmp/DEBUG
-                                                                                                                        git checkout "$COMMIT"
-                                                                                                                        echo "247980e6-bc8f-4b5d-a05c-12025a1f0a45 \"$*\"" >> /tmp/DEBUG
-                                                                                                                        find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d >> /tmp/DEBUG
-                                                                                                                        find "$LOCO20/inputs" -mindepth 1 -maxdepth 1 -type d -exec ${ loop }/bin/loop {} \;
-                                                                                                                        date +%s > "$GIT_WORK_TREE/current-time.nix"
-                                                                                                                        git commit -am "" --allow-empty-message
-                                                                                                                        echo "08ae5d87-e6d3-4ac6-9cce-1626a6eb64be \"$*\"" >> /tmp/DEBUG
-                                                                                                                        git rebase "remote/$( ${ milestone } )"
-                                                                                                                        echo "777cc8f7-65e5-4049-8a5d-081851fcf206 \"$*\"" >> /tmp/DEBUG
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ setup }/bin/setup" ;
-                                                                                } ;
-                                                                    } ;
-                                                                test =
-                                                                    ignore :
-                                                                        {
-                                                                            init-inputs = [ ];
-                                                                            init-text =
-                                                                                ''
-                                                                                    export NIX_SHOW_STATS=5
-                                                                                    export NIX_DEBUG=1
-                                                                                    sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#user" --verbose --show-trace
-                                                                                '' ;
-                                                                        } ;
-                                                                virtual-machines =
-                                                                    let
-                                                                        virtual-machine =
-                                                                            bootloader : ignore :
-                                                                                {
-                                                                                    init-inputs = [ pkgs.nixos-rebuild ] ;
-                                                                                    init-text =
-                                                                                        ''
-                                                                                            cd "$SELF"
-                                                                                            CHECK="$( ${ resources.milestone.check } "$@" )"
-                                                                                            STATUS="$( < "$CHECK/status" )"
-                                                                                            if [[ "$STATUS" != 0 ]]
-                                                                                            then
-                                                                                                exit 64
-                                                                                            else
-                                                                                                export NIX_SHOW_STATS=5
-                                                                                                export NIX_DEBUG=1
-                                                                                                nixos-rebuild build-vm${ if bootloader then "-with-bootloader" else "" } --flake "$( ${ resources.milestone.source.root } "$@" )/work-tree#tester" --verbose --show-trace
-                                                                                                SHARED_DIR="$SELF/test"
-                                                                                                export SHARED_DIR
-                                                                                                mkdir --parents "$SHARED_DIR"
-                                                                                                "$SELF/result/bin/run-nixos-vm" -nographic >> /tmp/DEBUG 2>&1
-                                                                                            fi
-                                                                                        '' ;
-                                                                                } ;
-                                                                        in
-                                                                            {
-                                                                                virtual-machine = virtual-machine false ;
-                                                                                virtual-machine-with-bootloader = virtual-machine true ;
-                                                                            } ;
                                                             } ;
                                                         repository =
                                                             {
@@ -918,13 +679,17 @@
                                                                                                         echo 77062af7-0b9b-4303-b33a-52333ba0d8a9 >> /tmp/DEBUG
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         echo fb1b6039-e97b-4e1f-9773-59ff6a3a0cf6 >> /tmp/DEBUG
-                                                                                                        ln --symbolic "$( ${ resources.repository.personal } "$@" )" "$SELF/inputs/personal"
+                                                                                                        PERSONAL="$( ${ resources.repository.personal } "$@" )" || exit 64
+                                                                                                        ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
                                                                                                         echo 6105aa25-0db5-48f7-9455-75061c414941 >> /tmp/DEBUG
-                                                                                                        ln --symbolic "$( ${ resources.repository.secret } "$@" )" "$SELF/inputs/secret"
+                                                                                                        SECRETX="$( ${ resources.repository.secret } "$@" )" || exit 64
+                                                                                                        ln --symbolic "$SECRETX" "$SELF/inputs/secret"
                                                                                                         echo bdec44ba-c1bc-4371-9b62-9979a0364863 >> /tmp/DEBUG
-                                                                                                        ln --symbolic "$( ${ resources.repository.secrets } "$@" )" "$SELF/inputs/secrets"
+                                                                                                        SECRETS="$( ${ resources.repository.secrets } "$@" )" || exit 6
+                                                                                                        ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
                                                                                                         echo 553fb241-28b2-4fc8-bd25-e2652035fde9 >> /tmp/DEBUG
-                                                                                                        ln --symbolic "$( ${ resources.repository.visitor } "$@" )" "$SELF/inputs/visitor"
+                                                                                                        VISITOR="$( ${ resources.repository.visitor } "$@" )" || exit 64
+                                                                                                        ln --symbolic "$VISIITOR" "$SELF/inputs/visitor"
                                                                                                         echo 06ed1bc1-ad48-43d4-afcc-47c333b5e343 >> /tmp/DEBUG
                                                                                                     '' ;
                                                                                             } ;
@@ -1141,7 +906,7 @@
                                                                                         installPhase =
                                                                                             ''
                                                                                                 mkdir --parents $out/bin
-                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --add-flags '$( ${ repository } )'
+                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || exit 64"--add-flags "\$REPO"
                                                                                             '' ;
                                                                                         name = "derivation" ;
                                                                                         nativeBuildInputs = [ pkgs.makeWrapper ] ;
