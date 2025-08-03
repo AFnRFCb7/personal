@@ -488,13 +488,21 @@
                                                                                                                     NAME="$( basename "$LINK" )"
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git add .
                                                                                                                     GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push origin HEAD
+                                                                                                                    while ! GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push origin HEAD
+                                                                                                                    do
+                                                                                                                        echo "waiting to push $NAME"
+                                                                                                                        sleep 1
+                                                                                                                    done
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                     sed -i -E "s#($NAME\.url[^?]*\?ref=).*(\")#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
                                                                                                                     echo "Finished preparing source input $NAME $( date ) $( elapsed )"
                                                                                                                 done
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                git push origin HEAD
+                                                                                                                while ! git push origin HEAD
+                                                                                                                do
+                                                                                                                    echo waiting to push
+                                                                                                                    sleep 1
+                                                                                                                done
                                                                                                                 echo "Finished preparing source root $( date ) $( elapsed )"
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/check"
@@ -622,7 +630,11 @@
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git branch -f "$MILESTONE" HEAD
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin "$MILESTONE"
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout -b "$SCRATCH"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push -u origin "$SCRATCH"
+                                                                                                                    while ! GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push -u origin "$SCRATCH"
+                                                                                                                    do
+                                                                                                                        echo "waiting to push $INPUT"
+                                                                                                                        sleep 1
+                                                                                                                    done
                                                                                                                     NAME="$( basename "$INPUT" )" || exit 64
                                                                                                                     echo "Pushed changes to input $NAME to $MILESTONE $( date )"
                                                                                                                 done
@@ -630,7 +642,11 @@
                                                                                                                 git fetch origin "$MILESTONE"
                                                                                                                 git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
                                                                                                                 git branch -f "$MILESTONE" HEAD
-                                                                                                                git push origin "$MILESTONE"
+                                                                                                                while ! git push origin "$MILESTONE"
+                                                                                                                do
+                                                                                                                    echo waiting to push
+                                                                                                                    sleep 1s
+                                                                                                                done
                                                                                                                 git checkout -b "$SCRATCH"
                                                                                                                 git push -u origin "$SCRATCH"
                                                                                                                 echo "Pushed changes to root to $MILESTONE $( date ) $( elapsed )"
