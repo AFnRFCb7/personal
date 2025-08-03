@@ -660,7 +660,7 @@
                                                                                                                 (
                                                                                                                     mkdir --parents "$ROOT/test"
                                                                                                                     cd "$ROOT/test"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } sudo NIX_SHOW_STATS="$NIX_SHOW_STATS" NIX_DEBUG="$NIX_DEBUG" ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
+                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
                                                                                                                     then
                                                                                                                         echo "$?" > "$ROOT/test/status"
                                                                                                                         echo "Tested $( date ) $( elapsed )"
