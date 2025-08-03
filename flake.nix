@@ -676,9 +676,8 @@
                                                                                                                 do
                                                                                                                     BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git fetch origin "$MILESTONE"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout "$MILESTONE"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rebase "origin/$MILESTONE"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git merge --ff-only "$BRANCH"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git branch -f "$MILESTONE" HEAD
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin "$MILESTONE"
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout -b "$SCRATCH"
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push -u origin "$SCRATCH"
@@ -687,9 +686,8 @@
                                                                                                                 done
                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                 git fetch origin "$MILESTONE"
-                                                                                                                git checkout "$MILESTONE"
-                                                                                                                git rebase "origin/$MILESTONE"
-                                                                                                                git merge --ff-only "$BRANCH"
+                                                                                                                git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
+                                                                                                                git branch -f "$MILESTONE" HEAD
                                                                                                                 git push origin "$MILESTONE"
                                                                                                                 git checkout -b "$SCRATCH"
                                                                                                                 git push -u origin "$SCRATCH"
