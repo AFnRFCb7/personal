@@ -689,7 +689,7 @@
                                                                                                         ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
                                                                                                         echo 553fb241-28b2-4fc8-bd25-e2652035fde9 >> /tmp/DEBUG
                                                                                                         VISITOR="$( ${ resources.repository.visitor } "$@" )" || exit 64
-                                                                                                        ln --symbolic "$VISIITOR" "$SELF/inputs/visitor"
+                                                                                                        ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
                                                                                                         echo 06ed1bc1-ad48-43d4-afcc-47c333b5e343 >> /tmp/DEBUG
                                                                                                     '' ;
                                                                                             } ;
