@@ -906,7 +906,7 @@
                                                                                         installPhase =
                                                                                             ''
                                                                                                 mkdir --parents $out/bin
-                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || exit 64"--add-flags "\$REPO"
+                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || exit 64" --add-flags "\$REPO"
                                                                                             '' ;
                                                                                         name = "derivation" ;
                                                                                         nativeBuildInputs = [ pkgs.makeWrapper ] ;
