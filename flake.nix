@@ -517,12 +517,12 @@
                                                                         {
                                                                             configs =
                                                                                 {
-                                                                                    "alias.promote" =
+                                                                                    "alias.syncronous-promote" =
                                                                                         let
-                                                                                            promote =
+                                                                                            syncronous-promote =
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
-                                                                                                        name = "promote" ;
+                                                                                                        name = "syncronous-promote" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
@@ -697,7 +697,7 @@
                                                                                                                 echo "Promoted in $TIME at $( date )"
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            in "!${ promote }/bin/promote" ;
+                                                                                            in "!${ syncronous-promote }/bin/syncronous-promote" ;
                                                                                     "core.sshCommand" = ssh ;
                                                                                     "user.email" = config.personal.email ;
                                                                                     "user.name" = config.personal.description ;
