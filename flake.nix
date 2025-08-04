@@ -387,8 +387,19 @@
                                                                                                                 GOVERNOR="$SELF/governor"
                                                                                                                 exec 201> "$GOVERNOR/lock"
                                                                                                                 flock 201
-                                                                                                                INDEX="$( find "$GOVERNOR/promotions" -mindepth 1 -maxdepth 1 -type d | wc --lines )" || exit 64
-                                                                                                                DIR="$GOVERNOR/promotions/$INDEX"
+                                                                                                                timeout ${ builtins.toString config.personal.milestone.timeout } ${ asyncronous-promote-timed }/bin/asynchronous-promote-time "$@"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            asyncronous-promote-timed =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "asynchronous-promote-timed" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                GOVERNOR="$SELF/governor"
+                                                                                                                TIMESTAMP="$( date +%s )" || exit 64
+                                                                                                                DIR="$GOVERNOR/promotions/$TIMESTAMP"
                                                                                                                 mkdir --parents "$DIR"
                                                                                                                 while [ "$#" -gt 0 ]
                                                                                                                 do
