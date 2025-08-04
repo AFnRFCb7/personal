@@ -347,7 +347,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                MILESTONE="$( ${ "milestone" } )" || exit 64
+                                                                                                                MILESTONE="$( ${ milestone } )" || exit 64
                                                                                                                 SCRATCH="scratch/$( uuidgen )" || exit 64
                                                                                                                 git add .
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
