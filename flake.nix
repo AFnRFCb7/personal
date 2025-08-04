@@ -686,7 +686,11 @@
                                                                                                                     sleep 1s
                                                                                                                 done
                                                                                                                 git checkout -b "$SCRATCH"
-                                                                                                                git push -u origin "$SCRATCH"
+                                                                                                                while ! git push -u origin "$SCRATCH"
+                                                                                                                do
+                                                                                                                    echo waiting to push
+                                                                                                                    sleep 1s
+                                                                                                                done
                                                                                                                 echo "Pushed changes to root to $MILESTONE $( date ) $( elapsed )"
                                                                                                                 STOP="$( date +%s )" || exit 64
                                                                                                                 TIME="$(( STOP - START ))" || exit 64
