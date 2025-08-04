@@ -401,7 +401,7 @@
                                                                                                                             SCRATCH="$6"
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
-                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$MILESTONE" "SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$MILESTONE" "$SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
                                                                                                                             then
@@ -465,7 +465,7 @@
                                                                                                                 vm build-vm-with-bootloader
                                                                                                                 BUILD="$DIR/build"
                                                                                                                 mkdir --parents "$BUILD"
-                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$ROOT/work-tree#user" --verbose --show-trace > "$BUILD/standard-output" 2> "$BUILD/standard-error"
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$DIR/source/root/work-tree#user" --verbose --show-trace > "$BUILD/standard-output" 2> "$BUILD/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$BUILD/status"
                                                                                                                 else
