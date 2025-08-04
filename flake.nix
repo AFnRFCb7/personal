@@ -244,8 +244,7 @@
                                                                                 '' ;
                                                                         } ;
                                                                 lock = ignore : { } ;
-                                                                repository = ignore : { init-text = "" ; } ;
-                                                                repository2 =
+                                                                repository =
                                                                     git
                                                                         {
                                                                             configs =
