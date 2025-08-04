@@ -458,7 +458,7 @@
                                                                                                                 done
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            in "!${ asyncronous-promote }/bin/asyncronous-promote" ;
+                                                                                            in "!${ asyncronous-promote-pre }/bin/asyncronous-promote-pre" ;
                                                                                     "alias.syncronous-promote" =
                                                                                         let
                                                                                             syncronous-promote =
