@@ -249,9 +249,9 @@
                                                                         {
                                                                             configs =
                                                                                 {
-                                                                                    core.sshCommand = ssh ;
-                                                                                    user.name = config.personal.name ;
-                                                                                    user.email = config.personal.email ;
+                                                                                    "core.sshCommand" = ssh ;
+                                                                                    "user.name" = config.personal.name ;
+                                                                                    "user.email" = config.personal.email ;
                                                                                 } ;
                                                                             remotes =
                                                                                 {
