@@ -356,7 +356,7 @@
                                                                                                                     sleep 1s
                                                                                                                 done
                                                                                                                 ROOT_NAME="root"
-                                                                                                                ROOT_REMOTE="$( git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
+                                                                                                                ROOT_REMOTE="$( git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 2 --delimiter " " )" || exit 64
                                                                                                                 ROOT_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                 ROOT_COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                 INPUT_FLAGS=( )
@@ -368,7 +368,7 @@
                                                                                                                     do
                                                                                                                         sleep 1s
                                                                                                                     done
-                                                                                                                    INPUT_REMOTE="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
+                                                                                                                    INPUT_REMOTE="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 2 --delimiter " " )" || exit 64
                                                                                                                     INPUT_NAME="$( basename "$INPUT" )" || exit 64
                                                                                                                     INPUT_BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                     INPUT_COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )" || exit 64
