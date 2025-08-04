@@ -455,8 +455,11 @@
                                                                                                                             echo "$?" > "$VM/run/status"
                                                                                                                             exit 64
                                                                                                                         fi
-                                                                                                                        if ! ( [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]] )
+                                                                                                                        if [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]]
                                                                                                                         then
+                                                                                                                            ln --symbolic "$SHARED_DIR/status" "$VM/status"
+                                                                                                                        else
+                                                                                                                            echo 64 > "$SHARED_DIR/status"
                                                                                                                             exit 64
                                                                                                                         fi
                                                                                                                     }
