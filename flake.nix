@@ -401,6 +401,7 @@
                                                                                                                 INDEX="$( date +%s )" || exit 64
                                                                                                                 DIR="$GOVERNOR/promotions/$INDEX"
                                                                                                                 mkdir --parents "$DIR"
+                                                                                                                echo "$@" >> "$DIR/arguments.txt"
                                                                                                                 while [ "$#" -gt 0 ]
                                                                                                                 do
                                                                                                                     case "$1" in
