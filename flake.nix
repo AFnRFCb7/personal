@@ -423,7 +423,7 @@
                                                                                                                 export NIX_LOG=stderr
                                                                                                                 CHECK="$DIR/check"
                                                                                                                 mkdir --parents "$CHECK"
-                                                                                                                nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
+                                                                                                                nix --log-format raw --show-trace -vvv flake check ./work-tree > "$CHECK/standard-output" 2> "$CHECK/standard-error"
                                                                                                                 if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check "$DIR/source/root/work-tree/flake.nix" > "$CHECK/standard-output" 2> "$CHECK/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$CHECK/status"
