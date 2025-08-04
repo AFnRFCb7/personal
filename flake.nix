@@ -233,6 +233,16 @@
                                                                 } ;
                                                         milestone =
                                                             {
+                                                                governor =
+                                                                    ignore :
+                                                                        {
+                                                                            init-input = [ pkgs.coreutils ] ;
+                                                                            init-text =
+                                                                                ''
+                                                                                    touch "$SELF/lock"
+                                                                                    mkdir --parents "$SELF/promotions"
+                                                                                '' ;
+                                                                        } ;
                                                                 lock = ignore : { } ;
                                                                 repository =
                                                                     git
@@ -374,11 +384,12 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                UNO="$( ${ resources.milestone.lock } )" || exit 63
-                                                                                                                exec 201> "$UNO/lock"
-                                                                                                                TIMESTAMP="$( date +%s.%N )" || exit 64
+                                                                                                                GOVERNOR="$SELF/governor"
+                                                                                                                exec 201> "$GOVERNOR/lock"
                                                                                                                 flock 201
-                                                                                                                FLAKES=( )
+                                                                                                                INDEX="$( find "$GOVERNOR/promotions -mindepth 1 -maxdepth 1 -type d | wc --lines )" || exit 64
+                                                                                                                DIR="$GOVERNOR/promotions/$INDEX"
+                                                                                                                mkdir --parents "$DIR"
                                                                                                                 while [ "$#" -gt 0 ]
                                                                                                                 do
                                                                                                                     case "$1" in
@@ -393,11 +404,14 @@
                                                                                                                             COMMIT="$9"
                                                                                                                             echo "$NAME"
                                                                                                                             REPOSITORY="$( ${ resources.milestone.repository } "$MILESTONE" "SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
                                                                                                                             then
-                                                                                                                                ROOT="$REPOSITORY"
+                                                                                                                                ln --symbolic "$REPOSITORY" "$DIR/source/root"
+                                                                                                                            else
+                                                                                                                                mkdir --parents "$DIR/source/inputs"
+                                                                                                                                ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME"
                                                                                                                             fi
-                                                                                                                            FLAKES+=( "$REPOSITORY" )
                                                                                                                             shift 8
                                                                                                                             ;;
                                                                                                                         *)
@@ -405,60 +419,81 @@
                                                                                                                             ;;
                                                                                                                     esac
                                                                                                                 done
-                                                                                                                timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$ROOT/work-tree/flake.nix"
-                                                                                                                VM="$UNO/vm"
-                                                                                                                rm --recursive --force "$VM"
-                                                                                                                mkdir --parents "$VM"
-                                                                                                                cd "$VM"
-                                                                                                                if ! timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$ROOT/work-tree#tester"
+                                                                                                                export NIX_SHOW_STATS=5
+                                                                                                                export NIX_DEBUG=1
+                                                                                                                export NIX_SHOW_TRACE=1
+                                                                                                                export NIX_LOG=stderr
+                                                                                                                CHECK="$DIR/check"
+                                                                                                                mkdir --parents "$CHECK"
+                                                                                                                nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check "$DIR/source/root/work-tree/flake.nix" > "$CHECK/standard-output" 2> "$CHECK/standard-error"
                                                                                                                 then
+                                                                                                                    echo "$?" > "$CHECK/status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$CHECK/status"
                                                                                                                     exit 64
                                                                                                                 fi
-                                                                                                                SHARED_DIR="$VM/test"
-                                                                                                                export SHARED_DIR
-                                                                                                                mkdir --parents "$SHARED_DIR"
-                                                                                                                if ! "$VM/result/bin/run-nixos-vm" -nographic
+                                                                                                                vm ( )
+                                                                                                                    {
+                                                                                                                        TYPE="$1"
+                                                                                                                        VM="$DIR/$TYPE"
+                                                                                                                        mkdir --parents "$VM/build"
+                                                                                                                        cd "$VM/build"
+                                                                                                                        if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild "$TYPE" --flake "$DIR/source/root/work-tree#tester" --verbose --show-trace > "$VM/build/standard-output" 2> "$VM/build/standard-error"
+                                                                                                                        then
+                                                                                                                            echo "$?" > "$VM/build/status"
+                                                                                                                        else
+                                                                                                                            echo "$?" > "$VM/build/status"
+                                                                                                                            exit 64
+                                                                                                                        fi
+                                                                                                                        mkdir --parents "$VM/run"
+                                                                                                                        cd "$VM/run"
+                                                                                                                        SHARED_DIR="$VM/test"
+                                                                                                                        export SHARED_DIR
+                                                                                                                        mkdir --parents "$SHARED_DIR"
+                                                                                                                        if "$VM/result/bin/run-nixos-vm" -nographic > "$VM/run/standard-output" 2> "$VM/run/standard-error"
+                                                                                                                        then
+                                                                                                                            echo "$?" > "$VM/run/status"
+                                                                                                                        else
+                                                                                                                            echo "$?" > "$VM/run/status"
+                                                                                                                            exit 64
+                                                                                                                        fi
+                                                                                                                        if ! ( [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]] )
+                                                                                                                        then
+                                                                                                                            exit 64
+                                                                                                                        fi
+                                                                                                                    }
+                                                                                                                vm build-vm
+                                                                                                                vm build-vm-with-bootloader
+                                                                                                                BUILD="$DIR/build"
+                                                                                                                mkdir --parents "$BUILD"
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$ROOT/work-tree#user" --verbose --show-trace > "$BUILD/standard-output" 2> "$BUILD/standard-error"
                                                                                                                 then
+                                                                                                                    echo "$?" > "$BUILD/status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$BUILD/status"
                                                                                                                     exit 64
                                                                                                                 fi
-                                                                                                                if ! ( [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]] )
+                                                                                                                TEST="$DIR/test"
+                                                                                                                mkdir --parents "$TEST"
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree/work-tree#user"  --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
                                                                                                                 then
+                                                                                                                    echo "$?" > "$TEST/status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$TEST/status"
                                                                                                                     exit 64
                                                                                                                 fi
-                                                                                                                VM_WITH_BOOTLOADER="$UNO/vm-with-bootloader"
-                                                                                                                rm --recursive--force "$VM_WITH_BOOTLOADER"
-                                                                                                                mkdir --parents "$VM_WITH_BOOTLOADER"
-                                                                                                                cd "$VM_WITH_BOOTLOADER"
-                                                                                                                if ! timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$ROOT/work-tree#tester"
-                                                                                                                then
-                                                                                                                    exit 64
-                                                                                                                fi
-                                                                                                                SHARED_DIR="$VM_WITH_BOOTLOADER/test"
-                                                                                                                export SHARED_DIR
-                                                                                                                mkdir --parents "$SHARED_DIR
-                                                                                                                if ! "$VM_WITH_BOOTLOADER/result/bin/run-nixos-vm" -nographic
-                                                                                                                then
-                                                                                                                    exit 64
-                                                                                                                fi
-                                                                                                                if ! ( [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]] )
-                                                                                                                then
-                                                                                                                    exit 64
-                                                                                                                fi
-                                                                                                                if ! timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$ROOT/work-tree#user"
-                                                                                                                then
-                                                                                                                   exit 64
-                                                                                                                fi
-                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$ROOT/work-tree#user"
-                                                                                                                then
-                                                                                                                    exit 64
-                                                                                                                fi
-                                                                                                                for FLAKE in "${ builtins.concatStringsSep "" [ "$" "{" "FLAKES[@]" "}" ] }"
+                                                                                                                PUSH="$DIR/push"
+                                                                                                                mkdir --parents "$PUSH"
+                                                                                                                find "$DIR/source" -mindepth 1 -maxdepth 2 -type l | while read -r FLAKE
                                                                                                                 do
-                                                                                                                    while ! GIT_DIR="$FLAKE/git" GIT_WORK_TREE="$FLAKE/work-tree" git push origin HEAD
+                                                                                                                    while ! GIT_DIR="$FLAKE/git" GIT_WORK_TREE="$FLAKE/work-tree" git push origin HEAD > "$PUSH/standard-output" 2> "$PUSH/standard-error"
                                                                                                                     do
+                                                                                                                        echo "SLEEPING FOR ONE SECOND" > "$PUSH/standard-output"
                                                                                                                         sleep 1s
                                                                                                                     done
                                                                                                                 done
+                                                                                                                rm --recursive --force "$DIR"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ asyncronous-promote-pre }/bin/asyncronous-promote-pre" ;
@@ -710,6 +745,8 @@
                                                                                                         VISITOR="$( ${ resources.repository.visitor } "$@" )" || exit 64
                                                                                                         ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
                                                                                                         echo 06ed1bc1-ad48-43d4-afcc-47c333b5e343 >> /tmp/DEBUG
+                                                                                                        GOVERNOR="$( ${ resources.milestone.governor } )" || exit 64
+                                                                                                        ln --symbolic "$GOVERNOR" "$SELF/governor"
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
