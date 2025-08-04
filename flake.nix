@@ -368,7 +368,7 @@
                                                                                                                     do
                                                                                                                         sleep 1s
                                                                                                                     done
-                                                                                                                    INPUT_REMOTE="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
+                                                                                                                    INPUT_REMOTE="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
                                                                                                                     INPUT_NAME="$( basename "$INPUT" )" || exit 64
                                                                                                                     INPUT_BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                     INPUT_COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" rev-parse HEAD )" || exit 64
