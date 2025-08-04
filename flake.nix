@@ -245,7 +245,7 @@
                                                                                 } ;
                                                                             remotes =
                                                                                 {
-                                                                                    origin = "$1"
+                                                                                    origin = "$1" ;
                                                                                 } ;
                                                                             setup =
                                                                                 let
