@@ -337,6 +337,8 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             let
+                                                                                                                milestone = milestone ;
+                                                                                                                asyncronous-promote-post = asyncronous-promote-post ;
                                                                                                                 in
                                                                                                                 assert milestone != null ;
                                                                                                                 assert asyncronous-promote-post != null ;
