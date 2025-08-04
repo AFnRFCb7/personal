@@ -387,7 +387,7 @@
                                                                                                                 GOVERNOR="$SELF/governor"
                                                                                                                 exec 201> "$GOVERNOR/lock"
                                                                                                                 flock 201
-                                                                                                                INDEX="$( find "$GOVERNOR/promotions -mindepth 1 -maxdepth 1 -type d | wc --lines )" || exit 64
+                                                                                                                INDEX="$( find "$GOVERNOR/promotions" -mindepth 1 -maxdepth 1 -type d | wc --lines )" || exit 64
                                                                                                                 DIR="$GOVERNOR/promotions/$INDEX"
                                                                                                                 mkdir --parents "$DIR"
                                                                                                                 while [ "$#" -gt 0 ]
