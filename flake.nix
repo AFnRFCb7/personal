@@ -360,7 +360,7 @@
                                                                                                                 ROOT_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                 ROOT_COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                 INPUT_FLAGS=( )
-                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r INPUT
+                                                                                                                while read -r INPUT
                                                                                                                 do
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
@@ -373,7 +373,7 @@
                                                                                                                     INPUT_BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                     INPUT_COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                     INPUT_FLAGS+=( "--flake" "input" "$INPUT_REMOTE" "$INPUT_NAME" "$MILESTONE" "$SCRATCH" "$INPUT_BRANCH" "$INPUT_COMMIT" )
-                                                                                                                done
+                                                                                                                done < <( find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l )
                                                                                                                 nohup nice --adjustment 19 ${ asyncronous-promote-post }/bin/asynchronous-promote-post "--flake" "root" "$ROOT_REMOTE" "$ROOT_NAME" "$MILESTONE" "$SCRATCH" "$ROOT_BRANCH" "$ROOT_COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_FLAGS[@]" "}" ] }" &
                                                                                                             '' ;
                                                                                                     } ;
@@ -401,7 +401,7 @@
                                                                                                                 INDEX="$( date +%s )" || exit 64
                                                                                                                 DIR="$GOVERNOR/promotions/$INDEX"
                                                                                                                 mkdir --parents "$DIR"
-                                                                                                                echo "$@" >> "$DIR/arguments.txt"
+                                                                                                                echo "$@" >> "$DIR/flag"
                                                                                                                 while [ "$#" -gt 0 ]
                                                                                                                 do
                                                                                                                     case "$1" in
@@ -446,6 +446,7 @@
                                                                                                                     {
                                                                                                                         TYPE="$1"
                                                                                                                         VM="$DIR/$TYPE"
+                                                                                                                        echo "COMMENCING" > "$VM/flag"
                                                                                                                         mkdir --parents "$VM/build"
                                                                                                                         cd "$VM/build"
                                                                                                                         if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild "$TYPE" --flake "$DIR/source/root/work-tree#tester" --verbose --show-trace > "$VM/build/standard-output" 2> "$VM/build/standard-error"
