@@ -393,7 +393,7 @@
                                                                                             asyncronous-promote-timed =
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
-                                                                                                        name = "asynchronous-promote-timed" ;
+                                                                                                        name = "asyncronous-promote-timed" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
                                                                                                         text =
                                                                                                             ''
