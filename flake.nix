@@ -244,7 +244,8 @@
                                                                                 '' ;
                                                                         } ;
                                                                 lock = ignore : { } ;
-                                                                repository =
+                                                                repository = ignore : { } ;
+                                                                repository2 =
                                                                     git
                                                                         {
                                                                             configs =
@@ -291,7 +292,7 @@
                                                                                                         git rebase "$SCRATCH"
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "" ; #  "${ setup }/bin/setup" ;
+                                                                                    in "${ setup }/bin/setup" ;
                                                                         } ;
                                                             } ;
                                                         repository =
