@@ -337,33 +337,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                MILESTONE="$( ${ milestone } )" || exit 64
-                                                                                                                SCRATCH="scratch/$( uuidgen )" || exit 64
-                                                                                                                git add .
-                                                                                                                git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                while ! git push origin HEAD
-                                                                                                                do
-                                                                                                                    sleep 1s
-                                                                                                                done
-                                                                                                                ROOT_NAME="root"
-                                                                                                                ROOT_REMOTE="$( git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
-                                                                                                                ROOT_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                ROOT_COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r INPUT
-                                                                                                                INPUT_FLAGS=( )
-                                                                                                                do
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                    while ! GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin HEAD
-                                                                                                                    do
-                                                                                                                        sleep 1s
-                                                                                                                    done
-                                                                                                                    INPUT_REMOTE="$( GIT_DIR="$INPUT/git GIT_WORK_TREE="$INPUT/work-tree" remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
-                                                                                                                    INPUT_BRANCH="$( GIT_DIR="$INPUT/git GIT_WORK_TREE="$INPUT/work-tree" rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                    INPUT_COMMIT="$( GIT_DIR="$INPUT/git GIT_WORK_TREE="$INPUT/work-tree" rev-parse HEAD )" || exit 64
-                                                                                                                    INPUT_FLAGS+=( "--flake input "$INPUT_REMOTE" "$MILESTONE" "$SCRATCH" "$INPUT_BRANCH" "$INPUT_COMMIT" )
-                                                                                                                done
-                                                                                                                nohup nice --adjustment 19 ${ asyncronous-promote-post }/bin/asynchronous-promote-post --flake root "$ROOT_REMOTE" "$MILESTONE" "$SCRATCH" "$ROOT_BRANCH" "$ROOT_COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_FLAGS[@]" "}" ] }" &
+
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             asyncronous-promote-post =
