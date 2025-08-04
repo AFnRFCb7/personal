@@ -236,7 +236,7 @@
                                                                 governor =
                                                                     ignore :
                                                                         {
-                                                                            init-input = [ pkgs.coreutils ] ;
+                                                                            init-inputs = [ pkgs.coreutils ] ;
                                                                             init-text =
                                                                                 ''
                                                                                     touch "$SELF/lock"
