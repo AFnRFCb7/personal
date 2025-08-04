@@ -337,11 +337,9 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             let
-                                                                                                                milestone = milestone ;
-                                                                                                                asyncronous-promote-post = asyncronous-promote-post ;
+                                                                                                                f1 = null ;
                                                                                                                 in
-                                                                                                                assert milestone != null ;
-                                                                                                                assert asyncronous-promote-post != null ;
+                                                                                                                assert f1 != null ;
                                                                                                             ''
                                                                                                                 MILESTONE="$( ${ milestone } )" || exit 64
                                                                                                                 SCRATCH="scratch/$( uuidgen )" || exit 64
