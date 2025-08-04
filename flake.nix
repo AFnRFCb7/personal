@@ -233,6 +233,56 @@
                                                                 } ;
                                                         milestone =
                                                             {
+                                                                lock = ignore : { } ;
+                                                                repository =
+                                                                    git
+                                                                        {
+                                                                            configs =
+                                                                                {
+                                                                                    core.sshCommand = ssh ;
+                                                                                    user.name = config.personal.name ;
+                                                                                    user.email = config.personal.email ;
+                                                                                } ;
+                                                                            remotes =
+                                                                                {
+                                                                                    origin = "$1"
+                                                                                } ;
+                                                                            setup =
+                                                                                let
+                                                                                    setup =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        MILESTONE="$2"
+                                                                                                        SCRATCH="$3"
+                                                                                                        BRANCH="$4"
+                                                                                                        COMMIT="$5"
+                                                                                                        while ! git fetch origin "$MILESTONE"
+                                                                                                        do
+                                                                                                            sleep 1s
+                                                                                                        done
+                                                                                                        while ! git fetch origin "$BRANCH"
+                                                                                                        do
+                                                                                                            sleep 1s
+                                                                                                        done
+                                                                                                        git checkout "$COMMIT"
+                                                                                                        sed -i -E "s#ref=.*\"#ref=$SCRATCH#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        git checkout -b "$SCRATCH"
+                                                                                                        git rebase "origin/$MILESTONE"
+                                                                                                        git commit -am "" --allow-empty --allow-empty-message
+                                                                                                        while ! git push -u origin "$SCRATCH"
+                                                                                                        do
+                                                                                                            sleep 1s
+                                                                                                        done
+                                                                                                        git checkout "$MILESTONE"
+                                                                                                        git rebase "$SCRATCH"
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ setup }/bin/setup"
+                                                                        } ;
                                                             } ;
                                                         repository =
                                                             {
@@ -280,182 +330,132 @@
                                                                                 {
                                                                                     "alias.asyncronous-promote" =
                                                                                         let
-                                                                                            asyncronous-promote =
+                                                                                            asyncronous-promote-pre =
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
-                                                                                                        name = "asyncronous-promote" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
+                                                                                                        name = "asyncronous-promote-pre" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                elapsed ( )
-                                                                                                                    {
-                                                                                                                        STOP="$( date +%s )"
-                                                                                                                        ELAPSED=$(( STOP - START ))
-                                                                                                                        echo -n "elapsed $ELAPSED"
-                                                                                                                    }
-                                                                                                                START=$( date +%s ) || exit 64
-                                                                                                                echo "Starting $( date )"
-                                                                                                                mkdir --parents "$SELF/promote"
-                                                                                                                ROOT="$( mktemp --directory "$SELF/promote/XXXXXXXX" )"
-                                                                                                                export NIX_SHOW_STATS=5
-                                                                                                                export NIX_DEBUG=1
-                                                                                                                export NIX_SHOW_TRACE=1
-                                                                                                                export NIX_LOG=stderr
-                                                                                                                date +%s > "$GIT_WORK_TREE/current-time.nix"
-                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r LINK
-                                                                                                                do
-                                                                                                                    NAME="$( basename "$LINK" )"
-                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git add .
-                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                    GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git push origin HEAD
-                                                                                                                    COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                    sed -i -E "s#($NAME\.url[^?]*\?ref=).*(\")#\1$COMMIT_HASH\2#" "$SELF/work-tree/flake.nix"
-                                                                                                                    echo "Finished preparing source input $NAME $( date ) $( elapsed )"
-                                                                                                                done
-                                                                                                                git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                git push origin HEAD
-                                                                                                                echo "Finished preparing source root $( date ) $( elapsed )"
-                                                                                                                (
-                                                                                                                    mkdir --parents "$ROOT/check"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check ./work-tree > "$ROOT/check/standard-output" 2> "$ROOT/check/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/check/status"
-                                                                                                                        echo "Passed checks $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/check/status"
-                                                                                                                        echo "Failed checks $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
-                                                                                                                (
-                                                                                                                    mkdir --parents "$ROOT/vm/build"
-                                                                                                                    cd "$ROOT/vm/build"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm/build/standard-output" 2> "$ROOT/vm/build/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/vm/build/status"
-                                                                                                                        echo "Built vm $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/vm/build/status"
-                                                                                                                        echo "Failed to build vm $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
-                                                                                                                (
-                                                                                                                    SHARED_DIR="$ROOT/vm/run/test"
-                                                                                                                    export SHARED_DIR
-                                                                                                                    mkdir --parents "$SHARED_DIR"
-                                                                                                                    cd "$ROOT/vm/run"
-                                                                                                                    if "$ROOT/vm/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm/run/standard-output" 2> "$ROOT/vm/run/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/vm/run/status"
-                                                                                                                        echo "Ran vm $( date ) $( elapsed )"
-                                                                                                                    elif [[ "$?" == 124 ]]
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/vm/run/status"
-                                                                                                                        echo "Timed out vm $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/vm/run/status"
-                                                                                                                        echo "Failed to run vm $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                    if [[ -f "$ROOT/vm/run/test/status" ]] && [[ "$( < "$ROOT/vm/run/test/status" )" == 0 ]]
-                                                                                                                    then
-                                                                                                                        echo "vm passed $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "vm failed $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
-                                                                                                                (
-                                                                                                                    mkdir --parents "$ROOT/vm-with-bootloader/build"
-                                                                                                                    cd "$ROOT/vm-with-bootloader/build"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$SELF/work-tree#tester" --verbose --show-trace > "$ROOT/vm-with-bootloader/build/standard-output" 2> "$ROOT/vm-with-bootloader/build/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/build/status"
-                                                                                                                        echo "Built vm-with-bootloader $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/build/status"
-                                                                                                                        echo "Failed to build vm-with-bootloader $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
-                                                                                                                (
-                                                                                                                    SHARED_DIR="$ROOT/vm-with-bootloader/run/test"
-                                                                                                                    export SHARED_DIR
-                                                                                                                    mkdir --parents "$SHARED_DIR"
-                                                                                                                    cd "$ROOT/vm-with-bootloader/run"
-                                                                                                                    if "$ROOT/vm-with-bootloader/build/result/bin/run-nixos-vm" -nographic > "$ROOT/vm-with-bootloader/run/standard-output" 2> "$ROOT/vm-with-bootloader/run/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/run/status"
-                                                                                                                        echo "Ran vm-with-bootloader $( date ) $( elapsed )"
-                                                                                                                    elif [[ "$?" == 124 ]]
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/run/status"
-                                                                                                                        echo "Timed out vm-with-bootloader $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/vm-with-bootloader/run/status"
-                                                                                                                        echo "Failed to run vm-with-bootloader $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                    if [[ -f "$ROOT/vm-with-bootloader/run/test/status" ]] && [[ "$( < "$ROOT/vm-with-bootloader/run/status" )" == 0 ]]
-                                                                                                                    then
-                                                                                                                        echo "vm-with-bootloader passed $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "vm-with-bootloader failed $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
-                                                                                                                (
-                                                                                                                    mkdir --parents "$ROOT/build"
-                                                                                                                    cd "$ROOT/build"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$SELF/work-tree#user" --verbose --show-trace > "$ROOT/build/standard-output" 2> "$ROOT/build/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/build/status"
-                                                                                                                        echo "Built $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/build/status"
-                                                                                                                        echo "Failed to build $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
-                                                                                                                (
-                                                                                                                    mkdir --parents "$ROOT/test"
-                                                                                                                    cd "$ROOT/test"
-                                                                                                                    if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$SELF/work-tree#user" --verbose --show-trace | tee > "$ROOT/test/standard-output" 2> "$ROOT/test/standard-error"
-                                                                                                                    then
-                                                                                                                        echo "$?" > "$ROOT/test/status"
-                                                                                                                        echo "Tested $( date ) $( elapsed )"
-                                                                                                                    else
-                                                                                                                        echo "$?" > "$ROOT/test/status"
-                                                                                                                        echo "Failed to test $( date ) $( elapsed )"
-                                                                                                                        exit 64
-                                                                                                                    fi
-                                                                                                                )
                                                                                                                 MILESTONE="$( ${ milestone } )" || exit 64
                                                                                                                 SCRATCH="scratch/$( uuidgen )" || exit 64
-                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r INPUT
+                                                                                                                git add .
+                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                while ! git push origin HEAD
                                                                                                                 do
-                                                                                                                    BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git fetch origin "$MILESTONE"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git branch -f "$MILESTONE" HEAD
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin "$MILESTONE"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git checkout -b "$SCRATCH"
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push -u origin "$SCRATCH"
-                                                                                                                    NAME="$( basename "$INPUT" )" || exit 64
-                                                                                                                    echo "Pushed changes to input $NAME to $MILESTONE $( date )"
+                                                                                                                    sleep 1s
                                                                                                                 done
-                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                git fetch origin "$MILESTONE"
-                                                                                                                git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
-                                                                                                                git branch -f "$MILESTONE" HEAD
-                                                                                                                git push origin "$MILESTONE"
-                                                                                                                git checkout -b "$SCRATCH"
-                                                                                                                git push -u origin "$SCRATCH"
-                                                                                                                echo "Pushed changes to root to $MILESTONE $( date ) $( elapsed )"
-                                                                                                                STOP="$( date +%s )" || exit 64
-                                                                                                                TIME="$(( STOP - START ))" || exit 64
-                                                                                                                echo "Promoted in $TIME at $( date )"
+                                                                                                                ROOT_NAME="root"
+                                                                                                                ROOT_REMOTE="$( git remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
+                                                                                                                ROOT_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                ROOT_COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r INPUT
+                                                                                                                INPUT_FLAGS=( )
+                                                                                                                do
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git add .
+                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                    while ! GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin HEAD
+                                                                                                                    do
+                                                                                                                        sleep 1s
+                                                                                                                    done
+                                                                                                                    INPUT_REMOTE="$( GIT_DIR="$INPUT/git GIT_WORK_TREE="$INPUT/work-tree" remote --verbose | head --lines 1 | sed -E "s#[[:space:]]+# #g" | cut --fields 1 --delimiter " " )" || exit 64
+                                                                                                                    INPUT_BRANCH="$( GIT_DIR="$INPUT/git GIT_WORK_TREE="$INPUT/work-tree" rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                    INPUT_COMMIT="$( GIT_DIR="$INPUT/git GIT_WORK_TREE="$INPUT/work-tree" rev-parse HEAD )" || exit 64
+                                                                                                                    INPUT_FLAGS+=( "--flake input "$INPUT_REMOTE" "$MILESTONE" "$SCRATCH" "$INPUT_BRANCH" "$INPUT_COMMIT" )
+                                                                                                                done
+                                                                                                                nohup nice --adjustment 19 ${ asynchronous-promote-post }/bin/asynchronous-promote-post --flake root "$ROOT_REMOTE" "$MILESTONE" "$SCRATCH" "$ROOT_BRANCH" "$ROOT_COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_FLAGS[@]" "}" ] }" &
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            asyncronous-promote-post =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "asynchronous-promote-post" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                UNO="$( ${ resources.milestone.lock } )" || exit 63
+                                                                                                                exec 201> "$UNO/lock"
+                                                                                                                TIMESTAMP="$( date +%s.%N )" || exit 64
+                                                                                                                flock 201
+                                                                                                                FLAKES=( )
+                                                                                                                while [ "$#" -gt 0 ]
+                                                                                                                do
+                                                                                                                    case "$1" in
+                                                                                                                        --flake)
+                                                                                                                            TYPE="$2"
+                                                                                                                            REMOTE="$3"
+                                                                                                                            MILESTONE="$4"
+                                                                                                                            SCRATCH="$5"
+                                                                                                                            NAME="$6"
+                                                                                                                            BRANCH="$7"
+                                                                                                                            COMMIT="$8"
+                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$MILESTONE" "SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            if [[ "$TYPE" == "root" ]]
+                                                                                                                            then
+                                                                                                                                ROOT="$REPOSITORY"
+                                                                                                                            fi
+                                                                                                                            FLAKES+=( "$REPOSITORY" )
+                                                                                                                            shift 8
+                                                                                                                            ;;
+                                                                                                                        *)
+                                                                                                                            shift
+                                                                                                                            ;;
+                                                                                                                    esac
+                                                                                                                done
+                                                                                                                timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$ROOT/work-tree/flake.nix"
+                                                                                                                VM="$UNO/vm"
+                                                                                                                rm --recursive --force "$VM"
+                                                                                                                mkdir --parents "$VM"
+                                                                                                                cd "$VM"
+                                                                                                                if ! timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$ROOT/work-tree#tester"
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                SHARED_DIR="$VM/test"
+                                                                                                                export SHARED_DIR
+                                                                                                                mkdir --parents "$SHARED_DIR"
+                                                                                                                if ! "$VM/result/bin/run-nixos-vm" -nographic
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                if ! ( [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]] )
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                VM_WITH_BOOTLOADER="$UNO/vm-with-bootloader"
+                                                                                                                rm --recursive--force "$VM_WITH_BOOTLOADER"
+                                                                                                                mkdir --parents "$VM_WITH_BOOTLOADER"
+                                                                                                                cd "$VM_WITH_BOOTLOADER"
+                                                                                                                if ! timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$ROOT/work-tree#tester"
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                SHARED_DIR="$VM_WITH_BOOTLOADER/test"
+                                                                                                                export SHARED_DIR
+                                                                                                                mkdir --parents "$SHARED_DIR
+                                                                                                                if ! "$VM_WITH_BOOTLOADER/result/bin/run-nixos-vm" -nographic
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                if ! ( [[ -f "$SHARED_DIR/status" ]] && [[ "$( < "$SHARED_DIR/status" )" == 0 ]] )
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                if ! timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$ROOT/work-tree#user"
+                                                                                                                then
+                                                                                                                   exit 64
+                                                                                                                fi
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$ROOT/work-tree#user"
+                                                                                                                then
+                                                                                                                    exit 64
+                                                                                                                fi
+                                                                                                                for FLAKE in "${ builtins.concatStringsSep "" [ "$" "{" "FLAKES[@]" "}" ] }"
+                                                                                                                do
+                                                                                                                    while ! GIT_DIR="$FLAKE/git" GIT_WORK_TREE="$FLAKE/work-tree" git push origin HEAD
+                                                                                                                    do
+                                                                                                                        sleep 1s
+                                                                                                                    done
+                                                                                                                done
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ asyncronous-promote }/bin/asyncronous-promote" ;
