@@ -401,7 +401,7 @@
                                                                                                                             SCRATCH="$6"
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
-                                                                                                                            REPOSITORY="$( ${ builtins.trace ( builtins.concatStringsSep "; 66e0c0dd-7f02-405d-9df1-c3a5a9d98fe6 ;" ( builtins.attrNames resources.milestone.repository ) ) resources.milestone.repository } "$MILESTONE" "$SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            REPOSITORY="$( ${ builtins.trace ( builtins.concatStringsSep "; 66e0c0dd-7f02-405d-9df1-c3a5a9d98fe6 ;" ( builtins.attrNames resources.milestone.repository ) ) "resources.milestone.repository" } "$MILESTONE" "$SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
                                                                                                                             then
