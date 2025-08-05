@@ -461,7 +461,7 @@
                                                                                                                         SHARED_DIR="$VM/test"
                                                                                                                         export SHARED_DIR
                                                                                                                         mkdir --parents "$SHARED_DIR"
-                                                                                                                        if "$VM/result/bin/run-nixos-vm" -nographic > "$VM/run/standard-output" 2> "$VM/run/standard-error"
+                                                                                                                        if "$VM/build/result/bin/run-nixos-vm" -nographic > "$VM/run/standard-output" 2> "$VM/run/standard-error"
                                                                                                                         then
                                                                                                                             echo "$?" > "$VM/run/status"
                                                                                                                         else
@@ -545,7 +545,7 @@
                                                                                                                         sleep 1
                                                                                                                     done
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                    sed -i -E "s#($NAME\.url[^?]*\?ref=).*\"#\1$COMMIT_HASH\"#" "\$SELF/work-tree/flake.nix"
+                                                                                                                    sed -i -E "s#($NAME\.url[^?]*\?ref=).*\"#\1$COMMIT_HASH\"#" "$SELF/work-tree/flake.nix"
                                                                                                                     echo "Finished preparing source input $NAME $( date ) $( elapsed )"
                                                                                                                 done
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
