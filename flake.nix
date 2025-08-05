@@ -406,6 +406,9 @@
                                                                                                                 do
                                                                                                                     case "$1" in
                                                                                                                         --flake)
+                                                                                                                            echo >> "$DIR/flag"
+                                                                                                                            echo "--flake)" >> ?$DIR/flag"
+                                                                                                                            echo "$1" >> "$DIR/flag"
                                                                                                                             TYPE="$2"
                                                                                                                             REMOTE="$3"
                                                                                                                             NAME="$4"
@@ -425,6 +428,9 @@
                                                                                                                             shift 8
                                                                                                                             ;;
                                                                                                                         *)
+                                                                                                                            echo >> "$DIR/flag"
+                                                                                                                            echo "*)" >> "$DIR/flag"
+                                                                                                                            echo "$1" >> "$DIR/flag"
                                                                                                                             shift
                                                                                                                             ;;
                                                                                                                     esac
