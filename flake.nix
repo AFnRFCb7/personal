@@ -676,7 +676,11 @@
                                                                                                                 find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l | while read -r INPUT
                                                                                                                 do
                                                                                                                     BRANCH="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                    GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git fetch origin "$MILESTONE"
+                                                                                                                    while ! GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git fetch origin "$MILESTONE"
+                                                                                                                    do
+                                                                                                                        sleep 1s
+                                                                                                                        echo waiting to fetch
+                                                                                                                    done
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git branch -f "$MILESTONE" HEAD
                                                                                                                     GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git push origin "$MILESTONE"
@@ -692,6 +696,7 @@
                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                 while ! git fetch origin "$MILESTONE"
                                                                                                                 do
+                                                                                                                    sleep 1s
                                                                                                                     echo "Waiting to fetch"
                                                                                                                 done
                                                                                                                 git merge -X ours "origin/$MILESTONE" -m "Merge $MILESTONE into $BRANCH preferring $BRANCH"
