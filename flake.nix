@@ -489,7 +489,7 @@
                                                                                                                 fi
                                                                                                                 TEST="$DIR/test"
                                                                                                                 mkdir --parents "$TEST"
-                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree/work-tree#user"  --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree#user"  --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$TEST/status"
                                                                                                                 else
