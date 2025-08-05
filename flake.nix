@@ -78,22 +78,14 @@
                                                             init-inputs = [ pkgs.coreutils pkgs.git ] ;
                                                             init-text =
                                                                 ''
-                                                                    echo "f5c38f20-6d3f-4eda-9a9a-887d7290d785 \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value }"'' ) environments ) ) }
-                                                                    echo "3dd9d7e3-973c-4b81-85fc-998f8e98d392 \"$*\"" >> /tmp/DEBUG
                                                                     # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" "{" name "}" ] }"'' ) environments ) ) }
                                                                     export GIT_DIR="$SELF/git"
-                                                                    echo "42d82e23-3b53-478e-a23e-f00467a48f03 \"$*\"" >> /tmp/DEBUG
                                                                     export GIT_WORK_TREE="$SELF/work-tree"
-                                                                    echo "e0f67777-994e-4cfe-b346-149a3f7fbdf9 \"$*\"" >> /tmp/DEBUG
                                                                     HOMEY="$SELF/home"
-                                                                    echo "6ccfc082-6ef4-4f29-aee8-850733d237b3 \"$*\"" >> /tmp/DEBUG
                                                                     mkdir --parents "$GIT_DIR"
-                                                                    echo "f279e9f5-fd5f-45c9-bf27-7a905c7e4faf \"$*\"" >> /tmp/DEBUG
                                                                     mkdir --parents "$GIT_WORK_TREE"
-                                                                    echo "859182e1-af67-4641-89d1-f2ae46fae1d0 \"$*\"" >> /tmp/DEBUG
                                                                     mkdir --parents "$HOMEY"
-                                                                    echo "8c14c42e-a6e0-4918-924f-621b1779327a \"$*\"" >> /tmp/DEBUG
                                                                     cat > "$SELF/.envrc" <<EOF
                                                                     export GIT_DIR="$GIT_DIR"
                                                                     export GIT_WORK_TREE="$GIT_WORK_TREE"
@@ -101,15 +93,10 @@
                                                                     export SELF="$SELF"
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" "{" name "}" ] }"'' ) environments ) ) }
                                                                     EOF
-                                                                    echo "377f944c-b542-40a6-a358-6fb8a078f089 \"$*\"" >> /tmp/DEBUG
                                                                     git init
-                                                                    echo "47407102-4ef3-4ece-8a29-29b2667c3a9e \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                    echo "0e229449-fd20-4140-a7f3-d18872a559d9 \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
-                                                                    echo "a8eb6c30-b8c1-4c7a-8102-47a9bccb02de \"$*\"" >> /tmp/DEBUG
                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                    echo "9f99cc1f-a175-45b3-be5d-249458847c5a \"$*\"" >> /tmp/DEBUG
                                                                     ${ if builtins.typeOf setup == "string" then "exec ${ setup } \"$@\"" else "" }
                                                                 '' ;
                                                             release-inputs = release-inputs ;
@@ -270,40 +257,26 @@
                                                                                                         SCRATCH="$3"
                                                                                                         BRANCH="$4"
                                                                                                         COMMIT="$5"
-                                                                                                        echo 9ef30c61-c071-4548-a898-c6d88380e14c >> /tmp/DEBUG
                                                                                                         while ! git fetch origin "$MILESTONE"
                                                                                                         do
                                                                                                             sleep 1s
                                                                                                         done
-                                                                                                        echo 5ebb4fde-d470-4bba-a7fa-dc75d883dd02 >> /tmp/DEBUG
                                                                                                         while ! git fetch origin "$BRANCH"
                                                                                                         do
                                                                                                             sleep 1s
                                                                                                         done
-                                                                                                        echo 3a9db3b2-9826-40b9-8138-7f6da39b9568 >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
-                                                                                                        echo 35bd4bb3-3264-47f4-ba03-3342023ee308 >> /tmp/DEBUG
                                                                                                         git checkout -b "$SCRATCH"
-                                                                                                        echo "563dbfd6-ac7c-4ec3-b4b0-7d7d5d58836f \"$*\"" >> /tmp/DEBUG
                                                                                                         sed -i -E "s#ref=.*\"#ref=$SCRATCH\"#" "$GIT_WORK_TREE/flake.nix"
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
-                                                                                                        echo "1f8ef6ce-626a-4271-936b-14fee67dbc68 \"$*\"" >> /tmp/DEBUG
-                                                                                                        # echo 7800f1d3-cbc8-477c-bf9f-ab689aca97fd >> /tmp/DEBUG
-                                                                                                        # echo a50afe59-d7ad-489d-b1c8-d28a35a989fb >> /tmp/DEBUG
-                                                                                                        git rebase "origin/$MILESTONE" >> /tmp/DEBUG 2>&1
-                                                                                                        # echo d0c29cef-df1f-4e31-b80e-78a308a0ae07 >> /tmp/DEBUG
+                                                                                                        git rebase "origin/$MILESTONE"
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
-                                                                                                        echo c4ebf0dc-7a01-4b0e-afa5-6be20a300a97 >> /tmp/DEBUG
                                                                                                         while ! git push -u origin "$SCRATCH"
                                                                                                         do
-                                                                                                            echo 0fac9c98-380a-4db8-8fa8-018feba8edff >> /tmp/DEBUG
                                                                                                             sleep 1s
                                                                                                         done
-                                                                                                        echo b5729be2-ea40-49cf-bd80-4ecf78a5d51e >> /tmp/DEBUG
                                                                                                         git checkout "$MILESTONE"
-                                                                                                        echo 60a1c0f1-9cca-41f4-beb1-9170ccc0e65a >> /tmp/DEBUG
                                                                                                         git rebase "$SCRATCH"
-                                                                                                        echo 34f9f290-b75a-4ef2-a44d-34fddedb1f92 >> /tmp/DEBUG
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
@@ -440,15 +413,7 @@
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/source/root"
                                                                                                                             else
                                                                                                                                 mkdir --parents "$DIR/source/inputs"
-                                                                                                                                echo 7a405fcb-2d02-4173-8c03-f67b762a6dd5 ln --symbolic "$REPOSITORY" "$DIR/source/inputs/$NAME" >> /tmp/DEBUG
-                                                                                                                                if [[ -d "$REPOSITORY" ]]
-                                                                                                                                then
-                                                                                                                                    echo "add77e8c-e03d-4f5f-abfb-030d48217c3f \"$*\"" >> /tmp/DEBUG
-                                                                                                                                else
-                                                                                                                                    echo "a84a8106-512a-4732-bd57-ea00e607b6c5 \"$*\"" >> /tmp/DEBUG
-                                                                                                                                fi
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/source/inputs/$NAME"
-                                                                                                                                echo "5f032b56-13d7-4c2a-95e6-31bb6e42341f \"$*\"" >> /tmp/DEBUG
                                                                                                                             fi
                                                                                                                             shift 8
                                                                                                                             ;;
@@ -764,42 +729,26 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        echo e6904d58-dabc-46ba-8f06-8cd11d838e3c > /tmp/DEBUG
                                                                                                         MILESTONE="$( ${ milestone } )"
-                                                                                                        echo 781cec98-98fe-48fa-8561-397c86e6559e >> /tmp/DEBUG
                                                                                                         if git fetch origin "$MILESTONE"
                                                                                                         then
-                                                                                                            echo 26a909c5-b4d1-42fd-9ac2-21b4fe679027 >> /tmp/DEBUG
                                                                                                             git checkout "origin/$MILESTONE"
-                                                                                                            echo 90760b41-ff8c-472b-98e9-78a9e9290d70 >> /tmp/DEBUG
                                                                                                         else
-                                                                                                            echo 85852679-fbff-4df6-8a7a-c5acf52c8618 >> /tmp/DEBUG
                                                                                                             git fetch origin main
-                                                                                                            echo 541baa9a-e64f-4b99-b0ef-e8f142a90452 >> /tmp/DEBUG
                                                                                                             git checkout origin/main
-                                                                                                            echo da8b6154-54cb-4001-98d7-7b25f942eb51 >> /tmp/DEBUG
                                                                                                             git checkout -b "$MILESTONE"
-                                                                                                            echo c9e986b1-4354-4b70-88d6-d5a07296b505 >> /tmp/DEBUG
                                                                                                             git push -u origin "$MILESTONE"
-                                                                                                            echo 03b9e515-13f1-41d0-805d-d7fa99081d7a >> /tmp/DEBUG
                                                                                                         fi
-                                                                                                        echo 17060d98-1997-47cc-9245-cfa1b2c1b0db >> /tmp/DEBUG
                                                                                                         git checkout -b "scratch/$( uuidgen )"
-                                                                                                        echo 77062af7-0b9b-4303-b33a-52333ba0d8a9 >> /tmp/DEBUG
                                                                                                         mkdir --parents "$SELF/inputs"
-                                                                                                        echo fb1b6039-e97b-4e1f-9773-59ff6a3a0cf6 >> /tmp/DEBUG
                                                                                                         PERSONAL="$( ${ resources.repository.personal } "$@" )" || exit 64
                                                                                                         ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
-                                                                                                        echo 6105aa25-0db5-48f7-9455-75061c414941 >> /tmp/DEBUG
                                                                                                         SECRETX="$( ${ resources.repository.secret } "$@" )" || exit 64
                                                                                                         ln --symbolic "$SECRETX" "$SELF/inputs/secret"
-                                                                                                        echo bdec44ba-c1bc-4371-9b62-9979a0364863 >> /tmp/DEBUG
                                                                                                         SECRETS="$( ${ resources.repository.secrets } "$@" )" || exit 6
                                                                                                         ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
-                                                                                                        echo 553fb241-28b2-4fc8-bd25-e2652035fde9 >> /tmp/DEBUG
                                                                                                         VISITOR="$( ${ resources.repository.visitor } "$@" )" || exit 64
                                                                                                         ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
-                                                                                                        echo 06ed1bc1-ad48-43d4-afcc-47c333b5e343 >> /tmp/DEBUG
                                                                                                         GOVERNOR="$( ${ resources.milestone.governor } )" || exit 64
                                                                                                         ln --symbolic "$GOVERNOR" "$SELF/governor"
                                                                                                     '' ;
