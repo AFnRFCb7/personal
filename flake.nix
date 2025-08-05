@@ -353,7 +353,7 @@
                                                                         {
                                                                             configs =
                                                                                 {
-                                                                                    "alias.asyncronous-promote" =
+                                                                                    "alias.async-promote" =
                                                                                         let
                                                                                             asyncronous-promote-pre =
                                                                                                 pkgs.writeShellApplication
@@ -442,6 +442,7 @@
                                                                                                                                 mkdir --parents "$DIR/source/inputs"
                                                                                                                                 echo 7a405fcb-2d02-4173-8c03-f67b762a6dd5 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME" >> /tmp/DEBUG
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME"
+                                                                                                                                echo "5f032b56-13d7-4c2a-95e6-31bb6e42341f \"$*\"" >> /tmp/DEBUG
                                                                                                                             fi
                                                                                                                             shift 8
                                                                                                                             ;;
@@ -533,7 +534,7 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ asyncronous-promote-pre }/bin/asyncronous-promote-pre" ;
-                                                                                    "alias.syncronous-promote" =
+                                                                                    "alias.sync-promote" =
                                                                                         let
                                                                                             syncronous-promote =
                                                                                                 pkgs.writeShellApplication
