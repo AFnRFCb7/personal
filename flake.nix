@@ -286,9 +286,9 @@
                                                                                                         sed -i -E "s#ref=.*\"#ref=$SCRATCH#" "$GIT_WORK_TREE/flake.nix"
                                                                                                         echo 7800f1d3-cbc8-477c-bf9f-ab689aca97fd >> /tmp/DEBUG
                                                                                                         git checkout -b "$SCRATCH"
-                                                                                                        echo a50afe59-d7ad-489d-b1c8-d28a35a989fb >> /tmp/DEBUG
-                                                                                                        git rebase "origin/$MILESTONE"
-                                                                                                        echo d0c29cef-df1f-4e31-b80e-78a308a0ae07 >> /tmp/DEBUG
+                                                                                                        # echo a50afe59-d7ad-489d-b1c8-d28a35a989fb >> /tmp/DEBUG
+                                                                                                        git rebase "origin/$MILESTONE" >> /tmp/DEBUG 2>&1
+                                                                                                        # echo d0c29cef-df1f-4e31-b80e-78a308a0ae07 >> /tmp/DEBUG
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
                                                                                                         echo c4ebf0dc-7a01-4b0e-afa5-6be20a300a97 >> /tmp/DEBUG
                                                                                                         while ! git push -u origin "$SCRATCH"
