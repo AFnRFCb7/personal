@@ -1012,9 +1012,9 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    UUIDGEN="$( uuidgen )" || exit 64
+                                                                                                    UUID="$( uuidgen )" || exit 64
                                                                                                     cat >> /tmp/DEBUG <<EOF
-                                                                                                    echo "$( uuidgen ) \"\$*\""
+                                                                                                    echo "$UUID \"\$*\""
                                                                                                     EOF
                                                                                                 '' ;
                                                                                         }
