@@ -440,14 +440,14 @@
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/source/root"
                                                                                                                             else
                                                                                                                                 mkdir --parents "$DIR/source/inputs"
+                                                                                                                                echo 7a405fcb-2d02-4173-8c03-f67b762a6dd5 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME" >> /tmp/DEBUG
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME"
                                                                                                                             fi
                                                                                                                             shift 8
                                                                                                                             ;;
                                                                                                                         *)
                                                                                                                             echo >> "$DIR/flag"
-                                                                                                                            echo "*\)" >> "$DIR/flag"
-                                                                                                                            echo "$1" >> "$DIR/flag"
+                                                                                                                            echo "WRONG" >> "$DIR/flag"
                                                                                                                             shift
                                                                                                                             ;;
                                                                                                                     esac
