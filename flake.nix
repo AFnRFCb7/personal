@@ -432,7 +432,7 @@
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
                                                                                                                             echo BEFORE >> "$DIR/flag"
-                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )"
+                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                             echo AFTER >> "$DIR/flag"
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
@@ -440,14 +440,14 @@
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/source/root"
                                                                                                                             else
                                                                                                                                 mkdir --parents "$DIR/source/inputs"
-                                                                                                                                echo 7a405fcb-2d02-4173-8c03-f67b762a6dd5 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME" >> /tmp/DEBUG
+                                                                                                                                echo 7a405fcb-2d02-4173-8c03-f67b762a6dd5 ln --symbolic "$REPOSITORY" "$DIR/source/inputs/$NAME" >> /tmp/DEBUG
                                                                                                                                 if [[ -d "$REPOSITORY" ]]
                                                                                                                                 then
                                                                                                                                     echo "add77e8c-e03d-4f5f-abfb-030d48217c3f \"$*\"" >> /tmp/DEBUG
                                                                                                                                 else
                                                                                                                                     echo "a84a8106-512a-4732-bd57-ea00e607b6c5 \"$*\"" >> /tmp/DEBUG
                                                                                                                                 fi
-                                                                                                                                ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME"
+                                                                                                                                ln --symbolic "$REPOSITORY" "$DIR/source/inputs/$NAME"
                                                                                                                                 echo "5f032b56-13d7-4c2a-95e6-31bb6e42341f \"$*\"" >> /tmp/DEBUG
                                                                                                                             fi
                                                                                                                             shift 8
