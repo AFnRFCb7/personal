@@ -270,10 +270,12 @@
                                                                                                         SCRATCH="$3"
                                                                                                         BRANCH="$4"
                                                                                                         COMMIT="$5"
+                                                                                                        echo 9ef30c61-c071-4548-a898-c6d88380e14c >> /tmp/DEBUG
                                                                                                         while ! git fetch origin "$MILESTONE"
                                                                                                         do
                                                                                                             sleep 1s
                                                                                                         done
+                                                                                                        echo 5ebb4fde-d470-4bba-a7fa-dc75d883dd02 >> /tmp/DEBUG
                                                                                                         while ! git fetch origin "$BRANCH"
                                                                                                         do
                                                                                                             sleep 1s
@@ -417,7 +419,7 @@
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
                                                                                                                             echo BEFORE >> "$DIR/flag"
-                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$MILESTONE" "$SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                             echo AFTER >> "$DIR/flag"
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
@@ -1003,6 +1005,20 @@
                                                                                     } ;
 									                                    in
                                                                             [
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "debug" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    UUIDGEN="$( uuidgen )" || exit 64
+                                                                                                    cat >> /tmp/DEBUG <<EOF
+                                                                                                    echo "$( uuidgen ) \"\$*\""
+                                                                                                    EOF
+                                                                                                '' ;
+                                                                                        }
+                                                                                )
                                                                                 ( studio "studio-personal" resources.repository.personal )
                                                                                 ( studio "studio-private" resources.repository.private )
                                                                                 ( studio "studio-secret" resources.repository.secret )
