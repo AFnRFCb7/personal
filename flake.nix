@@ -280,17 +280,27 @@
                                                                                                         do
                                                                                                             sleep 1s
                                                                                                         done
+                                                                                                        echo 3a9db3b2-9826-40b9-8138-7f6da39b9568 >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
+                                                                                                        echo 35bd4bb3-3264-47f4-ba03-3342023ee308 >> /tmp/DEBUG
                                                                                                         sed -i -E "s#ref=.*\"#ref=$SCRATCH#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        echo 7800f1d3-cbc8-477c-bf9f-ab689aca97fd >> /tmp/DEBUG
                                                                                                         git checkout -b "$SCRATCH"
+                                                                                                        echo a50afe59-d7ad-489d-b1c8-d28a35a989fb >> /tmp/DEBUG
                                                                                                         git rebase "origin/$MILESTONE"
+                                                                                                        echo d0c29cef-df1f-4e31-b80e-78a308a0ae07 >> /tmp/DEBUG
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
+                                                                                                        echo c4ebf0dc-7a01-4b0e-afa5-6be20a300a97 >> /tmp/DEBUG
                                                                                                         while ! git push -u origin "$SCRATCH"
                                                                                                         do
+                                                                                                            echo 0fac9c98-380a-4db8-8fa8-018feba8edff >> /tmp/DEBUG
                                                                                                             sleep 1s
                                                                                                         done
+                                                                                                        echo b5729be2-ea40-49cf-bd80-4ecf78a5d51e >> /tmp/DEBUG
                                                                                                         git checkout "$MILESTONE"
+                                                                                                        echo 60a1c0f1-9cca-41f4-beb1-9170ccc0e65a >> /tmp/DEBUG
                                                                                                         git rebase "$SCRATCH"
+                                                                                                        echo 34f9f290-b75a-4ef2-a44d-34fddedb1f92 >> /tmp/DEBUG
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ setup }/bin/setup" ;
@@ -1013,8 +1023,8 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     UUID="$( uuidgen )" || exit 64
-                                                                                                    cat >> /tmp/DEBUG <<EOF
-                                                                                                    echo "$UUID \"\$*\""
+                                                                                                    cat <<EOF
+                                                                                                    echo "$UUID \"\$*\"" >> /tmp/DEBUG
                                                                                                     EOF
                                                                                                 '' ;
                                                                                         }
