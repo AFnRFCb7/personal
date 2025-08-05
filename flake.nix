@@ -267,7 +267,7 @@
                                                                                                         done
                                                                                                         git checkout "$COMMIT"
                                                                                                         git checkout -b "$SCRATCH"
-                                                                                                        sed -i -E "s#ref=.*\"#ref=$SCRATCH\"#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        sed -i -E "s#ref=scratch/bb922656-855e-4a2f-bb85-a9a47bef416a"
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
                                                                                                         git rebase "origin/$MILESTONE"
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
@@ -541,7 +541,7 @@
                                                                                                                         sleep 1
                                                                                                                     done
                                                                                                                     COMMIT_HASH="$( GIT_DIR="$LINK/git" GIT_WORK_TREE="$LINK/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                    sed -i -E "s#($NAME\.url[^?]*\?ref=).*(\")#\1$COMMIT_HASH\2#" "\$SELF/work-tree/flake.nix"
+                                                                                                                    sed -i -E "s#($NAME\.url[^?]*\?ref=scratch/bb922656-855e-4a2f-bb85-a9a47bef416a"
                                                                                                                     echo "Finished preparing source input $NAME $( date ) $( elapsed )"
                                                                                                                 done
                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
