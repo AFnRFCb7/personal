@@ -801,7 +801,7 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private self secret system visitor ] ; system = system ; } // ( value path ) ) ; } tree ;
+							                    in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private self secret system visitor ] ; system = system ; } // ( value path ) ) ; } tree ;
                                         in
                                             {
                                                 config =
