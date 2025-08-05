@@ -441,7 +441,6 @@
                                                                                                                     {
                                                                                                                         TYPE="$1"
                                                                                                                         VM="$DIR/$TYPE"
-                                                                                                                        echo "COMMENCING" > "$VM/flag"
                                                                                                                         mkdir --parents "$VM/build"
                                                                                                                         cd "$VM/build"
                                                                                                                         if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild "$TYPE" --flake "$DIR/source/root/work-tree#tester" --verbose --show-trace > "$VM/build/standard-output" 2> "$VM/build/standard-error"
