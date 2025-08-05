@@ -416,7 +416,9 @@
                                                                                                                             SCRATCH="$6"
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
+                                                                                                                            echo BEFORE >> "$DIR/flag"
                                                                                                                             REPOSITORY="$( ${ resources.milestone.repository } "$MILESTONE" "$SCRATCH" "$REMOTE" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            echo AFTER >> "$DIR/flag"
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
                                                                                                                             then
