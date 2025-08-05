@@ -432,7 +432,7 @@
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
                                                                                                                             echo BEFORE >> "$DIR/flag"
-                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )"
                                                                                                                             echo AFTER >> "$DIR/flag"
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
@@ -441,6 +441,12 @@
                                                                                                                             else
                                                                                                                                 mkdir --parents "$DIR/source/inputs"
                                                                                                                                 echo 7a405fcb-2d02-4173-8c03-f67b762a6dd5 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME" >> /tmp/DEBUG
+                                                                                                                                if [[ -d "$REPOSITORY" ]]
+                                                                                                                                then
+                                                                                                                                    echo "add77e8c-e03d-4f5f-abfb-030d48217c3f \"$*\"" >> /tmp/DEBUG
+                                                                                                                                else
+                                                                                                                                    echo "a84a8106-512a-4732-bd57-ea00e607b6c5 \"$*\"" >> /tmp/DEBUG
+                                                                                                                                fi
                                                                                                                                 ln --symbolic "$REPOSITORY" "$DIR/inputs/$NAME"
                                                                                                                                 echo "5f032b56-13d7-4c2a-95e6-31bb6e42341f \"$*\"" >> /tmp/DEBUG
                                                                                                                             fi
@@ -1026,7 +1032,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    UUID="$( uuidgen )" || exit 64
+                                                                                                    UUID="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
                                                                                                     cat <<EOF
                                                                                                     echo "$UUID \"\$*\"" >> /tmp/DEBUG
                                                                                                     EOF
