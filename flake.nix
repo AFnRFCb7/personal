@@ -429,7 +429,7 @@
                                                                                                                             ;;
                                                                                                                         *)
                                                                                                                             echo >> "$DIR/flag"
-                                                                                                                            echo "*)" >> "$DIR/flag"
+                                                                                                                            echo "*\)" >> "$DIR/flag"
                                                                                                                             echo "$1" >> "$DIR/flag"
                                                                                                                             shift
                                                                                                                             ;;
