@@ -283,9 +283,12 @@
                                                                                                         echo 3a9db3b2-9826-40b9-8138-7f6da39b9568 >> /tmp/DEBUG
                                                                                                         git checkout "$COMMIT"
                                                                                                         echo 35bd4bb3-3264-47f4-ba03-3342023ee308 >> /tmp/DEBUG
-                                                                                                        sed -i -E "s#ref=.*\"#ref=$SCRATCH#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                        echo 7800f1d3-cbc8-477c-bf9f-ab689aca97fd >> /tmp/DEBUG
                                                                                                         git checkout -b "$SCRATCH"
+                                                                                                        echo "563dbfd6-ac7c-4ec3-b4b0-7d7d5d58836f \"$*\"" >> /tmp/DEBUG
+                                                                                                        sed -i -E "s#ref=.*\"#ref=$SCRATCH#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                        git commit -am "" --allow-empty --allow-empty-message
+                                                                                                        echo "1f8ef6ce-626a-4271-936b-14fee67dbc68 \"$*\"" >> /tmp/DEBUG
+                                                                                                        echo 7800f1d3-cbc8-477c-bf9f-ab689aca97fd >> /tmp/DEBUG
                                                                                                         # echo a50afe59-d7ad-489d-b1c8-d28a35a989fb >> /tmp/DEBUG
                                                                                                         git rebase "origin/$MILESTONE" >> /tmp/DEBUG 2>&1
                                                                                                         # echo d0c29cef-df1f-4e31-b80e-78a308a0ae07 >> /tmp/DEBUG
