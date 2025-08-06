@@ -801,7 +801,7 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { coreutils = pkgs.coreutils ; flock = pkgs.flock ; jq = pkgs.jq ; nixpkgs = nixpkgs ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } // ( value path ) ) ; } tree ;
+							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { coreutils = pkgs.coreutils ; flock = pkgs.flock ; gnutar = gnutar ; jq = pkgs.jq ; nixpkgs = nixpkgs ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } // ( value path ) ) ; } tree ;
                                         in
                                             {
                                                 config =
