@@ -8,7 +8,7 @@
                 lib =
                     {
                         nixpkgs ,
-			            resource ,
+			            resources ,
                         secrets ,
                         private ,
                         system ,
@@ -39,7 +39,7 @@
                                                        else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
                                                        else builtins.throw "We can not handle ${ value }." ;
                                                 in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
-                                        resources =
+                                        resources_ =
                                             let
                                                 checkout =
                                                     let
@@ -142,7 +142,7 @@
                                                                             makeWrapper \
                                                                                 ${ pkgs.openssh }/bin/ssh \
                                                                                 $out/bin/ssh \
-                                                                                --run "DOT_SSH=\"\$( ${ resources.dot-ssh } )\" || exit 64" \
+                                                                                --run "DOT_SSH=\"\$( ${ resources_.dot-ssh } )\" || exit 64" \
                                                                                 --add-flags "-F \$DOT_SSH/config"
                                                                         '' ;
                                                                     name = "ssh" ;
@@ -411,7 +411,7 @@
                                                                                                                             BRANCH="$7"
                                                                                                                             COMMIT="$8"
                                                                                                                             echo BEFORE >> "$DIR/flag"
-                                                                                                                            REPOSITORY="$( ${ resources.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            REPOSITORY="$( ${ resources_.milestone.repository } "$REMOTE" "$MILESTONE" "$SCRATCH" "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                             echo AFTER >> "$DIR/flag"
                                                                                                                             mkdir --parents "$DIR/source"
                                                                                                                             if [[ "$TYPE" == "root" ]]
@@ -746,15 +746,15 @@
                                                                                                         fi
                                                                                                         git checkout -b "scratch/$( uuidgen )"
                                                                                                         mkdir --parents "$SELF/inputs"
-                                                                                                        PERSONAL="$( ${ resources.repository.personal } "$@" )" || exit 64
+                                                                                                        PERSONAL="$( ${ resources_.repository.personal } "$@" )" || exit 64
                                                                                                         ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
-                                                                                                        SECRETX="$( ${ resources.repository.secret } "$@" )" || exit 64
+                                                                                                        SECRETX="$( ${ resources_.repository.secret } "$@" )" || exit 64
                                                                                                         ln --symbolic "$SECRETX" "$SELF/inputs/secret"
-                                                                                                        SECRETS="$( ${ resources.repository.secrets } "$@" )" || exit 6
+                                                                                                        SECRETS="$( ${ resources_.repository.secrets } "$@" )" || exit 6
                                                                                                         ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
-                                                                                                        VISITOR="$( ${ resources.repository.visitor } "$@" )" || exit 64
+                                                                                                        VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
                                                                                                         ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
-                                                                                                        GOVERNOR="$( ${ resources.milestone.governor } )" || exit 64
+                                                                                                        GOVERNOR="$( ${ resources_.milestone.governor } )" || exit 64
                                                                                                         ln --symbolic "$GOVERNOR" "$SELF/governor"
                                                                                                     '' ;
                                                                                             } ;
@@ -989,11 +989,11 @@
                                                                                                 '' ;
                                                                                         }
                                                                                 )
-                                                                                ( studio "studio-personal" resources.repository.personal )
-                                                                                ( studio "studio-private" resources.repository.private )
-                                                                                ( studio "studio-secret" resources.repository.secret )
-                                                                                ( studio "studio-secrets" resources.repository.secrets )
-                                                                                ( studio "studio-visitor" resources.repository.visitor )
+                                                                                ( studio "studio-personal" resources_.repository.personal )
+                                                                                ( studio "studio-private" resources_.repository.private )
+                                                                                ( studio "studio-secret" resources_.repository.secret )
+                                                                                ( studio "studio-secrets" resources_.repository.secrets )
+                                                                                ( studio "studio-visitor" resources_.repository.visitor )
                                                                             ] ;
                                                                 password = config.personal.password ;
                                                             } ;
