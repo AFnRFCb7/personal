@@ -801,7 +801,7 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { nixpkgs = nixpkgs ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; writeShellApplication = pkgs.writeShellApplication ; } // ( value path ) ) ; } tree ;
+							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { coreutils = pkgs.coreutils ; nixpkgs = nixpkgs ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; writeShellApplication = pkgs.writeShellApplication ; } // ( value path ) ) ; } tree ;
                                         in
                                             {
                                                 config =
