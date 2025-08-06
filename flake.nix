@@ -801,7 +801,7 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { coreutils = pkgs.coreutils ; flock = pkgs.flock ; gnutar = pkgs.gnutar ; jq = pkgs.jq ; nix = pkgs.nix ; nixpkgs = nixpkgs ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; zstd = pkgs.zstd ; } // ( value path ) ) ; } tree ;
+							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { buildFHSUserEnv = buildFHSUserEnv ; coreutils = pkgs.coreutils ; flock = pkgs.flock ; gnutar = pkgs.gnutar ; jq = pkgs.jq ; nix = pkgs.nix ; nixpkgs = nixpkgs ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; zstd = pkgs.zstd ; } // ( value path ) ) ; } tree ;
                                         in
                                             {
                                                 config =
