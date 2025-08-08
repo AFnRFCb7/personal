@@ -749,7 +749,7 @@
                                                                                                         PERSONAL="$( ${ resources_.repository.personal } "$@" )" || exit 64
                                                                                                         ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
                                                                                                         RESOURCES="$( ${ resources_.repository.resources } "$@" )" || exit 64
-                                                                                                        ln --symbolic "$RESOURCES" "$SELF/inputs/resource"
+                                                                                                        ln --symbolic "$RESOURCES" "$SELF/inputs/resources"
                                                                                                         # SECRETS="$( ${ resources_.repository.secrets } "$@" )" || exit 6
                                                                                                         # ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
                                                                                                         # VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
@@ -991,7 +991,7 @@
                                                                                 )
                                                                                 ( studio "studio-personal" resources_.repository.personal )
                                                                                 ( studio "studio-private" resources_.repository.private )
-                                                                                ( studio "studio-secret" resources_.repository.resources )
+                                                                                ( studio "studio-resources" resources_.repository.resources )
                                                                                 ( studio "studio-secrets" resources_.repository.secrets )
                                                                                 ( studio "studio-visitor" resources_.repository.visitor )
                                                                             ] ;
