@@ -760,6 +760,19 @@
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
                                                                         } ;
+                                                                resources =
+                                                                    git
+                                                                        {
+                                                                            configs =
+                                                                                {
+                                                                                    "core.sshCommand" = ssh ;
+                                                                                    "user.email" = config.personal.email ;
+                                                                                    "user.name" = config.personal.description ;
+                                                                                } ;
+                                                                            hooks = { post-commit = post-commit ; } ;
+                                                                            remotes = { origin = config.personal.repository.secret.remote ; } ;
+                                                                            setup = checkout ;
+                                                                        } ;
                                                                 secret =
                                                                     git
                                                                         {
