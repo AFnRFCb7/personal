@@ -8,7 +8,7 @@
                 lib =
                     {
                         nixpkgs ,
-			            resource ,
+			            resources ,
                         secrets ,
                         private ,
                         system ,
