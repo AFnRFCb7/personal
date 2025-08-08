@@ -1004,6 +1004,7 @@
                                                                                 )
                                                                                 ( studio "studio-personal" resources.repository.personal )
                                                                                 ( studio "studio-private" resources.repository.private )
+                                                                                ( studio "studio-resources" resources.repository.secret )
                                                                                 ( studio "studio-secret" resources.repository.secret )
                                                                                 ( studio "studio-secrets" resources.repository.secrets )
                                                                                 ( studio "studio-visitor" resources.repository.visitor )
