@@ -748,8 +748,8 @@
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         PERSONAL="$( ${ resources.repository.personal } "$@" )" || exit 64
                                                                                                         ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
-                                                                                                        SECRETX="$( ${ resources.repository.secret } "$@" )" || exit 64
-                                                                                                        ln --symbolic "$SECRETX" "$SELF/inputs/secret"
+                                                                                                        RESOURCES="$( ${ resources.repository.resources } "$@" )" || exit 64
+                                                                                                        ln --symbolic "$RESOURCES" "$SELF/inputs/resources"
                                                                                                         SECRETS="$( ${ resources.repository.secrets } "$@" )" || exit 6
                                                                                                         ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
                                                                                                         VISITOR="$( ${ resources.repository.visitor } "$@" )" || exit 64
@@ -770,7 +770,7 @@
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
-                                                                            remotes = { origin = config.personal.repository.secret.remote ; } ;
+                                                                            remotes = { origin = config.personal.repository.resources.remote ; } ;
                                                                             setup = checkout ;
                                                                         } ;
                                                                 secret =
@@ -783,7 +783,7 @@
                                                                                     "user.name" = config.personal.description ;
                                                                                 } ;
                                                                             hooks = { post-commit = post-commit ; } ;
-                                                                            remotes = { origin = config.personal.repository.secret.remote ; } ;
+                                                                            remotes = { origin = config.personal.repository.resources.remote ; } ;
                                                                             setup = checkout ;
                                                                         } ;
                                                                 secrets =
@@ -1090,10 +1090,10 @@
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
                                                                             } ;
-                                                                        secret =
+                                                                        resources =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/secret.git" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resources.git" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                         secrets =
                                                                             {
