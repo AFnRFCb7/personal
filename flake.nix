@@ -749,7 +749,7 @@
                                                                                                         PERSONAL="$( ${ resources_.repository.personal } "$@" )" || exit 64
                                                                                                         ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
                                                                                                         RESOURCES="$( ${ resources_.repository.resources } "$@" )" || exit 64
-                                                                                                        # ln --symbolic "$RESOURCES" "$SELF/inputs/resource"
+                                                                                                        ln --symbolic "$RESOURCES" "$SELF/inputs/resource"
                                                                                                         # SECRETS="$( ${ resources_.repository.secrets } "$@" )" || exit 6
                                                                                                         # ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
                                                                                                         # VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
