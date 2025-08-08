@@ -748,14 +748,14 @@
                                                                                                         mkdir --parents "$SELF/inputs"
                                                                                                         PERSONAL="$( ${ resources_.repository.personal } "$@" )" || exit 64
                                                                                                         ln --symbolic "$PERSONAL" "$SELF/inputs/personal"
-                                                                                                        RESOURCES="$( ${ resources_.repository.resources } "$@" )" || exit 64
-                                                                                                        ln --symbolic "$RESOURCES" "$SELF/inputs/resource"
-                                                                                                        SECRETS="$( ${ resources_.repository.secrets } "$@" )" || exit 6
-                                                                                                        ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
-                                                                                                        VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
-                                                                                                        ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
-                                                                                                        GOVERNOR="$( ${ resources_.milestone.governor } )" || exit 64
-                                                                                                        ln --symbolic "$GOVERNOR" "$SELF/governor"
+                                                                                                        # RESOURCES="$( ${ resources_.repository.resources } "$@" )" || exit 64
+                                                                                                        # ln --symbolic "$RESOURCES" "$SELF/inputs/resource"
+                                                                                                        # SECRETS="$( ${ resources_.repository.secrets } "$@" )" || exit 6
+                                                                                                        # ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
+                                                                                                        # VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
+                                                                                                        # ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
+                                                                                                        # GOVERNOR="$( ${ resources_.milestone.governor } )" || exit 64
+                                                                                                        # ln --symbolic "$GOVERNOR" "$SELF/governor"
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
