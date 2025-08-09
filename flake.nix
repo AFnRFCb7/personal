@@ -57,6 +57,22 @@
                                                         primary ;
                                                 tree =
                                                     let
+                                                        post-commit =
+                                                            let
+                                                                post-commit =
+                                                                    pkgs.writeShellApplication
+                                                                        {
+                                                                            name = "post-commit" ;
+                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                            text =
+                                                                                ''
+                                                                                    while ! git push origin HEAD
+                                                                                    do
+                                                                                        sleep 1s
+                                                                                    done
+                                                                                '' ;
+                                                                        } ;
+                                                                in "${ post-commit }/bin/post-commit"
                                                         in
                                                             {
                                                             } ;
