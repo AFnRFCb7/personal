@@ -754,8 +754,8 @@
                                                                                                         ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
                                                                                                         VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
                                                                                                         ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
-                                                                                                        # GOVERNOR="$( ${ resources_.milestone.governor } )" || exit 64
-                                                                                                        # ln --symbolic "$GOVERNOR" "$SELF/governor"
+                                                                                                        GOVERNOR="$( ${ resources_.milestone.governor } )" || exit 64
+                                                                                                        ln --symbolic "$GOVERNOR" "$SELF/governor"
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ setup }/bin/setup" ;
