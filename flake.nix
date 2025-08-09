@@ -489,7 +489,7 @@
                                                                                                                 fi
                                                                                                                 TEST="$DIR/test"
                                                                                                                 mkdir --parents "$TEST"
-                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree#user"  --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
+                                                                                                                if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree#user" --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$TEST/status"
                                                                                                                 else
@@ -1036,7 +1036,7 @@
                                                                     {
                                                                         epoch = lib.mkOption { default = 60 * 60 * 24 * 7 ; type = lib.types.int ; } ;
                                                                         format = lib.mkOption { default = "weekly/%Y-%m-%d" ; type = lib.types.str ; } ;
-                                                                        timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
+                                                                        timeout = lib.mkOption { default = 60 * 60 ; type = lib.types.int ; } ;
                                                                         timeout2 = lib.mkOption { default = 60 ; type = lib.types.int ; } ;
                                                                     } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
