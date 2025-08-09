@@ -57,22 +57,63 @@
                                                         primary ;
                                                 tree =
                                                     let
+                                                        git =
+                                                            {
+                                                                configs ? { } ,
+                                                                hooks ? { } ,
+                                                                remotes ? { } ,
+                                                                setup ? null ,
+                                                                release-inputs ? null ,
+                                                                release-text ? null
+                                                            } : ignore :
+                                                                {
+                                                                    init-inputs = [ pkgs.coreutils  pkgs.git ] ;
+                                                                    init-text =
+                                                                        ''
+                                                                            export GIT_DIR=/mount/git
+                                                                            export GIT_WORK_TREE=/mount/work-treee
+                                                                            mkdir --parents "$GIT_DIR"
+                                                                            mkdir --parents "$GIT_WORK_TREE"
+                                                                            git init
+                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
+                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "hooks/${ name }"'' ) hooks ) ) }
+                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                            if ${ builtins.typeOf setup == "string" then ''if read -t 0 ; then cat exec ${ setup } "$@" ; else cat exec ${ setup } "$@" ; fi'' else "#" }
+                                                                        '' ;
+                                                                    release-inputs = release-inputs ;
+                                                                    release-text = release-text ;
+                                                                } ;
                                                         post-commit =
-                                                            let
-                                                                post-commit =
-                                                                    pkgs.writeShellApplication
-                                                                        {
-                                                                            name = "post-commit" ;
-                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                            text =
-                                                                                ''
-                                                                                    while ! git push origin HEAD
-                                                                                    do
-                                                                                        sleep 1s
-                                                                                    done
-                                                                                '' ;
-                                                                        } ;
-                                                                in "${ post-commit }/bin/post-commit" ;
+                                                            remote :
+                                                                let
+                                                                    post-commit =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "post-commit" ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        while ! git push origin HEAD
+                                                                                        do
+                                                                                            sleep 1s
+                                                                                        done
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ post-commit }/bin/post-commit" ;
+                                                        ssh-command =
+                                                            ssh-config :
+                                                                let
+                                                                    ssh-command =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "ssh-command" ;
+                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        exec ssh -F "${ ssh-config }" "$@"
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ ssh-command }/bin/ssh-command"
                                                         in
                                                             {
                                                             } ;
