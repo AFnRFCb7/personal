@@ -78,7 +78,7 @@
                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "hooks/${ name }"'' ) hooks ) ) }
                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                            if ${ builtins.typeOf setup == "string" then ''if read -t 0 ; then cat exec ${ setup } "$@" ; else cat exec ${ setup } "$@" ; fi'' else "#" }
+                                                                            ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat exec ${ setup } "$@" ; else cat exec ${ setup } "$@" ; fi'' else "#" }
                                                                         '' ;
                                                                     release-inputs = release-inputs ;
                                                                     release-text = release-text ;
