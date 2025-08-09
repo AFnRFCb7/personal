@@ -70,10 +70,10 @@
                                                                             let
                                                                                 identity =
                                                                                     {
-                                                                                        init-inputs ? null ;
-                                                                                        init-text ? null ;
-                                                                                        release-inputs ? null ;
-                                                                                        release-text ? null ;
+                                                                                        init-inputs ? null ,
+                                                                                        init-text ? null ,
+                                                                                        release-inputs ? null ,
+                                                                                        release-text ? null
                                                                                     } :
                                                                                         {
                                                                                             init-inputs = init-inputs ;
