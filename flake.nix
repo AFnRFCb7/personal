@@ -752,8 +752,8 @@
                                                                                                         ln --symbolic "$RESOURCES" "$SELF/inputs/resources"
                                                                                                         SECRETS="$( ${ resources_.repository.secrets } "$@" )" || exit 6
                                                                                                         ln --symbolic "$SECRETS" "$SELF/inputs/secrets"
-                                                                                                        # VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
-                                                                                                        # ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
+                                                                                                        VISITOR="$( ${ resources_.repository.visitor } "$@" )" || exit 64
+                                                                                                        ln --symbolic "$VISITOR" "$SELF/inputs/visitor"
                                                                                                         # GOVERNOR="$( ${ resources_.milestone.governor } )" || exit 64
                                                                                                         # ln --symbolic "$GOVERNOR" "$SELF/governor"
                                                                                                     '' ;
