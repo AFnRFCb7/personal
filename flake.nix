@@ -440,12 +440,16 @@
                                                                                                                     {
                                                                                                                         if [[ "$?" == 0 ]]
                                                                                                                         then
-                                                                                                                            rm --recursive --force "$DIRECTORY"
+                                                                                                                            mkdir --parents "$SELF/governor/success"
+                                                                                                                            SUCCESS="$( mktemp --dry-run "$SELF/governor/successes/XXXXXXXX")" || exit 64
+                                                                                                                            mv "$DIRECTORY" "$SUCCESS"
                                                                                                                         else
                                                                                                                             mkdir --parents "$SELF/governor/failures"
                                                                                                                             FAILURE="$( mktemp --dry-run "$SELF/governor/promotions/XXXXXXXX" )" || exit 64
-                                                                                                                            mv "DIRECTORY" "$FAILURE"
+                                                                                                                            mv "$DIRECTORY" "$FAILURE"
                                                                                                                         fi
+                                                                                                                        sudo ${ pkgs.nix }/bin/nix-collect-garbage
+                                                                                                                        sudo ${ pkgs.nix }/bin/nix-store --verify --check-contents --repair
                                                                                                                     }
                                                                                                                 trap cleanup EXIT
                                                                                                                 export NIX_SHOW_STATS=5
