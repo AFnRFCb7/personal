@@ -822,6 +822,7 @@
 							                                    resources.lib.implementation
 							                                        (
 							                                            {
+							                                                coreutils = pkgs.coreutils ;
 							                                                nixpkgs = nixpkgs ;
 							                                                path = path ;
 							                                                secret-directory = "/home/${ config.personal.name }/resources" ;
