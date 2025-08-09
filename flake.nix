@@ -821,7 +821,13 @@
 							                                path : value :
 							                                    resources.lib.implementation
 							                                        (
-							                                            { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; }
+							                                            {
+							                                                nixpkgs = nixpkgs ;
+							                                                path = path ;
+							                                                secret-directory = "/home/${ config.personal.name }/resources" ;
+							                                                seed = seed ;
+							                                                system = system ;
+                                                                        }
 							                                            //
 							                                            ( value path )
                                                                     ) ;
