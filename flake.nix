@@ -801,7 +801,32 @@
                                                                         } ;
                                                             } ;
                                                     } ;
-							                    in visitor.lib.implementation { lambda = path : value : resources.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; } // ( value path ) ) ; } tree ;
+                                                seed =
+                                                    visitor.lib.implementation
+                                                        {
+                                                            bool = path : value : [ { path = path ; type = "bool" ; value = value ; } ] ;
+                                                            float = path : value : [ { path = path ; type = "float" ; value = value ; } ] ;
+                                                            int = path : value : [ { path = path ; type = "int" ; value = value ; } ] ;
+                                                            lambda = path : value : [ { path = path ; type = "lambda" ; value = null ; } ] ;
+                                                            list = path : list : builtins.concatLists list ;
+                                                            null = path : value : [ { path = path ; type = "null" ; value = value ; } ] ;
+                                                            path = path : value : [ { path = path ; type = "path" ; value = value ; } ] ;
+                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                            string = path : value [ { path = path ; type = "string" ; value = value ; } ] ;
+                                                        }
+                                                        primary ;
+							                    in visitor.lib.implementation
+							                        {
+							                            lambda =
+							                                path : value :
+							                                    resources.lib.implementation
+							                                        (
+							                                            { nixpkgs = nixpkgs ; path = path ; secret-directory = "/home/${ config.personal.name }/resources" ; seed = [ nixpkgs path private resources self system visitor ] ; system = system ; }
+							                                            //
+							                                            ( value path )
+                                                                    ) ;
+                                                    }
+                                                    tree ;
                                         in
                                             {
                                                 config =
