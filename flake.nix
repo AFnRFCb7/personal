@@ -72,7 +72,7 @@
                                                                                     done
                                                                                 '' ;
                                                                         } ;
-                                                                in "${ post-commit }/bin/post-commit"
+                                                                in "${ post-commit }/bin/post-commit" ;
                                                         in
                                                             {
                                                             } ;
