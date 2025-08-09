@@ -823,11 +823,13 @@
 							                                        (
 							                                            {
 							                                                coreutils = pkgs.coreutils ;
+							                                                jq = pkgs.jq ;
 							                                                nixpkgs = nixpkgs ;
 							                                                path = path ;
 							                                                secret-directory = "/home/${ config.personal.name }/resources" ;
 							                                                seed = seed ;
 							                                                system = system ;
+							                                                yq-go = pkgs.yq-go ;
                                                                         }
 							                                            //
 							                                            ( value path )
