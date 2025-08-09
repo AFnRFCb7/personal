@@ -366,7 +366,12 @@
                                                                                                                     INPUT_COMMIT="$( GIT_DIR="$INPUT/git" GIT_WORK_TREE="$INPUT/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                     INPUT_FLAGS+=( "--flake" "input" "$INPUT_REMOTE" "$INPUT_NAME" "$MILESTONE" "$SCRATCH" "$INPUT_BRANCH" "$INPUT_COMMIT" )
                                                                                                                 done < <( find "$SELF/inputs" -mindepth 1 -maxdepth 1 -type l )
-                                                                                                                nohup nice --adjustment 19 ${ asyncronous-promote-post }/bin/asynchronous-promote-post "--flake" "root" "$ROOT_REMOTE" "$ROOT_NAME" "$MILESTONE" "$SCRATCH" "$ROOT_BRANCH" "$ROOT_COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_FLAGS[@]" "}" ] }" &
+                                                                                                                mkdir --parents "$SELF/governor/pendings"
+                                                                                                                DIRECTORY="$( mktemp --directory "$SELF/pendings/XXXXXXXX" )" || exit 64
+                                                                                                                cat > "$DIRECTORY/commands.txt" <<EOF
+                                                                                                                nohup nice --adjustment 19 ${ asyncronous-promote-post }/bin/asynchronous-promote-post --directory "$DIRECTORY" --flake root "$ROOT_REMOTE" "$ROOT_NAME" "$MILESTONE" "$SCRATCH" "$ROOT_BRANCH" "$ROOT_COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_FLAGS[@]" "}" ] }" > "$DIRECTORY/standard-output" 2> "$DIRECTORY/standard-error" &
+                                                                                                                EOF
+                                                                                                                nohup nice --adjustment 19 ${ asyncronous-promote-post }/bin/asynchronous-promote-post --directory "$DIRECTORY" --flake root "$ROOT_REMOTE" "$ROOT_NAME" "$MILESTONE" "$SCRATCH" "$ROOT_BRANCH" "$ROOT_COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_FLAGS[@]" "}" ] }" > "$DIRECTORY/standard-output" 2> "$DIRECTORY/standard-error" &
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             asyncronous-promote-post =
@@ -392,12 +397,13 @@
                                                                                                                 sudo ${ pkgs.nix }/bin/nix-collect-garbage
                                                                                                                 sudo ${ pkgs.nix }/bin/nix-store --verify --check-contents --repair
                                                                                                                 GOVERNOR="$SELF/governor"
-                                                                                                                INDEX="$( date +%s )" || exit 64
-                                                                                                                DIR="$GOVERNOR/promotions/$INDEX"
-                                                                                                                mkdir --parents "$DIR"
-                                                                                                                echo "$@" >> "$DIR/flag"
                                                                                                                 while [ "$#" -gt 0 ]
                                                                                                                 do
+                                                                                                                    case "$1" in
+                                                                                                                        --directory)
+                                                                                                                            DIRECTORY="$2"
+                                                                                                                            shift 2
+                                                                                                                            ;;
                                                                                                                     case "$1" in
                                                                                                                         --flake)
                                                                                                                             echo >> "$DIR/flag"
@@ -430,12 +436,27 @@
                                                                                                                             ;;
                                                                                                                     esac
                                                                                                                 done
+                                                                                                                cleanup ( )
+                                                                                                                    {
+                                                                                                                        if [[ "$?" == 0 ]]
+                                                                                                                        then
+                                                                                                                            rm --recursive --force "$DIRECTORY"
+                                                                                                                        else
+                                                                                                                            mkdir --parents "$SELF/governor/failures"
+                                                                                                                            FAILURE="$( mktemp --dry-run "$SELF/governor/promotions/XXXXXXXX" )" || exit 64
+                                                                                                                            mv "DIRECTORY" "$FAILURE"
+                                                                                                                        fi
+                                                                                                                    }
+                                                                                                                trap cleanup EXIT
                                                                                                                 export NIX_SHOW_STATS=5
                                                                                                                 export NIX_DEBUG=1
                                                                                                                 export NIX_SHOW_TRACE=1
                                                                                                                 export NIX_LOG=stderr
-                                                                                                                CHECK="$DIR/check"
+                                                                                                                CHECK="$DIRECTORY/check"
                                                                                                                 mkdir --parents "$CHECK"
+                                                                                                                cat >> "$DIRECTORY/commands.txt" <<EOF
+                                                                                                                timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check "$DIR/source/root/work-tree/flake.nix"
+                                                                                                                EOF
                                                                                                                 if timeout ${ builtins.toString config.personal.milestone.timeout } nix --log-format raw --show-trace -vvv flake check "$DIR/source/root/work-tree/flake.nix" > "$CHECK/standard-output" 2> "$CHECK/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$CHECK/status"
@@ -446,9 +467,12 @@
                                                                                                                 vm ( )
                                                                                                                     {
                                                                                                                         TYPE="$1"
-                                                                                                                        VM="$DIR/$TYPE"
+                                                                                                                        VM="$DIRECTORY/$TYPE"
                                                                                                                         mkdir --parents "$VM/build"
                                                                                                                         cd "$VM/build"
+                                                                                                                        cat >> "$DIRECTORY/commands.txt" <<EOF
+                                                                                                                        timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild "$TYPE" --flake "$DIR/source/root/work-tree#tester" --verbose --show-trace
+                                                                                                                        EOF
                                                                                                                         if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild "$TYPE" --flake "$DIR/source/root/work-tree#tester" --verbose --show-trace > "$VM/build/standard-output" 2> "$VM/build/standard-error"
                                                                                                                         then
                                                                                                                             echo "$?" > "$VM/build/status"
@@ -478,8 +502,11 @@
                                                                                                                     }
                                                                                                                 vm build-vm
                                                                                                                 vm build-vm-with-bootloader
-                                                                                                                BUILD="$DIR/build"
+                                                                                                                BUILD="$DIRECTORY/build"
                                                                                                                 mkdir --parents "$BUILD"
+                                                                                                                cat >> "$DIRECTORY/commands.txt" <<EOF
+                                                                                                                timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$DIR/source/root/work-tree#user" --verbose --show-trace
+                                                                                                                EOF
                                                                                                                 if timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$DIR/source/root/work-tree#user" --verbose --show-trace > "$BUILD/standard-output" 2> "$BUILD/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$BUILD/status"
@@ -487,8 +514,11 @@
                                                                                                                     echo "$?" > "$BUILD/status"
                                                                                                                     exit 64
                                                                                                                 fi
-                                                                                                                TEST="$DIR/test"
+                                                                                                                TEST="$DIRECTORY/test"
                                                                                                                 mkdir --parents "$TEST"
+                                                                                                                cat >> "$DIRECTORY/commands.txt" <<EOF
+                                                                                                                timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree#user" --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
+                                                                                                                EOF
                                                                                                                 if timeout ${ builtins.toString config.personal.milestone.timeout } sudo ${ pkgs.nixos-rebuild }/bin/nixos-rebuild test --flake "$DIR/source/root/work-tree#user" --verbose --show-trace > "$TEST/standard-output" 2> "$TEST/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$TEST/status"
@@ -496,17 +526,19 @@
                                                                                                                     echo "$?" > "$TEST/status"
                                                                                                                     exit 64
                                                                                                                 fi
-                                                                                                                PUSH="$DIR/push"
+                                                                                                                PUSH="$DIRECTORY/push"
                                                                                                                 mkdir --parents "$PUSH"
-                                                                                                                find "$DIR/source" -mindepth 1 -maxdepth 2 -type l | while read -r FLAKE
+                                                                                                                find "$DIRECTORY/source" -mindepth 1 -maxdepth 2 -type l | while read -r FLAKE
                                                                                                                 do
+                                                                                                                    cat >> "$DIRECTORY/commands.txt" <<EOF
+                                                                                                                GIT_DIR="$FLAKE/git" GIT_WORK_TREE="$FLAKE/work-tree" git push origin HEAD
+                                                                                                                EOF
                                                                                                                     while ! GIT_DIR="$FLAKE/git" GIT_WORK_TREE="$FLAKE/work-tree" git push origin HEAD > "$PUSH/standard-output" 2> "$PUSH/standard-error"
                                                                                                                     do
                                                                                                                         echo "SLEEPING FOR ONE SECOND" > "$PUSH/standard-output"
                                                                                                                         sleep 1s
                                                                                                                     done
                                                                                                                 done
-                                                                                                                rm --recursive --force "$DIR"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "!${ asyncronous-promote-pre }/bin/asyncronous-promote-pre" ;
