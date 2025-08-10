@@ -18,45 +18,172 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        _secrets =
-                                            let
-                                                mapper =
-                                                    path : name : value :
-                                                    if value == "regular" then
-                                                        let
-                                                            derivation =
-                                                                pkgs.stdenv.mkDerivation
-                                                                    {
-                                                                        installPhase =
-                                                                            ''
-                                                                                age --decrypt --identity ${ config.personal.agenix } --output $out ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
-                                                                            '' ;
-                                                                        name = "derivation" ;
-                                                                        nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
-                                                                        src = ./. ;
-                                                                    } ;
-                                                            in "${ derivation }"
-                                                       else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
-                                                       else builtins.throw "We can not handle ${ value }." ;
-                                                in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
                                         resources_ =
                                             let
                                                 seed =
-                                                    visitor.lib.implementation
-                                                        {
-                                                            bool = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            float = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            int = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            lambda = path : value : [ { path = path ; type = builtins.typeOf value ; value = null ; } ] ;
-                                                            list = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            null = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            path = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            set = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                            string = path : value : [ { path = path ; type = builtins.typeOf value ; value = value ; } ] ;
-                                                        }
-                                                        primary ;
+                                                    let
+                                                        seed = path : value : [ { path = path ; type = builtins.typeOf value ; value = if builtins.typeOf value == "lambda" then null else value ; } ] ;
+                                                        in
+                                                            visitor.lib.implementation
+                                                                {
+                                                                    bool = seed ;
+                                                                    float = seed ;
+                                                                    int = seed ;
+                                                                    lambda = seed ;
+                                                                    list = seed ;
+                                                                    null = seed ;
+                                                                    path = seed ;
+                                                                    set = seed ;
+                                                                    string = seed ;
+                                                                }
+                                                                primary ;
                                                 tree =
                                                     let
+                                                        dot-ssh =
+                                                            {
+                                                                address-family ? null ,
+                                                                batch-mode ? null ,
+                                                                bind-address ? null ,
+                                                                canonical-domains ? null ,
+                                                                canonicalize-fallback-local ? null ,
+                                                                canonicalize-hostname ? null ,
+                                                                check-host-ip ? null ,
+                                                                challenge-response-authentication ? null ,
+                                                                ciphers ? null ,
+                                                                compression ? null ,
+                                                                connect-timeout ? null ,
+                                                                forward-agent ? null ,
+                                                                gateway-ports ? null ,
+                                                                gssapi-authentication ? null ,
+                                                                gssapi-delegate-credentials ? null ,
+                                                                gssapi-key-exchange ? null ,
+                                                                gssapi-renewal-forces-rekey ? null ,
+                                                                gssapi-trust-dns ? null ,
+                                                                host ? null ,
+                                                                hostkey-alias ? null ,
+                                                                host-name ? null ,
+                                                                identities-only ? null ,
+                                                                identity-agent ? null ,
+                                                                identity-file ? null ,
+                                                                ignore-unknown ? null ,
+                                                                ip-qos ? null ,
+                                                                kbd-interactive-authentication ? null ,
+                                                                kbd-interactive-devices ? null ,
+                                                                kex-algorithms ? null ,
+                                                                local-forward ? null ,
+                                                                log-level ? null ,
+                                                                match ? null ,
+                                                                no-host-authentication-for-localhost ? null ,
+                                                                password-authentication ? null ,
+                                                                permit-local-command ? null ,
+                                                                permit-remote-open ? null ,
+                                                                pkcs11-provider ? null ,
+                                                                port ? null ,
+                                                                preferred-authentications ? null ,
+                                                                protocol ? null ,
+                                                                proxy-command ? null ,
+                                                                proxy-jump ? null ,
+                                                                proxy-use-fdpass ? null ,
+                                                                pubkey-accepted-key-types ? null ,
+                                                                pubkey-authentication ? null ,
+                                                                rekey-limit ? null ,
+                                                                remote-forward ? null ,
+                                                                server-alive-count-max ? null ,
+                                                                server-alive-interval ? null ,
+                                                                sessiontype ? null ,
+                                                                user ? null ,
+                                                                user-known-hosts-file ? null
+                                                            } @primary :
+                                                                let
+                                                                    environmented =
+                                                                        let
+                                                                            mapper = value : builtins.concatStringsSep "" [ value.name "=" value.value ] ;
+                                                                            in builtins.map mapper sorted ;
+                                                                    indent = if builtins.typeOf host == "null" then [ ] else [ "\t" ] ;
+                                                                    listed =
+                                                                        let
+                                                                            mapper =
+                                                                                name : value :
+                                                                                    {
+                                                                                        index = if name == "host" then 0 else 1 ;
+                                                                                        name =
+                                                                                            let
+                                                                                                lower-case = [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" ] ;
+                                                                                                space-case = builtins.map ( letter : builtins.concatStringsSep "" [ "_" letter ] ) lower-case ;
+                                                                                                upper-case = [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ;
+                                                                                                name-lower-cased = builtins.replaceStrings upper-case lower-case name ;
+                                                                                                name-prefixed = builtins.concatStringsSep "" [ "_" name ] ;
+                                                                                                name-space-cased = builtins.replaceStrings space-case upper-case ;
+                                                                                                in name-space-cased ;
+                                                                                        value =
+                                                                                            let
+                                                                                                booleans =
+                                                                                                    [
+                                                                                                        "batch-mode"
+                                                                                                        "challenge-response-authentication"
+                                                                                                        "compression"
+                                                                                                        "forward-agent"
+                                                                                                        "gateway-ports"
+                                                                                                        "gssapi-authentication"
+                                                                                                        "gssapi-delegate-credentials"
+                                                                                                        "ignore-unknown"
+                                                                                                        "kbd-interactive-authentication"
+                                                                                                        "no-host-authentication-for-localhost"
+                                                                                                        "password-authentication"
+                                                                                                        "permit-local-command"
+                                                                                                        "permit-remote-open"
+                                                                                                        "pubkey-authentication"
+                                                                                                        "verify-host-key-dns"
+                                                                                                        "forward-x11"
+                                                                                                        "forward-x11-trusted"
+                                                                                                    ] ;
+                                                                                            integers =
+                                                                                                [
+                                                                                                    "port"
+                                                                                                    "connect-timeout"
+                                                                                                    "server-alive-count-max"
+                                                                                                    "server-alive-interval"
+                                                                                                ] ;
+                                                                                            resources =
+                                                                                                [
+                                                                                                    "identity-file"
+                                                                                                    "user-known-hosts-file"
+                                                                                                    "identity-agent"
+                                                                                                    "pkcs11-provider"
+                                                                                                    "proxy-command"
+                                                                                                ] ;
+                                                                                            in
+                                                                                                if builtins.any ( n : n == name ) booleans then if value then ''"YES"'' else ''"NO"''
+                                                                                                else if builtins.any ( n : n == name ) integers then builtins.concatStringsSep "" [ "\"" ( builtins.toString value ) "\"" ]
+                                                                                                else if builtins.any ( n : n == name ) resources then builtins.concatStringsSep "" [ "\"$( " ( value resources_ ) ")\" || exit 64" ]
+                                                                                                else builtins.concatStringsSep "" [ "\"" value "\"" ] ;
+                                                                                    } ;
+                                                                            in builtins.mapAttrs mapper primary ;
+                                                                    sorted = builtins.sort ( a : b : if a.index < b.index then true else if a.index > b.index then false else a.name < b.name ) listed ;
+                                                                    stringed =
+                                                                        let
+                                                                            mapper = value : builtins.concatStringsSep "" ( builtins.concatLists [ indent [ value.name " $" value.name ] ] ) ;
+                                                                            in builtins.map mapper sorted ;
+                                                                    in
+                                                                        {
+                                                                            init =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "application" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        ${ builtins.concatStringsSep "\n" environmented }
+                                                                                                        cat > /mount/config <<EOF
+                                                                                                        ${ builtins.concatStringsSep "\n" stringed }
+                                                                                                        EOF
+                                                                                                        chmod 0400 /mount/config
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/application" ;
+                                                                        } ;
                                                         git =
                                                             {
                                                                 configs ? { } ,
@@ -67,21 +194,36 @@
                                                                 release-text ? null
                                                             } : ignore :
                                                                 {
-                                                                    init-inputs = [ pkgs.coreutils  pkgs.git ] ;
-                                                                    init-text =
-                                                                        ''
-                                                                            export GIT_DIR=/mount/git
-                                                                            export GIT_WORK_TREE=/mount/work-treee
-                                                                            mkdir --parents "$GIT_DIR"
-                                                                            mkdir --parents "$GIT_WORK_TREE"
-                                                                            git init
-                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "hooks/${ name }"'' ) hooks ) ) }
-                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                            ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat exec ${ setup } "$@" ; else cat exec ${ setup } "$@" ; fi'' else "#" }
-                                                                        '' ;
-                                                                    release-inputs = release-inputs ;
-                                                                    release-text = release-text ;
+                                                                    init =
+                                                                        self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            inputs = [ pkgs.coreutils  pkgs.git ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    export GIT_DIR=/mount/git
+                                                                                                    export GIT_WORK_TREE=/mount/work-treee
+                                                                                                    mkdir --parents "$GIT_DIR"
+                                                                                                    mkdir --parents "$GIT_WORK_TREE"
+                                                                                                    git init
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$"{ self }/git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                                                    ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat exec ${ setup } "$@" ; else cat exec ${ setup } "$@" ; fi'' else "#" }
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/application" ;
+                                                                    release =
+                                                                        let
+                                                                        application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        inputs = release-inputs ;
+                                                                                        text = release-text ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/application" ;
                                                                 } ;
                                                         post-commit =
                                                             remote :
@@ -113,9 +255,63 @@
                                                                                         exec ssh -F "${ ssh-config }" "$@"
                                                                                     '' ;
                                                                             } ;
-                                                                    in "${ ssh-command }/bin/ssh-command"
+                                                                    in "${ ssh-command }/bin/ssh-command" ;
                                                         in
                                                             {
+                                                                dot-ssh =
+                                                                    {
+                                                                        mobile =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "application" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > /mount/identity
+                                                                                                                    cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > /mount/known-hosts
+                                                                                                                    cat > /mount/config <<EOF
+                                                                                                                    HostName mobile
+                                                                                                                    Host 192.168.1.202
+                                                                                                                    Port 8022
+                                                                                                                    IdentityFile $SELF/identity
+                                                                                                                    UserKnownHostsFile $SELF/known-hosts
+                                                                                                                    StrictHostKeyChecking yes
+                                                                                                                    EOF
+                                                                                                                    chmod 0400 /mount/identity /mount/known-hosts /mount/config
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/application" ;
+                                                                                } ;
+                                                                    } ;
+                                                                home =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "application" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir --parents /mount/.gpg
+                                                                                                        mkdir --parents /mount/.ssh
+                                                                                                        mkdir --parents /mount/bin
+                                                                                                        mkdir --parents /mount/repository
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/application" ;
+                                                                        } ;
+                                                                repository =
+                                                                    {
+                                                                    } ;
                                                             } ;
                                                 in
                                                     visitor.lib.implementation
@@ -127,35 +323,57 @@
                                                                             let
                                                                                 identity =
                                                                                     {
-                                                                                        init-inputs ? null ,
-                                                                                        init-text ? null ,
-                                                                                        release-inputs ? null ,
-                                                                                        release-text ? null
+                                                                                        init ? null ,
+                                                                                        release ? null
                                                                                     } :
                                                                                         {
-                                                                                            init-inputs = init-inputs ;
-                                                                                            init-text = init-text ;
-                                                                                            release-inputs = release-inputs ;
-                                                                                            release-text = release-text ;
+                                                                                            init = init ;
+                                                                                            release = release ;
                                                                                         } ;
                                                                                 in identity ( value null ) ;
                                                                         in
                                                                             resources.lib.implementation
                                                                                 {
+                                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                                     coreutils = pkgs.coreutils ;
+                                                                                    findutils = pkgs.findutils ;
+                                                                                    flock = pkgs.flock ;
+                                                                                    gnutar = pkgs.gnutar ;
+                                                                                    inotify-tools = pkgs.inotify-tools ;
                                                                                     jq = pkgs.jq ;
-                                                                                    init-inputs = point.input-inputs ;
-                                                                                    init-text = point.init-text ;
-                                                                                    nixpkgs = nixpkgs ;
-                                                                                    release-inputs = point.release-inputs ;
-                                                                                    release-text = point.release-text ;
+                                                                                    init = point.init ;
+                                                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                    release = point.release ;
                                                                                     seed = seed ;
-                                                                                    system = system ;
+                                                                                    visitor = visitor ;
+                                                                                    writeShellApplication = pkgs.writeShellApplication ;
                                                                                     yq-go = pkgs.yq-go ;
+                                                                                    zstd = pkgs.zstd ;
                                                                                 } ;
 
                                                         }
                                                         tree ;
+                                        _secrets =
+                                            let
+                                                mapper =
+                                                    path : name : value :
+                                                    if value == "regular" then
+                                                        let
+                                                            derivation =
+                                                                pkgs.stdenv.mkDerivation
+                                                                    {
+                                                                        installPhase =
+                                                                            ''
+                                                                                age --decrypt --identity ${ config.personal.agenix } --output $out ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
+                                                                            '' ;
+                                                                        name = "derivation" ;
+                                                                        nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
+                                                                        src = ./. ;
+                                                                    } ;
+                                                            in "${ derivation }"
+                                                       else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
+                                                       else builtins.throw "We can not handle ${ value }." ;
+                                                in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
                                         in
                                             {
                                                 config =
@@ -332,15 +550,8 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
-                                                                                            name = "debug" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    UUID="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
-                                                                                                    cat <<EOF
-                                                                                                    echo "$UUID \"\$*\"" >> /tmp/DEBUG
-                                                                                                    EOF
-                                                                                                '' ;
+                                                                                            name = "home" ;
+                                                                                            text = resources_.home ;
                                                                                         }
                                                                                 )
                                                                             ] ;
@@ -424,6 +635,9 @@
                                                                                 user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
+                                                                                ssh-config = lib.mkOption { default = dot-ssh : dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
+                                                                                user-email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                user-name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         resources =
                                                                             {
