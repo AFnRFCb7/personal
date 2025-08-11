@@ -272,9 +272,13 @@
                                                                                 name = "ssh-command" ;
                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                 text =
-                                                                                    ''
-                                                                                        exec ssh -F "${ ssh-config }" "$@"
-                                                                                    '' ;
+                                                                                    let
+                                                                                        point = dot-ssh resources_ ;
+                                                                                        in
+                                                                                            ''
+                                                                                                DOT_SSH="$( ${ point.resource } )" || exit 64
+                                                                                                exec ssh -F "$DOT_SSH/${ point.target }" "$@"
+                                                                                            '' ;
                                                                             } ;
                                                                     in "${ ssh-command }/bin/ssh-command" ;
                                                         in
@@ -319,6 +323,9 @@
                                                                                                             ln --symbolic "$MOBILE" /links
                                                                                                             ln --symbolic "$MOBILE/config" /mount/.ssh/mobile.config
                                                                                                             mkdir --parents /mount/repository
+                                                                                                            PRIVATE="$( ${ resources.repository.private } )" || exit 64
+                                                                                                            ln --symbolic "$PRIVATE" /links
+                                                                                                            ln --symbolic "$PRIVATE" /mount/repository/private
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
@@ -331,6 +338,39 @@
                                                                         } ;
                                                                 repository =
                                                                     {
+                                                                        private =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.private.email ;
+                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        }
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "application" ;
+                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin main
+                                                                                                                git checkout origin/main
+                                                                                                                git checkout -b scratch/$( uuidgen )
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/application" ;
+                                                                                }
                                                                     } ;
                                                                 secrets =
                                                                     let
@@ -695,7 +735,7 @@
                                                                                 user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
-                                                                                ssh-config = lib.mkOption { default = dot-ssh : dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
+                                                                                ssh-config = lib.mkOption { default = resources : resources.dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
                                                                                 user-email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 user-name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                             } ;
