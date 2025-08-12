@@ -210,42 +210,49 @@
                                                                 hooks ? { } ,
                                                                 remotes ? { } ,
                                                                 setup ? null ,
-                                                                release-inputs ? null ,
-                                                                release-text ? null
+                                                                release ? null
                                                             } : ignore :
                                                                 {
                                                                     description = "git repository" ;
                                                                     init =
-                                                                        self :
+                                                                        resources : self :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
                                                                                         {
-                                                                                            inputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                            name = "application" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     export GIT_DIR=/mount/git
-                                                                                                    export GIT_WORK_TREE=/mount/work-treee
+                                                                                                    export GIT_WORK_TREE=/mount/work-tree
                                                                                                     mkdir --parents "$GIT_DIR"
                                                                                                     mkdir --parents "$GIT_WORK_TREE"
-                                                                                                    git init
+                                                                                                    git init 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$"{ self }/git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "${ self }/git/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                                                    ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat exec ${ setup } "$@" ; else cat exec ${ setup } "$@" ; fi'' else "#" }
+                                                                                                    ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/application" ;
-                                                                    release =
-                                                                        let
-                                                                            application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            inputs = release-inputs ;
-                                                                                            text = release-text ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/application" ;
+                                                                    release = release ;
+                                                                    targets = [ "git" "work-tree" ] ;
                                                                 } ;
+                                                        milestone =
+                                                            let
+                                                                application =
+                                                                    pkgs.writeShellApplication
+                                                                        {
+                                                                            name = "milestone" ;
+                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                            text =
+                                                                                ''
+                                                                                    NOW="$( date +%s )" || exit 64
+                                                                                    date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
+                                                                                '' ;
+                                                                        } ;
+                                                                    in "${ application }/bin/milestone" ;
                                                         post-commit =
                                                             remote :
                                                                 let
@@ -263,8 +270,23 @@
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ post-commit }/bin/post-commit" ;
+                                                        scratch =
+                                                            let
+                                                                scratch =
+                                                                    pkgs.writeShellApplication
+                                                                        {
+                                                                            name = "scratch" ;
+                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                            text =
+                                                                                ''
+                                                                                    SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
+                                                                                    BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || exit 64
+                                                                                    git checkout -b "$BRANCH"
+                                                                                '' ;
+                                                                        } ;
+                                                                    in "${ scratch }/bin/scratch" ;
                                                         ssh-command =
-                                                            ssh-config :
+                                                            dot-ssh :
                                                                 let
                                                                     ssh-command =
                                                                         pkgs.writeShellApplication
@@ -343,6 +365,8 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
@@ -350,7 +374,7 @@
                                                                                     hooks =
                                                                                         {
                                                                                             post-commit = post-commit "origin" ;
-                                                                                        }
+                                                                                        } ;
                                                                                     remotes =
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
@@ -364,13 +388,13 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git fetch origin main
-                                                                                                                git checkout origin/main
-                                                                                                                git checkout -b scratch/$( uuidgen )
+                                                                                                                git fetch origin main 2>&1
+                                                                                                                # git checkout origin/main
+                                                                                                                # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/application" ;
-                                                                                }
+                                                                                } ;
                                                                     } ;
                                                                 secrets =
                                                                     let
@@ -645,12 +669,22 @@
                                                                                     } ;
 									                                    in
                                                                             [
+                                                                                pkgs.git
                                                                                 pkgs.yq
                                                                                 pkgs.lsof
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
+                                                                                            name = "alpha" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.secrets.dot-ssh.boot."identity.asc.age" ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
                                                                                             name = "home" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.home ;
                                                                                         }
                                                                                 )
@@ -734,10 +768,10 @@
                                                                             {
                                                                                 user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
                                                                                 ssh-config = lib.mkOption { default = resources : resources.dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
-                                                                                user-email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                user-name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         resources =
                                                                             {
