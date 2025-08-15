@@ -344,39 +344,45 @@
                                                                     in "${ ssh-command }/bin/ssh-command" ;
                                                         in
                                                             {
-                                                                alpha =
-                                                                    ignore :
-                                                                        {
-                                                                            description = seed : builtins.elemAt seed.path 0 ;
-                                                                            init =
-                                                                                resources : self :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            touch /mount/target
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                            release =
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "release" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        exit 99
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                        in "${ application }/bin/release" ;
-                                                                            targets = [ "target" ] ;
-                                                                        } ;
+                                                                debug =
+                                                                    {
+                                                                        alpha =
+                                                                            ignore :
+                                                                                {
+                                                                                    description = seed : builtins.elemAt seed.path 0 ;
+                                                                                    init =
+                                                                                        resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    touch /mount/target
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                                in "${ application }/bin/release" ;
+                                                                                    targets = [ "target" ] ;
+                                                                                } ;
+                                                                        beta =
+                                                                            ignore :
+                                                                                {
+                                                                                } ;
+                                                                    } ;
                                                                 control-paths =
                                                                     {
                                                                         mobile = ignore : { } ;
@@ -554,13 +560,15 @@
                                                                                         description ? null ,
                                                                                         init ? null ,
                                                                                         release ? null ,
-                                                                                        targets ? [ ]
+                                                                                        targets ? [ ] ,
+                                                                                        transient ? null
                                                                                     } :
                                                                                         {
                                                                                             description = description ;
                                                                                             init = if builtins.typeOf init == "lambda" then init resources_ else init ;
                                                                                             release = release ;
                                                                                             targets = targets ;
+                                                                                            transient = transient ;
                                                                                         } ;
                                                                                 in identity ( value null ) ;
                                                                         in
@@ -587,13 +595,14 @@
                                                                                                 release = point.release ;
                                                                                                 seed = { path = path ; seed = seed ; } ;
                                                                                                 targets = point.targets ;
+                                                                                                transient = point.transient ;
+                                                                                                uuidlib = pkgs.libuuid ;
                                                                                                 visitor = visitor ;
                                                                                                 which = pkgs.which ;
                                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                                                 yq-go = pkgs.yq-go ;
                                                                                             }
                                                                                 ) ;
-
                                                         }
                                                         tree ;
                                         secrets_ =
@@ -802,9 +811,9 @@
                                                                                                 ''
                                                                                                     if read -t 0
                                                                                                     then
-                                                                                                        cat | ${ resources_.alpha } "$@"
+                                                                                                        cat | ${ resources_.debug.alpha } "$@"
                                                                                                     else
-                                                                                                        ${ resources_.alpha } "$@"
+                                                                                                        ${ resources_.debug.alpha } "$@"
                                                                                                     fi
                                                                                                 '' ;
                                                                                         }
