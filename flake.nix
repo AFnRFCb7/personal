@@ -39,6 +39,45 @@
                                                                 primary ;
                                                 tree =
                                                     let
+                                                        dot-gnupg =
+                                                            {
+                                                                secret-keys ,
+                                                                ownertrust
+                                                            } @primary : ignore :
+                                                                {
+                                                                    init =
+                                                                        resources : self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    attributes =
+                                                                                                        visitor.lib.implementation
+                                                                                                            {
+                                                                                                                lambda = path : value : value resources_ ;
+                                                                                                                # path = path : value : value ;
+                                                                                                                set = path : set : set ;
+                                                                                                            }
+                                                                                                            primary ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            GNUPGHOME=${ self }/dot-gnupg
+                                                                                                            export GNUPGHOME
+                                                                                                            mkdir "$GNUPGHOME"
+                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || exit 64
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/${ attributes.secret-keys.target }"
+                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || exit 64
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }"
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb
+                                                                                                        '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                    targets = [ "dot-gnupg" ] ;
+                                                                } ;
                                                         dot-ssh =
                                                             {
                                                                 address-family ? null ,
@@ -305,10 +344,81 @@
                                                                     in "${ ssh-command }/bin/ssh-command" ;
                                                         in
                                                             {
+                                                                alpha =
+                                                                    ignore :
+                                                                        {
+                                                                            description = seed : builtins.elemAt seed.path 0 ;
+                                                                            init =
+                                                                                resources : self :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            touch /mount/target
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            release =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        exit 99
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/release" ;
+                                                                            targets = [ "target" ] ;
+                                                                        } ;
                                                                 control-paths =
                                                                     {
                                                                         mobile = ignore : { } ;
                                                                     } ;
+                                                                dot-gnupg =
+                                                                    dot-gnupg
+                                                                        {
+                                                                            secret-keys = resources : { resource = resources.secrets."secret-keys.asc.age" ; target = "secret" ; } ;
+                                                                            ownertrust = resources : { resource = resources.secrets."ownertrust.asc.age" ; target = "secret" ; } ;
+                                                                        } ;
+                                                                dot-password-store =
+                                                                    git
+                                                                        {
+                                                                            configs =
+                                                                                {
+                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                    "user.name" = config.personal.pass.description ;
+                                                                                    "user.email" = config.personal.pass.email ;
+                                                                                } ;
+                                                                            hooks =
+                                                                                {
+                                                                                    post-commit = post-commit "origin" ;
+                                                                                } ;
+                                                                            remotes =
+                                                                                {
+                                                                                    origin = config.personal.pass.remote ;
+                                                                                } ;
+                                                                            setup =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        # git fetch origin ${ config.personal.pass.branch }
+                                                                                                        # git checkout ${ config.personal.pass.branch }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/setup" ;
+                                                                        } ;
                                                                 dot-ssh =
                                                                     {
                                                                         mobile =
@@ -339,8 +449,13 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            mkdir --parents /mount/.gpg
+                                                                                                            DOT_GNUPG="$( ${ resources.dot-gnupg } )" || exit 64
+                                                                                                            ln --symbolic "$DOT_GNUPG" /links
+                                                                                                            ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/.gpg
                                                                                                             mkdir --parents /mount/.ssh
+                                                                                                            # DOT_PASSWORD_STORE="$( ${ resources.dot-password-store } )" || exit 64
+                                                                                                            # ln --symbolic "$DOT_PASSWORD_STORE" /links
+                                                                                                            # ln --symbolic "$DOT_PASSWORD_STORE" ~/.password-store
                                                                                                             MOBILE="$( ${ resources.dot-ssh.mobile } )" || exit 64
                                                                                                             ln --symbolic "$MOBILE" /links
                                                                                                             ln --symbolic "$MOBILE/config" /mount/.ssh/mobile.config
@@ -354,6 +469,7 @@
                                                                             targets =
                                                                                 [
                                                                                     ".gpg"
+                                                                                    # ".password-store"
                                                                                     ".ssh"
                                                                                     "repository"
                                                                                 ] ;
@@ -463,11 +579,16 @@
                                                                                                 jq = pkgs.jq ;
                                                                                                 init = point.init ;
                                                                                                 length = 108 - ( builtins.stringLength resources-directory ) - 1 - ( builtins.stringLength "/mounts/" ) - 40 - 1 - 20 ;
+                                                                                                makeBinPath = pkgs.lib.makeBinPath ;
+                                                                                                makeWrapper = pkgs.makeWrapper ;
+                                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                                ps = pkgs.ps ;
                                                                                                 resources-directory = resources-directory ;
                                                                                                 release = point.release ;
                                                                                                 seed = { path = path ; seed = seed ; } ;
                                                                                                 targets = point.targets ;
                                                                                                 visitor = visitor ;
+                                                                                                which = pkgs.which ;
                                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                                                 yq-go = pkgs.yq-go ;
                                                                                             }
@@ -677,7 +798,15 @@
                                                                                         {
                                                                                             name = "alpha" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.secrets.dot-ssh.boot."identity.asc.age" ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    if read -t 0
+                                                                                                    then
+                                                                                                        cat | ${ resources_.alpha } "$@"
+                                                                                                    else
+                                                                                                        ${ resources_.alpha } "$@"
+                                                                                                    fi
+                                                                                                '' ;
                                                                                         }
                                                                                 )
                                                                                 (
@@ -740,6 +869,8 @@
                                                                         character-set = lib.mkOption { default = ".,_=2345ABCDEFGHJKLMabcdefghjkmn" ; type = lib.types.str ; } ;
                                                                         character-set-no-symbols = lib.mkOption { default = "6789NPQRSTUVWXYZpqrstuvwxyz" ; type = lib.types.str ; } ;
                                                                         deadline = lib.mkOption { default = 60 * 60 * 24 * 366 ; type = lib.types.int ; } ;
+                                                                        description = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                        email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         generated-length = lib.mkOption { default = 25 ; type = lib.types.int ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:nextmoose/secrets.git" ; type = lib.types.str ; } ;
                                                                     } ;
