@@ -553,26 +553,8 @@
                                                             lambda =
                                                                 path : value :
                                                                     let
-                                                                        point =
-                                                                            let
-                                                                                identity =
-                                                                                    {
-                                                                                        description ? null ,
-                                                                                        init ? null ,
-                                                                                        release ? null ,
-                                                                                        targets ? [ ] ,
-                                                                                        transient ? null
-                                                                                    } :
-                                                                                        {
-                                                                                            description = description ;
-                                                                                            init = if builtins.typeOf init == "lambda" then init resources_ else init ;
-                                                                                            release = release ;
-                                                                                            targets = targets ;
-                                                                                            transient = transient ;
-                                                                                        } ;
-                                                                                in identity ( value null ) ;
-                                                                        in
-                                                                            resources.lib.implementation
+                                                                        rsrcs =
+                                                                            resources.lib
                                                                                 (
                                                                                     let
                                                                                         resources-directory = "/home/${ config.personal.name }/resources" ;
@@ -603,6 +585,25 @@
                                                                                                 yq-go = pkgs.yq-go ;
                                                                                             }
                                                                                 ) ;
+                                                                        point =
+                                                                            let
+                                                                                identity =
+                                                                                    {
+                                                                                        description ? null ,
+                                                                                        init ? null ,
+                                                                                        release ? null ,
+                                                                                        targets ? [ ] ,
+                                                                                        transient ? null
+                                                                                    } :
+                                                                                        {
+                                                                                            description = description ;
+                                                                                            init = if builtins.typeOf init == "lambda" then init resources_ else init ;
+                                                                                            release = release ;
+                                                                                            targets = targets ;
+                                                                                            transient = transient ;
+                                                                                        } ;
+                                                                                in identity ( value null ) ;
+                                                                        in rsrcs.implementation ;
                                                         }
                                                         tree ;
                                         secrets_ =
@@ -1007,11 +1008,45 @@
 						                                        installPhase =
 						                                            ''
 						                                                touch $out
-						                                                exit 0
+						                                                # echo e16c57c54d280eb8114187386ba375f3e507ee2b91cd76ffa6f2f76da709d2daf51ae387d65ebd8775b715d6b5cb85d17c39d362abda86c6bdb623540f52306d >&2
+						                                                # exit 167
 						                                            '' ;
                                                                 name = "foobar" ;
                                                                 src = ./. ;
 						                                    } ;
+                                                    resources =
+                                                        let
+                                                            rsrcs =
+                                                                resources.lib
+                                                                    {
+                                                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                        coreutils = pkgs.coreutils ;
+                                                                        findutils = pkgs.findutils ;
+                                                                        flock = pkgs.flock ;
+                                                                        init = null ;
+                                                                        inotify-tools = pkgs.inotify-tools ;
+                                                                        jq = pkgs.jq ;
+                                                                        makeBinPath = pkgs.lib.makeBinPath ;
+                                                                        makeWrapper = pkgs.makeWrapper ;
+                                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                        ps = pkgs.ps ;
+                                                                        release = null ;
+                                                                        resources-directory = "/build/resources" ;
+                                                                        targets = [ ] ;
+                                                                        uuidlib = pkgs.util-linux ;
+                                                                        visitor = visitor ;
+                                                                        yq-go = pkgs.yq-go ;
+                                                                        which = pkgs.which ;
+                                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                                    } ;
+                                                                in
+                                                                    rsrcs.checks
+                                                                        {
+                                                                            arguments = [ "5df7575c09a3318bc85cd97cc54a1659e56954141958e33dc878c79452c7e243875bcc02f6a3d39560246f7a819a29c0a7e339ce920e8185a76717214070cf75" "78cde3e5f6253f4c9480a5303afd26fc1640afcf9db80f2aa67842904fa791f2e4c841c2024abb9d0e3fdd4367c12fc7561eb830364e402e94904e5ec9140c2c" ] ;
+                                                                            mount = "/build/resources/mounts/753703378e88b23c9c1cf6747adffa7ec68134ae0770e9acc8d1ef6399526711" ;
+                                                                            standard-input = "1f87840730571dfff1110f4b3ef7a78f503800ebf3b88f78e1cf24f3af3c71ded63a4073a0d41372f9bc406ed0f66553b3c3c3cc37f953efbd29bb8608284b6f" ;
+                                                                            status = 0 ;
+                                                                        } ;
                                                 } ;
                                 } ;
             } ;
