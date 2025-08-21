@@ -382,6 +382,23 @@
                                                                             ignore :
                                                                                 {
                                                                                 } ;
+                                                                        gamma =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    exit 159
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                } ;
                                                                     } ;
                                                                 control-paths =
                                                                     {
@@ -822,6 +839,14 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
+                                                                                            name = "gamma" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.debug.gamma ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
                                                                                             name = "home" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.home ;
@@ -999,7 +1024,81 @@
                                         } ;
                                     checks.${ system } =
                                         let
+                                            list =
+                                                builtins.concatLists
+                                                    [
+                                                        ( resources-fun false false false )
+                                                        # ( resources-fun false false true )
+                                                        # ( resources-fun false true false )
+                                                        # ( resources-fun false true true )
+                                                        # ( resources-fun true false false )
+                                                        # ( resources-fun true false true )
+                                                        # ( resources-fun true true false )
+                                                        # ( resources-fun true true true )
+                                                    ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
+                                            resources-fun =
+                                                error : status : target :
+                                                    let
+                                                        label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ error status target ] ) }:" ;
+                                                        rsrcs =
+                                                            resources.lib
+                                                                {
+                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                    coreutils = pkgs.coreutils ;
+                                                                    findutils = pkgs.findutils ;
+                                                                    flock = pkgs.flock ;
+                                                                    init =
+                                                                        self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    touch /mount/${ if target then "128fea4cfff62960" else "target" }
+                                                                                                    echo 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
+                                                                                                    echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if error then ">&2" else "/dev/null" }
+                                                                                                    exit ${ if status then "186" else "0" }
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                    jq = pkgs.jq ;
+                                                                    inotify-tools = pkgs.inotify-tools ;
+                                                                    makeBinPath = pkgs.lib.makeBinPath ;
+                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                    ps = pkgs.ps ;
+                                                                    release = null ;
+                                                                    resources-directory = "/build/resources" ;
+                                                                    targets = [ "target" ] ;
+                                                                    uuidlib = pkgs.util-linux ;
+                                                                    visitor = visitor ;
+                                                                    yq-go = pkgs.yq-go ;
+                                                                    which = pkgs.which ;
+                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                } ;
+                                                        in
+                                                            [
+                                                                {
+                                                                    name = builtins.hashString "sha512" label ;
+                                                                    value =
+                                                                        rsrcs.check
+                                                                            {
+                                                                                arguments = [ "2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917" "1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf" ] ;
+                                                                                checkpoint = self + "/checkpoints" ;
+                                                                                commands = [ ] ;
+                                                                                diffutils = pkgs.diffutils ;
+                                                                                label = label ;
+                                                                                mount = "/build/resources/mounts/eacd1c895775dfb61dfa0ea4672fea51f0deb42f0a9fc820bc450fdd1e23d379" ;
+                                                                                standard-input ="91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
+                                                                                status = if status || error || target then 175 else 0 ;
+                                                                                test-directory = "/build/test" ;
+                                                                            } ;
+                                                                }
+                                                            ] ;
 					                        in
 						                        {
 						                            foobar =
@@ -1014,40 +1113,7 @@
                                                                 name = "foobar" ;
                                                                 src = ./. ;
 						                                    } ;
-                                                    resources =
-                                                        let
-                                                            rsrcs =
-                                                                resources.lib
-                                                                    {
-                                                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                        coreutils = pkgs.coreutils ;
-                                                                        findutils = pkgs.findutils ;
-                                                                        flock = pkgs.flock ;
-                                                                        init = null ;
-                                                                        inotify-tools = pkgs.inotify-tools ;
-                                                                        jq = pkgs.jq ;
-                                                                        makeBinPath = pkgs.lib.makeBinPath ;
-                                                                        makeWrapper = pkgs.makeWrapper ;
-                                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                        ps = pkgs.ps ;
-                                                                        release = null ;
-                                                                        resources-directory = "/build/resources" ;
-                                                                        targets = [ ] ;
-                                                                        uuidlib = pkgs.util-linux ;
-                                                                        visitor = visitor ;
-                                                                        yq-go = pkgs.yq-go ;
-                                                                        which = pkgs.which ;
-                                                                        writeShellApplication = pkgs.writeShellApplication ;
-                                                                    } ;
-                                                                in
-                                                                    rsrcs.checks
-                                                                        {
-                                                                            arguments = [ "5df7575c09a3318bc85cd97cc54a1659e56954141958e33dc878c79452c7e243875bcc02f6a3d39560246f7a819a29c0a7e339ce920e8185a76717214070cf75" "78cde3e5f6253f4c9480a5303afd26fc1640afcf9db80f2aa67842904fa791f2e4c841c2024abb9d0e3fdd4367c12fc7561eb830364e402e94904e5ec9140c2c" ] ;
-                                                                            mount = "/build/resources/mounts/753703378e88b23c9c1cf6747adffa7ec68134ae0770e9acc8d1ef6399526711" ;
-                                                                            standard-input = "1f87840730571dfff1110f4b3ef7a78f503800ebf3b88f78e1cf24f3af3c71ded63a4073a0d41372f9bc406ed0f66553b3c3c3cc37f953efbd29bb8608284b6f" ;
-                                                                            status = 0 ;
-                                                                        } ;
-                                                } ;
+                                                } // ( builtins.listToAttrs list ) ;
                                 } ;
             } ;
 }
