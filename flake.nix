@@ -1027,8 +1027,8 @@
                                             list =
                                                 builtins.concatLists
                                                     [
-                                                        # ( resources-fun false false false ( self + "/expected/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/0/checkpoint-post" ) [ ] )
-                                                        ( resources-fun false false true ( self + "/expected/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/true/0/checkpoint-post" ) [ { command = self + "/expected/false/false/true/1/command" ; checkpoint = self + "/expected/false/false/true/1/checkpoint" ; } ] )
+                                                        j( resources-fun false false false ( self + "/expected/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/0/checkpoint-post" ) [ ] )
+                                                        # ( resources-fun false false true ( self + "/expected/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/true/0/checkpoint-post" ) [ { command = self + "/expected/false/false/true/1/command" ; checkpoint = self + "/expected/false/false/true/1/checkpoint" ; } ] )
                                                         # ( resources-fun false true false )
                                                         # ( resources-fun false true true )
                                                         # ( resources-fun true false false )
