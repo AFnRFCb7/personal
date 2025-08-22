@@ -1027,8 +1027,8 @@
                                             list =
                                                 builtins.concatLists
                                                     [
-                                                        ( resources-fun false false false )
-                                                        # ( resources-fun false false true )
+                                                        ( resources-fun false false false ( self + "/expected/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/0/checkpoint-post" ) [ ] )
+                                                        # ( resources-fun false false true ( self + "/expected/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/true/0/checkpoint-post" ) [ ] )
                                                         # ( resources-fun false true false )
                                                         # ( resources-fun false true true )
                                                         # ( resources-fun true false false )
@@ -1038,7 +1038,7 @@
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
-                                                error : status : target :
+                                                error : status : target : checkpoint-pre : checkpoint-post : commands :
                                                     let
                                                         label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ error status target ] ) }:" ;
                                                         rsrcs =
@@ -1088,10 +1088,9 @@
                                                                         rsrcs.check
                                                                             {
                                                                                 arguments = [ "2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917" "1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf" ] ;
-                                                                                checkpoint-post = self + "/expected/0/checkpoint-post" ;
-                                                                                checkpoint-pre = self + "/expected/0/checkpoint-pre" ;
-                                                                                checkpoint = self + "/checkpoints" ;
-                                                                                commands = [ ] ;
+                                                                                checkpoint-post = checkpoint-post ;
+                                                                                checkpoint-pre = checkpoint-pre ;
+                                                                                commands = commands ;
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 label = label ;
                                                                                 mount = "/build/resources/mounts/eacd1c895775dfb61dfa0ea4672fea51f0deb42f0a9fc820bc450fdd1e23d379" ;
