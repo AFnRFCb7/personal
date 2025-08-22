@@ -1088,6 +1088,7 @@
                                                                         rsrcs.check
                                                                             {
                                                                                 arguments = [ "2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917" "1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf" ] ;
+                                                                                checkpoint-pre = self + "/expected/0/checkpoint-pre"
                                                                                 checkpoint = self + "/checkpoints" ;
                                                                                 commands = [ ] ;
                                                                                 diffutils = pkgs.diffutils ;
