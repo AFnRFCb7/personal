@@ -1,4 +1,4 @@
-- creation-time: "1755862521"
+- creation-time: "1755894671"
   hash: eacd1c895775dfb61dfa0ea4672fea51f0deb42f0a9fc820bc450fdd1e23d379
   has-standard-input: "true"
   init-application: /nix/store/9042dqvj2fhnsdg9pkhia4pz1b7b013n-init-application/bin/init-application
@@ -10,11 +10,9 @@
     0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
     254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 /dev/null
   status: "0"
-  timestamp: "1755862521"
   transient: ""
   type: good
-- creation-time: "1755862521"
+- creation-time: "1755894671"
   hash: eacd1c895775dfb61dfa0ea4672fea51f0deb42f0a9fc820bc450fdd1e23d379
   originator-pid: "38"
-  timestamp: "1755862521"
   type: stall-for-process
