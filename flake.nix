@@ -597,7 +597,6 @@
                                                                                                 transient = point.transient ;
                                                                                                 uuidlib = pkgs.libuuid ;
                                                                                                 visitor = visitor ;
-                                                                                                which = pkgs.which ;
                                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                                                 yq-go = pkgs.yq-go ;
                                                                                             }
@@ -1077,7 +1076,6 @@
                                                                     uuidlib = pkgs.util-linux ;
                                                                     visitor = visitor ;
                                                                     yq-go = pkgs.yq-go ;
-                                                                    which = pkgs.which ;
                                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                                 } ;
                                                         in
@@ -1093,7 +1091,7 @@
                                                                                 commands = commands ;
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 label = label ;
-                                                                                mount = "/build/resources/mounts/eacd1c895775dfb61dfa0ea4672fea51f0deb42f0a9fc820bc450fdd1e23d379" ;
+                                                                                mount = "/build/resources/mounts/00000002" ;
                                                                                 standard-input ="91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
                                                                                 status = if status || error || target then 175 else 0 ;
                                                                                 test-directory = "/build/test" ;
