@@ -15,6 +15,3 @@
 - hash: 31d044ccecbfe4250d7c208f181bcd2420412cc85c8f08519292071ea714adcf
   originator-pid: "48"
   type: stall-for-process
-- hash: 31d044ccecbfe4250d7c208f181bcd2420412cc85c8f08519292071ea714adcf
-  head: ""
-  type: stall-for-cleanup
