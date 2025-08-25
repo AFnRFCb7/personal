@@ -1027,7 +1027,7 @@
                                                 builtins.concatLists
                                                     [
                                                         ( resources-fun false false ( self + "/expected/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/0/checkpoint-post" ) [ ] )
-                                                        # ( resources-fun false true ( self + "/expected/false/true/0/checkpoint-pre" ) ( self + "/expected/false/true/0/checkpoint-post" ) [ { command = self + "/expected/false/false/true/1/command" ; checkpoint = self + "/expected/false/false/true/1/checkpoint" ; } ] )
+                                                        ( resources-fun false true ( self + "/expected/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/0/checkpoint-post" ) [ ] )
                                                         # ( resources-fun false true false )
                                                         # ( resources-fun false true true )
                                                         # ( resources-fun true false false )
@@ -1091,8 +1091,8 @@
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 label = label ;
                                                                                 mount = "/build/resources/mounts/00000002" ;
-                                                                                standard-input ="91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
-                                                                                status = if error || target then 175 else 0 ;
+                                                                                standard-input = "91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
+                                                                                status = if error || target then 184 else 0 ;
                                                                                 test-directory = "/build/test" ;
                                                                             } ;
                                                                 }
