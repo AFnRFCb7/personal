@@ -1072,6 +1072,7 @@
                                                                     release = null ;
                                                                     resources-directory = "/build/resources" ;
                                                                     targets = [ "target" ] ;
+                                                                    testing-locks = true ;
                                                                     uuidlib = pkgs.util-linux ;
                                                                     visitor = visitor ;
                                                                     yq-go = pkgs.yq-go ;
