@@ -1085,10 +1085,9 @@
                                                                                 commands = commands ;
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 label = label ;
-                                                                                mount = "/build/resources/mounts/00000002" ;
+                                                                                mount = "/build/resources/mounts/0000000000000002" ;
                                                                                 standard-input = "91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
                                                                                 status = if error || target then 184 else 0 ;
-                                                                                test-directory = "/build/test" ;
                                                                             } ;
                                                                 }
                                                             ] ;
