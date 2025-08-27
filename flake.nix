@@ -572,35 +572,29 @@
                                                                     let
                                                                         rsrcs =
                                                                             resources.lib
-                                                                                (
-                                                                                    let
-                                                                                        resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                                        in
-                                                                                            {
-                                                                                                buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                                                coreutils = pkgs.coreutils ;
-                                                                                                description = point.description ;
-                                                                                                findutils = pkgs.findutils ;
-                                                                                                flock = pkgs.flock ;
-                                                                                                inotify-tools = pkgs.inotify-tools ;
-                                                                                                jq = pkgs.jq ;
-                                                                                                init = point.init ;
-                                                                                                length = 108 - ( builtins.stringLength resources-directory ) - 1 - ( builtins.stringLength "/mounts/" ) - 40 - 1 - 20 ;
-                                                                                                makeBinPath = pkgs.lib.makeBinPath ;
-                                                                                                makeWrapper = pkgs.makeWrapper ;
-                                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                                                ps = pkgs.ps ;
-                                                                                                resources-directory = resources-directory ;
-                                                                                                release = point.release ;
-                                                                                                seed = { path = path ; seed = seed ; } ;
-                                                                                                targets = point.targets ;
-                                                                                                transient = point.transient ;
-                                                                                                uuidlib = pkgs.libuuid ;
-                                                                                                visitor = visitor ;
-                                                                                                writeShellApplication = pkgs.writeShellApplication ;
-                                                                                                yq-go = pkgs.yq-go ;
-                                                                                            }
-                                                                                ) ;
+                                                                                {
+                                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                                    coreutils = pkgs.coreutils ;
+                                                                                    description = point.description ;
+                                                                                    findutils = pkgs.findutils ;
+                                                                                    flock = pkgs.flock ;
+                                                                                    inotify-tools = pkgs.inotify-tools ;
+                                                                                    jq = pkgs.jq ;
+                                                                                    init = point.init ;
+                                                                                    makeBinPath = pkgs.lib.makeBinPath ;
+                                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                    ps = pkgs.ps ;
+                                                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                    release = point.release ;
+                                                                                    seed = { path = path ; seed = seed ; } ;
+                                                                                    targets = point.targets ;
+                                                                                    transient = point.transient ;
+                                                                                    uuidlib = pkgs.libuuid ;
+                                                                                    visitor = visitor ;
+                                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                                    yq-go = pkgs.yq-go ;
+                                                                                } ;
                                                                         point =
                                                                             let
                                                                                 identity =
