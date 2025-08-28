@@ -1,0 +1,96 @@
+ae4d729b-cb5b-4876-8484-30dac25679f2 PROCESS
+8f573e1f-9483-45a3-852d-67d619a12f01 CLEANUP
+f867c075-a994-4eb7-b9d3-a657e6a92f08
+fefdb14d-0182-4073-bc47-9b9d2944257c
+55a68e1f-b6f4-4786-b223-0d0407122e0d
+57feaa46-4996-47a6-8b38-64f4edee2fb1
+06ee1361-1fd5-437e-b962-65382ae8d607
+59c453bd-cf96-4a1c-a59d-cdc7f47bf66b
+b92842b3-aada-4091-8af4-068260a7aded /build/resources/canonical/d14990a4332abe0bac8a51b7f97520ffa75ecd3bb368f301ed7d7f51ed87aef82b3eb9f9a42a5a9eec1b901de082a078c4339d5c6b85e913fcd88ba74790067d
+  File: /build/resources/canonical
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 259,3	Inode: 656623      Links: 2
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:29.474674397 +0000
+Change: 2025-08-27 23:51:29.474674397 +0000
+ Birth: 2025-08-27 23:51:29.473674400 +0000
+  File: /build/resources/temporary
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 259,3	Inode: 656607      Links: 2
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:30.504670651 +0000
+Change: 2025-08-27 23:51:30.504670651 +0000
+ Birth: 2025-08-27 23:51:29.389674706 +0000
+  File: /build/resources/counter.lock
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: 259,3	Inode: 656608      Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:30.503670655 +0000
+Change: 2025-08-27 23:51:30.503670655 +0000
+ Birth: 2025-08-27 23:51:29.392674695 +0000
+  File: /build/resources/links
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 259,3	Inode: 656614      Links: 3
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:29.402674659 +0000
+Change: 2025-08-27 23:51:29.402674659 +0000
+ Birth: 2025-08-27 23:51:29.402674659 +0000
+  File: /build/resources/mounts
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 259,3	Inode: 656616      Links: 3
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:29.403674655 +0000
+Change: 2025-08-27 23:51:29.403674655 +0000
+ Birth: 2025-08-27 23:51:29.403674655 +0000
+  File: /build/resources/counter.increment
+  Size: 2         	Blocks: 8          IO Block: 4096   regular file
+Device: 259,3	Inode: 656609      Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:30.503670655 +0000
+Modify: 2025-08-27 23:51:30.503670655 +0000
+Change: 2025-08-27 23:51:30.504670651 +0000
+ Birth: 2025-08-27 23:51:29.392674695 +0000
+  File: /build/resources/test.setup.lock
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: 259,3	Inode: 656629      Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:30.491670699 +0000
+Change: 2025-08-27 23:51:30.491670699 +0000
+ Birth: 2025-08-27 23:51:29.475674393 +0000
+  File: /build/resources/debug
+  Size: 3273      	Blocks: 8          IO Block: 4096   regular file
+Device: 259,3	Inode: 656630      Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:30.488670710 +0000
+Modify: 2025-08-27 23:51:30.513670619 +0000
+Change: 2025-08-27 23:51:30.513670619 +0000
+ Birth: 2025-08-27 23:51:30.488670710 +0000
+  File: /build/resources/locks
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 259,3	Inode: 656602      Links: 3
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:29.401674662 +0000
+Change: 2025-08-27 23:51:29.401674662 +0000
+ Birth: 2025-08-27 23:51:29.386674717 +0000
+  File: /build/resources/logs
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 259,3	Inode: 656618      Links: 2
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/  nixbld)   Gid: (  100/  nixbld)
+Access: 2025-08-27 23:51:29.476674389 +0000
+Modify: 2025-08-27 23:51:29.465674429 +0000
+Change: 2025-08-27 23:51:29.465674429 +0000
+ Birth: 2025-08-27 23:51:29.465674429 +0000
+38e833c8-fed6-4458-b219-538aa2eeb61c
+e3a229a5-b563-46ae-a15c-e88e409094e7
+c8af576f-d3d2-4034-90f5-e87a6c4b941d
+60820cb4-3103-49f5-9491-8bf67b95bce9
+78eb1b64-5913-469d-a396-e3c6592ffeba
+5f93b22c-6f47-49f7-82e7-a68ccaf7ba47
+2fa94211-47aa-4c7e-a91d-e0a571abf3bf
