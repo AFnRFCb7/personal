@@ -1,5 +1,0 @@
-#! /nix/store/c24i2kds9yzzjjik6qdnjg7a94i9pp05-bash-5.2-p15/bin/bash -e
-export ACTION='repair'
-export HASH='3771d4a1cd76c24c17e9c0fadc2ed994823a134a90fcccfd43208035bc1dc354f15237e8cd1e44f08532586854a8e1c08249618ef3fffc6885288f7992b1791b'
-export MOUNT_INDEX='0000000000000002'
-exec "/nix/store/s9lk73q65dps4j7yr3ihy81r8jvix531-derivation/bin/recovery"  "$@" 
