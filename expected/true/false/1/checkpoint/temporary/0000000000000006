@@ -1,0 +1,17 @@
+- arguments:
+    - 2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917
+    - 1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf
+  hash: 3771d4a1cd76c24c17e9c0fadc2ed994823a134a90fcccfd43208035bc1dc354f15237e8cd1e44f08532586854a8e1c08249618ef3fffc6885288f7992b1791b
+  has-standard-input: "true"
+  init-application: /nix/store/bi4k53qwacndz6mygdikq267ixvx43yx-init-application/bin/init-application
+  links: ""
+  mount-index: "0000000000000002"
+  release-application: "null"
+  standard-error: 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0
+  standard-input: 91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80
+  standard-output: 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
+  status: "0"
+  targets: |
+    target
+  transient: ""
+  type: bad
