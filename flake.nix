@@ -1021,16 +1021,16 @@
                                             list =
                                                 builtins.concatLists
                                                     [
-                                                        ( resources-fun false false ( self + "/expected/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/0/checkpoint-post" ) [ ] )
-                                                        ( resources-fun false true ( self + "/expected/false/true/0/checkpoint-pre" ) ( self + "/expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/true/1/checkpoint" ; } ] )
-                                                        ( resources-fun true false ( self + "/expected/true/false/0/checkpoint-pre" ) ( self + "/expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/true/false/1/checkpoint" ; } ] )
-                                                        ( resources-fun true true ( self + "/expected/true/true/0/checkpoint-pre" ) ( self + "/expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/true/true/1/checkpoint" ; } ] )
+                                                        ( resources-fun false false false false false ( self + "/expected/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/0/checkpoint-post" ) [ ] )
+                                                        ( resources-fun false true false false false ( self + "/expected/false/true/0/checkpoint-pre" ) ( self + "/expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/true/1/checkpoint" ; } ] )
+                                                        ( resources-fun true false false false false ( self + "/expected/true/false/0/checkpoint-pre" ) ( self + "/expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/true/false/1/checkpoint" ; } ] )
+                                                        ( resources-fun true true false false false ( self + "/expected/true/true/0/checkpoint-pre" ) ( self + "/expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/true/true/1/checkpoint" ; } ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
-                                                error : target : checkpoint-pre : checkpoint-post : commands :
+                                                outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : checkpoint-pre : checkpoint-post : commands :
                                                     let
-                                                        label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ error target ] ) }:" ;
+                                                        label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target ] ) }:" ;
                                                         rsrcs =
                                                             resources.lib
                                                                 {
@@ -1049,9 +1049,9 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if target then "128fea4cfff62960" else "target" }
+                                                                                                    echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
                                                                                                     echo 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
-                                                                                                    echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if error then ">&2" else "> /dev/null" }
+                                                                                                    echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if outer-init-error then ">&2" else "> /dev/null" }
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/init" ;
@@ -1086,7 +1086,7 @@
                                                                                 label = label ;
                                                                                 mount = "/build/resources/mounts/0000000000000002" ;
                                                                                 standard-input = "91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
-                                                                                status = if error || target then 184 else 0 ;
+                                                                                status = if outer-init-error || outer-init-target then 184 else 0 ;
                                                                             } ;
                                                                 }
                                                             ] ;
