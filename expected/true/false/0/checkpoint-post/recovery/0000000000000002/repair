@@ -1,5 +1,5 @@
 #! /nix/store/c24i2kds9yzzjjik6qdnjg7a94i9pp05-bash-5.2-p15/bin/bash -e
 export ACTION='repair'
-export HASH='7257447d3b18405981da0161c0b55bcd33ccf9047bad25873c49f751adad92fe1086a373ffcc17b5913937603bc954ceee35642999d8e647edc0ee6a69abee41'
+export HASH='616e406c486a87714d236206cb934d85ad2f4a9acf2e839e39e7253bd601b8fbcb7aaee02e31deb326940c8d6d920b2ce93769e0ffa3cc592dcccf3a3467d2ef'
 export MOUNT_INDEX='0000000000000002'
-exec "/nix/store/1l63s28pvsc8rlr9zrqaqn53n5a5s2yc-derivation/bin/recovery"  "$@" 
+exec "/nix/store/bj8is7ihrkw25m2s6k0mw5kbf9f0g3cb-inner-derivation/bin/recovery"  "$@" 
