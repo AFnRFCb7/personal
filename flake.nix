@@ -1032,56 +1032,104 @@
                                                     let
                                                         label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target ] ) }:" ;
                                                         rsrcs =
-                                                            resources.lib
-                                                                {
-                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                    coreutils = pkgs.coreutils ;
-                                                                    findutils = pkgs.findutils ;
-                                                                    flock = pkgs.flock ;
-                                                                    gawk = pkgs.gawk ;
-                                                                    init =
-                                                                        self :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
-                                                                                                    echo 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
-                                                                                                    echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if outer-init-error then ">&2" else "> /dev/null" }
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                    jq = pkgs.jq ;
-                                                                    inotify-tools = pkgs.inotify-tools ;
-                                                                    makeBinPath = pkgs.lib.makeBinPath ;
-                                                                    makeWrapper = pkgs.makeWrapper ;
-                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                    ps = pkgs.ps ;
-                                                                    release =
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "release" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                exit ${ if outer-release-status then "249" else "0" }
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/release" ;
-                                                                    resources-directory = "/build/resources" ;
-                                                                    targets = [ "target" ] ;
-                                                                    testing-locks = true ;
-                                                                    uuidlib = pkgs.util-linux ;
-                                                                    visitor = visitor ;
-                                                                    yq-go = pkgs.yq-go ;
-                                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                                } ;
+                                                            let
+                                                                inner =
+                                                                    resources.lib
+                                                                        {
+                                                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                            coreutils = pkgs.coreutils ;
+                                                                            findutils = pkgs.findutils ;
+                                                                            flock = pkgs.flock ;
+                                                                            gawk = pkgs.gawk ;
+                                                                            init =
+                                                                                self :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            exit ${ if inner-init-status then "194" else "0" }
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            inotify-tools = pkgs.inotify-tools ;
+                                                                            jq = pkgs.jq ;
+                                                                            makeBinPath = pkgs.lib.makeBinPath ;
+                                                                            makeWrapper = pkgs.makeWrapper ;
+                                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                            ps = pkgs.ps ;
+                                                                            release =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        exit ${ if inner-release-status then "124" else "0" }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/release" ;
+                                                                            resources-directory = "/build/resources" ;
+                                                                            uuidlib = pkgs.libuuid ;
+                                                                            visitor = visitor ;
+                                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                                            yq-go = pkgs.yq-go ;
+                                                                        } ;
+                                                                in
+                                                                    resources.lib
+                                                                        {
+                                                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                            coreutils = pkgs.coreutils ;
+                                                                            findutils = pkgs.findutils ;
+                                                                            flock = pkgs.flock ;
+                                                                            gawk = pkgs.gawk ;
+                                                                            init =
+                                                                                self :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo "${ self }" > /mount/self
+                                                                                                            echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
+                                                                                                            echo 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
+                                                                                                            echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if outer-init-error then ">&2" else "> /dev/null" }
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                            jq = pkgs.jq ;
+                                                                            inotify-tools = pkgs.inotify-tools ;
+                                                                            makeBinPath = pkgs.lib.makeBinPath ;
+                                                                            makeWrapper = pkgs.makeWrapper ;
+                                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                            ps = pkgs.ps ;
+                                                                            release =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        exit ${ if outer-release-status then "249" else "0" }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/release" ;
+                                                                            resources-directory = "/build/resources" ;
+                                                                            targets = [ "self" "target" ] ;
+                                                                            testing-locks = true ;
+                                                                            uuidlib = pkgs.util-linux ;
+                                                                            visitor = visitor ;
+                                                                            yq-go = pkgs.yq-go ;
+                                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                                        } ;
                                                         in
                                                             [
                                                                 {
