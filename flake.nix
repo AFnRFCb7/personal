@@ -1021,7 +1021,7 @@
                                             list =
                                                 builtins.concatLists
                                                     [
-                                                        # ( resources-fun false false ( self + "/expected/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/0/checkpoint-post" ) [ ] )
+                                                        ( resources-fun false false ( self + "/expected/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/0/checkpoint-post" ) [ ] )
                                                         ( resources-fun false true ( self + "/expected/false/true/0/checkpoint-pre" ) ( self + "/expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/true/1/checkpoint" ; } ] )
                                                         # ( resources-fun false true false )
                                                         # ( resources-fun false true true )
