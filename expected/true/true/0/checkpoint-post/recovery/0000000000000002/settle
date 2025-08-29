@@ -2,4 +2,4 @@
 export ACTION='settle'
 export HASH='3771d4a1cd76c24c17e9c0fadc2ed994823a134a90fcccfd43208035bc1dc354f15237e8cd1e44f08532586854a8e1c08249618ef3fffc6885288f7992b1791b'
 export MOUNT_INDEX='0000000000000002'
-exec "/nix/store/50gykfimlq88mnlf9gx86h51qzzz40w3-derivation/bin/recovery"  "$@" 
+exec "/nix/store/zxg8vn7y4r4bnhxwb4z6hvbm4n6cpwmq-derivation/bin/recovery"  "$@" 
