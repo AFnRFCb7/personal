@@ -1,0 +1,2 @@
+/nix/store/bm4wwsw7yini9dhb3adhixnwx6fri9ih-log-bad/bin/log-bad: line 17: BAD: unbound variable
+Error: Failed to load : open : no such file or directory
