@@ -1025,12 +1025,6 @@
                                                         ( resources-fun false true ( self + "/expected/false/true/0/checkpoint-pre" ) ( self + "/expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/true/1/checkpoint" ; } ] )
                                                         ( resources-fun true false ( self + "/expected/true/false/0/checkpoint-pre" ) ( self + "/expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/true/false/1/checkpoint" ; } ] )
                                                         ( resources-fun true true ( self + "/expected/true/true/0/checkpoint-pre" ) ( self + "/expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/true/true/1/checkpoint" ; } ] )
-                                                        # ( resources-fun false true false )
-                                                        # ( resources-fun false true true )
-                                                        # ( resources-fun true false false )
-                                                        # ( resources-fun true false true )
-                                                        # ( resources-fun true true false )
-                                                        # ( resources-fun true true true )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
