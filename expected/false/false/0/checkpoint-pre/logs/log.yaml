@@ -1,4 +1,4 @@
-- hash: d14990a4332abe0bac8a51b7f97520ffa75ecd3bb368f301ed7d7f51ed87aef82b3eb9f9a42a5a9eec1b901de082a078c4339d5c6b85e913fcd88ba74790067d
+- hash: 3771d4a1cd76c24c17e9c0fadc2ed994823a134a90fcccfd43208035bc1dc354f15237e8cd1e44f08532586854a8e1c08249618ef3fffc6885288f7992b1791b
   has-standard-input: "true"
   init-application: /nix/store/iw37dgjhvgqr3mfnjdra343z3mb2k2mh-init-application/bin/init-application
   links: ""
