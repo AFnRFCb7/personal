@@ -1061,7 +1061,19 @@
                                                                     makeWrapper = pkgs.makeWrapper ;
                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                     ps = pkgs.ps ;
-                                                                    release = null ;
+                                                                    release =
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "release" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                exit ${ if outer-release-status then "249" else "0" }
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/release" ;
                                                                     resources-directory = "/build/resources" ;
                                                                     targets = [ "target" ] ;
                                                                     testing-locks = true ;
