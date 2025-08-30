@@ -820,11 +820,13 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
-                                                                                            name = "alpha" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            name = "debugging" ;
+                                                                                            runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    echo ${ resources_.debug.alpha }
+                                                                                                    export ALPHA=${ resources_.debug.alpha }
+                                                                                                    export BETA=${ resources_.debug.beta }
+                                                                                                    bash
                                                                                                 '' ;
                                                                                         }
                                                                                 )
