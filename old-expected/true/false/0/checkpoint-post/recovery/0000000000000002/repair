@@ -2,4 +2,4 @@
 export ACTION='repair'
 export HASH='616e406c486a87714d236206cb934d85ad2f4a9acf2e839e39e7253bd601b8fbcb7aaee02e31deb326940c8d6d920b2ce93769e0ffa3cc592dcccf3a3467d2ef'
 export MOUNT_INDEX='0000000000000002'
-exec "/nix/store/bj8is7ihrkw25m2s6k0mw5kbf9f0g3cb-inner-derivation/bin/recovery"  "$@" 
+exec "/nix/store/3y29i4ar7ps543yraa50kkvn7aw0plwi-derivation/bin/recovery"  "$@" 
