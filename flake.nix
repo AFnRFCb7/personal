@@ -360,8 +360,8 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo "${ self }" > /mount/self
                                                                                                                     BETA="$( ${ resources.debug.beta } )" || exit 149
+                                                                                                                    echo "$BETA" > /mount/self
                                                                                                                     ln --symbolic "$BETA" /links
                                                                                                                 '' ;
                                                                                                         } ;
@@ -816,6 +816,7 @@
                                                                                 pkgs.git
                                                                                 pkgs.yq
                                                                                 pkgs.lsof
+                                                                                pkgs.inotify-tools
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
