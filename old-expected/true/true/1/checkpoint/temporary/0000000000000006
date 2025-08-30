@@ -3,7 +3,7 @@
     - 1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf
   hash: 616e406c486a87714d236206cb934d85ad2f4a9acf2e839e39e7253bd601b8fbcb7aaee02e31deb326940c8d6d920b2ce93769e0ffa3cc592dcccf3a3467d2ef
   has-standard-input: "true"
-  init-application: /nix/store/xly3s0qzf5w4mkv0720dwz3701cr92jn-init-application/bin/init-application
+  init-application: /nix/store/5dircmjbp7xwqfbcgxgw7pzaa3m4rnm9-init-application/bin/init-application
   links: ""
   mount-index: "0000000000000002"
   release-application: /nix/store/g1b7gasv2mcb134rc538yd8mwrqzbj7c-release-application/bin/release-application
