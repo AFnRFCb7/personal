@@ -360,7 +360,6 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    touch /mount/target
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -373,31 +372,11 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                exit 182
                                                                                                             '' ;
                                                                                                     } ;
                                                                                                 in "${ application }/bin/release" ;
-                                                                                    targets = [ "target" ] ;
-                                                                                } ;
-                                                                        beta =
-                                                                            ignore :
-                                                                                {
-                                                                                } ;
-                                                                        gamma =
-                                                                            ignore :
-                                                                                {
-                                                                                    init =
-                                                                                        resources : self :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "init" ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    exit 159
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ] ;
                                                                                 } ;
                                                                     } ;
                                                                 control-paths =
@@ -821,21 +800,8 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    if read -t 0
-                                                                                                    then
-                                                                                                        cat | ${ resources_.debug.alpha } "$@"
-                                                                                                    else
-                                                                                                        ${ resources_.debug.alpha } "$@"
-                                                                                                    fi
+                                                                                                    echo ${ resources_.debug.alpha }
                                                                                                 '' ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "gamma" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.debug.gamma ;
                                                                                         }
                                                                                 )
                                                                                 (
@@ -1022,15 +988,16 @@
                                                 builtins.concatLists
                                                     [
                                                         ( resources-fun false false false false false ( self + "/expected/false/false/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/false/0/checkpoint-post" ) [ ] )
-                                                        ( resources-fun false true false false false ( self + "/old-expected/false/true/0/checkpoint-pre" ) ( self + "/old-expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/false/true/1/checkpoint" ; } ] )
-                                                        ( resources-fun true false false false false ( self + "/old-expected/true/false/0/checkpoint-pre" ) ( self + "/old-expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/false/1/checkpoint" ; } ] )
-                                                        ( resources-fun true true false false false ( self + "/old-expected/true/true/0/checkpoint-pre" ) ( self + "/old-expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/true/1/checkpoint" ; } ] )
+                                                        # ( resources-fun false false false false true ( self + "/expected/false/false/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/0/checkpoint-post" ) [ ] )
+                                                        # ( resources-fun false true false false false ( self + "/old-expected/false/true/0/checkpoint-pre" ) ( self + "/old-expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/false/true/1/checkpoint" ; } ] )
+                                                        # ( resources-fun true false false false false ( self + "/old-expected/true/false/0/checkpoint-pre" ) ( self + "/old-expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/false/1/checkpoint" ; } ] )
+                                                        # ( resources-fun true true false false false ( self + "/old-expected/true/true/0/checkpoint-pre" ) ( self + "/old-expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/true/1/checkpoint" ; } ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
                                                 outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : checkpoint-pre : checkpoint-post : commands :
                                                     let
-                                                        label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target ] ) }:" ;
+                                                        label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status ] ) }:" ;
                                                         rsrcs =
                                                             let
                                                                 inner =
