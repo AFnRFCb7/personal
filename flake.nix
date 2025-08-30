@@ -360,6 +360,29 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    echo "${ self }" > /mount/self
+                                                                                                                    BETA="$( ${ resources.debug.beta } )" || exit 149
+                                                                                                                    ln --symbolic "$BETA" /links
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ "self" ] ;
+                                                                                } ;
+                                                                        beta =
+                                                                            ignore :
+                                                                                {
+                                                                                    description = seed : builtins.elemAt seed.path 0 ;
+                                                                                    init =
+                                                                                        resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo "${ self }" > /mount/self
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -369,14 +392,14 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "release" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                exit 182
+                                                                                                                echo "${ self }" > /mount/self
+                                                                                                                exit 155
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                                in "${ application }/bin/release" ;
-                                                                                    targets = [ ] ;
+                                                                                            in "${ application }/bin/release" ;
+                                                                                    targets = [ "self" ] ;
                                                                                 } ;
                                                                     } ;
                                                                 control-paths =
@@ -987,13 +1010,13 @@
                                             list =
                                                 builtins.concatLists
                                                     [
-                                                        ( resources-fun false false false false false ( self + "/expected/false/false/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/false/0/checkpoint-post" ) [ ] )
-                                                        ( resources-fun false false false false true ( self + "/expected/false/false/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/false/false/false/true/1/checkpoint" ; } ] )
+                                                        # ( resources-fun false false false false false ( self + "/expected/false/false/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/false/0/checkpoint-post" ) [ ] )
+                                                        # ( resources-fun false false false false true ( self + "/expected/false/false/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/false/false/false/true/1/checkpoint" ; } ] )
                                                         ( resources-fun false false false true false ( self + "/expected/false/false/false/true/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/true/false/0/checkpoint-post" ) [ ] )
                                                         # ( resources-fun false false false true true ( self + "/expected/false/false/false/true/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/false/false/true/true/1/checkpoint" ; } ] )
-                                                        ( resources-fun false true false false false ( self + "/old-expected/false/true/0/checkpoint-pre" ) ( self + "/old-expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/false/true/1/checkpoint" ; } ] )
-                                                        ( resources-fun true false false false false ( self + "/old-expected/true/false/0/checkpoint-pre" ) ( self + "/old-expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/false/1/checkpoint" ; } ] )
-                                                        ( resources-fun true true false false false ( self + "/old-expected/true/true/0/checkpoint-pre" ) ( self + "/old-expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/true/1/checkpoint" ; } ] )
+                                                        # ( resources-fun false true false false false ( self + "/old-expected/false/true/0/checkpoint-pre" ) ( self + "/old-expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/false/true/1/checkpoint" ; } ] )
+                                                        # ( resources-fun true false false false false ( self + "/old-expected/true/false/0/checkpoint-pre" ) ( self + "/old-expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/false/1/checkpoint" ; } ] )
+                                                        # ( resources-fun true true false false false ( self + "/old-expected/true/true/0/checkpoint-pre" ) ( self + "/old-expected/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/true/1/checkpoint" ; } ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
