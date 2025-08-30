@@ -361,7 +361,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     BETA="$( ${ resources.debug.beta } )" || exit 149
-                                                                                                                    echo "$BETA" > /mount/self
+                                                                                                                    echo "ALPHA $BETA" > /mount/self
                                                                                                                     ln --symbolic "$BETA" /links
                                                                                                                 '' ;
                                                                                                         } ;
@@ -382,7 +382,7 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo "${ self }" > /mount/self
+                                                                                                                    echo "BETA" > /mount/self
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
