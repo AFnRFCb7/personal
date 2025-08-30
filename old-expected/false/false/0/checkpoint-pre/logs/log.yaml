@@ -1,6 +1,6 @@
-- hash: 7257447d3b18405981da0161c0b55bcd33ccf9047bad25873c49f751adad92fe1086a373ffcc17b5913937603bc954ceee35642999d8e647edc0ee6a69abee41
+- hash: 616e406c486a87714d236206cb934d85ad2f4a9acf2e839e39e7253bd601b8fbcb7aaee02e31deb326940c8d6d920b2ce93769e0ffa3cc592dcccf3a3467d2ef
   has-standard-input: "true"
-  init-application: /nix/store/iw37dgjhvgqr3mfnjdra343z3mb2k2mh-init-application/bin/init-application
+  init-application: /nix/store/bx0dq63bv545pja9rvrnrj9dzlgpx05q-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
   release-application: /nix/store/g1b7gasv2mcb134rc538yd8mwrqzbj7c-release-application/bin/release-application
