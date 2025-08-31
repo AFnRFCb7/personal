@@ -1,1 +1,2 @@
-find: paths must precede expression: `;'
+/nix/store/dmks0iwjk6zm0hmxqdsn03fnxndaiqdh-log-bad/bin/log-bad: line 17: BAD: unbound variable
+Error: Failed to load : open : no such file or directory
