@@ -1,2 +1,1 @@
-/nix/store/dmks0iwjk6zm0hmxqdsn03fnxndaiqdh-log-bad/bin/log-bad: line 17: BAD: unbound variable
-Error: Failed to load : open : no such file or directory
+/nix/store/1csckvrmp4wi8kvf364r0h69hskybvqj-bad/bin/bad: line 46: INIT_APPLICATION: unbound variable
