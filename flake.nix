@@ -360,12 +360,22 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    BETA="$( ${ resources.debug.beta } )" || exit 149
-                                                                                                                    echo "ALPHA $BETA" > /mount/self
-                                                                                                                    ln --symbolic "$BETA" /links
+                                                                                                                    echo "ALPHA" > /mount/self
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                exit 155
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
                                                                                     targets = [ "self" ] ;
                                                                                 } ;
                                                                         beta =
@@ -824,9 +834,8 @@
                                                                                             runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    export ALPHA=${ resources_.debug.alpha }
-                                                                                                    export BETA=${ resources_.debug.beta }
-                                                                                                    bash
+                                                                                                    echo ALPHA=${ resources_.debug.alpha }
+                                                                                                    echo BETA=${ resources_.debug.beta }
                                                                                                 '' ;
                                                                                         }
                                                                                 )
