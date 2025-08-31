@@ -1,1 +1,1 @@
-/nix/store/p6zy5pimlz62qmv9yga24r14lx6y9dg9-bad/bin/bad: line 54: INIT_APPLICATION: unbound variable
+Error: Failed to load : open : no such file or directory
