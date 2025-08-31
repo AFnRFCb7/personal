@@ -1,6 +1,6 @@
 - hash: 616e406c486a87714d236206cb934d85ad2f4a9acf2e839e39e7253bd601b8fbcb7aaee02e31deb326940c8d6d920b2ce93769e0ffa3cc592dcccf3a3467d2ef
   has-standard-input: "true"
-  init-application: /nix/store/kiqrlg0744sjcg9r4d61c140r8i4l2q7-init-application/bin/init-application
+  init-application: /nix/store/n8c3k2i4i8vwpgizbsjabzvin3wmy2ym-init-application/bin/init-application
   links: |
     /build/resources/links/0000000000000002/setup
   mount: /build/resources/mounts/0000000000000002
