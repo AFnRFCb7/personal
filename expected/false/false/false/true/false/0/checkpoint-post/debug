@@ -9,7 +9,7 @@ a7117bf9-cd98-4035-9971-cb83f0a09af8 GOOD
 11a2f19f-c1c9-4aa5-9b2e-35d17b391758
 f06c6fe9-7fba-451d-8950-c47b4b704cd8
 acf828db-bb89-4bbd-be7b-e21519d04693 LINK=/build/resources/links/0000000000000002
-fc436fe0-ae8c-4d33-a21f-d764c078883d /nix/store/6zf9zcyb7xmprybwjliihpxz0ki761h0-bad/bin/bad
+fc436fe0-ae8c-4d33-a21f-d764c078883d /nix/store/d8ai40xfad1nhxh3xa95qyvzaz4mwsjz-bad/bin/bad
 d08a4755-e274-435f-aa7e-1655da23ba73
 a878ccc7-2cbd-4f64-8452-36929241ae59
 ddabdb24-5dc9-4857-bbde-6713622d1edb
@@ -23,4 +23,7 @@ aa31b015-2bbf-4c36-921b-71b9ebda217d
 a8736b62-ffb8-41e1-9fcd-6878e17d5fa7
 b83448d7-d4ef-45c2-9d59-00769e42c746 LINKS=[] ARGUMENTS=[
   ""
-] TARGETS="target\nself\n" /nix/store/6zf9zcyb7xmprybwjliihpxz0ki761h0-bad/bin/bad
+] TARGETS=[
+  "target",
+  "self"
+] /nix/store/d8ai40xfad1nhxh3xa95qyvzaz4mwsjz-bad/bin/bad
