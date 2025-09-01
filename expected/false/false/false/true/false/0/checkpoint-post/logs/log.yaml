@@ -16,5 +16,21 @@
 - hash: 0ca0653701561894eb98b299f4472e8d0d4e49fe68c06a22952ab057f0a3611b9cb9698fc67e7b2932fa39c17a96ad504080b7373839afa28a832eac1d82b81f
   head: <>
   type: stall-for-cleanup
+arguments: []
+hash: 0ca0653701561894eb98b299f4472e8d0d4e49fe68c06a22952ab057f0a3611b9cb9698fc67e7b2932fa39c17a96ad504080b7373839afa28a832eac1d82b81f
+has-standard-input: "true"
+init-application: /nix/store/7pa3gz62qifk3q6lh623sp52ix78d50b-init-application/bin/init-application
+links: []
+mount-index: "0000000000000002"
+release-application: /nix/store/m1018qvl5h54b4l5vxnxdmlia0qap7wq-release-application/bin/release-application
+standard-error: ""
+standard-input: 91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80
+standard-output: ""
+status: "99"
+targets:
+  - target
+  - self
+transient: ""
+type: bad
 - hash: 0ca0653701561894eb98b299f4472e8d0d4e49fe68c06a22952ab057f0a3611b9cb9698fc67e7b2932fa39c17a96ad504080b7373839afa28a832eac1d82b81f
   type: teardown-aborted
