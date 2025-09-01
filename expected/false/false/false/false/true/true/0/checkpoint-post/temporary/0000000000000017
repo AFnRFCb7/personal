@@ -1,0 +1,627 @@
+{
+  "arguments": [],
+  "description": [
+    {
+      "path": [],
+      "type": "set",
+      "value": {
+        "buildFHSUserEnv": [
+          {
+            "path": [
+              "buildFHSUserEnv"
+            ],
+            "type": "set",
+            "value": {
+              "__functionArgs": [
+                {
+                  "path": [
+                    "buildFHSUserEnv",
+                    "__functionArgs"
+                  ],
+                  "type": "set",
+                  "value": {
+                    "dieWithParent": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "dieWithParent"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "extraBwrapArgs": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "extraBwrapArgs"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "extraInstallCommands": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "extraInstallCommands"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "meta": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "meta"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "name": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "name"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "passthru": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "passthru"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "pname": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "pname"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "runScript": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "runScript"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "unshareCgroup": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "unshareCgroup"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "unshareIpc": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "unshareIpc"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "unshareNet": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "unshareNet"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "unsharePid": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "unsharePid"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "unshareUser": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "unshareUser"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "unshareUts": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "unshareUts"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ],
+                    "version": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "__functionArgs",
+                          "version"
+                        ],
+                        "type": "bool",
+                        "value": true
+                      }
+                    ]
+                  }
+                }
+              ],
+              "__functor": [
+                {
+                  "path": [
+                    "buildFHSUserEnv",
+                    "__functor"
+                  ],
+                  "type": "lambda",
+                  "value": null
+                }
+              ],
+              "override": [
+                {
+                  "path": [
+                    "buildFHSUserEnv",
+                    "override"
+                  ],
+                  "type": "set",
+                  "value": {
+                    "__functionArgs": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "override",
+                          "__functionArgs"
+                        ],
+                        "type": "set",
+                        "value": {
+                          "bubblewrap": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "bubblewrap"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "callPackage": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "callPackage"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "coreutils": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "coreutils"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "glibc": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "glibc"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "lib": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "lib"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "pkgsi686Linux": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "pkgsi686Linux"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "runCommandLocal": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "runCommandLocal"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "stdenv": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "stdenv"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ],
+                          "writeShellScript": [
+                            {
+                              "path": [
+                                "buildFHSUserEnv",
+                                "override",
+                                "__functionArgs",
+                                "writeShellScript"
+                              ],
+                              "type": "bool",
+                              "value": false
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "__functor": [
+                      {
+                        "path": [
+                          "buildFHSUserEnv",
+                          "override",
+                          "__functor"
+                        ],
+                        "type": "lambda",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "coreutils": [
+          {
+            "path": [
+              "coreutils"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "coreutils",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/jy06yi9z3vkn8w5zz84azhgb8n7gk8sh-coreutils-9.3"
+              }
+            ]
+          }
+        ],
+        "findutils": [
+          {
+            "path": [
+              "findutils"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "findutils",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/gbi8105qpl2r7h56h4cqwbzmhl9idz3z-findutils-4.9.0"
+              }
+            ]
+          }
+        ],
+        "flock": [
+          {
+            "path": [
+              "flock"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "flock",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/wnqkv10zlj75v1wg1d2j6l5k91p7jaiv-flock-0.4.0"
+              }
+            ]
+          }
+        ],
+        "gawk": [
+          {
+            "path": [
+              "gawk"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "gawk",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/8am2dygc7fnqmwjq9hr2fbbxf3mqp5bk-gawk-5.2.2"
+              }
+            ]
+          }
+        ],
+        "init": [
+          {
+            "path": [
+              "init"
+            ],
+            "type": "lambda",
+            "value": null
+          }
+        ],
+        "inotify-tools": [
+          {
+            "path": [
+              "inotify-tools"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "inotify-tools",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/swij9l4qkiylhf5vjvkgamzvyr9cs6cv-inotify-tools-4.23.9.0"
+              }
+            ]
+          }
+        ],
+        "jq": [
+          {
+            "path": [
+              "jq"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "jq",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/zcsw4ams0imnj7d3kpswiwwjkp3jqaq1-jq-1.7.1-bin"
+              }
+            ]
+          }
+        ],
+        "makeBinPath": [
+          {
+            "path": [
+              "makeBinPath"
+            ],
+            "type": "lambda",
+            "value": null
+          }
+        ],
+        "makeWrapper": [
+          {
+            "path": [
+              "makeWrapper"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "makeWrapper",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/9a184znvryzm5fag8lmdhavjx14kbpp8-make-shell-wrapper-hook"
+              }
+            ]
+          }
+        ],
+        "mkDerivation": [
+          {
+            "path": [
+              "mkDerivation"
+            ],
+            "type": "lambda",
+            "value": null
+          }
+        ],
+        "ps": [
+          {
+            "path": [
+              "ps"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "ps",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/56giw376yfw33v2wpsk6igbs0jk1ac1a-ps-procps-3.3.17"
+              }
+            ]
+          }
+        ],
+        "release": [
+          {
+            "path": [
+              "release"
+            ],
+            "type": "string",
+            "value": "/nix/store/sm2p1r64vbr2jfx6912dvalnr8q8g5rv-release/bin/release"
+          }
+        ],
+        "resources-directory": [
+          {
+            "path": [
+              "resources-directory"
+            ],
+            "type": "string",
+            "value": "/build/resources"
+          }
+        ],
+        "targets": [
+          {
+            "path": [
+              "targets"
+            ],
+            "type": "list",
+            "value": [
+              [
+                {
+                  "path": [
+                    "targets",
+                    0
+                  ],
+                  "type": "string",
+                  "value": "target"
+                }
+              ]
+            ]
+          }
+        ],
+        "testing-locks": [
+          {
+            "path": [
+              "testing-locks"
+            ],
+            "type": "bool",
+            "value": true
+          }
+        ],
+        "visitor": [
+          {
+            "path": [
+              "visitor"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "visitor",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/5fmpfmpz1bflajbqvf73bhywag9vwvzm-source"
+              }
+            ]
+          }
+        ],
+        "writeShellApplication": [
+          {
+            "path": [
+              "writeShellApplication"
+            ],
+            "type": "lambda",
+            "value": null
+          }
+        ],
+        "yq-go": [
+          {
+            "path": [
+              "yq-go"
+            ],
+            "type": "set",
+            "value": [
+              {
+                "path": [
+                  "yq-go",
+                  "outPath"
+                ],
+                "type": "string",
+                "value": "/nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "hash": "2800f8960f467c7a601bc372fc6bfede82b962646b28ed7dac13af6d4d1fe338deec8bd497fbcebea78582abe645b482956e6038aaffd6572ff4a59653da4e4f",
+  "has-standard-input": "true",
+  "init-application": "/nix/store/n61h994skzk9a9fdk23s05szby91x91a-init-application/bin/init-application",
+  "links": [],
+  "mount-index": "0000000000000002",
+  "release-application": "/nix/store/hjdm42jb603m56n5ixqgba4v3p8zwj3s-release-application/bin/release-application",
+  "standard-error": "a89f5e1a40c37509d44c5f10b22d34c57f58f8516b211e7adb3834223d65dab9e29cb86d180b82db51e5e6561d0d7dfc98848d54f44de69319e0f80dd4caa8b2",
+  "standard-input": "91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80",
+  "standard-output": "8d6fbfb0600dbadc2cd421f1a212144d023b49cb12388779d4c2f98d51e34795be16ebb7ec6d621bd85f85001adf46ce79711b097cc1d9e3bb65cfdefc2e10fb",
+  "status": "249",
+  "targets": [
+    "target"
+  ],
+  "transient": "",
+  "type": "bad"
+}
