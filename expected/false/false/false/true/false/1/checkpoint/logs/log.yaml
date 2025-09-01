@@ -793,8 +793,7 @@
   type: bad
 - hash: 0ca0653701561894eb98b299f4472e8d0d4e49fe68c06a22952ab057f0a3611b9cb9698fc67e7b2932fa39c17a96ad504080b7373839afa28a832eac1d82b81f
   type: teardown-aborted
-- action: cceeae81-ba80-4932-81f5-1782ed9b033e
-  arguments:
+- arguments:
     - ""
   has-standard-input: "true"
   hash: 0ca0653701561894eb98b299f4472e8d0d4e49fe68c06a22952ab057f0a3611b9cb9698fc67e7b2932fa39c17a96ad504080b7373839afa28a832eac1d82b81f
