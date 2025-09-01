@@ -1023,7 +1023,7 @@
                                                     [
                                                         # ( resources-fun false false false false false ( self + "/expected/false/false/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/false/0/checkpoint-post" ) [ ] )
                                                         # ( resources-fun false false false false true ( self + "/expected/false/false/false/false/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/false/false/false/true/1/checkpoint" ; } ] )
-                                                        ( resources-fun false false false true false ( self + "/expected/false/false/false/true/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/recovery.sh" ; checkpoint = self + "/expected/false/false/false/true/false/1/checkpoint" ; } ] )
+                                                        ( resources-fun false false false true false false ( self + "/expected/false/false/false/true/false/falsegit /0/checkpoint-pre" ) ( self + "/expected/false/false/false/true/false/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/recovery.sh" ; checkpoint = self + "/expected/false/false/false/true/false/false/1/checkpoint" ; } ] )
                                                         # ( resources-fun false false false true true ( self + "/expected/false/false/false/true/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/expected/false/false/false/true/true/1/checkpoint" ; } ] )
                                                         # ( resources-fun false true false false false ( self + "/old-expected/false/true/0/checkpoint-pre" ) ( self + "/old-expected/false/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/false/true/1/checkpoint" ; } ] )
                                                         # ( resources-fun true false false false false ( self + "/old-expected/true/false/0/checkpoint-pre" ) ( self + "/old-expected/true/false/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/repair" ; checkpoint = self + "/old-expected/true/false/1/checkpoint" ; } ] )
@@ -1031,7 +1031,7 @@
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
-                                                outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : checkpoint-pre : checkpoint-post : commands :
+                                                outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : transient : checkpoint-pre : checkpoint-post : commands :
                                                     let
                                                         label = "${ builtins.concatStringsSep "/" ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status ] ) }" ;
                                                         rsrcs =
@@ -1078,6 +1078,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/release" ;
                                                                                     resources-directory = "/build/resources" ;
+                                                                                    transient = transient ;
                                                                                     visitor = visitor ;
                                                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                                                     yq-go = pkgs.yq-go ;
