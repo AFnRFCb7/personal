@@ -371,7 +371,7 @@
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: 39cfcbb4ad12e4d3d0e2972a9566f738646784130073e1c4edc43d35f91ef5ed8bf2c6bb6c52f16512ede9896d158ac8236551865bdb1cc18865fe9e189483a4
   has-standard-input: "true"
-  init-application: /nix/store/73ahgpyz6ri9a3nzkzdz1mv2sz8vkh9r-init-application/bin/init-application
+  init-application: /nix/store/v2yb4zq4ipdg6pqzsj00kdc1pl8mh72a-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
   release-application: /nix/store/g1b7gasv2mcb134rc538yd8mwrqzbj7c-release-application/bin/release-application

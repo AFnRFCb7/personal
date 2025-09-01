@@ -1096,7 +1096,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo "${ self }" > /mount/self
+                                                                                                            echo "1f767ebab5a6518b7e66c89dce0f4343e545bd2728b594b35e967a7cebf57e6931f1661f374b30af078f56344decf25103e5f7a0729203cf5c42ff2842b51cb0" > /mount/self
                                                                                                             INNER=${ inner } || exit 221
                                                                                                             ln --symbolic "$INNER" /link
                                                                                                             echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
