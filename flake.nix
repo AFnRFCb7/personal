@@ -1033,7 +1033,7 @@
                                             resources-fun =
                                                 outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : checkpoint-pre : checkpoint-post : commands :
                                                     let
-                                                        label = "resource checks ${ builtins.concatStringsSep " " ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status ] ) }:" ;
+                                                        label = "${ builtins.concatStringsSep "/" ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status ] ) }" ;
                                                         rsrcs =
                                                             let
                                                                 inner =
