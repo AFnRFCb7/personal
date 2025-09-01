@@ -1,3 +1,8 @@
+- good: /build/resources/temporary/0000000000000021
+  hash: dd6c8e70906493088156c31a3fe52e4c44da480643b639b22acf5582bbb36eb145f8e3129b85d274a7a7b75d6a1d8f42aa1b658bad13f27a54470b60b52019c6
+  type: teardown-final
+- hash: dd6c8e70906493088156c31a3fe52e4c44da480643b639b22acf5582bbb36eb145f8e3129b85d274a7a7b75d6a1d8f42aa1b658bad13f27a54470b60b52019c6
+  type: teardown-aborted
 - hash: 2800f8960f467c7a601bc372fc6bfede82b962646b28ed7dac13af6d4d1fe338deec8bd497fbcebea78582abe645b482956e6038aaffd6572ff4a59653da4e4f
   head: <>
   type: stall-for-cleanup
@@ -367,7 +372,7 @@
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: 2800f8960f467c7a601bc372fc6bfede82b962646b28ed7dac13af6d4d1fe338deec8bd497fbcebea78582abe645b482956e6038aaffd6572ff4a59653da4e4f
   has-standard-input: "true"
-  init-application: /nix/store/zfcd91qvpc743b2s7vpjz0w6rja3sgwc-init-application/bin/init-application
+  init-application: /nix/store/sdw2scx7cqdkq72d362rn11i6ardsak0-init-application/bin/init-application
   links: []
   mount-index: "0000000000000002"
   release-application: /nix/store/hjdm42jb603m56n5ixqgba4v3p8zwj3s-release-application/bin/release-application
