@@ -369,7 +369,7 @@ observed:
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: 2800f8960f467c7a601bc372fc6bfede82b962646b28ed7dac13af6d4d1fe338deec8bd497fbcebea78582abe645b482956e6038aaffd6572ff4a59653da4e4f
   has-standard-input: "true"
-  init-application: /nix/store/gv21hhyay3fpq430p3m3j43r573yxd8c-init-application/bin/init-application
+  init-application: /nix/store/zfcd91qvpc743b2s7vpjz0w6rja3sgwc-init-application/bin/init-application
   links: []
   mount-index: "0000000000000002"
   release-application: /nix/store/hjdm42jb603m56n5ixqgba4v3p8zwj3s-release-application/bin/release-application
