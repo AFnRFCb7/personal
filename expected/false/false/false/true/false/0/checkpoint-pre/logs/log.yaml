@@ -318,7 +318,7 @@
           - path:
               - release
             type: string
-            value: /nix/store/c89wzsp100jnq0ihlhgyz8j4pdaw2mrb-release/bin/release
+            value: /nix/store/d71ml8r405l90ll782kdp9ia6gnmlibr-release/bin/release
         resources-directory:
           - path:
               - resources-directory
@@ -332,11 +332,6 @@
               - - path:
                     - targets
                     - 0
-                  type: string
-                  value: self
-              - - path:
-                    - targets
-                    - 1
                   type: string
                   value: target
         testing-locks:
@@ -369,18 +364,18 @@
                   - outPath
                 type: string
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
-  hash: 39cfcbb4ad12e4d3d0e2972a9566f738646784130073e1c4edc43d35f91ef5ed8bf2c6bb6c52f16512ede9896d158ac8236551865bdb1cc18865fe9e189483a4
+  hash: 2509e083fcef685855a56a33cb57eaa4ca1d044473e83373043453c5ab387246fb9fa17b8707961c79053935d68243a47cb49a9d08bb80cb90b2f12d59fe99d9
   has-standard-input: "true"
-  init-application: /nix/store/v2yb4zq4ipdg6pqzsj00kdc1pl8mh72a-init-application/bin/init-application
+  init-application: /nix/store/ayxx8fj4cfh7qdva7bx6x60r3fgiaiwr-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
-  release-application: /nix/store/g1b7gasv2mcb134rc538yd8mwrqzbj7c-release-application/bin/release-application
+  release-application: /nix/store/yv2svk01zi0d2484vr080zixznm95vmg-release-application/bin/release-application
   standard-error: ""
   standard-input: 91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80
   standard-output: 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
   status: "0"
   transient: ""
   type: good
-- hash: 39cfcbb4ad12e4d3d0e2972a9566f738646784130073e1c4edc43d35f91ef5ed8bf2c6bb6c52f16512ede9896d158ac8236551865bdb1cc18865fe9e189483a4
+- hash: 2509e083fcef685855a56a33cb57eaa4ca1d044473e83373043453c5ab387246fb9fa17b8707961c79053935d68243a47cb49a9d08bb80cb90b2f12d59fe99d9
   originator-pid: "56"
   type: stall-for-process

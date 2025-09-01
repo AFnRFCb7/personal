@@ -1067,6 +1067,8 @@
                                                                                                         name = "release" ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo a95899206afa17a2a162e5593a1d11edc51659a42e407dfaef5358ca3cdf853c802a1e4ff247a175f63414e0f5d3d6ed879fd3de93315763fe6d956d0bb5f6d9
+                                                                                                                echo 2cc598e370346e211791b3753b9b181cb530116a330f1c32047a8c25e696b1c3029082f1630d807fce76cec9bf1ab246a29943f308343fe379b06105d5f857ff ${ if inner-release-status then ">&2" else "> /dev/null" }
                                                                                                                 exit ${ if inner-release-status then "124" else "0" }
                                                                                                             '' ;
                                                                                                     } ;
@@ -1096,7 +1098,6 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo "1f767ebab5a6518b7e66c89dce0f4343e545bd2728b594b35e967a7cebf57e6931f1661f374b30af078f56344decf25103e5f7a0729203cf5c42ff2842b51cb0" > /mount/self
                                                                                                             INNER=${ inner } || exit 221
                                                                                                             ln --symbolic "$INNER" /link
                                                                                                             echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
@@ -1120,12 +1121,14 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        echo 8d6fbfb0600dbadc2cd421f1a212144d023b49cb12388779d4c2f98d51e34795be16ebb7ec6d621bd85f85001adf46ce79711b097cc1d9e3bb65cfdefc2e10fb
+                                                                                                        echo a89f5e1a40c37509d44c5f10b22d34c57f58f8516b211e7adb3834223d65dab9e29cb86d180b82db51e5e6561d0d7dfc98848d54f44de69319e0f80dd4caa8b2 ${ if outer-release-status then ">&2" else "> /dev/null" }
                                                                                                         exit ${ if outer-release-status then "249" else "0" }
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/release" ;
                                                                             resources-directory = "/build/resources" ;
-                                                                            targets = [ "self" "target" ] ;
+                                                                            targets = [ "target" ] ;
                                                                             testing-locks = true ;
                                                                             visitor = visitor ;
                                                                             yq-go = pkgs.yq-go ;
