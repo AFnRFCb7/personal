@@ -1,4 +1,4 @@
 #! /nix/store/c24i2kds9yzzjjik6qdnjg7a94i9pp05-bash-5.2-p15/bin/bash -e
 export HASH='ef076ef212fc1bc3b2bef34533a4dd228a6cce12a5bded4d4942ecce36ad00d195a4adf7d72f5354cfb12158999b9115aa1a93bce0a7c794a1ce96ebc3924d39'
 export MOUNT_INDEX='0000000000000002'
-exec "/nix/store/d7s8gvc4ymxcyqn8gnva4bnvk7r2pqmh-derivation/bin/recovery"  "$@" 
+exec "/nix/store/vwpqw2zr6xygydrxf0zdmnw56bm68kk8-derivation/bin/recovery"  "$@" 
