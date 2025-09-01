@@ -1041,7 +1041,6 @@
                                                                         rsrcs =
                                                                             resources.lib
                                                                                 {
-                                                                                    actions = [ "ee0970db-279b-4038-bada-3de0bc827ca4" ] ;
                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                                     coreutils = pkgs.coreutils ;
                                                                                     findutils = pkgs.findutils ;
@@ -1087,7 +1086,6 @@
                                                                 in
                                                                     resources.lib
                                                                         {
-                                                                            actions = [ "cceeae81-ba80-4932-81f5-1782ed9b033e" ] ;
                                                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                             coreutils = pkgs.coreutils ;
                                                                             findutils = pkgs.findutils ;
