@@ -1021,6 +1021,7 @@
                                             list =
                                                 builtins.concatLists
                                                     [
+                                                        ( resources-fun false false false false false false ( self + "/expected/false/false/false/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/false/false/0/checkpoint-post" ) [ ] )
                                                         ( resources-fun false false false false true true ( self + "/expected/false/false/false/false/true/true/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/true/true/0/checkpoint-post" ) [ { command = "/build/resources/recovery/0000000000000002/recovery.sh" ; checkpoint = self + "/expected/false/false/false/false/true/true/1/checkpoint" ; } ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
