@@ -326,8 +326,8 @@
         seed:
           - path:
               - seed
-            type: string
-            value: inner
+            type: int
+            value: 1
         transient:
           - path:
               - transient
@@ -358,7 +358,7 @@
                   - outPath
                 type: string
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
-  hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
+  hash: 6c24268b8d507cd1e895383d10d31fdd7e68106981e9e05c50f8509f1525adebcf3f7b5381d506218b376e3dcef6f17719cbbae3a407d624359267e4f7c9c608
   has-standard-input: "true"
   init-application: /nix/store/iwj76gzr7rdvr3zlagqhayizrgnc02a7-init-application/bin/init-application
   links: ""
@@ -370,8 +370,8 @@
   status: "0"
   transient: ""
   type: good
-- hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
-  originator-pid: "103"
+- hash: 6c24268b8d507cd1e895383d10d31fdd7e68106981e9e05c50f8509f1525adebcf3f7b5381d506218b376e3dcef6f17719cbbae3a407d624359267e4f7c9c608
+  originator-pid: "104"
   type: stall-for-process
 - arguments:
     - 2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917
@@ -702,8 +702,8 @@
         seed:
           - path:
               - seed
-            type: string
-            value: outer
+            type: int
+            value: 0
         targets:
           - path:
               - targets
@@ -744,9 +744,9 @@
                   - outPath
                 type: string
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
-  hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
+  hash: 90c5765cff894c0360e69b01c2059517702d2fac12790d128331c41a2874da4480785c101c403a635c197f249c854ec6cb8c24c7f73f97c9525e78fd092f8823
   has-standard-input: "true"
-  init-application: /nix/store/hmrwjpm78knp3f6bgihzkh7jj29j3wfv-init-application/bin/init-application
+  init-application: /nix/store/3k0vyhr9v6z2cf793lj9hsdmzyciv31c-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
   release-application: /nix/store/yv2svk01zi0d2484vr080zixznm95vmg-release-application/bin/release-application
@@ -756,14 +756,14 @@
   status: "0"
   transient: ""
   type: good
-- hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
+- hash: 6c24268b8d507cd1e895383d10d31fdd7e68106981e9e05c50f8509f1525adebcf3f7b5381d506218b376e3dcef6f17719cbbae3a407d624359267e4f7c9c608
   head: <>
   type: stall-for-cleanup
-- hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
+- hash: 90c5765cff894c0360e69b01c2059517702d2fac12790d128331c41a2874da4480785c101c403a635c197f249c854ec6cb8c24c7f73f97c9525e78fd092f8823
   originator-pid: "56"
   type: stall-for-process
 - good: /build/resources/temporary/0000000000000019
-  hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
+  hash: 6c24268b8d507cd1e895383d10d31fdd7e68106981e9e05c50f8509f1525adebcf3f7b5381d506218b376e3dcef6f17719cbbae3a407d624359267e4f7c9c608
   type: teardown-final
-- hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
+- hash: 6c24268b8d507cd1e895383d10d31fdd7e68106981e9e05c50f8509f1525adebcf3f7b5381d506218b376e3dcef6f17719cbbae3a407d624359267e4f7c9c608
   type: teardown-aborted
