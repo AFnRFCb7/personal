@@ -323,6 +323,11 @@
               - resources-directory
             type: string
             value: /build/resources
+        seed:
+          - path:
+              - seed
+            type: string
+            value: inner
         transient:
           - path:
               - transient
@@ -353,7 +358,7 @@
                   - outPath
                 type: string
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
-  hash: dd6c8e70906493088156c31a3fe52e4c44da480643b639b22acf5582bbb36eb145f8e3129b85d274a7a7b75d6a1d8f42aa1b658bad13f27a54470b60b52019c6
+  hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
   has-standard-input: "true"
   init-application: /nix/store/iwj76gzr7rdvr3zlagqhayizrgnc02a7-init-application/bin/init-application
   links: ""
@@ -365,7 +370,7 @@
   status: "0"
   transient: ""
   type: good
-- hash: dd6c8e70906493088156c31a3fe52e4c44da480643b639b22acf5582bbb36eb145f8e3129b85d274a7a7b75d6a1d8f42aa1b658bad13f27a54470b60b52019c6
+- hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
   originator-pid: "103"
   type: stall-for-process
 - arguments:
@@ -694,6 +699,11 @@
               - resources-directory
             type: string
             value: /build/resources
+        seed:
+          - path:
+              - seed
+            type: string
+            value: outer
         targets:
           - path:
               - targets
@@ -734,9 +744,9 @@
                   - outPath
                 type: string
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
-  hash: 2509e083fcef685855a56a33cb57eaa4ca1d044473e83373043453c5ab387246fb9fa17b8707961c79053935d68243a47cb49a9d08bb80cb90b2f12d59fe99d9
+  hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
   has-standard-input: "true"
-  init-application: /nix/store/knq4qp5gc29r2kj263d9zlm7136xb9vz-init-application/bin/init-application
+  init-application: /nix/store/41fmld8mfl8l7gzsnzpfyxv90w89imhc-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
   release-application: /nix/store/yv2svk01zi0d2484vr080zixznm95vmg-release-application/bin/release-application
@@ -746,9 +756,9 @@
   status: "0"
   transient: ""
   type: good
-- hash: dd6c8e70906493088156c31a3fe52e4c44da480643b639b22acf5582bbb36eb145f8e3129b85d274a7a7b75d6a1d8f42aa1b658bad13f27a54470b60b52019c6
+- hash: 64fd2bebd0d089787214e08ca7a2d64ad4eb2fb89d73742db4666b99d2a650f465109d8872b493177046570874b49463b8f586a0df13407b0d4f29f2136e8d08
   head: <>
   type: stall-for-cleanup
-- hash: 2509e083fcef685855a56a33cb57eaa4ca1d044473e83373043453c5ab387246fb9fa17b8707961c79053935d68243a47cb49a9d08bb80cb90b2f12d59fe99d9
+- hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
   originator-pid: "56"
   type: stall-for-process
