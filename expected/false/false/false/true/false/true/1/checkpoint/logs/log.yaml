@@ -1,0 +1,8 @@
+- arguments:
+    - ""
+  has-standard-input: "true"
+  hash: 248f7c7c43fe8404e9dd5cfc2e42e11436362b8d930997bc4ab18e709d5f19afe05b78cac897017386559d746af64e8f598e787252dea5b4f229f12bb82bf140
+  mount-index: "0000000000000007"
+  standard-input: ""
+  type: recovery
+-
