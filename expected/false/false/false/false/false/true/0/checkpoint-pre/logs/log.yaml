@@ -373,9 +373,6 @@
 - hash: ff1b5d3d6097612e0e034069c4c07d636a2c29041bc3f6c9e6155278e115bf59f10402ab6e71d389c19201cea4bcfa73c447f795306471f9b786f55d3dc3971f
   originator-pid: "103"
   type: stall-for-process
-- hash: ff1b5d3d6097612e0e034069c4c07d636a2c29041bc3f6c9e6155278e115bf59f10402ab6e71d389c19201cea4bcfa73c447f795306471f9b786f55d3dc3971f
-  head: <>
-  type: stall-for-cleanup
 - arguments:
     - 2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917
     - 1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf
@@ -749,7 +746,7 @@
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
   has-standard-input: "true"
-  init-application: /nix/store/kczs6x1d7yd9ya76b4dm31mfix9wkmrh-init-application/bin/init-application
+  init-application: /nix/store/c8yz4xa8j2y5pv7q2hi76lbr3jyb9krs-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
   release-application: /nix/store/yv2svk01zi0d2484vr080zixznm95vmg-release-application/bin/release-application
@@ -759,6 +756,9 @@
   status: "0"
   transient: ""
   type: good
+- hash: ff1b5d3d6097612e0e034069c4c07d636a2c29041bc3f6c9e6155278e115bf59f10402ab6e71d389c19201cea4bcfa73c447f795306471f9b786f55d3dc3971f
+  head: <>
+  type: stall-for-cleanup
 - hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
   originator-pid: "56"
   type: stall-for-process
