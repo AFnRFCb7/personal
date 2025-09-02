@@ -746,7 +746,7 @@
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
   has-standard-input: "true"
-  init-application: /nix/store/c8yz4xa8j2y5pv7q2hi76lbr3jyb9krs-init-application/bin/init-application
+  init-application: /nix/store/89k367a4wlwmf5pzcrdb3ikcibl9l5bi-init-application/bin/init-application
   links: ""
   mount: /build/resources/mounts/0000000000000002
   release-application: /nix/store/yv2svk01zi0d2484vr080zixznm95vmg-release-application/bin/release-application
@@ -762,3 +762,8 @@
 - hash: bab487b5350b50965b55340e11437730ff3963b61d82ac3bdc21f205994594e3a38790dae10bc918c82be720eca0895025819460282ba32a503bb0eef14503f1
   originator-pid: "56"
   type: stall-for-process
+- good: /build/resources/temporary/0000000000000020
+  hash: ff1b5d3d6097612e0e034069c4c07d636a2c29041bc3f6c9e6155278e115bf59f10402ab6e71d389c19201cea4bcfa73c447f795306471f9b786f55d3dc3971f
+  type: teardown-final
+- hash: ff1b5d3d6097612e0e034069c4c07d636a2c29041bc3f6c9e6155278e115bf59f10402ab6e71d389c19201cea4bcfa73c447f795306471f9b786f55d3dc3971f
+  type: teardown-aborted
