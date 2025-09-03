@@ -1018,14 +1018,15 @@
                                         } ;
                                     checks.${ system } =
                                         let
+                                            delay = 1 ;
                                             list =
                                                 builtins.concatLists
                                                     [
-                                                        ( resources-fun false false false false false false ( self + "/expected/false/false/false/false/false/false/0/checkpoint-pre" ) ( self + "/expected/false/false/false/false/false/false/0/checkpoint-post" ) [ ] )
+                                                        ( resources-fun false false false false false false ( self + "/expected/false/false/false/false/false/false/0" ) ( self + "/expected/false/false/false/false/false/false/1" ) ( self + "/expected/false/false/false/false/false/false/2" ) [ ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
-                                                outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : transient : checkpoint-pre : checkpoint-post : commands :
+                                                outer-init-error : outer-init-target : inner-init-status : inner-release-status : outer-release-status : transient : fresh : stale : post : commands :
                                                     let
                                                         label = "${ builtins.concatStringsSep "/" ( builtins.map ( delta : if delta then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status transient ] ) }" ;
                                                         rsrcs =
@@ -1131,7 +1132,6 @@
                                                                             resources-directory = "/build/resources" ;
                                                                             seed = 0 ;
                                                                             targets = [ "target" ] ;
-                                                                            testing-locks = true ;
                                                                             visitor = visitor ;
                                                                             yq-go = pkgs.yq-go ;
                                                                             writeShellApplication = pkgs.writeShellApplication ;
@@ -1145,12 +1145,13 @@
                                                                             {
                                                                                 arguments = [ "2e47fd27a17063c94597b1582090b779d761d326d54784a19f3381953d37e1c7d1606cf96139f1d9aa1b9fad63868bc90fe9179d62e70e95d67a62df61a0c917" "1eee5f23d9b8a698d78699954c0d2983a4b871461b738bd72eaa616a52d12fa38a8fc72ffc5d45b946ec5c4b55c36a26896a0901532852650af133f3493f1bbf" ] ;
                                                                                 bash = pkgs.bash ;
-                                                                                checkpoint-post = checkpoint-post ;
-                                                                                checkpoint-pre = checkpoint-pre ;
                                                                                 commands = commands ;
                                                                                 diffutils = pkgs.diffutils ;
+                                                                                fresh = fresh ;
                                                                                 label = label ;
                                                                                 mount = "/build/resources/mounts/0000000000000002" ;
+                                                                                post = post ;
+                                                                                stale = stale ;
                                                                                 standard-input = "91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80" ;
                                                                                 status = if outer-init-error || outer-init-target || inner-init-status then 184 else 0 ;
                                                                             } ;
