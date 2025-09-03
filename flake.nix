@@ -1048,8 +1048,12 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    echo cb98f2058ac483240b32bc239ae41dc738b8c4878d86201abb170e7c0c04ceb5080c71d5f41550d301bf4dcaf5540b7d8979f41a240a91964a57d4448ec5407e
+                                                                                                                    echo 8f4871639b5a4bfcbe4c226aa8c82ac4dec393b8dcf4253254ba619ac267e29b62afb25ca4e20f5f056c42cab61c23d2fb1061c34f75280cba39af24e0a65bd3 > ${ if inner-init-status then ">&2" else "/scratch/inner-init-error" }
+                                                                                                                    sleep ${ builtins.toString delay }
                                                                                                                     exit ${ if inner-init-status then "194" else "0" }
                                                                                                                 '' ;
                                                                                                         } ;
@@ -1069,7 +1073,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 echo a95899206afa17a2a162e5593a1d11edc51659a42e407dfaef5358ca3cdf853c802a1e4ff247a175f63414e0f5d3d6ed879fd3de93315763fe6d956d0bb5f6d9
-                                                                                                                echo 2cc598e370346e211791b3753b9b181cb530116a330f1c32047a8c25e696b1c3029082f1630d807fce76cec9bf1ab246a29943f308343fe379b06105d5f857ff ${ if inner-release-status then ">&2" else "> /dev/null" }
+                                                                                                                echo 2cc598e370346e211791b3753b9b181cb530116a330f1c32047a8c25e696b1c3029082f1630d807fce76cec9bf1ab246a29943f308343fe379b06105d5f857ff > ${ if inner-release-status then ">&2" else "/scratch/inner-release-error" }
                                                                                                                 exit ${ if inner-release-status then "124" else "0" }
                                                                                                             '' ;
                                                                                                     } ;
@@ -1104,8 +1108,8 @@
                                                                                                             ln --symbolic "$INNER" /link
                                                                                                             echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
                                                                                                             echo 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
-                                                                                                            echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if outer-init-error then ">&2" else "> /dev/null" }
-                                                                                                        '' ;
+                                                                                                            echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if outer-init-error then ">&2" else "> /scratch/outer-init-error" }
+                                                                                                        '';
                                                                                                 } ;
                                                                                             in "${ application }/bin/init" ;
                                                                             jq = pkgs.jq ;
@@ -1124,7 +1128,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         echo 8d6fbfb0600dbadc2cd421f1a212144d023b49cb12388779d4c2f98d51e34795be16ebb7ec6d621bd85f85001adf46ce79711b097cc1d9e3bb65cfdefc2e10fb
-                                                                                                        echo a89f5e1a40c37509d44c5f10b22d34c57f58f8516b211e7adb3834223d65dab9e29cb86d180b82db51e5e6561d0d7dfc98848d54f44de69319e0f80dd4caa8b2 ${ if outer-release-status then ">&2" else "> /dev/null" }
+                                                                                                        echo a89f5e1a40c37509d44c5f10b22d34c57f58f8516b211e7adb3834223d65dab9e29cb86d180b82db51e5e6561d0d7dfc98848d54f44de69319e0f80dd4caa8b2 ${ if outer-release-status then ">&2" else "> /scratch/outer-release-error" }
                                                                                                         exit ${ if outer-release-status then "249" else "0" }
                                                                                                     '' ;
                                                                                             } ;
