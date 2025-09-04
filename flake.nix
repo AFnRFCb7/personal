@@ -1160,11 +1160,117 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "order" ;
-                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            declare -A IDX
+                                                                                                            INDEX=0
+                                                                                                            while read -r KEY
+                                                                                                            do
+                                                                                                                IDX[ "$KEY" ]="$INDEX"
+                                                                                                                INDEX=$(( INDEX + 1 ))
+                                                                                                            done < <( yq -r '.[] | (.hash // "") + ":" + (.type // "")' )
+                                                                                                            VIOLATIONS=0
+                                                                                                            while read -r A B
+                                                                                                            do
+                                                                                                                if (( IDX["$A"] >= IDX["$B"] ))
+                                                                                                                then
+                                                                                                                    echo "CONSTRAINT VIOLATED: $A must precede $B"
+                                                                                                                    VIOLATIONS=$(( VIOLATIONS + 1 ))
+                                                                                                                fi
+                                                                                                            done < ${ file }
+                                                                                                            echo "$VIOLATIONS"
                                                                                                         '' ;
                                                                                                 } ;
+                                                                                            file =
+                                                                                                builtins.toFile
+                                                                                                    "order-constraints.txt"
+                                                                                                    (
+                                                                                                        builtins.concatStringsSep
+                                                                                                            "\n"
+                                                                                                            (
+                                                                                                                builtins.map
+                                                                                                                    (
+                                                                                                                        constraint :
+                                                                                                                            builtins.concatStringsSep
+                                                                                                                                " "
+                                                                                                                                (
+                                                                                                                                    builtins.map
+                                                                                                                                        (
+                                                                                                                                            event :
+                                                                                                                                                builtins.concatStringsSep
+                                                                                                                                                    ""
+                                                                                                                                                    event
+                                                                                                                                        )
+                                                                                                                                    constraint
+                                                                                                                                )
+                                                                                                                    )
+                                                                                                                    constraints
+                                                                                                            )
+                                                                                                    ) ;
+                                                                                            constraints =
+                                                                                                [
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "good"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "bad"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "no-init"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stale"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-cleanup"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stall-for-cleanup"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "teardown-final"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                ] ;
                                                                                             in "${ application }/bin/order" ;
                                                                                 post = post ;
                                                                                 stale = stale ;
