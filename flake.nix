@@ -1169,16 +1169,17 @@
                                                                                                             do
                                                                                                                 IDX[ "$KEY" ]="$INDEX"
                                                                                                                 INDEX=$(( INDEX + 1 ))
-                                                                                                            done < <( yq -r '.[] | (.hash // "") + ":" + (.type // "")' )
+                                                                                                            done < <( cat | yq -r '.[] | (.hash // "") + ":" + (.type // "")' )
                                                                                                             VIOLATIONS=0
                                                                                                             while read -r A B
                                                                                                             do
                                                                                                                 if (( IDX["$A"] >= IDX["$B"] ))
                                                                                                                 then
-                                                                                                                    echo "CONSTRAINT VIOLATED: $A must precede $B"
+                                                                                                                    echo "CONSTRAINT VIOLATED: $A must precede $B" >&2
+                                                                                                                    echo "${ builtins.concatStringsSep "" [ "$" "{" "IDX[*]" "}" ] }"
                                                                                                                     VIOLATIONS=$(( VIOLATIONS + 1 ))
                                                                                                                 fi
-                                                                                                            done < ${ file }
+                                                                                                            done < ${ builtins.trace file file }
                                                                                                             echo "$VIOLATIONS"
                                                                                                         '' ;
                                                                                                 } ;
