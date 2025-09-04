@@ -1199,7 +1199,7 @@
                                                                                                                                         (
                                                                                                                                             event :
                                                                                                                                                 builtins.concatStringsSep
-                                                                                                                                                    ""
+                                                                                                                                                    ":"
                                                                                                                                                     event
                                                                                                                                         )
                                                                                                                                     constraint
