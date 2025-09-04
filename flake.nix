@@ -1163,9 +1163,8 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.gnugrep pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            LOG_FILE="$1"
-                                                                                                            mapfile -t LOG < <( yq -r '.[] | (.hash // "") + ":" + (.type // "")' "$LOG_FILE" )
-                                                                                                            N="${ builtins.concatStringsSep "" [ "$" "{" "#LOG[@]}" "}" ] }"
+                                                                                                            mapfile -t LOG < <( cat | yq -r '.[] | (.hash // "") + ":" + (.type // "")' )
+                                                                                                            N="${ builtins.concatStringsSep "" [ "$" "{" "#LOG[@]" "}" ] }"
                                                                                                             VIOLATIONS=0
                                                                                                             for (( i=0 ; i<N; i++ ))
                                                                                                             do
