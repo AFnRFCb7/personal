@@ -1023,6 +1023,7 @@
                                                 builtins.concatLists
                                                     [
                                                         ( resources-fun false false false false false false ( self + "/expected/false/false/false/false/false/false/0/log.yaml" ) ( self + "/expected/false/false/false/false/false/false/1/log.yaml" ) ( self + "/expected/false/false/false/false/false/false/2/log.yaml" ) [ ] )
+                                                        ( resources-fun false false false false false true ( self + "/expected/false/false/false/false/false/true/0/log.yaml" ) ( self + "/expected/false/false/false/false/false/true/1/log.yaml" ) ( self + "/expected/false/false/false/false/false/trie/2/log.yaml" ) [ ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
@@ -1214,6 +1215,26 @@
                                                                                                         [
                                                                                                             "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
                                                                                                             "good"
+                                                                                                        ]                                                                                                    
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "no-init"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stale"
                                                                                                         ]
                                                                                                         [
                                                                                                             "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
@@ -1225,22 +1246,26 @@
                                                                                                             "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
                                                                                                             "stall-for-process"
                                                                                                         ]
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-cleanup"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-cleanup"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "teardown-final"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
                                                                                                         [
                                                                                                             "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
                                                                                                             "good"
-                                                                                                        ]
-                                                                                                    ]
-                                                                                                    [
-                                                                                                        [
-                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
-                                                                                                            "stall-for-process"
-                                                                                                        ]
-                                                                                                    ]
-                                                                                                    [
-                                                                                                        [
-                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
-                                                                                                            "bad"
-                                                                                                        ]
+                                                                                                        ]                                                                                                    
                                                                                                         [
                                                                                                             "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
                                                                                                             "stall-for-process"
@@ -1284,6 +1309,26 @@
                                                                                                         [
                                                                                                             "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
                                                                                                             "teardown-final"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "good"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
+                                                                                                            "stale"
                                                                                                         ]
                                                                                                     ]
                                                                                                 ] ;
