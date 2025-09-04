@@ -1166,15 +1166,15 @@
                                                                                                             mapfile -t LOG < <( cat | yq -r '.[] | (.hash // "") + ":" + (.type // "")' )
                                                                                                             N="${ builtins.concatStringsSep "" [ "$" "{" "#LOG[@]" "}" ] }"
                                                                                                             VIOLATIONS=0
-                                                                                                            for (( i=0 ; i<N; i++ ))
+                                                                                                            for (( I=0 ; I<N; I++ ))
                                                                                                             do
-                                                                                                                for (( j=i+1; j<N ; j++ ))
+                                                                                                                for (( J=I+1; J<N ; J++ ))
                                                                                                                 do
-                                                                                                                    A="${ builtins.concatStringsSep "" [ "$" "{" "LOG[I]" "}" ] }"
-                                                                                                                    B="${ builtins.concatStringsSep "" [ "$" "{" "LOG[J]" "}" ] }"
-                                                                                                                    if grep -q "^$A $B$" ${ file }
+                                                                                                                    EARLIER="${ builtins.concatStringsSep "" [ "$" "{" "LOG[I]" "}" ] }"
+                                                                                                                    LATER="${ builtins.concatStringsSep "" [ "$" "{" "LOG[J]" "}" ] }"
+                                                                                                                    if grep -Fxq "^$LATER $EARLIER$" ${ file }
                                                                                                                     then
-                                                                                                                        echo "CONSTRAINT VIOLATED: $A must precede $B" >&2
+                                                                                                                        echo "CONSTRAINT VIOLATED: $EARLIER $I must precede $LATER $J" >&2
                                                                                                                         VIOLATIONS=$(( VIOLATIONS + 1 ))
                                                                                                                     fi
                                                                                                                 done
