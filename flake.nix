@@ -1160,26 +1160,26 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "order" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.yq-go ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnugrep pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            declare -A IDX
-                                                                                                            INDEX=0
-                                                                                                            while read -r KEY
-                                                                                                            do
-                                                                                                                IDX[ "$KEY" ]="$INDEX"
-                                                                                                                INDEX=$(( INDEX + 1 ))
-                                                                                                            done < <( cat | yq -r '.[] | (.hash // "") + ":" + (.type // "")' )
+                                                                                                            LOG_FILE="$1"
+                                                                                                            mapfile -t LOG < <( yq -r '.[] | (.hash // "") + ":" + (.type // "")' "$LOG_FILE" )
+                                                                                                            N="${ builtins.concatStringsSep "" [ "$" "{" "#LOG[@]}" "}" ] }"
                                                                                                             VIOLATIONS=0
-                                                                                                            while read -r A B
+                                                                                                            for (( i=0 ; i<N; i++ ))
                                                                                                             do
-                                                                                                                if (( IDX["$A"] >= IDX["$B"] ))
-                                                                                                                then
-                                                                                                                    echo "CONSTRAINT VIOLATED: $A must precede $B" >&2
-                                                                                                                    echo "${ builtins.concatStringsSep "" [ "$" "{" "IDX[*]" "}" ] }"
-                                                                                                                    VIOLATIONS=$(( VIOLATIONS + 1 ))
-                                                                                                                fi
-                                                                                                            done < ${ builtins.trace file file }
+                                                                                                                for (( j=i+1; j<N ; j++ ))
+                                                                                                                do
+                                                                                                                    A="${ builtins.concatStringsSep "" [ "$" "{" "LOG[I]" "}" ] }"
+                                                                                                                    B="${ builtins.concatStringsSep "" [ "$" "{" "LOG[J]" "}" ] }"
+                                                                                                                    if grep -q "^$A $B$" ${ file }
+                                                                                                                    then
+                                                                                                                        echo "CONSTRAINT VIOLATED: $A must precede $B" >&2
+                                                                                                                        VIOLATIONS=$(( VIOLATIONS + 1 ))
+                                                                                                                    fi
+                                                                                                                done
+                                                                                                            done
                                                                                                             echo "$VIOLATIONS"
                                                                                                         '' ;
                                                                                                 } ;
@@ -1213,9 +1213,25 @@
                                                                                                 [
                                                                                                     [
                                                                                                         [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "good"
+                                                                                                        ]
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                    [
+                                                                                                        [
+                                                                                                            "42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954"
+                                                                                                            "stall-for-process"
+                                                                                                        ]
+                                                                                                        [
                                                                                                             "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
                                                                                                             "good"
                                                                                                         ]
+                                                                                                    ]
+                                                                                                    [
                                                                                                         [
                                                                                                             "65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b"
                                                                                                             "stall-for-process"
