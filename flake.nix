@@ -1023,7 +1023,7 @@
                                                 builtins.concatLists
                                                     [
                                                         ( resources-fun false false false false false false ( self + "/expected/false/false/false/false/false/false/0/log.yaml" ) ( self + "/expected/false/false/false/false/false/false/1/log.yaml" ) ( self + "/expected/false/false/false/false/false/false/2/log.yaml" ) [ ] )
-                                                        ( resources-fun false false false false false true ( self + "/expected/false/false/false/false/false/true/0/log.yaml" ) ( self + "/expected/false/false/false/false/false/true/1/log.yaml" ) ( self + "/expected/false/false/false/false/false/trie/2/log.yaml" ) [ ] )
+                                                        ( resources-fun false false false false false true ( self + "/expected/false/false/false/false/false/true/0/log.yaml" ) ( self + "/expected/false/false/false/false/false/true/1/log.yaml" ) ( self + "/expected/false/false/false/false/false/true/2/log.yaml" ) [ ] )
                                                     ] ;
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             resources-fun =
