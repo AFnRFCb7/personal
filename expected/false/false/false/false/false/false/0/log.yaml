@@ -366,9 +366,9 @@
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: 42517f2153a49caa277c6f962fbf79bb3c1def1658e0be5bc6fb31141064550f7ea5468a25acbf18cfbe072f5feee736034eb84f8b48a0ccaa63b70dc26dc954
   has-standard-input: "true"
-  init-application: /nix/store/x190p2sx75c0bzxhzip8kd11isfzxhqh-init-application/bin/init-application
+  init-application: ../bin/init-application
   links: []
-  release-application: /nix/store/ikq428dmhwj2jj32fjw32wg2a2yh0fqi-release-application/bin/release-application
+  release-application: ../bin/release-application
   standard-error: ""
   standard-input: 91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80
   standard-output: 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
@@ -740,9 +740,9 @@
                 value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
   hash: 65d430787c6874fca016cb51d3348b0047c3c79f89faefd6b94371701690f77006a9da2256b7ded132ef0297022588d86cc59d3a95a2b412e0a7863eac40303b
   has-standard-input: "true"
-  init-application: /nix/store/v9hs9jm87pd30rw45zgpp7ils7j0vjib-init-application/bin/init-application
+  init-application: ../bin/init-application
   links: []
-  release-application: /nix/store/nskcdyjfyjxv983mgqmfdq7swj7y0and-release-application/bin/release-application
+  release-application: ../bin/release-application
   standard-error: ""
   standard-input: 91caebc6ea3ebe5b76e58d6ff22741badf8f57abf854235f20e0850d2aa310e98a8ce80eb5ed97b99c434380c6fd48a0631066cd5d3cb42ac3076de11ccf3d80
   standard-output: cb98f2058ac483240b32bc239ae41dc738b8c4878d86201abb170e7c0c04ceb5080c71d5f41550d301bf4dcaf5540b7d8979f41a240a91964a57d4448ec5407e
