@@ -1154,7 +1154,8 @@
                                                                                 bash = pkgs.bash ;
                                                                                 commands = commands ;
                                                                                 diffutils = pkgs.diffutils ;
-                                                                                fresh = fresh ;
+                                                                                fresh-checkpoint = fresh ;
+                                                                                fresh-resource = "/build/resources/mounts/0000000000000002" ;
                                                                                 label = label ;
                                                                                 order =
                                                                                     let
@@ -1335,7 +1336,8 @@
                                                                                                 ] ;
                                                                                             in "${ application }/bin/order" ;
                                                                                 post = post ;
-                                                                                resource = "/build/resources/mounts/0000000000000002" ;                                                                                stale = stale ;
+                                                                                stale-checkpoint = stale ;
+                                                                                stale-resource = null ;
                                                                                 stall =
                                                                                     let
                                                                                         application =
