@@ -1149,24 +1149,30 @@
                                                                     name = builtins.hashString "sha512" label ;
                                                                     value =
                                                                         rsrcs.check
-                                                                            {
-                                                                                commands = [ ] ;
-                                                                                diffutils = pkgs.diffutils ;
-                                                                                stall =
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "stall" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            sleep 1s
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                            in "${ application }/bin/stall" ;
-                                                                                processes = [ ] ;
-                                                                            } ;
+                                                                            (
+                                                                                let
+                                                                                    prefix = builtins.concatStringsSep "/" [ ] ;
+                                                                                    in
+                                                                                        {
+                                                                                            commands = [ ] ;
+                                                                                            diffutils = pkgs.diffutils ;
+                                                                                            stall =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "stall" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        sleep 1s
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                        in "${ application }/bin/stall" ;
+                                                                                            prefix = prefix ;
+                                                                                            processes = [ "fresh" ] ;
+                                                                                        }
+                                                                            ) ;
                                                                 }
                                                             ] ;
 					                        in
