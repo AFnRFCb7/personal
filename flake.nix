@@ -1158,7 +1158,7 @@
                                                                                                 [
                                                                                                     {
                                                                                                         command = { exit , ... } : exit ;
-                                                                                                        expected-log = self + "/" + prefix + "/log.yaml" ;
+                                                                                                        expected-log = self + ( "/" + prefix + "/log.yaml" ) ;
                                                                                                         expected-standard-error = self + "/" + prefix + "/standard-error" ;
                                                                                                         expected-standard-output = self + "/" + prefix + "/standard-output" ;
                                                                                                         expected-status = self + "/" + prefix + "/status" ;
