@@ -1158,10 +1158,9 @@
                                                                                                 [
                                                                                                     {
                                                                                                         command = { exit , ... } : exit ;
-                                                                                                        expected-log = self + ( "/" + prefix + "/log.yaml" ) ;
-                                                                                                        expected-standard-error = self + "/" + prefix + "/standard-error" ;
-                                                                                                        expected-standard-output = self + "/" + prefix + "/standard-output" ;
-                                                                                                        expected-status = self + "/" + prefix + "/status" ;
+                                                                                                        expected-log = self + ( "/expected" + prefix + "/log.yaml" ) ;
+                                                                                                        expected-standard-output = self + "/expected" + prefix + "/standard-output"  ;
+                                                                                                        expected-status = self + "/expoected" + prefix + "/status" ;
                                                                                                         process = { fresh , ... } : fresh ;
                                                                                                     }
                                                                                                 ] ;
