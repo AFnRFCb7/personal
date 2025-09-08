@@ -1151,10 +1151,20 @@
                                                                         rsrcs.check
                                                                             (
                                                                                 let
-                                                                                    prefix = builtins.concatStringsSep "/" [ ] ;
+                                                                                    prefix = builtins.concatStringsSep "/" ( builtins.map ( b : if b then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status transient ] ) ;
                                                                                     in
                                                                                         {
-                                                                                            commands = [ ] ;
+                                                                                            commands =
+                                                                                                [
+                                                                                                    {
+                                                                                                        command = { exit , ... } : exit ;
+                                                                                                        expected-log = self + "/" + prefix + "/log.yaml" ;
+                                                                                                        expected-standard-error = self + "/" + prefix + "/standard-error" ;
+                                                                                                        expected-standard-output = self + "/" + prefix + "/standard-output" ;
+                                                                                                        expected-status = self + "/" + prefix + "/status" ;
+                                                                                                        process = { fresh , ... } : fresh ;
+                                                                                                    }
+                                                                                                ] ;
                                                                                             diffutils = pkgs.diffutils ;
                                                                                             stall =
                                                                                                 let
