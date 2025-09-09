@@ -1178,8 +1178,7 @@
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/stall" ;
-                                                                                            prefix = prefix ;
-                                                                                            processes = [ "fresh" "stale" "post" ] ;
+                                                                                            processes = [ "fresh" "stale" ] ;
                                                                                         }
                                                                             ) ;
                                                                 }
