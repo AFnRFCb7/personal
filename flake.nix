@@ -1163,23 +1163,7 @@
                                                                                                     '' ;
                                                                                     in
                                                                                         {
-                                                                                            commands =
-                                                                                                [
-                                                                                                    {
-                                                                                                        command = { implementation , ... } : resource implementation ;
-                                                                                                        expected-log = self + ( "/expected/" + prefix + "/log.yaml" ) ;
-                                                                                                        expected-standard-output = self + "/expected/" + prefix + "/standard-output"  ;
-                                                                                                        expected-status = self + "/expected/" + prefix + "/status" ;
-                                                                                                        process = { fresh , ... } : fresh ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        command = { implementation , ... } : resource implementation ;
-                                                                                                        expected-log = self + ( "/expected/" + prefix + "/log.yaml" ) ;
-                                                                                                        expected-standard-output = self + "/expected/" + prefix + "/standard-output"  ;
-                                                                                                        expected-status = self + "/expected/" + prefix + "/status" ;
-                                                                                                        process = { fresh , ... } : fresh ;
-                                                                                                    }
-                                                                                                ] ;
+                                                                                            commands = self + "/expected" ;
                                                                                             diffutils = pkgs.diffutils ;
                                                                                             stall =
                                                                                                 let
@@ -1195,7 +1179,7 @@
                                                                                                             } ;
                                                                                                         in "${ application }/bin/stall" ;
                                                                                             prefix = prefix ;
-                                                                                            processes = [ "fresh" "stale" ] ;
+                                                                                            processes = [ "fresh" "stale" "post" ] ;
                                                                                         }
                                                                             ) ;
                                                                 }
