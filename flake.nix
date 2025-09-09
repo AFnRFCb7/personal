@@ -1152,20 +1152,29 @@
                                                                             (
                                                                                 let
                                                                                     prefix = builtins.concatStringsSep "/" ( builtins.map ( b : if b then "true" else "false" ) [ outer-init-error outer-init-target inner-init-status inner-release-status outer-release-status transient ] ) ;
+                                                                                    resource =
+                                                                                        implementation :
+                                                                                            let
+                                                                                                arguments = [ "cea3ac8c7334297abddadfba46c14c32125602110dee2dde9f5cb194382c010c09bb83ab44d206171b9967a980c649e5d24b0294c1c2cda4f550d7f02c412825" "c6112287c9b228b38c000042aeff540f5bdf920fea5fc849efd98587ab5dc18eb925c2acd99c5964cdc3f9942bcddb5c1fe220beecc292a05c1580485f811850" ] ;
+                                                                                                standard-input = "ef019496ff86c288d55fff082c7ca9483b5230a7caa49f729c4599b147cdb0169d4a638b87951cbbdf6cbda1c1475f96479837b665e0fbd3588568d166b30e26" ;
+                                                                                                in
+                                                                                                    ''
+                                                                                                        ${ implementation } ${ builtins.concatStringsSep " " arguments } < ${ builtins.toFile "standard-input" standard-input }
+                                                                                                    '' ;
                                                                                     in
                                                                                         {
                                                                                             commands =
                                                                                                 [
                                                                                                     {
-                                                                                                        command = { implementation , ... } : "${ implementation } a954303d151549e4e9ef3af745d8616b8143e8f95b81a0efeb4f51681fc78cd5038e581def6d03ec8993ead8ba91d8f98581a6bb4d59c975121c106e8082214f 0eb8f5249ecb2a35f3313c05066c46232ee631479b4a646096ae67974b55a3afb9f4dd334df39b24de6ecccae701f4a8d6b7e62a5249f1536568a96435ffefa5 < ${ builtins.toFile "standard-input" "fd85206326358b4a5bcf3116bfb9a7e94a2c6e93b895e1b874eaf8708802bec35915cf3dbf4d97685d826e468c73beedf190f64a89bb13bedeb14bf6816d0d06" }" ;
-                                                                                                        expected-log = self + ( "/expected/" + prefix + "/0/log.yaml" ) ;
+                                                                                                        command = { implementation , ... } : resource implementation ;
+                                                                                                        expected-log = self + ( "/expected/" + prefix + "/log.yaml" ) ;
                                                                                                         expected-standard-output = self + "/expected/" + prefix + "/standard-output"  ;
                                                                                                         expected-status = self + "/expected/" + prefix + "/status" ;
                                                                                                         process = { fresh , ... } : fresh ;
                                                                                                     }
                                                                                                     {
-                                                                                                        command = { exit , ... } : exit ;
-                                                                                                        expected-log = self + ( "/expected/" + prefix + "/0/log.yaml" ) ;
+                                                                                                        command = { implementation , ... } : resource implementation ;
+                                                                                                        expected-log = self + ( "/expected/" + prefix + "/log.yaml" ) ;
                                                                                                         expected-standard-output = self + "/expected/" + prefix + "/standard-output"  ;
                                                                                                         expected-status = self + "/expected/" + prefix + "/status" ;
                                                                                                         process = { fresh , ... } : fresh ;
@@ -1186,7 +1195,7 @@
                                                                                                             } ;
                                                                                                         in "${ application }/bin/stall" ;
                                                                                             prefix = prefix ;
-                                                                                            processes = [ "fresh" ] ;
+                                                                                            processes = [ "fresh" "stale" ] ;
                                                                                         }
                                                                             ) ;
                                                                 }
