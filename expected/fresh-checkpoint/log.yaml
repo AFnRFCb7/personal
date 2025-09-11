@@ -1,0 +1,766 @@
+- arguments:
+    - ""
+  description:
+    - path: []
+      type: set
+      value:
+        buildFHSUserEnv:
+          - path:
+              - buildFHSUserEnv
+            type: set
+            value:
+              __functionArgs:
+                - path:
+                    - buildFHSUserEnv
+                    - __functionArgs
+                  type: set
+                  value:
+                    dieWithParent:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - dieWithParent
+                        type: bool
+                        value: true
+                    extraBwrapArgs:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - extraBwrapArgs
+                        type: bool
+                        value: true
+                    extraInstallCommands:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - extraInstallCommands
+                        type: bool
+                        value: true
+                    meta:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - meta
+                        type: bool
+                        value: true
+                    name:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - name
+                        type: bool
+                        value: true
+                    passthru:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - passthru
+                        type: bool
+                        value: true
+                    pname:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - pname
+                        type: bool
+                        value: true
+                    runScript:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - runScript
+                        type: bool
+                        value: true
+                    unshareCgroup:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareCgroup
+                        type: bool
+                        value: true
+                    unshareIpc:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareIpc
+                        type: bool
+                        value: true
+                    unshareNet:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareNet
+                        type: bool
+                        value: true
+                    unsharePid:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unsharePid
+                        type: bool
+                        value: true
+                    unshareUser:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareUser
+                        type: bool
+                        value: true
+                    unshareUts:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareUts
+                        type: bool
+                        value: true
+                    version:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - version
+                        type: bool
+                        value: true
+              __functor:
+                - path:
+                    - buildFHSUserEnv
+                    - __functor
+                  type: lambda
+                  value: null
+              override:
+                - path:
+                    - buildFHSUserEnv
+                    - override
+                  type: set
+                  value:
+                    __functionArgs:
+                      - path:
+                          - buildFHSUserEnv
+                          - override
+                          - __functionArgs
+                        type: set
+                        value:
+                          bubblewrap:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - bubblewrap
+                              type: bool
+                              value: false
+                          callPackage:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - callPackage
+                              type: bool
+                              value: false
+                          coreutils:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - coreutils
+                              type: bool
+                              value: false
+                          glibc:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - glibc
+                              type: bool
+                              value: false
+                          lib:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - lib
+                              type: bool
+                              value: false
+                          pkgsi686Linux:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - pkgsi686Linux
+                              type: bool
+                              value: false
+                          runCommandLocal:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - runCommandLocal
+                              type: bool
+                              value: false
+                          stdenv:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - stdenv
+                              type: bool
+                              value: false
+                          writeShellScript:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - writeShellScript
+                              type: bool
+                              value: false
+                    __functor:
+                      - path:
+                          - buildFHSUserEnv
+                          - override
+                          - __functor
+                        type: lambda
+                        value: null
+        coreutils:
+          - path:
+              - coreutils
+            type: set
+            value:
+              - path:
+                  - coreutils
+                  - outPath
+                type: string
+                value: /nix/store/jy06yi9z3vkn8w5zz84azhgb8n7gk8sh-coreutils-9.3
+        findutils:
+          - path:
+              - findutils
+            type: set
+            value:
+              - path:
+                  - findutils
+                  - outPath
+                type: string
+                value: /nix/store/gbi8105qpl2r7h56h4cqwbzmhl9idz3z-findutils-4.9.0
+        flock:
+          - path:
+              - flock
+            type: set
+            value:
+              - path:
+                  - flock
+                  - outPath
+                type: string
+                value: /nix/store/wnqkv10zlj75v1wg1d2j6l5k91p7jaiv-flock-0.4.0
+        gawk:
+          - path:
+              - gawk
+            type: set
+            value:
+              - path:
+                  - gawk
+                  - outPath
+                type: string
+                value: /nix/store/8am2dygc7fnqmwjq9hr2fbbxf3mqp5bk-gawk-5.2.2
+        init:
+          - path:
+              - init
+            type: lambda
+            value: null
+        inotify-tools:
+          - path:
+              - inotify-tools
+            type: set
+            value:
+              - path:
+                  - inotify-tools
+                  - outPath
+                type: string
+                value: /nix/store/swij9l4qkiylhf5vjvkgamzvyr9cs6cv-inotify-tools-4.23.9.0
+        jq:
+          - path:
+              - jq
+            type: set
+            value:
+              - path:
+                  - jq
+                  - outPath
+                type: string
+                value: /nix/store/zcsw4ams0imnj7d3kpswiwwjkp3jqaq1-jq-1.7.1-bin
+        makeBinPath:
+          - path:
+              - makeBinPath
+            type: lambda
+            value: null
+        makeWrapper:
+          - path:
+              - makeWrapper
+            type: set
+            value:
+              - path:
+                  - makeWrapper
+                  - outPath
+                type: string
+                value: /nix/store/9a184znvryzm5fag8lmdhavjx14kbpp8-make-shell-wrapper-hook
+        mkDerivation:
+          - path:
+              - mkDerivation
+            type: lambda
+            value: null
+        ps:
+          - path:
+              - ps
+            type: set
+            value:
+              - path:
+                  - ps
+                  - outPath
+                type: string
+                value: /nix/store/56giw376yfw33v2wpsk6igbs0jk1ac1a-ps-procps-3.3.17
+        release:
+          - path:
+              - release
+            type: string
+            value: /nix/store/xrc7d34rk0nqf23hzjcidr1k2mm6dqbs-release/bin/release
+        resources-directory:
+          - path:
+              - resources-directory
+            type: string
+            value: /build/resources
+        seed:
+          - path:
+              - seed
+            type: string
+            value: inner
+        transient:
+          - path:
+              - transient
+            type: bool
+            value: false
+        visitor:
+          - path:
+              - visitor
+            type: set
+            value:
+              - path:
+                  - visitor
+                  - outPath
+                type: string
+                value: /nix/store/5fmpfmpz1bflajbqvf73bhywag9vwvzm-source
+        writeShellApplication:
+          - path:
+              - writeShellApplication
+            type: lambda
+            value: null
+        yq-go:
+          - path:
+              - yq-go
+            type: set
+            value:
+              - path:
+                  - yq-go
+                  - outPath
+                type: string
+                value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
+  hash: d073d38b303ce925f15b1913d3b49344f523ff8793be46ab53da755e28076268c6b773a5e9256e5b1c90b4505de1fa4a83ab80806b0ddc45851d6baf6ecf54be
+  has-standard-input: "true"
+  init-application: '[REDACTED]'
+  links: []
+  release-application: '[REDACTED]'
+  standard-error: ""
+  standard-input: 12f4e006b08bc39acbe2837bb1d57628d0b9c734273f9ba571a0edcedabad800abfd207a4f8d7d670db6c43b6d1b2fcde20f7a40be2e639066c809c5bf34e56e
+  standard-output: cb98f2058ac483240b32bc239ae41dc738b8c4878d86201abb170e7c0c04ceb5080c71d5f41550d301bf4dcaf5540b7d8979f41a240a91964a57d4448ec5407e
+  status: "0"
+  transient: ""
+  type: good
+- hash: d073d38b303ce925f15b1913d3b49344f523ff8793be46ab53da755e28076268c6b773a5e9256e5b1c90b4505de1fa4a83ab80806b0ddc45851d6baf6ecf54be
+  originator-pid: "124"
+  type: stall-for-process
+- arguments:
+    - 0561fa3db77548e92ab215f7589ede19997fb16711569b9eb7a918c9c620b014e05a77f5d2403a7d4a811ef773652c7d36ada722ff47cdf1a4d5ce615bfdcfbe
+    - f3ae212a70c336c41ebed729de75eef7c4929b886458ce1b93e12721a8081cc3ccd1bfdf89da70dda734a2dbc2cdb105a5eb047089da0c98d2c041ab90f86717
+  description:
+    - path: []
+      type: set
+      value:
+        buildFHSUserEnv:
+          - path:
+              - buildFHSUserEnv
+            type: set
+            value:
+              __functionArgs:
+                - path:
+                    - buildFHSUserEnv
+                    - __functionArgs
+                  type: set
+                  value:
+                    dieWithParent:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - dieWithParent
+                        type: bool
+                        value: true
+                    extraBwrapArgs:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - extraBwrapArgs
+                        type: bool
+                        value: true
+                    extraInstallCommands:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - extraInstallCommands
+                        type: bool
+                        value: true
+                    meta:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - meta
+                        type: bool
+                        value: true
+                    name:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - name
+                        type: bool
+                        value: true
+                    passthru:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - passthru
+                        type: bool
+                        value: true
+                    pname:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - pname
+                        type: bool
+                        value: true
+                    runScript:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - runScript
+                        type: bool
+                        value: true
+                    unshareCgroup:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareCgroup
+                        type: bool
+                        value: true
+                    unshareIpc:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareIpc
+                        type: bool
+                        value: true
+                    unshareNet:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareNet
+                        type: bool
+                        value: true
+                    unsharePid:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unsharePid
+                        type: bool
+                        value: true
+                    unshareUser:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareUser
+                        type: bool
+                        value: true
+                    unshareUts:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - unshareUts
+                        type: bool
+                        value: true
+                    version:
+                      - path:
+                          - buildFHSUserEnv
+                          - __functionArgs
+                          - version
+                        type: bool
+                        value: true
+              __functor:
+                - path:
+                    - buildFHSUserEnv
+                    - __functor
+                  type: lambda
+                  value: null
+              override:
+                - path:
+                    - buildFHSUserEnv
+                    - override
+                  type: set
+                  value:
+                    __functionArgs:
+                      - path:
+                          - buildFHSUserEnv
+                          - override
+                          - __functionArgs
+                        type: set
+                        value:
+                          bubblewrap:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - bubblewrap
+                              type: bool
+                              value: false
+                          callPackage:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - callPackage
+                              type: bool
+                              value: false
+                          coreutils:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - coreutils
+                              type: bool
+                              value: false
+                          glibc:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - glibc
+                              type: bool
+                              value: false
+                          lib:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - lib
+                              type: bool
+                              value: false
+                          pkgsi686Linux:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - pkgsi686Linux
+                              type: bool
+                              value: false
+                          runCommandLocal:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - runCommandLocal
+                              type: bool
+                              value: false
+                          stdenv:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - stdenv
+                              type: bool
+                              value: false
+                          writeShellScript:
+                            - path:
+                                - buildFHSUserEnv
+                                - override
+                                - __functionArgs
+                                - writeShellScript
+                              type: bool
+                              value: false
+                    __functor:
+                      - path:
+                          - buildFHSUserEnv
+                          - override
+                          - __functor
+                        type: lambda
+                        value: null
+        coreutils:
+          - path:
+              - coreutils
+            type: set
+            value:
+              - path:
+                  - coreutils
+                  - outPath
+                type: string
+                value: /nix/store/jy06yi9z3vkn8w5zz84azhgb8n7gk8sh-coreutils-9.3
+        findutils:
+          - path:
+              - findutils
+            type: set
+            value:
+              - path:
+                  - findutils
+                  - outPath
+                type: string
+                value: /nix/store/gbi8105qpl2r7h56h4cqwbzmhl9idz3z-findutils-4.9.0
+        flock:
+          - path:
+              - flock
+            type: set
+            value:
+              - path:
+                  - flock
+                  - outPath
+                type: string
+                value: /nix/store/wnqkv10zlj75v1wg1d2j6l5k91p7jaiv-flock-0.4.0
+        gawk:
+          - path:
+              - gawk
+            type: set
+            value:
+              - path:
+                  - gawk
+                  - outPath
+                type: string
+                value: /nix/store/8am2dygc7fnqmwjq9hr2fbbxf3mqp5bk-gawk-5.2.2
+        init:
+          - path:
+              - init
+            type: lambda
+            value: null
+        inotify-tools:
+          - path:
+              - inotify-tools
+            type: set
+            value:
+              - path:
+                  - inotify-tools
+                  - outPath
+                type: string
+                value: /nix/store/swij9l4qkiylhf5vjvkgamzvyr9cs6cv-inotify-tools-4.23.9.0
+        jq:
+          - path:
+              - jq
+            type: set
+            value:
+              - path:
+                  - jq
+                  - outPath
+                type: string
+                value: /nix/store/zcsw4ams0imnj7d3kpswiwwjkp3jqaq1-jq-1.7.1-bin
+        makeBinPath:
+          - path:
+              - makeBinPath
+            type: lambda
+            value: null
+        makeWrapper:
+          - path:
+              - makeWrapper
+            type: set
+            value:
+              - path:
+                  - makeWrapper
+                  - outPath
+                type: string
+                value: /nix/store/9a184znvryzm5fag8lmdhavjx14kbpp8-make-shell-wrapper-hook
+        mkDerivation:
+          - path:
+              - mkDerivation
+            type: lambda
+            value: null
+        ps:
+          - path:
+              - ps
+            type: set
+            value:
+              - path:
+                  - ps
+                  - outPath
+                type: string
+                value: /nix/store/56giw376yfw33v2wpsk6igbs0jk1ac1a-ps-procps-3.3.17
+        release:
+          - path:
+              - release
+            type: string
+            value: /nix/store/wahn59k9bgx2knvrqc1f3kc8zg6lx9h7-release/bin/release
+        resources-directory:
+          - path:
+              - resources-directory
+            type: string
+            value: /build/resources
+        seed:
+          - path:
+              - seed
+            type: string
+            value: outer
+        targets:
+          - path:
+              - targets
+            type: list
+            value:
+              - - path:
+                    - targets
+                    - 0
+                  type: string
+                  value: target
+        visitor:
+          - path:
+              - visitor
+            type: set
+            value:
+              - path:
+                  - visitor
+                  - outPath
+                type: string
+                value: /nix/store/5fmpfmpz1bflajbqvf73bhywag9vwvzm-source
+        writeShellApplication:
+          - path:
+              - writeShellApplication
+            type: lambda
+            value: null
+        yq-go:
+          - path:
+              - yq-go
+            type: set
+            value:
+              - path:
+                  - yq-go
+                  - outPath
+                type: string
+                value: /nix/store/ig74bl18mcmc2xx74h55jfdq619h45c0-yq-go-4.40.5
+  hash: 0c0cbd146d45acf57b5e47535df5ac4a34632dda5d520f37db3a5628a51e82b6e494379d289f16c12b22ea24245f9ff2ff274f4453c6815fbf1f5f77c10e286b
+  has-standard-input: "true"
+  init-application: '[REDACTED]'
+  links: []
+  release-application: '[REDACTED]'
+  standard-error: ""
+  standard-input: 12f4e006b08bc39acbe2837bb1d57628d0b9c734273f9ba571a0edcedabad800abfd207a4f8d7d670db6c43b6d1b2fcde20f7a40be2e639066c809c5bf34e56e
+  standard-output: 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
+  status: "0"
+  transient: ""
+  type: good
+- hash: d073d38b303ce925f15b1913d3b49344f523ff8793be46ab53da755e28076268c6b773a5e9256e5b1c90b4505de1fa4a83ab80806b0ddc45851d6baf6ecf54be
+  head: </build/resources/links/0000000000000002/0000000000000006>
+  type: stall-for-cleanup
+- hash: 0c0cbd146d45acf57b5e47535df5ac4a34632dda5d520f37db3a5628a51e82b6e494379d289f16c12b22ea24245f9ff2ff274f4453c6815fbf1f5f77c10e286b
+  originator-pid: "50"
+  type: stall-for-process
+- good: /build/resources/temporary/0000000000000021
+  hash: d073d38b303ce925f15b1913d3b49344f523ff8793be46ab53da755e28076268c6b773a5e9256e5b1c90b4505de1fa4a83ab80806b0ddc45851d6baf6ecf54be
+  type: teardown-final
+- hash: 0c0cbd146d45acf57b5e47535df5ac4a34632dda5d520f37db3a5628a51e82b6e494379d289f16c12b22ea24245f9ff2ff274f4453c6815fbf1f5f77c10e286b
+  head: <>
+  type: stall-for-cleanup
+- good: /build/resources/temporary/0000000000000029
+  hash: 0c0cbd146d45acf57b5e47535df5ac4a34632dda5d520f37db3a5628a51e82b6e494379d289f16c12b22ea24245f9ff2ff274f4453c6815fbf1f5f77c10e286b
+  type: teardown-final
