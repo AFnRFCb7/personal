@@ -1164,6 +1164,7 @@
                                                                                     in
                                                                                         {
                                                                                             commands = self + "/expected" ;
+                                                                                            delay = 1 ;
                                                                                             diffutils = pkgs.diffutils ;
                                                                                             stall =
                                                                                                 let
