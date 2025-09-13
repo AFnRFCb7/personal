@@ -1186,19 +1186,6 @@
                                                                                             commands = self + "/expected" ;
                                                                                             delay = 1 ;
                                                                                             diffutils = pkgs.diffutils ;
-                                                                                            stall =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "stall" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        sleep 1s
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                        in "${ application }/bin/stall" ;
                                                                                             processes = [ "fresh" "stale" ] ;
                                                                                         }
                                                                             ) ;
