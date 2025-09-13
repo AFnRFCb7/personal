@@ -1184,7 +1184,7 @@
                                                                                     in
                                                                                         {
                                                                                             commands = self + "/expected" ;
-                                                                                            delay = 1 ;
+                                                                                            delay = 10 ;
                                                                                             diffutils = pkgs.diffutils ;
                                                                                             processes = [ "fresh" "stale" ] ;
                                                                                         }
