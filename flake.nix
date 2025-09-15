@@ -590,16 +590,13 @@
                                                                                     description = point.description ;
                                                                                     findutils = pkgs.findutils ;
                                                                                     flock = pkgs.flock ;
-                                                                                    gawk = pkgs.gawk ;
-                                                                                    inotify-tools = pkgs.inotify-tools ;
-                                                                                    jq = pkgs.jq ;
                                                                                     init = point.init ;
                                                                                     makeBinPath = pkgs.lib.makeBinPath ;
                                                                                     makeWrapper = pkgs.makeWrapper ;
                                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                                     ps = pkgs.ps ;
+                                                                                    redis = pkgs.redis ;
                                                                                     resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                                    release = point.release ;
                                                                                     seed = { path = path ; seed = seed ; } ;
                                                                                     targets = point.targets ;
                                                                                     transient = point.transient ;
@@ -975,6 +972,7 @@
                                             } ;
                             in
                                 {
+                                    checks = "" ;
                                     modules =
                                         {
                                             user = user ;
@@ -1016,113 +1014,6 @@
                                                             } ;
                                                     } ;
                                         } ;
-                                    checks.${ system } =
-                                        let
-                                            delay = 1 ;
-                                            list =
-                                                builtins.concatLists
-                                                    [
-                                                        ( resources-fun false false false false [ ] )
-                                                    ] ;
-                                            pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-                                            resources-fun =
-                                                outer-init-error : outer-init-target : outer-release-status : transient : commands :
-                                                    let
-                                                        rsrcs =
-                                                            resources.lib
-                                                                {
-                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                    coreutils = pkgs.coreutils ;
-                                                                    findutils = pkgs.findutils ;
-                                                                    flock = pkgs.flock ;
-                                                                    gawk = pkgs.gawk ;
-                                                                    init =
-                                                                        self :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo 47327ad3eb2752176d84351d344582a301a89ce0333cd91bb3faa4e5420b1a0ebb1600c368d941c334c003f08683a8f47f8491e557fbb39eae080ba83f81375f > /mount/${ if outer-init-target then "128fea4cfff62960" else "target" }
-                                                                                                    echo 0222ce319d2c8cbafe6848639aa582f0479199e8e4e4bda8e6efd915e0113d465b77c1a1a9e6984767c9267e6ebab96e4f3ffb930a83d773533985605584a1c7
-                                                                                                    echo 254e430b0d85bf0f03e2cee73734901ac0c6cd6cac0b01522e24ed87efe588b019d82a5edc544de48c72600cffe04836fadaa8b0f4654f1b8a0dfbe2a5b033a0 ${ if outer-init-error then ">&2" else "> /scratch/outer-init-error" }
-                                                                                                '';
-                                                                                        } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                    jq = pkgs.jq ;
-                                                                    inotify-tools = pkgs.inotify-tools ;
-                                                                    makeBinPath = pkgs.lib.makeBinPath ;
-                                                                    makeWrapper = pkgs.makeWrapper ;
-                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                    ps = pkgs.ps ;
-                                                                    release =
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "release" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                echo 8d6fbfb0600dbadc2cd421f1a212144d023b49cb12388779d4c2f98d51e34795be16ebb7ec6d621bd85f85001adf46ce79711b097cc1d9e3bb65cfdefc2e10fb
-                                                                                                echo a89f5e1a40c37509d44c5f10b22d34c57f58f8516b211e7adb3834223d65dab9e29cb86d180b82db51e5e6561d0d7dfc98848d54f44de69319e0f80dd4caa8b2 ${ if outer-release-status then ">&2" else "> /scratch/outer-release-error" }
-                                                                                                exit ${ if outer-release-status then "249" else "0" }
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/release" ;
-                                                                    resources-directory = "/build/resources" ;
-                                                                    seed = "outer" ;
-                                                                    targets = [ "target" ] ;
-                                                                    visitor = visitor ;
-                                                                    yq-go = pkgs.yq-go ;
-                                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                                } ;
-                                                        in
-                                                            [
-                                                                {
-                                                                    name = "name" ;
-                                                                    value =
-                                                                        rsrcs.check
-                                                                            (
-                                                                                let
-                                                                                    resource =
-                                                                                        implementation :
-                                                                                            let
-                                                                                                arguments = [ "cea3ac8c7334297abddadfba46c14c32125602110dee2dde9f5cb194382c010c09bb83ab44d206171b9967a980c649e5d24b0294c1c2cda4f550d7f02c412825" "c6112287c9b228b38c000042aeff540f5bdf920fea5fc849efd98587ab5dc18eb925c2acd99c5964cdc3f9942bcddb5c1fe220beecc292a05c1580485f811850" ] ;
-                                                                                                standard-input = "ef019496ff86c288d55fff082c7ca9483b5230a7caa49f729c4599b147cdb0169d4a638b87951cbbdf6cbda1c1475f96479837b665e0fbd3588568d166b30e26" ;
-                                                                                                in
-                                                                                                    ''
-                                                                                                        ${ implementation } ${ builtins.concatStringsSep " " arguments } < ${ builtins.toFile "standard-input" standard-input }
-                                                                                                    '' ;
-                                                                                    in
-                                                                                        {
-                                                                                            commands = self + "/expected" ;
-                                                                                            delay = 5 ;
-                                                                                            diffutils = pkgs.diffutils ;
-                                                                                            golden-path = [ ] ;
-                                                                                            processes = [ "fresh" ] ;
-                                                                                        }
-                                                                            ) ;
-                                                                }
-                                                            ] ;
-					                        in
-						                        {
-						                            foobar =
-						                                pkgs.stdenv.mkDerivation
-						                                    {
-						                                        installPhase =
-						                                            ''
-						                                                touch $out
-						                                                # echo e16c57c54d280eb8114187386ba375f3e507ee2b91cd76ffa6f2f76da709d2daf51ae387d65ebd8775b715d6b5cb85d17c39d362abda86c6bdb623540f52306d >&2
-						                                                # exit 167
-						                                            '' ;
-                                                                name = "foobar" ;
-                                                                src = ./. ;
-						                                    } ;
-                                                } // ( builtins.listToAttrs list ) ;
                                 } ;
             } ;
 }
