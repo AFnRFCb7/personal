@@ -972,7 +972,40 @@
                                             } ;
                             in
                                 {
-                                    checks = { } ;
+                                    checks.${ system } =
+                                        let
+                                            pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
+                                            rsrcs =
+                                                resources.lib
+                                                    {
+                                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                        coreutils = pkgs.coreutils ;
+                                                        findutils = pkgs.findutils ;
+                                                        flock = pkgs.flock ;
+                                                        init =
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "init" ;
+                                                                    runtimeInputs = [ ] ;
+                                                                    text =
+                                                                        ''
+                                                                        '' ;
+                                                                } ;
+                                                        makeBinPath = pkgs.lib.makeBinPath ;
+                                                        makeWrapper = pkgs.makeWrapper ;
+                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                        ps = pkgs.ps ;
+                                                        redis = pkgs.redis ;
+                                                        resources-directory = "/resources" ;
+                                                        targets = [ "target" ] ;
+                                                        transient = false ;
+                                                        visitor = visitor ;
+                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                        yq-go = pkgs.yq-go ;
+                                                    } ;
+                                            in
+                                                {
+                                                } ;
                                     modules =
                                         {
                                             user = user ;
