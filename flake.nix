@@ -972,7 +972,7 @@
                                             } ;
                             in
                                 {
-                                    checks = "" ;
+                                    checks = { } ;
                                     modules =
                                         {
                                             user = user ;
