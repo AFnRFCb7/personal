@@ -1102,6 +1102,7 @@
                                                                                             commands = self + "/expected" ;
                                                                                             delay = 5 ;
                                                                                             diffutils = pkgs.diffutils ;
+                                                                                            golden-path = [ ] ;
                                                                                             processes = [ "fresh" ] ;
                                                                                         }
                                                                             ) ;
