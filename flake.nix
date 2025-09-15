@@ -1103,7 +1103,7 @@
                                                                                             delay = 5 ;
                                                                                             diffutils = pkgs.diffutils ;
                                                                                             golden-path = [ ] ;
-                                                                                            processes = [ "fresh" ] ;
+                                                                                            processes = [ "fresh" "stale" ] ;
                                                                                         }
                                                                             ) ;
                                                                 }
