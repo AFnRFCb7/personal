@@ -591,6 +591,7 @@
                                                                                     findutils = pkgs.findutils ;
                                                                                     flock = pkgs.flock ;
                                                                                     init = point.init ;
+                                                                                    jq = pkgs.jq ;
                                                                                     makeBinPath = pkgs.lib.makeBinPath ;
                                                                                     makeWrapper = pkgs.makeWrapper ;
                                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
@@ -983,20 +984,26 @@
                                                         findutils = pkgs.findutils ;
                                                         flock = pkgs.flock ;
                                                         init =
-                                                            pkgs.writeShellApplication
-                                                                {
-                                                                    name = "init" ;
-                                                                    runtimeInputs = [ ] ;
-                                                                    text =
-                                                                        ''
-                                                                        '' ;
-                                                                } ;
+                                                            self :
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "init" ;
+                                                                                runtimeInputs = [ ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        touch /mount/target
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/init" ;
+                                                        jq = pkgs.jq ;
                                                         makeBinPath = pkgs.lib.makeBinPath ;
                                                         makeWrapper = pkgs.makeWrapper ;
                                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                                         ps = pkgs.ps ;
                                                         redis = pkgs.redis ;
-                                                        resources-directory = "/resources" ;
+                                                        resources-directory = "/build/resources" ;
                                                         targets = [ "target" ] ;
                                                         transient = false ;
                                                         visitor = visitor ;
@@ -1005,6 +1012,17 @@
                                                     } ;
                                             in
                                                 {
+                                                    good =
+                                                        rsrcs.check
+                                                            {
+                                                                arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                                payload =
+                                                                    {
+
+                                                                    } ;
+                                                                standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                                standard-output = "" ;
+                                                            } ;
                                                 } ;
                                     modules =
                                         {
