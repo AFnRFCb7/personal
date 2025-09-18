@@ -984,7 +984,8 @@
                                                                                 runtimeInputs = [ ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        touch /mount/target
+                                                                                        echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
+                                                                                        touch /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
@@ -995,7 +996,7 @@
                                                         ps = pkgs.ps ;
                                                         redis = pkgs.redis ;
                                                         resources-directory = "/build/resources" ;
-                                                        targets = [ "target" ] ;
+                                                        targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
                                                         transient = false ;
                                                         visitor = visitor ;
                                                         writeShellApplication = pkgs.writeShellApplication ;
@@ -1003,7 +1004,7 @@
                                                     } ;
                                             in
                                                 {
-                                                    good =
+                                                    "9fa46607359f0135bc334656397596a9d53760152b243a7f7781e0e006184b55ce7e77716b1477273b9d2139ee67b1f88b6b8ae3f728ba7bed7cee6cee8d6185" =
                                                         rsrcs.check
                                                             {
                                                                 arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
@@ -1012,9 +1013,9 @@
                                                                 expected-originator-pid = 37 ;
                                                                 expected-provenance = "new" ;
                                                                 expected-standard-error = "" ;
-                                                                expected-standard-output = "" ;
+                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
                                                                 expected-status = 0 ;
-                                                                expected-targets = [ ] ;
+                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
                                                                 expected-transient = -1 ;
                                                                 resources-directory-fixture =
                                                                     resources-directory :
