@@ -219,7 +219,6 @@
                                                                             in builtins.map mapper sorted ;
                                                                     in
                                                                         {
-                                                                            description = "ssh config" ;
                                                                             init =
                                                                                 resources : self :
                                                                                     let
@@ -252,7 +251,6 @@
                                                                 release ? null
                                                             } : ignore :
                                                                 {
-                                                                    description = "git repository" ;
                                                                     init =
                                                                         resources : self :
                                                                             let
@@ -349,7 +347,6 @@
                                                                         alpha =
                                                                             ignore :
                                                                                 {
-                                                                                    description = seed : builtins.elemAt seed.path 0 ;
                                                                                     init =
                                                                                         resources : self :
                                                                                             let
@@ -381,7 +378,6 @@
                                                                         beta =
                                                                             ignore :
                                                                                 {
-                                                                                    description = seed : builtins.elemAt seed.path 0 ;
                                                                                     init =
                                                                                         resources : self :
                                                                                             let
@@ -473,7 +469,6 @@
                                                                 home =
                                                                     ignore :
                                                                         {
-                                                                            description = "home" ;
                                                                             init =
                                                                                 resources : self :
                                                                                     let
@@ -554,7 +549,6 @@
                                                                             if value == "regular" then
                                                                                 ignore :
                                                                                     {
-                                                                                        description = "secret" ;
                                                                                         init =
                                                                                             resources : self :
                                                                                                 let
@@ -587,7 +581,6 @@
                                                                                 {
                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                                     coreutils = pkgs.coreutils ;
-                                                                                    description = point.description ;
                                                                                     findutils = pkgs.findutils ;
                                                                                     flock = pkgs.flock ;
                                                                                     init = point.init ;
@@ -609,14 +602,12 @@
                                                                             let
                                                                                 identity =
                                                                                     {
-                                                                                        description ? null ,
                                                                                         init ? null ,
                                                                                         release ? null ,
                                                                                         targets ? [ ] ,
                                                                                         transient ? false
                                                                                     } :
                                                                                         {
-                                                                                            description = description ;
                                                                                             init = if builtins.typeOf init == "lambda" then init resources_ else init ;
                                                                                             release = release ;
                                                                                             targets = targets ;
@@ -1016,12 +1007,19 @@
                                                         rsrcs.check
                                                             {
                                                                 arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
-                                                                payload =
-                                                                    {
-
-                                                                    } ;
+                                                                expected-dependencies = [ ] ;
+                                                                expected-hash = "56b48a44865dbc2bc1334597fc12e9257ca428ff6f293a1a0f0dce8a90f6e0f42192dd79d923b3753de675bd283097def9dbc132f971be633202aa28c19fd44a" ;
+                                                                expected-index = "0000000000000000" ;
+                                                                expected-originator-pid = 37 ;
+                                                                expected-provenance = "new" ;
+                                                                expected-standard-error = "" ;
+                                                                expected-standard-output = "" ;
+                                                                expected-status = 0 ;
+                                                                expected-targets = [ ] ;
+                                                                expected-transient = "" ;
                                                                 standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
                                                                 standard-output = "" ;
+                                                                status = 0 ;
                                                             } ;
                                                 } ;
                                     modules =
