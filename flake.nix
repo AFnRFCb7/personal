@@ -1016,6 +1016,7 @@
                                                                 expected-status = 0 ;
                                                                 expected-targets = [ ] ;
                                                                 expected-transient = -1 ;
+                                                                resources-directory-fixture = self + "/fixtures/happy" ;
                                                                 standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
                                                                 standard-output = "" ;
                                                                 status = 0 ;
