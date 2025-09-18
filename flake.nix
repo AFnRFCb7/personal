@@ -1008,7 +1008,6 @@
                                                             {
                                                                 arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                                 expected-dependencies = [ ] ;
-                                                                expected-hash = "56b48a44865dbc2bc1334597fc12e9257ca428ff6f293a1a0f0dce8a90f6e0f42192dd79d923b3753de675bd283097def9dbc132f971be633202aa28c19fd44a" ;
                                                                 expected-index = "0000000000000000" ;
                                                                 expected-originator-pid = 37 ;
                                                                 expected-provenance = "new" ;
