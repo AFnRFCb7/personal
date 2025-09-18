@@ -967,45 +967,52 @@
                                     checks.${ system } =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-                                            rsrcs =
-                                                resources.lib
-                                                    {
-                                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                        coreutils = pkgs.coreutils ;
-                                                        findutils = pkgs.findutils ;
-                                                        flock = pkgs.flock ;
-                                                        init =
-                                                            self :
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "init" ;
-                                                                                runtimeInputs = [ ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
-                                                                                        touch /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/init" ;
-                                                        jq = pkgs.jq ;
-                                                        makeBinPath = pkgs.lib.makeBinPath ;
-                                                        makeWrapper = pkgs.makeWrapper ;
-                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        ps = pkgs.ps ;
-                                                        redis = pkgs.redis ;
-                                                        resources-directory = "/build/resources" ;
-                                                        targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
-                                                        transient = false ;
-                                                        visitor = visitor ;
-                                                        writeShellApplication = pkgs.writeShellApplication ;
-                                                        yq-go = pkgs.yq-go ;
-                                                    } ;
+                                            test-fun =
+                                                has-standard-error : test :
+                                                    let
+                                                        rsrcs =
+                                                            resources.lib
+                                                                {
+                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                    coreutils = pkgs.coreutils ;
+                                                                    findutils = pkgs.findutils ;
+                                                                    error = 129 ;
+                                                                    flock = pkgs.flock ;
+                                                                    init =
+                                                                        self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
+                                                                                                    echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 ${ if has-standard-error then ">&2" else "> /scratch/null" }
+                                                                                                    touch /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    jq = pkgs.jq ;
+                                                                    makeBinPath = pkgs.lib.makeBinPath ;
+                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                    ps = pkgs.ps ;
+                                                                    redis = pkgs.redis ;
+                                                                    resources-directory = "/build/resources" ;
+                                                                    targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                    transient = false ;
+                                                                    visitor = visitor ;
+                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                    yq-go = pkgs.yq-go ;
+                                                                } ;
+                                                            in rsrcs.check test ;
                                             in
                                                 {
                                                     "9fa46607359f0135bc334656397596a9d53760152b243a7f7781e0e006184b55ce7e77716b1477273b9d2139ee67b1f88b6b8ae3f728ba7bed7cee6cee8d6185" =
-                                                        rsrcs.check
+                                                        test-fun
+                                                            false
                                                             {
                                                                 arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                                 expected-dependencies = [ ] ;
@@ -1021,11 +1028,35 @@
                                                                     resources-directory :
                                                                         ''
                                                                             mkdir --parents ${ resources-directory }/sequential
-                                                                            echo 311691948 >> ${ resources-directory }/sequential/sequential.counter
+                                                                            echo 311691948 > ${ resources-directory }/sequential/sequential.counter
                                                                         '' ;
                                                                 standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
                                                                 standard-output = "" ;
                                                                 status = 0 ;
+                                                            } ;
+                                                    "b6685e582f11196ead4fa3459fd16d9111f0fbba91c26c7e8d72357d1a363e9cb2a8f5b002ca50b0a6227082922c66bebbc0baf07bb8abec3bc72e4faed24410" =
+                                                        test-fun
+                                                            true
+                                                            {
+                                                                arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                                expected-dependencies = [ ] ;
+                                                                expected-index = "0000000311691948" ;
+                                                                expected-originator-pid = 37 ;
+                                                                expected-provenance = "new" ;
+                                                                expected-standard-error = "c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216" ;
+                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
+                                                                expected-status = 0 ;
+                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                expected-transient = -1 ;
+                                                                resources-directory-fixture =
+                                                                    resources-directory :
+                                                                        ''
+                                                                            mkdir --parents ${ resources-directory }/sequential
+                                                                            echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                        '' ;
+                                                                standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                                standard-output = "" ;
+                                                                status = 129 ;
                                                             } ;
                                                 } ;
                                     modules =
