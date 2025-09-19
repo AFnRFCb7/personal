@@ -46,7 +46,7 @@
                                                             } @primary : ignore :
                                                                 {
                                                                     init =
-                                                                        resources : self :
+                                                                        failure : resources : self :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -65,14 +65,15 @@
                                                                                                             primary ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            GNUPGHOME=${ self }/dot-gnupg
+                                                                                                            GNUPGHOME=/mount/dot-gnupg
                                                                                                             export GNUPGHOME
-                                                                                                            mkdir "$GNUPGHOME"
-                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || exit 64
-                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/${ attributes.secret-keys.target }"
-                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || exit 64
-                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }"
-                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb
+                                                                                                            mkdir --parents "$GNUPGHOME"
+                                                                                                            chmod 0700 "$GNUPGHOME"
+                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || ${ failure "1107ddcd" }
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/secret" 2>&1
+                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || ${ failure "1471b338" }
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }" 2>&1
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                         '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/init" ;
@@ -220,7 +221,7 @@
                                                                     in
                                                                         {
                                                                             init =
-                                                                                resources : self :
+                                                                                failure : resources : self :
                                                                                     let
                                                                                         application =
                                                                                             pkgs.writeShellApplication
@@ -252,7 +253,7 @@
                                                             } : ignore :
                                                                 {
                                                                     init =
-                                                                        resources : self :
+                                                                        failure : resources : self :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -348,7 +349,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        resources : self :
+                                                                                        failure : resources : self :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -379,7 +380,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        resources : self :
+                                                                                        failure : resources : self :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -470,7 +471,7 @@
                                                                     ignore :
                                                                         {
                                                                             init =
-                                                                                resources : self :
+                                                                                failure : resources : self :
                                                                                     let
                                                                                         application =
                                                                                             pkgs.writeShellApplication
@@ -479,29 +480,15 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            DOT_GNUPG="$( ${ resources.dot-gnupg } )" || exit 64
+                                                                                                            DOT_GNUPG="$( ${ resources.dot-gnupg } )" || ${ failure "6b717cd6" }
                                                                                                             ln --symbolic "$DOT_GNUPG" /links
                                                                                                             ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/.gpg
-                                                                                                            mkdir --parents /mount/.ssh
-                                                                                                            # DOT_PASSWORD_STORE="$( ${ resources.dot-password-store } )" || exit 64
-                                                                                                            # ln --symbolic "$DOT_PASSWORD_STORE" /links
-                                                                                                            # ln --symbolic "$DOT_PASSWORD_STORE" ~/.password-store
-                                                                                                            MOBILE="$( ${ resources.dot-ssh.mobile } )" || exit 64
-                                                                                                            ln --symbolic "$MOBILE" /links
-                                                                                                            ln --symbolic "$MOBILE/config" /mount/.ssh/mobile.config
-                                                                                                            mkdir --parents /mount/repository
-                                                                                                            PRIVATE="$( ${ resources.repository.private } )" || exit 64
-                                                                                                            ln --symbolic "$PRIVATE" /links
-                                                                                                            ln --symbolic "$PRIVATE" /mount/repository/private
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
                                                                                     ".gpg"
-                                                                                    # ".password-store"
-                                                                                    ".ssh"
-                                                                                    "repository"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
@@ -550,7 +537,7 @@
                                                                                 ignore :
                                                                                     {
                                                                                         init =
-                                                                                            resources : self :
+                                                                                            failure : resources : self :
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -611,8 +598,8 @@
                                                                                             init =
                                                                                                 if builtins.typeOf init == "lambda" then
                                                                                                     let
-                                                                                                        failures = string : builtins.concatStringsSep "" [ "exit" " " "1" ( builtins.replaceStrings [ "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" ] [ "00" "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" "13" "14" "15" "16"] ( builtins.hashString "sha512" string ) ) ] ;
-                                                                                                        in init resources_
+                                                                                                        failure = string : builtins.concatStringsSep "" [ "exit" " " "1" ( builtins.replaceStrings [ "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" ] [ "00" "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" "13" "14" "15" ] ( builtins.substring 0 1 ( builtins.hashString "sha512" string ) ) ) ] ;
+                                                                                                        in init failure resources_
                                                                                                 else init ;
                                                                                             release = release ;
                                                                                             targets = targets ;
@@ -841,6 +828,14 @@
                                                                                             text = resources_.home ;
                                                                                         }
                                                                                 )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "dot-gnupg" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.dot-gnupg ;
+                                                                                        }
+                                                                                )
                                                                             ] ;
                                                                 password = config.personal.password ;
                                                             } ;
@@ -1057,8 +1052,9 @@
                                                     {
                                                         systemd.services =
                                                             {
-                                                                user-test =
+                                                                user-home-test =
                                                                     {
+                                                                        after = [ "redis.service" ] ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
@@ -1070,7 +1066,19 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo 0 > /tmp/shared/status
+                                                                                                            if ! which home
+                                                                                                            then
+                                                                                                                echo "There is no home" >> /tmp/shared/FLAG
+                                                                                                            elif ! home
+                                                                                                            then
+                                                                                                                echo "There was a problem executing home" >> /tmp/shared/FLAG
+                                                                                                            else
+                                                                                                                RESOURCE="$( home )"
+                                                                                                                if [[ -L "$RESOURCE/.gpg" ]]
+                                                                                                                then
+                                                                                                                    echo "There was no gpg directory" >> /tmp/shared/FLAG
+                                                                                                                fi
+                                                                                                            fi
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
@@ -1080,7 +1088,7 @@
                                                                     } ;
                                                                 root-test =
                                                                     {
-                                                                        after = [ "user-test.service" ] ;
+                                                                        after = [ "user-home-test.service" ] ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart = "${ pkgs.systemd }/bin/systemctl poweroff" ;
