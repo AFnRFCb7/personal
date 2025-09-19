@@ -608,7 +608,12 @@
                                                                                         transient ? false
                                                                                     } :
                                                                                         {
-                                                                                            init = if builtins.typeOf init == "lambda" then init resources_ else init ;
+                                                                                            init =
+                                                                                                if builtins.typeOf init == "lambda" then
+                                                                                                    let
+                                                                                                        failures = string : builtins.concatStringsSep "" [ "exit" " " "1" ( builtins.replaceStrings [ "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f" ] [ "00" "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" "13" "14" "15" "16"] ( builtins.hashString "sha512" string ) ) ] ;
+                                                                                                        in init resources_
+                                                                                                else init ;
                                                                                             release = release ;
                                                                                             targets = targets ;
                                                                                             transient = transient ;
@@ -736,6 +741,7 @@
                                                                         pulse.enable = true ;
                                                                     };
                                                                 printing.enable = true ;
+                                                                redis.enable = true ;
                                                                 tlp =
                                                                     {
                                                                         enable = true;
