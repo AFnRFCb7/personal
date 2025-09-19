@@ -8,325 +8,636 @@
                 lib =
                     {
                         nixpkgs ,
-			secret ,
+			            resources ,
                         secrets ,
+                        private ,
                         system ,
                         visitor
-                    } :
+                    } @primary :
                         let
-                            module =
+                            user =
                                 { config , lib , pkgs , ... } :
                                     let
-					_secrets =
-						let
-							mapper =
-							       path : name : value :
-							       	    if value == "regular" then
-                                    let
-										derivation =
-											pkgs.stdenv.mkDerivation
-												{
-													installPhase =	
-														''
-															age --decrypt --identity ${ config.personal.agenix } --output $out ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
-														'' ;
-													name = "derivation" ;
-													nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
-													src = ./. ;
-												} ;
-										in "${ derivation }"
-								   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
-								   else builtins.throw "We can not handle ${ value }." ;
-							in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
-					resources =
-						let
-							tree =
-								{
-									dot-gnupg =
-										path :
-											{
-												init-inputs = [ pkgs.coreutils pkgs.gnupg ] ;
-												init-text =
-													''
-														export GNUPGHOME="$SELF/dot-gnupg"
-														mkdir "$GNUPGHOME"
-														chmod 0700 "$GNUPGHOME"
-														gpg --homedir "$GNUPGHOME" --batch --yes --import ${ _secrets."secret-keys.asc.age" }
-														gpg --homedir "$GNUPGHOME" --batch --yes --import-ownertrust ${ _secrets."ownertrust.asc.age" }
-														gpg --homedir "$GNUPGHOME" --batch --yes --update-trustdb
-													'' ;
-											} ;
-									dot-ssh =
-										path :
-											{
-												init-inputs = [ pkgs.coreutils ] ;		
-												init-text =
-													''
-														cat ${ _secrets.dot-ssh.boot."identity.asc.age" } > "$SELF/identity"
-														cat ${ _secrets.dot-ssh.boot."known-hosts.asc.age" } > "$SELF/known-hosts"
-cat > "$SELF/config" <<EOF
-Host github.com
-	HostName github.com
-	IdentityFile $SELF/identity
-	UserKnownHostsFile $SELF/known-hosts
-	StrictHostKeyChecking yes
-	BatchMode yes
-Host mobile
-	HostName 192.168.1.202
-	IdentityFile $SELF/identity
-	UserKnownHostsFile $SELF/known-hosts
-	Port 8022
-	StrictHostKeyChecking yes
-	BatchMode yes
-EOF
-														chmod 0400 "$SELF/config" "$SELF/identity" "$SELF/known-hosts"
-													'' ;
-											} ;
-									dot-pass =
-										ignore :
-											{
-												init-inputs = [ pkgs.coreutils pkgs.git ] ;
-												init-text =
-													''
-														export PASSWORD_STORE_DIR="$SELF/dot-pass"
-														mkdir --parents "$PASSWORD_STORE_DIR"
-														cd "$PASSWORD_STORE_DIR"
-														git init
-														git config user.email ${ config.personal.email }
-														git config user.name "${ config.personal.description }"
-														git remote add origin ${ config.personal.pass.remote }
-														DOT_SSH=$( ${ resources.dot-ssh } )/config || echo "FAILED TO ASSIGN"
-														export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
-														echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND"
-														git fetch origin ${ config.personal.pass.branch }
-														git checkout ${ config.personal.pass.branch }
-													'' ;
-											} ;
-                                    milestone =
-                                        {
-                                            build =
-                                                ignore :
-                                                    {
-                                                        init-inputs = [ pkgs.nixos-rebuild ] ;
-                                                        init-text =
-                                                            ''
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build --flake "$( ${ resources.milestone.source } "$*" )/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace
-                                                            '' ;
-                                                    } ;
-                                            build-vm =
-                                                ignore :
-                                                    {
-                                                        init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
-                                                        init-text =
-                                                            ''
-                                                                cd "$SELF"
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm-with-bootloader --flake "$( ${ resources.milestone.source } "$*" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
-                                                                mkdir --parents "$SELF/test"
-                                                            '' ;
-                                                    } ;
-                                            build-vm-with-bootloader =
-                                                ignore :
-                                                    {
-                                                        init-inputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
-                                                        init-text =
-                                                            ''
-                                                                cd "$SELF"
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild build-vm --flake "$( ${ resources.milestone.source } "$*" )/work-tree#tester" --verbose --print-build-logs --log-format raw --show-trace
-                                                                mkdir --parents "$SELF/test"
-                                                            '' ;
-                                                    } ;
-                                            check =
-                                                ignore :
-                                                    {
-                                                        init-inputs = [ pkgs.nixos-rebuild ] ;
-                                                        init-text =
-                                                            ''
-                                                                export NIX_SHOW_TRACE=1
-                                                                export NIX_LOG=trace
-                                                                time timeout ${ builtins.toString config.personal.milestone.timeout } nix flake check "$( ${ resources.milestone.source } "$*" )/work-tree" --verbose --print-build-logs --log-format raw --show-trace --timeout ${ builtins.toString config.personal.milestone.timeout }
-                                                            '' ;
-                                                    } ;
-                                            source =
-                                                ignore :
-                                                    {
-                                                        init-inputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
-                                                        init-text =
-                                                            ''
-                                                                SOURCE_BRANCH="$1"
-                                                                SOURCE_COMMIT="$2"
-                                                                shift 2 &&
-                                                                SUBSTITUTION=( "$@" )
-                                                                export GIT_DIR="$SELF/git"
-                                                                export GIT_WORK_TREE="$SELF/work-tree"
-                                                                mkdir --parents "$GIT_DIR"
-                                                                mkdir --parents "$GIT_WORK_TREE"
-                                                                git init
-                                                                DOT_SSH="$( "${ resources.dot-ssh }" )/config"
-                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH"
-                                                                git config user.email ${ config.personal.email }
-                                                                git config user.name "${ config.personal.description }"
-                                                                git remote add origin ${ config.personal.repository.private.remote }
-                                                                git fetch --depth 1 origin "$SOURCE_BRANCH"
-                                                                git checkout "$SOURCE_COMMIT"
-                                                                sed -i "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" "$GIT_WORK_TREE/flake.nix"
-                                                            '' ;
-                                                    } ;
-                                        } ;
-									repository =
-										let
-											repository =
-												origin : flake-input : ignore :
-													{
-														init-inputs = [ pkgs.coreutils pkgs.git ] ;
-														init-text =
-														    let
-														        ssh =
-														            pkgs.stdenv.mkDerivation
-														                {
-														                    installPhase =
-														                        ''
-														                            mkdir --parents $out/bin
-                                                                                    makeWrapper \
-                                                                                        ${ pkgs.openssh }/bin/ssh \
-                                                                                        $out/bin/ssh \
-                                                                                        --add-flags "-F \$( ${ resources.dot-ssh } )/config"
-														                        '' ;
-                                                                            name = "ssh" ;
-                                                                            nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                                            src = ./. ;
-														                } ;
+                                        resources_ =
+                                            let
+                                                seed =
+                                                    let
+                                                        seed = path : value : [ { path = path ; type = builtins.typeOf value ; value = if builtins.typeOf value == "lambda" then null else value ; } ] ;
+                                                        in
+                                                            visitor.lib.implementation
+                                                                {
+                                                                    bool = seed ;
+                                                                    float = seed ;
+                                                                    int = seed ;
+                                                                    lambda = seed ;
+                                                                    list = seed ;
+                                                                    null = seed ;
+                                                                    path = seed ;
+                                                                    set = seed ;
+                                                                    string = seed ;
+                                                                }
+                                                                primary ;
+                                                tree =
+                                                    let
+                                                        dot-gnupg =
+                                                            {
+                                                                secret-keys ,
+                                                                ownertrust
+                                                            } @primary : ignore :
+                                                                {
+                                                                    init =
+                                                                        resources : self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    attributes =
+                                                                                                        visitor.lib.implementation
+                                                                                                            {
+                                                                                                                lambda = path : value : value resources_ ;
+                                                                                                                # path = path : value : value ;
+                                                                                                                set = path : set : set ;
+                                                                                                            }
+                                                                                                            primary ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            GNUPGHOME=${ self }/dot-gnupg
+                                                                                                            export GNUPGHOME
+                                                                                                            mkdir "$GNUPGHOME"
+                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || exit 64
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/${ attributes.secret-keys.target }"
+                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || exit 64
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }"
+                                                                                                            gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb
+                                                                                                        '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                    targets = [ "dot-gnupg" ] ;
+                                                                } ;
+                                                        dot-ssh =
+                                                            {
+                                                                address-family ? null ,
+                                                                batch-mode ? null ,
+                                                                bind-address ? null ,
+                                                                canonical-domains ? null ,
+                                                                canonicalize-fallback-local ? null ,
+                                                                canonicalize-hostname ? null ,
+                                                                check-host-ip ? null ,
+                                                                challenge-response-authentication ? null ,
+                                                                ciphers ? null ,
+                                                                compression ? null ,
+                                                                connect-timeout ? null ,
+                                                                control-master ? null ,
+                                                                control-path ? null ,
+                                                                forward-agent ? null ,
+                                                                gateway-ports ? null ,
+                                                                gssapi-authentication ? null ,
+                                                                gssapi-delegate-credentials ? null ,
+                                                                gssapi-key-exchange ? null ,
+                                                                gssapi-renewal-forces-rekey ? null ,
+                                                                gssapi-trust-dns ? null ,
+                                                                host ? null ,
+                                                                hostkey-alias ? null ,
+                                                                host-name ? null ,
+                                                                identities-only ? null ,
+                                                                identity-agent ? null ,
+                                                                identity-file ? null ,
+                                                                ignore-unknown ? null ,
+                                                                ip-qos ? null ,
+                                                                kbd-interactive-authentication ? null ,
+                                                                kbd-interactive-devices ? null ,
+                                                                kex-algorithms ? null ,
+                                                                local-forward ? null ,
+                                                                log-level ? null ,
+                                                                match ? null ,
+                                                                no-host-authentication-for-localhost ? null ,
+                                                                password-authentication ? null ,
+                                                                permit-local-command ? null ,
+                                                                permit-remote-open ? null ,
+                                                                pkcs11-provider ? null ,
+                                                                port ? null ,
+                                                                preferred-authentications ? null ,
+                                                                protocol ? null ,
+                                                                proxy-command ? null ,
+                                                                proxy-jump ? null ,
+                                                                proxy-use-fdpass ? null ,
+                                                                pubkey-accepted-key-types ? null ,
+                                                                pubkey-authentication ? null ,
+                                                                rekey-limit ? null ,
+                                                                remote-forward ? null ,
+                                                                server-alive-count-max ? null ,
+                                                                server-alive-interval ? null ,
+                                                                sessiontype ? null ,
+                                                                strict-host-key-checking ? null ,
+                                                                user ? null ,
+                                                                user-known-hosts-file ? null
+                                                            } @primary : ignore :
+                                                                let
+                                                                    catted =
+                                                                        let
+                                                                            mapper = value : "${ value.name } ${ builtins.concatStringsSep "" [ "$" value.name ] }${ if builtins.typeOf value.value == "string" then "" else "/${ value.value.target }" }" ;
+                                                                            in builtins.map mapper sorted ;
+                                                                    indent = if builtins.typeOf host == "null" then [ ] else [ "\t" ] ;
+                                                                    listed = builtins.attrValues setted ;
+                                                                    setted =
+                                                                        let
+                                                                            mapper =
+                                                                                name : value :
+                                                                                    let
+                                                                                        resources =
+                                                                                            [
+                                                                                                "control-path"
+                                                                                                "identity-file"
+                                                                                                "user-known-hosts-file"
+                                                                                                "identity-agent"
+                                                                                                "pkcs11-provider"
+                                                                                                "proxy-command"
+                                                                                            ] ;
+                                                                                        in
+                                                                                            {
+                                                                                                name =
+                                                                                                    let
+                                                                                                        lower-case = [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" ] ;
+                                                                                                        hyphen-case = builtins.map ( letter : builtins.concatStringsSep "" [ "-" letter ] ) lower-case ;
+                                                                                                        upper-case = [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ;
+                                                                                                        name-lower-cased = builtins.replaceStrings upper-case lower-case name-prefixed ;
+                                                                                                        name-prefixed = builtins.concatStringsSep "" [ "-" name ] ;
+                                                                                                        name-space-cased = builtins.replaceStrings hyphen-case upper-case name-lower-cased ;
+                                                                                                        in name-space-cased ;
+                                                                                                index = if name == "host" then 0 else 1 ;
+                                                                                                value =
+                                                                                                    let
+                                                                                                        booleans =
+                                                                                                            [
+                                                                                                                "batch-mode"
+                                                                                                                "challenge-response-authentication"
+                                                                                                                "compression"
+                                                                                                                "forward-agent"
+                                                                                                                "gateway-ports"
+                                                                                                                "gssapi-authentication"
+                                                                                                                "gssapi-delegate-credentials"
+                                                                                                                "ignore-unknown"
+                                                                                                                "kbd-interactive-authentication"
+                                                                                                                "no-host-authentication-for-localhost"
+                                                                                                                "password-authentication"
+                                                                                                                "permit-local-command"
+                                                                                                                "permit-remote-open"
+                                                                                                                "pubkey-authentication"
+                                                                                                                "strict-host-key-checking"
+                                                                                                                "verify-host-key-dns"
+                                                                                                                "forward-x11"
+                                                                                                                "forward-x11-trusted"
+                                                                                                            ] ;
+                                                                                                    integers =
+                                                                                                        [
+                                                                                                            "port"
+                                                                                                            "connect-timeout"
+                                                                                                            "server-alive-count-max"
+                                                                                                            "server-alive-interval"
+                                                                                                        ] ;
+                                                                                                    in
+                                                                                                        if builtins.any ( n : n == name ) booleans && builtins.typeOf value == "bool" then if value then ''"YES"'' else ''"NO"''
+                                                                                                        else if builtins.any ( n : n == name ) integers then builtins.concatStringsSep "" [ "\"" ( builtins.toString value ) "\"" ]
+                                                                                                        else if builtins.any ( n : n == name ) resources then value resources_
+                                                                                                        else builtins.concatStringsSep "" [ "\"" value "\"" ] ;
+                                                                                            } ;
+                                                                            in builtins.mapAttrs mapper primary ;
+                                                                    sorted = builtins.sort ( a : b : if a.index < b.index then true else if a.index > b.index then false else a.name < b.name ) listed ;
+                                                                    variabled =
+                                                                        let
+                                                                            mapper =
+                                                                                value :
+                                                                                    builtins.concatLists
+                                                                                        [
+                                                                                            ( if builtins.typeOf value.value == "string" then [ ''${ value.name }=${ value.value }'' ] else [ ''${ value.name }="$( ${ value.value.resource } )" || exit 64'' ] )
+                                                                                            ( if builtins.typeOf value.value == "string" then [ ] else [ ''ln --symbolic "${ builtins.concatStringsSep "" [ "$" value.name ] }" /links'' ] )
+                                                                                        ] ;
+                                                                            in builtins.map mapper sorted ;
                                                                     in
-                                                                        ''
-                                                                            if [[ "$#" == 1 ]]
-                                                                            then
-                                                                                BRANCH="$1"
-                                                                                COMMIT_HASH=
-                                                                            elif [[ "$#" == 2 ]]
-                                                                            then
-                                                                                BRANCH="$1"
-                                                                                COMMIT_HASH="$2"
-                                                                            else
-                                                                                BRANCH=
-                                                                                COMMIT_HASH=
-                                                                            fi
-                                                                            export GIT_DIR="$SELF/git"
-                                                                            export GIT_WORK_TREE="$SELF/work-tree"
-                                                                            mkdir --parents "$SELF/home"
-                                                                            mkdir --parents "$GIT_DIR"
-                                                                            mkdir --parents "$GIT_WORK_TREE"
-                                                                            git init
-                                                                            git config core.sshCommand ${ ssh }/bin/ssh
-                                                                            git config promote.input ${ flake-input }
-                                                                            git config user.email ${ config.personal.email }
-                                                                            git config user.name "${ config.personal.description }"
-                                                                            ln --symbolic ${ post-commit } "$GIT_DIR/hooks"
-                                                                            git remote add origin ${ origin }
-                                                                            if [[ -z "$BRANCH" ]] || [[ -z "$COMMIT_HASH" ]]
-                                                                            then
-                                                                                git fetch origin main
-                                                                                git checkout origin/main
-                                                                            elif [[ -n "$BRANCH" ]] && [[ -n "$COMMIT_HASH" ]]
-                                                                            then
-                                                                                git fetch --depth 1 origin "$BRANCH"
-                                                                                git checkout "$COMMIT_HASH"
-                                                                            else
-                                                                                git fetch --depth 1 origin "$BRANCH"
-                                                                                git checkout "origin/$BRANCH"
-                                                                            fi
-                                                                            git checkout -b "scratch/$( uuidgen )"
-                                                                        '' ;
-                                                        # lease = 60 * 60 ;
-													} ;
-											in
-												{
-													applications = repository config.personal.repository.personal.remote "github:AFnRFCb7/applications" ;
-													personal = repository config.personal.repository.personal.remote "github:AFnRFCb7/personal" ;
-													private = repository config.personal.repository.private.remote "" ;
-													secret = repository config.personal.repository.secret.remote "github:AFnRFCb7/secret" ;
-													secrets = repository config.personal.repository.secrets.remote "github:AFnRFCb7/secrets" ;
-													visitor = repository config.personal.repository.visitor.remote "github:AFnRFCb7/personal" ;
-												} ;
-                                    temporary-directory =
-                                        ignore :
-                                            {
-                                                init-inputs = [ pkgs.coreutils ] ;
-                                                init-text =
-                                                    ''
-                                                        mkdir "$SELF/directory"
-                                                    '' ;
-                                            } ;
-								} ;
-							post-commit =
-								let
-									post-commit =
-										pkgs.writeShellApplication
-											{
-												name = "post-commit" ;
-												runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-												text =
-													''
-														while ! git push origin HEAD
-														do
-															sleep 1m
-														done
-													'' ;
-											} ;
-										in "${ post-commit }/bin/post-commit" ;
-							in visitor.lib.implementation { lambda = path : value : secret.lib.implementation ( { nixpkgs = nixpkgs ; path = path ; system = system ; } // ( value path ) ) ; } tree ;
-					xxx =
-						secret.lib.implementation
-							{
-								init-inputs = [ pkgs.coreutils ] ;
-								init-text =
-									''
-										echo hi > /mount/target
-									'' ;
-								lease = 60 ;
-								nixpkgs = nixpkgs ;
-								system = system ;
-							} ;
-					secrets-scripts =
-							let
-								mapper =
-                                        path : name : value :
-								       	    if value == "regular" then
-                                        let
-											derivation =
-												pkgs.stdenv.mkDerivation
-													{
-														installPhase =	
-															let
-																script =
-																	pkgs.writeShellApplication
-																		{
-																			name = "script" ;
-																			runtimeInputs = [ pkgs.coreutils ] ;
-																			text =
-																				''
-																					if [ ! -e /tmp/resources/${ builtins.hashString "sha512" token } ]
-																					then
-																						mkdir --parents /tmp/resources
-																						cat "$OUT/secret" > /tmp/resources/${ builtins.hashString "sha512" token }
-																						chmod 0400 /tmp/resources/${ builtins.hashString "sha512" token }
-																					fi
-																					echo /tmp/resources/${ builtins.hashString "sha512" token }
-																				'' ;
-																		} ;
-																token = builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ;
-																in
-																	''
-																		mkdir $out
-																		age --decrypt --identity ${ config.personal.agenix } --output $out/secret ${ token }
-																		makeWrapper ${ script }/bin/script $out/script --set OUT $out
-																	'' ;
-														name = "derivation" ;
-														nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
-														src = ./. ;
-													} ;
-											in "${ derivation }/script"
-									   else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) ) 
-									   else builtins.throw "wtf" ;
-								in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
+                                                                        {
+                                                                            init =
+                                                                                resources : self :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "application" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.concatLists variabled ) }
+                                                                                                            cat > /mount/config <<EOF
+                                                                                                            ${ builtins.concatStringsSep "\n" catted }
+                                                                                                            EOF
+                                                                                                            chmod 0400 /mount/config
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/application" ;
+                                                                            targets =
+                                                                                [
+                                                                                    "config"
+                                                                                ] ;
+                                                                        } ;
+                                                        git =
+                                                            {
+                                                                configs ? { } ,
+                                                                hooks ? { } ,
+                                                                remotes ? { } ,
+                                                                setup ? null ,
+                                                                release ? null
+                                                            } : ignore :
+                                                                {
+                                                                    init =
+                                                                        resources : self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "application" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    export GIT_DIR=/mount/git
+                                                                                                    export GIT_WORK_TREE=/mount/work-tree
+                                                                                                    mkdir --parents "$GIT_DIR"
+                                                                                                    mkdir --parents "$GIT_WORK_TREE"
+                                                                                                    git init 2>&1
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "${ self }/git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
+                                                                                                    ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/application" ;
+                                                                    release = release ;
+                                                                    targets = [ "git" "work-tree" ] ;
+                                                                } ;
+                                                        milestone =
+                                                            let
+                                                                application =
+                                                                    pkgs.writeShellApplication
+                                                                        {
+                                                                            name = "milestone" ;
+                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                            text =
+                                                                                ''
+                                                                                    NOW="$( date +%s )" || exit 64
+                                                                                    date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
+                                                                                '' ;
+                                                                        } ;
+                                                                    in "${ application }/bin/milestone" ;
+                                                        post-commit =
+                                                            remote :
+                                                                let
+                                                                    post-commit =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "post-commit" ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        while ! git push origin HEAD
+                                                                                        do
+                                                                                            sleep 1s
+                                                                                        done
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ post-commit }/bin/post-commit" ;
+                                                        scratch =
+                                                            let
+                                                                scratch =
+                                                                    pkgs.writeShellApplication
+                                                                        {
+                                                                            name = "scratch" ;
+                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                            text =
+                                                                                ''
+                                                                                    SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
+                                                                                    BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || exit 64
+                                                                                    git checkout -b "$BRANCH"
+                                                                                '' ;
+                                                                        } ;
+                                                                    in "${ scratch }/bin/scratch" ;
+                                                        ssh-command =
+                                                            dot-ssh :
+                                                                let
+                                                                    ssh-command =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "ssh-command" ;
+                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                text =
+                                                                                    let
+                                                                                        point = dot-ssh resources_ ;
+                                                                                        in
+                                                                                            ''
+                                                                                                DOT_SSH="$( ${ point.resource } )" || exit 64
+                                                                                                exec ssh -F "$DOT_SSH/${ point.target }" "$@"
+                                                                                            '' ;
+                                                                            } ;
+                                                                    in "${ ssh-command }/bin/ssh-command" ;
+                                                        in
+                                                            {
+                                                                debug =
+                                                                    {
+                                                                        alpha =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo "ALPHA" > /mount/self
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                exit 155
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
+                                                                                    targets = [ "self" ] ;
+                                                                                } ;
+                                                                        beta =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo "BETA" > /mount/self
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                echo "${ self }" > /mount/self
+                                                                                                                exit 155
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
+                                                                                    targets = [ "self" ] ;
+                                                                                } ;
+                                                                    } ;
+                                                                control-paths =
+                                                                    {
+                                                                        mobile = ignore : { } ;
+                                                                    } ;
+                                                                dot-gnupg =
+                                                                    dot-gnupg
+                                                                        {
+                                                                            secret-keys = resources : { resource = resources.secrets."secret-keys.asc.age" ; target = "secret" ; } ;
+                                                                            ownertrust = resources : { resource = resources.secrets."ownertrust.asc.age" ; target = "secret" ; } ;
+                                                                        } ;
+                                                                dot-password-store =
+                                                                    git
+                                                                        {
+                                                                            configs =
+                                                                                {
+                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                    "user.name" = config.personal.pass.description ;
+                                                                                    "user.email" = config.personal.pass.email ;
+                                                                                } ;
+                                                                            hooks =
+                                                                                {
+                                                                                    post-commit = post-commit "origin" ;
+                                                                                } ;
+                                                                            remotes =
+                                                                                {
+                                                                                    origin = config.personal.pass.remote ;
+                                                                                } ;
+                                                                            setup =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "setup" ;
+                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        # git fetch origin ${ config.personal.pass.branch }
+                                                                                                        # git checkout ${ config.personal.pass.branch }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/setup" ;
+                                                                        } ;
+                                                                dot-ssh =
+                                                                    {
+                                                                        mobile =
+                                                                            dot-ssh
+                                                                                {
+                                                                                    control-master = "auto" ;
+                                                                                    control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
+                                                                                    host = "mobile" ;
+                                                                                    host-name = "192.168.1.202" ;
+                                                                                    identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
+                                                                                    port = 8022 ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user = "git" ;
+                                                                                    user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ; target = "secret" ; } ;
+                                                                                } ;
+                                                                    } ;
+                                                                home =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                resources : self :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "application" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            DOT_GNUPG="$( ${ resources.dot-gnupg } )" || exit 64
+                                                                                                            ln --symbolic "$DOT_GNUPG" /links
+                                                                                                            ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/.gpg
+                                                                                                            mkdir --parents /mount/.ssh
+                                                                                                            # DOT_PASSWORD_STORE="$( ${ resources.dot-password-store } )" || exit 64
+                                                                                                            # ln --symbolic "$DOT_PASSWORD_STORE" /links
+                                                                                                            # ln --symbolic "$DOT_PASSWORD_STORE" ~/.password-store
+                                                                                                            MOBILE="$( ${ resources.dot-ssh.mobile } )" || exit 64
+                                                                                                            ln --symbolic "$MOBILE" /links
+                                                                                                            ln --symbolic "$MOBILE/config" /mount/.ssh/mobile.config
+                                                                                                            mkdir --parents /mount/repository
+                                                                                                            PRIVATE="$( ${ resources.repository.private } )" || exit 64
+                                                                                                            ln --symbolic "$PRIVATE" /links
+                                                                                                            ln --symbolic "$PRIVATE" /mount/repository/private
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/application" ;
+                                                                            targets =
+                                                                                [
+                                                                                    ".gpg"
+                                                                                    # ".password-store"
+                                                                                    ".ssh"
+                                                                                    "repository"
+                                                                                ] ;
+                                                                        } ;
+                                                                repository =
+                                                                    {
+                                                                        private =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.private.email ;
+                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "application" ;
+                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin main 2>&1
+                                                                                                                # git checkout origin/main
+                                                                                                                # git checkout -b "scratch/$( uuidgen )"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/application" ;
+                                                                                } ;
+                                                                    } ;
+                                                                secrets =
+                                                                    let
+                                                                        mapper =
+                                                                            path : name : value :
+                                                                            if value == "regular" then
+                                                                                ignore :
+                                                                                    {
+                                                                                        init =
+                                                                                            resources : self :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "secret" ;
+                                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output /mount/secret ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
+                                                                                                                        chmod 0400 /mount/secret
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/secret" ;
+                                                                                        targets = [ "secret" ] ;
+                                                                                    }
+                                                                               else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
+                                                                               else builtins.throw "We can not handle ${ value }." ;
+                                                                        in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
+                                                            } ;
+                                                in
+                                                    visitor.lib.implementation
+                                                        {
+                                                            lambda =
+                                                                path : value :
+                                                                    let
+                                                                        rsrcs =
+                                                                            resources.lib
+                                                                                {
+                                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                                    coreutils = pkgs.coreutils ;
+                                                                                    findutils = pkgs.findutils ;
+                                                                                    flock = pkgs.flock ;
+                                                                                    init = point.init ;
+                                                                                    jq = pkgs.jq ;
+                                                                                    makeBinPath = pkgs.lib.makeBinPath ;
+                                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                    ps = pkgs.ps ;
+                                                                                    redis = pkgs.redis ;
+                                                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                    seed = { path = path ; seed = seed ; } ;
+                                                                                    targets = point.targets ;
+                                                                                    transient = point.transient ;
+                                                                                    visitor = visitor ;
+                                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                                    yq-go = pkgs.yq-go ;
+                                                                                } ;
+                                                                        point =
+                                                                            let
+                                                                                identity =
+                                                                                    {
+                                                                                        init ? null ,
+                                                                                        release ? null ,
+                                                                                        targets ? [ ] ,
+                                                                                        transient ? false
+                                                                                    } :
+                                                                                        {
+                                                                                            init = if builtins.typeOf init == "lambda" then init resources_ else init ;
+                                                                                            release = release ;
+                                                                                            targets = targets ;
+                                                                                            transient = transient ;
+                                                                                        } ;
+                                                                                in identity ( value null ) ;
+                                                                        in rsrcs.implementation ;
+                                                        }
+                                                        tree ;
+                                        secrets_ =
+                                            let
+                                                mapper =
+                                                    path : name : value :
+                                                    if value == "regular" then
+                                                        let
+                                                            derivation =
+                                                                pkgs.stdenv.mkDerivation
+                                                                    {
+                                                                        installPhase =
+                                                                            ''
+                                                                                age --decrypt --identity ${ config.personal.agenix } --output $out ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
+                                                                            '' ;
+                                                                        name = "derivation" ;
+                                                                        nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
+                                                                        src = ./. ;
+                                                                    } ;
+                                                            in "${ derivation }"
+                                                       else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
+                                                       else builtins.throw "We can not handle ${ value }." ;
+                                                in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
                                         in
                                             {
                                                 config =
@@ -358,13 +669,13 @@ EOF
                                                                     } ;
                                                             } ;
                                                         networking =
-								{
-								    wireless =
+							                                {
+								                                wireless =
         	                                                    	{
                 	                                                	enable = true ;
 	                	                                                networks = config.personal.wifi ;
         	                	                                    } ;
-								} ;
+								                            } ;
                                                         nix =
                                                             {
                                                                 nixPath =
@@ -400,13 +711,9 @@ EOF
                                                                 sudo.extraConfig =
                                                                     ''
                                                                         %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.umount }/bin/umount
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.mount }/bin/mount
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.unixtools.fsck }/bin/fsck
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.e2fsprogs }/bin/mkfs.ext4
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.coreutils }/bin/chown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-collect-garbage
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-store
                                                                     '' ;
                                                             } ;
                                                         services =
@@ -479,7 +786,7 @@ EOF
                                                                         xkbVariant = "" ;
                                                                     } ;
                                                             } ;
-							                                                        system.stateVersion = "23.05" ;
+                                                        system.stateVersion = "23.05" ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
@@ -488,349 +795,47 @@ EOF
                                                                 isNormalUser = true ;
                                                                 name = config.personal.name ;
                                                                 packages =
-									let
-										studio =
-											name : repository :
-												pkgs.stdenv.mkDerivation
-													{
-														installPhase =
-                                                            ''
-                                                                mkdir --parents $out/bin
-                                                                makeWrapper \
-                                                                    ${ pkgs.jetbrains.idea-community }/bin/idea-community \
-                                                                    $out/bin/${ name } \
-                                                                    --add-flags '$( ${ repository } )' \
-                                                                    --run 'export NAME=$( ${ repository } )' \
-                                                                    --run 'export HOME=$NAME/home' \
-                                                                    --run 'export GIT_DIR=$NAME/git' \
-                                                                    --run 'export GIT_WORK_TREE=$NAME/work-tree'
-                                                            '' ;
-														name = "derivation" ;
-														nativeBuildInputs = [ pkgs.makeWrapper ] ;
-														src = ./. ;
-													} ;
-									in
-									[
-									    # (
-									    #     pkgs.writeShellApplication
-									    #         {
-									    #             name = "launch" ;
-									    #             runtimeInputs = [ pkgs.nixos-rebuild ] ;
-									    #             text =
-									    #                 ''
-                                        #                     INCREMENT="$1"
-                                        #                     MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
-                                        #                     PRIVATE="$( ${ resources.repository.private } "$MONTH" )"
-                                        #                     sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake "$( ${ resources.milestone.source } "$PRIVATE" )" --verbose --print-build-logs --log-format raw --show-trace
-									    #                 '' ;
-									    #         }
-									    # )
-                                        (
-                                            pkgs.writeShellApplication
-                                                {
-                                                    name = "promote" ;
-                                                    runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
-                                                    text =
-                                                        ''
-                                                            INCREMENT="$1"
-                                                            MONTH=monthly/$( date -d "$( date +%Y-%m-1 ) +$INCREMENT month" +%Y-%m )
-                                                            PRIVATE_INPUT="$( ${ resources.repository.private } )"
-                                                            export GIT_DIR="$PRIVATE_INPUT/git"
-                                                            export GIT_WORK_TREE="$PRIVATE_INPUT/work-tree"
-                                                            git add .
-                                                            git commit -am "" --allow-empty --allow-empty-message
-                                                            PRIVATE_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
-                                                            PRIVATE_COMMIT_HASH="$( git rev-parse HEAD )"
-                                                            PRIVATE_OUTPUT="$( ${ resources.repository.private } "$PRIVATE_BRANCH" "$PRIVATE_REPOSITORY" )"
-                                                            INPUT_REPO_SCRIPTS=( "${ resources.repository.applications }" "${ resources.repository.personal }" "${ resources.repository.secret }" "${ resources.repository.secrets }" "${ resources.repository.visitor }" )
-                                                            SUBSTITUTION=( )
-                                                            cat > "$PRIVATE_OUTPUT/month.sh" <<EOF
-                                                                MONTH="$MONTH"
-                                                                GIT_DIR="$PRIVATE_REPO_OUTPUT/git" GIT_WORK_TREE="$PRIVATE_REPO_INPUT/work-tree" git push -u origin "$MONTH"
-                                                            EOF
-                                                            for INPUT_REPO_SCRIPT in "${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REPO_SCRIPTS[@]" "}" ] }"
-                                                            do
-                                                                INPUT_REPO_INPUT="$( "$INPUT_REPO_SCRIPT" )"
-                                                                export GIT_DIR="$INPUT_REPO_INPUT/git"
-                                                                export GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree"
-                                                                git add .
-                                                                git commit -am "" --allow-empty --allow-empty-message
-                                                                git push origin HEAD
-                                                                INPUT_BRANCH="$( git rev-parse --abbrev-ref HEAD )"
-                                                                INPUT_COMMIT_HASH="$( git rev-parse HEAD )"
-                                                                OLD_HASH="$( git config --get promote.input )"
-                                                                NEW_HASH="$OLD_HASH?rev=$INPUT_COMMIT_HASH"
-                                                                SUBSTITUTION+=( "-e" "s#$OLD_HASH#$NEW_HASH#" )
-                                                                INPUT_REPO_OUTPUT="$( "$INPUT_REPO_SCRIPT" "$INPUT_BRANCH" "$INPUT_COMMIT_HASH" )"
-                                                                export GIT_DIR="$INPUT_REPO_OUTPUT/git"
-                                                                export GIT_WORK_TREE="$INPUT_REPO_OUTPUT/work-tree"
-                                                                git fetch origin
-                                                                if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
-                                                                then
-                                                                    git checkout -b "$MONTH" origin/main
-                                                                else
-                                                                    git checkout "$MONTH"
-                                                                fi
-                                                                git merge "$INPUT_COMMIT_HASH" --no-edit
-                                                                cat >> "$PRIVATE_OUTPUT/month.sh" <<EOF
-                                                            GIT_DIR="$INPUT_REPO_OUTPUT/git" GIT_WORK_TREE="$INPUT_REPO_INPUT/work-tree" git push -u origin "$MONTH"
-                                                            EOF
-                                                            done
-                                                            chmod 0500 "$PRIVATE_OUTPUT/month.sh"
-                                                            export GIT_DIR="$PRIVATE_OUTPUT/git"
-                                                            export GIT_WORK_TREE="$PRIVATE_OUTPUT/work-tree"
-                                                            SOURCE="$( ${ resources.milestone.source } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                            cd "$SOURCE"
-                                                            CHECK="$( ${ resources.milestone.check } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                            cd "$CHECK"
-                                                            BUILD_VM="$( ${ resources.milestone.build-vm } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                            cd "$BUILD_VM"
-                                                            export QEMU_OPTS="-virtfs local,path=$BUILD_VM/test,mount_tag=test_folder,security_model=none"
-                                                            "$BUILD_VM/result/bin/run-nixos-vm"
-                                                            [[ -f "$BUILD_VM/test" ]] || exit 64
-                                                            BUILD_VM_WITH_BOOTLOADER="$( ${ resources.milestone.build-vm-with-bootloader } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                            cd "$BUILD_VM_WITH_BOOTLOADER"
-                                                            "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
-                                                            [[ -f "$BUILD_VM_WITH_BOOTLOADER/test" ]] || exit 64
-                                                            BUILD="$( ${ resources.milestone.build } "$PRIVATE_BRANCH" "$PRIVATE_COMMIT_HASH" "${ builtins.concatStringsSep "" [ "$" "{" "SUBSTITUTION[@]" "}" ] }" )"
-                                                            cd "$BUILD"
-                                                            sudo time timeout ${ builtins.toString config.personal.milestone.timeout } nixos-rebuild test --flake "$( ${ resources.milestone.source } "$@" )" --verbose --print-build-logs --log-format raw --show-trace
-                                                            git fetch origin
-                                                            if ! git show-ref --quiet "refs/remotes/origin/$MONTH"
-                                                            then
-                                                                git checkout -b "$MONTH" origin/main
-                                                            else
-                                                                git checkout "$MONTH"
-                                                            fi
-                                                            git merge "$PRIVATE_COMMIT_HASH" --no-edit
-                                                            "$PRIVATE_OUTPUT/month.sh"
-                                                        '' ;
-                                                }
-                                        )
-									    (
-									        pkgs.writeShellApplication
-									            {
-									                name = "promote-to-candidate" ;
-                                                    runtimeInputs = [ pkgs.findutils pkgs.git pkgs.gh pkgs.libuuid pkgs.time ] ;
-                                                    text =
-                                                        ''
-                                                            PRIVATE_1="$( ${ resources.repository.private } )"
-                                                            echo "PRIVATE_1=$PRIVATE_1"
-                                                            SCRATCH="scratch/$( uuidgen )"
-                                                            echo "SCRATCH=$SCRATCH"
-                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git checkout -b "$SCRATCH"
-                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git add .
-                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                            GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git push origin HEAD
-                                                            echo "COMMITED AND PUSHED TO PRIVATE_1"
-                                                            PRIVATE_2=$( ${ resources.repository.private } "$SCRATCH" "$( GIT_DIR="$PRIVATE_1/git" GIT_WORK_TREE="$PRIVATE_1/work-tree" git rev-parse HEAD )" )
-                                                            echo "PRIVATE_2=$PRIVATE_2"
-                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git rm -r --ignore-unmatch inputs/*
-                                                            PERSONAL_1="$( ${ resources.repository.personal } )"
-                                                            echo "PERSONAL_1=$PERSONAL_1"
-                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git checkout -b "$SCRATCH"
-                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git add .
-                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                            GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git push origin HEAD
-                                                            echo "COMMITED AND PUSHED TO PERSONAL_1"
-                                                            PERSONAL_2="$( ${ resources.repository.personal } "$SCRATCH" "$( GIT_DIR="$PERSONAL_1/git" GIT_WORK_TREE="$PERSONAL_1/work-tree" git rev-parse HEAD )" )"
-                                                            echo "PERSONAL_2=$PERSONAL_2"
-                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin "$SCRATCH"
-                                                            mkdir --parents "$PRIVATE_2/work-tree/inputs"
-                                                            GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git rev-parse HEAD > "$PRIVATE_2/work-tree/inputs/personal"
-                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git add inputs/personal
-                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit -am "" --allow-empty-message
-                                                            GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
-                                                            # echo
-                                                            # echo "#####"
-                                                            # echo "nix flake check"
-                                                            # cd "$PRIVATE_1/work-tree"
-                                                            # export NIX_SHOW_TRACE=1
-                                                            # export NIX_LOG=trace
-                                                            # nix flake check --override-input personal "$PERSONAL_2/work-tree" --print-build-logs --show-trace
-                                                            # echo "STATUS=$?"
-                                                            echo
-                                                            echo "#####"
-                                                            echo build vm
-                                                            BUILD_VM="$( ${ resources.temporary-directory } build-vm "$PRIVATE_2" "$PERSONAL_2" )"
-                                                            cd "$BUILD_VM"
-                                                            date
-                                                            echo time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            time timeout 10m nixos-rebuild build-vm --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            echo "STATUS=$?"
-                                                            echo
-                                                            echo "#####"
-                                                            echo run vm 1
-                                                            ./result/bin/run-nixos-vm
-                                                            SATISFACTORY_VM_1="X"
-                                                            while [[ "$SATISFACTORY_VM_1" != "y" ]] && [[ "$SATISFACTORY_VM_1" != "n" ]] && [[ "$SATISFACTORY_VM_1" != "" ]]
-                                                            do
-                                                                read -rp "Was the first run of the vm satisfactory:  Y/n?  " SATISFACTORY_VM_1
-                                                            done
-                                                            if [[ "$SATISFACTORY_VM_1" == "n" ]]
-                                                            then
-                                                                echo "First Run of the VM was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
-                                                                exit 64
-                                                            fi
-                                                            echo
-                                                            echo "#####"
-                                                            echo run vm 2
-                                                            SATISFACTORY_VM_2="X"
-                                                            while [[ "$SATISFACTORY_VM_2" != "y" ]] && [[ "$SATISFACTORY_VM_2" != "n" ]] && [[ "$SATISFACTORY_VM_2" != "" ]]
-                                                            do
-                                                                read -rp "Was the second run of the vm satisfactory:  Y/n?  " SATISFACTORY_VM_2
-                                                            done
-                                                            if [[ "$SATISFACTORY_VM_2" == "n" ]]
-                                                            then
-                                                                echo "Second run of the VM was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" git push origin HEAD
-                                                                exit 64
-                                                            fi
-                                                            echo "#####"
-                                                            BUILD_VM_WITH_BOOTLOADER="$( ${ resources.temporary-directory } build-vm-with-bootloader "$PRIVATE_2" "$PERSONAL_2" )"
-                                                            cd "$BUILD_VM_WITH_BOOTLOADER"
-                                                            date
-                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            time timeout 10m nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            echo "STATUS=$?"
-                                                            echo
-                                                            echo "#####"
-                                                            echo run vm-with-bootloader 1
-                                                            SATISFACTORY_VM_WITH_BOOTLOADER_1="X"
-                                                            while [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "y" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "n" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" != "" ]]
-                                                            do
-                                                                read -rp "Was the first run of the vm with bootloader satisfactory:  Y/n?  " SATISFACTORY_VM_WITH_BOOTLOADER_1
-                                                            done
-                                                            if [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_1" == "n" ]]
-                                                            then
-                                                                echo "First Run of the VM with bootloader was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
-                                                                exit 64
-                                                            fi
-                                                            echo
-                                                            echo "#####"
-                                                            echo run vm-with-bootloader 2
-                                                            SATISFACTORY_VM_WITH_BOOTLOADER_2="X"
-                                                            while [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "y" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "n" ]] && [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" != "" ]]
-                                                            do
-                                                                read -rp "Was the second run of the vm with bootloader satisfactory:  Y/n?  " SATISFACTORY_VM_WITH_BOOTLOADER_2
-                                                            done
-                                                            if [[ "$SATISFACTORY_VM_WITH_BOOTLOADER_2" == "n" ]]
-                                                            then
-                                                                echo "Second run of the VM with bootloader was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
-                                                                exit 64
-                                                            fi
-                                                            echo
-                                                            echo "#####"
-                                                            echo build
-                                                            date
-                                                            echo time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            time timeout 10m nixos-rebuild build --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            echo "STATUS=$?"
-                                                            echo
-                                                            echo "#####"
-                                                            echo test
-                                                            date
-                                                            sudo time timeout 10m nix-collect-garbage
-                                                            sudo time timeout 10m nix-store --verify --check-contents --repair
-                                                            date
-                                                            echo sudo time timeout 10m nixos-rebuild test --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            sudo time timeout 10m nixos-rebuild test --flake "$PRIVATE_2/work-tree#user" --verbose --print-build-logs --log-format raw --show-trace --override-input personal "$PERSONAL_2/work-tree"
-                                                            echo "STATUS=$?"
-                                                            SATISFACTORY_TEST="X"
-                                                            while [[ "$SATISFACTORY_TEST" != "y" ]] && [[ "$SATISFACTORY_TEST" != "n" ]] && [[ "$SATISFACTORY_TEST" != "" ]]
-                                                            do
-                                                                read -rp "Was the test satisfactory:  Y/n?  " SATISFACTORY_TEST
-                                                            done
-                                                            if [[ "$SATISFACTORY_TEST" == "n" ]]
-                                                            then
-                                                                echo "test was unsatisfactory." > failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
-                                                                GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
-                                                                exit 64
-                                                            else
-                                                                echo
-                                                                echo "#####"
-                                                                echo "READY FOR PROMOTION"
-                                                                CANDIDATE=candidate/$( uuidgen )
-                                                                gh auth login --with-token < ${ _secrets."github-token.asc.age" }
-                                                                GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git fetch origin main
-                                                                if GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git diff --quiet origin/main
-                                                                then
-                                                                    echo "We are not pushing a PR for personal"
-                                                                else
-                                                                    echo "We are pushing a PR for personal"
-                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git diff origin/main
-                                                                    PR_BRANCH="scratch/$( uuidgen )"
-                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git checkout -b "$PR_BRANCH"
-                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git reset --soft origin/main
-                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git commit -a
-                                                                    GIT_DIR="$PERSONAL_2/git" GIT_WORK_TREE="$PERSONAL_2/work-tree" git push origin "$PR_BRANCH"
-                                                                    cd "$PERSONAL_2"
-                                                                    if ! gh pr create --fill --base main --head "$PR_BRANCH"
-                                                                    then
-                                                                        echo Failed to create a PR for personal
-                                                                        GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" commit --allow-empty -e -F failure.txt
-                                                                        GIT_DIR="$PRIVATE_2/git" GIT_WORK_TREE="$PRIVATE_2/work-tree" push origin HEAD
-                                                                        exit 64
-                                                                    fi
-                                                                fi
-                                                                gh auth logout
-                                                                echo "CANDIDATE=$CANDIDATE"
-                                                                git -C "$PRIVATE_2/git" checkout -b "$CANDIDATE"
-                                                                git -C "$PRIVATE_2/git" fetch origin main
-                                                                git -C "$PRIVATE_2/git" diff origin/main
-                                                                git -C "$PRIVATE_2/git" reset --soft origin/main
-                                                                git -C "$PRIVATE_2/git" commit -a
-                                                                git -C "$PRIVATE_2/git" push origin "$CANDIDATE"
-                                                            fi
-                                                        '' ;
-                                                }
-									    )
-										( studio "studio-personal" resources.repository.personal )
-										( studio "studio-private" resources.repository.private )
-										( studio "studio-secret" resources.repository.secret )
-										( studio "studio-secrets" resources.repository.secrets )
-										( studio "studio-visitor" resources.repository.visitor )
-										pkgs.git
-										(
-											pkgs.writeShellApplication
-												{
-													name = "widget-01" ;
-													text = resources.dot-ssh ;
-												}
-										)
-										(
-											pkgs.writeShellApplication
-												{
-													name = "widget-02" ;
-													text = resources.dot-pass ;
-												}
-										)
-										(
-											pkgs.stdenv.mkDerivation
-												{
-													installPhase =
-														''
-															mkdir --parents $out/bin
-															makeWrapper \
-																${ pkgs.pass }/bin/pass \
-																$out/bin/pass \
-																--run "export PASSWORD_STORE_DIR=\"\$( ${ resources.dot-pass } )/dot-pass\"" \
-																--run "export PASSWORD_STORE_GPG_OPTS=\"--homedir \$( ${ resources.dot-gnupg } )/dot-gnupg\""
-														'' ;
-													name = "pass" ;
-													nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-													src = ./. ;
-												}
-										)
-									] ;
+                                                                    let
+                                                                        studio =
+                                                                            name : repository :
+                                                                                pkgs.stdenv.mkDerivation
+                                                                                    {
+                                                                                        installPhase =
+                                                                                            ''
+                                                                                                mkdir --parents $out/bin
+                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || exit 64" --add-flags "\$REPO"
+                                                                                            '' ;
+                                                                                        name = "derivation" ;
+                                                                                        nativeBuildInputs = [ pkgs.makeWrapper ] ;
+                                                                                        src = ./. ;
+                                                                                    } ;
+									                                    in
+                                                                            [
+                                                                                pkgs.git
+                                                                                pkgs.yq
+                                                                                pkgs.lsof
+                                                                                pkgs.inotify-tools
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "debugging" ;
+                                                                                            runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo ALPHA=${ resources_.debug.alpha }
+                                                                                                    echo BETA=${ resources_.debug.beta }
+                                                                                                '' ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "home" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.home ;
+                                                                                        }
+                                                                                )
+                                                                            ] ;
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
@@ -870,7 +875,10 @@ EOF
                                                                     } ;
                                                                 milestone =
                                                                     {
-                                                                        timeout = lib.mkOption { default = 60 * 10 ; type = lib.types.int ; } ;
+                                                                        epoch = lib.mkOption { default = 60 * 60 * 24 * 7 ; type = lib.types.int ; } ;
+                                                                        format = lib.mkOption { default = "weekly/%Y-%m-%d" ; type = lib.types.str ; } ;
+                                                                        timeout = lib.mkOption { default = 60 * 60 ; type = lib.types.int ; } ;
+                                                                        timeout2 = lib.mkOption { default = 60 ; type = lib.types.int ; } ;
                                                                     } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
@@ -879,12 +887,20 @@ EOF
                                                                         character-set = lib.mkOption { default = ".,_=2345ABCDEFGHJKLMabcdefghjkmn" ; type = lib.types.str ; } ;
                                                                         character-set-no-symbols = lib.mkOption { default = "6789NPQRSTUVWXYZpqrstuvwxyz" ; type = lib.types.str ; } ;
                                                                         deadline = lib.mkOption { default = 60 * 60 * 24 * 366 ; type = lib.types.int ; } ;
+                                                                        description = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                        email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         generated-length = lib.mkOption { default = 25 ; type = lib.types.int ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:nextmoose/secrets.git" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
+                                                                        applications =
+                                                                            {
+                                                                                user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/applications" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
@@ -901,12 +917,15 @@ EOF
                                                                             {
                                                                                 user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
+                                                                                ssh-config = lib.mkOption { default = resources : resources.dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
                                                                             } ;
-                                                                        secret =
+                                                                        resources =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/secret" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resources.git" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                         secrets =
                                                                             {
@@ -945,13 +964,126 @@ EOF
                                             } ;
                             in
                                 {
-                                    module = module ;
-                                    tests.${ system } =
+                                    checks =
                                         let
                                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-					    in
-						{			
-                                                } ;
+                                            test-fun =
+                                                name : throws-error : has-standard-error : target-mismatch : is-transient : test :
+                                                    let
+                                                        rsrcs =
+                                                            resources.lib
+                                                                {
+                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                    coreutils = pkgs.coreutils ;
+                                                                    findutils = pkgs.findutils ;
+                                                                    error = 129 ;
+                                                                    flock = pkgs.flock ;
+                                                                    init =
+                                                                        self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
+                                                                                                    echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 ${ if has-standard-error then ">&2" else "> /scratch/null" }
+                                                                                                    touch /mount/${ if target-mismatch then "98236ab2df439c61422251ca03830facf0e9a1e06fecb2d267f8c4574cd8a05b12224b536ab5661adc9a0347fba244e1a3db425ec7044166ae861cc93e50bd49" else "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" }
+                                                                                                    exit ${ if throws-error then "125" else "0" }
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    jq = pkgs.jq ;
+                                                                    makeBinPath = pkgs.lib.makeBinPath ;
+                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                    seed = name ;
+                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                    ps = pkgs.ps ;
+                                                                    redis = pkgs.redis ;
+                                                                    resources-directory = "/build/resources" ;
+                                                                    targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                    transient = false ;
+                                                                    visitor = visitor ;
+                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                    yq-go = pkgs.yq-go ;
+                                                                } ;
+                                                            in { name = name ; value = rsrcs.check test ; } ;
+                                            tests =
+                                                [
+                                                    (
+                                                        test-fun
+                                                            "Happy Case"
+                                                            false
+                                                            false
+                                                            false
+                                                            false
+                                                            {
+                                                                arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                                expected-dependencies = [ ] ;
+                                                                expected-index = "0000000311691948" ;
+                                                                expected-originator-pid = 37 ;
+                                                                expected-provenance = "new" ;
+                                                                expected-standard-error = "" ;
+                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
+                                                                expected-status = 0 ;
+                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                expected-transient = -1 ;
+                                                                resources-directory-fixture =
+                                                                    resources-directory :
+                                                                        ''
+                                                                            mkdir --parents ${ resources-directory }/sequential
+                                                                            echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                        '' ;
+                                                                standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                                standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                                status = 0 ;
+                                                            }
+                                                    )
+                                                ] ;
+                                            in builtins.listToAttrs tests ;
+                                    modules =
+                                        {
+                                            user = user ;
+                                            tester =
+                                                { config , pkgs , ... } :
+                                                    {
+                                                        systemd.services =
+                                                            {
+                                                                user-test =
+                                                                    {
+                                                                        serviceConfig =
+                                                                            {
+                                                                                ExecStart =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "application" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo 0 > /tmp/shared/status
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/application" ;
+                                                                                User = config.personal.name ;
+                                                                            } ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                    } ;
+                                                                root-test =
+                                                                    {
+                                                                        after = [ "user-test.service" ] ;
+                                                                        serviceConfig =
+                                                                            {
+                                                                                ExecStart = "${ pkgs.systemd }/bin/systemctl poweroff" ;
+                                                                            } ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                    } ;
+                                                            } ;
+                                                    } ;
+                                        } ;
                                 } ;
             } ;
 }
