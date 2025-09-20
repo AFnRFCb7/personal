@@ -141,8 +141,23 @@
                                                                     bash-name = name : builtins.replaceStrings [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" "-" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" "_" ] name ;
                                                                     cats =
                                                                         let
-                                                                            mapper = name : value : builtins.concatStringsSep "" [ ( config-name name ) "=" ''"'' "$" ( bash-name name ) ''"'' ] ;
-                                                                            in builtins.attrValues ( builtins.mapAttrs mapper primary ) ;
+                                                                            one = path : value : [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) "=" ''"'' "$" ( bash-name ( builtins.elemAt path 0 ) ) ''"'' ] ) ] ;
+                                                                            two =
+                                                                                path : value :
+                                                                                    let
+                                                                                        v = value resources_ ;
+                                                                                        in
+                                                                                            [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) "=" ''"'' "$" ( bash-name ( builtins.elemAt path 0 ) ) "/" ( v.target ) ''"'' ] ) ] ;
+                                                                            in
+                                                                                visitor.lib.implementation
+                                                                                    {
+                                                                                        bool = one ;
+                                                                                        int = one ;
+                                                                                        lambda = two ;
+                                                                                        set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                        string = one ;
+                                                                                    }
+                                                                                    primary ;
                                                                     exports =
                                                                         let
                                                                             mapper =
