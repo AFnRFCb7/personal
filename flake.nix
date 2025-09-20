@@ -160,17 +160,17 @@
                                                                                     primary ;
                                                                     exports =
                                                                         let
-                                                                            name_ = bash-name name ;
-                                                                            value_ =
+                                                                            export = path : value : [ "${ bash-name ( builtins.elemAt path 0 ) }=${ value }" ] ;
+                                                                            in
                                                                                 visitor.lib.implementation
                                                                                     {
-                                                                                        bool = path : value : if value then "yes" else "no" ;
-                                                                                        int = path : value : builtins.toString value ;
-                                                                                        lambda = path : value : let v = value resources_ ; in ''"$( ${ v.resource } )" || exit 64'' ;
-                                                                                        string = path : value : ''"${ value }"'' ;
+                                                                                        bool = path : value : if value then export path "yes" else "no" ;
+                                                                                        int = path : value : export path ( builtins.toString value ) ;
+                                                                                        lambda = path : value : let v = value resources_ ; in export path ( ''"$( ${ v.resource } )" || exit 64'' ) ;
+                                                                                        set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                        string = path : value : export path ''"${ value }"'' ;
                                                                                     }
                                                                                     primary ;
-                                                                            in "export ${ name_ }=VALUE" ;
                                                                     links =
                                                                         let
                                                                             mapper =
