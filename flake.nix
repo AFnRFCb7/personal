@@ -160,21 +160,17 @@
                                                                                     primary ;
                                                                     exports =
                                                                         let
-                                                                            mapper =
-                                                                                name : value :
-                                                                                    let
-                                                                                        name_ = bash-name name ;
-                                                                                        value_ =
-                                                                                            visitor.lib.implementation
-                                                                                                {
-                                                                                                    bool = path : value : if value then "yes" else "no" ;
-                                                                                                    int = path : value : builtins.toString value ;
-                                                                                                    lambda = path : value : let v = value resources_ ; in ''"$( ${ v.resource } )" || exit 64'' ;
-                                                                                                    string = path : value : ''"${ value }"'' ;
-                                                                                                }
-                                                                                                primary ;
-                                                                                        in "export ${ name_ }=VALUE" ;
-                                                                            in builtins.attrValues ( builtins.mapAttrs mapper primary ) ;
+                                                                            name_ = bash-name name ;
+                                                                            value_ =
+                                                                                visitor.lib.implementation
+                                                                                    {
+                                                                                        bool = path : value : if value then "yes" else "no" ;
+                                                                                        int = path : value : builtins.toString value ;
+                                                                                        lambda = path : value : let v = value resources_ ; in ''"$( ${ v.resource } )" || exit 64'' ;
+                                                                                        string = path : value : ''"${ value }"'' ;
+                                                                                    }
+                                                                                    primary ;
+                                                                            in "export ${ name_ }=VALUE" ;
                                                                     links =
                                                                         let
                                                                             mapper =
