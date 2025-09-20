@@ -472,6 +472,8 @@
                                                                                                             DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
                                                                                                             ln --symbolic "$DOT_SSH" /links
                                                                                                             ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
+                                                                                                            mkdir --parents /mount/repositories
+                                                                                                            PRIVATE_REPOSITORY="$( resources.repository.private )" || ${ failure "" }
                                                                                                             GITHUB_TOKEN_FILE="$( ${ resources.secrets."github-token.asc.age" } )" || ${ failure "66a59e49" }
                                                                                                             ln --symbolic "$GITHUB_TOKEN_FILE" /links
                                                                                                             GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
@@ -487,6 +489,7 @@
                                                                                     ".envrc"
                                                                                     "dot-gnupg"
                                                                                     "dot-ssh"
+                                                                                    "repositories"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
