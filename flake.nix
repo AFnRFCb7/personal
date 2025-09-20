@@ -477,7 +477,7 @@
                                                                                                             GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
                                                                                                             export GITHUB_TOKEN
                                                                                                             cat > /mount/.envrc <<EOF
-                                                                                                            GITHUB_TOKEN=$GITHUB_TOKEN
+                                                                                                            export GITHUB_TOKEN=$GITHUB_TOKEN
                                                                                                             EOF
                                                                                                         '' ;
                                                                                                 } ;
