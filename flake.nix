@@ -138,86 +138,12 @@
                                                                 user-known-hosts-file ? null
                                                             } @primary : ignore :
                                                                 let
-                                                                    catted =
+                                                                    bash-name = name : builtins.replaceStrings [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" "-" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" "_" ] name ;
+                                                                    cats =
                                                                         let
-                                                                            mapper = value : "${ value.name } ${ builtins.concatStringsSep "" [ "$" value.name ] }${ if builtins.typeOf value.value == "string" then "" else "/${ value.value.target }" }" ;
-                                                                            in builtins.map mapper sorted ;
-                                                                    indent = if builtins.typeOf host == "null" then [ ] else [ "\t" ] ;
-                                                                    listed = builtins.attrValues setted ;
-                                                                    setted =
-                                                                        let
-                                                                            mapper =
-                                                                                name : value :
-                                                                                    let
-                                                                                        resources =
-                                                                                            [
-                                                                                                "control-path"
-                                                                                                "identity-file"
-                                                                                                "user-known-hosts-file"
-                                                                                                "identity-agent"
-                                                                                                "pkcs11-provider"
-                                                                                                "proxy-command"
-                                                                                            ] ;
-                                                                                        in
-                                                                                            {
-                                                                                                name =
-                                                                                                    let
-                                                                                                        lower-case = [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" ] ;
-                                                                                                        hyphen-case = builtins.map ( letter : builtins.concatStringsSep "" [ "-" letter ] ) lower-case ;
-                                                                                                        upper-case = [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ;
-                                                                                                        name-lower-cased = builtins.replaceStrings upper-case lower-case name-prefixed ;
-                                                                                                        name-prefixed = builtins.concatStringsSep "" [ "-" name ] ;
-                                                                                                        name-space-cased = builtins.replaceStrings hyphen-case upper-case name-lower-cased ;
-                                                                                                        in name-space-cased ;
-                                                                                                index = if name == "host" then 0 else 1 ;
-                                                                                                value =
-                                                                                                    let
-                                                                                                        booleans =
-                                                                                                            [
-                                                                                                                "batch-mode"
-                                                                                                                "challenge-response-authentication"
-                                                                                                                "compression"
-                                                                                                                "forward-agent"
-                                                                                                                "gateway-ports"
-                                                                                                                "gssapi-authentication"
-                                                                                                                "gssapi-delegate-credentials"
-                                                                                                                "ignore-unknown"
-                                                                                                                "kbd-interactive-authentication"
-                                                                                                                "no-host-authentication-for-localhost"
-                                                                                                                "password-authentication"
-                                                                                                                "permit-local-command"
-                                                                                                                "permit-remote-open"
-                                                                                                                "pubkey-authentication"
-                                                                                                                "strict-host-key-checking"
-                                                                                                                "verify-host-key-dns"
-                                                                                                                "forward-x11"
-                                                                                                                "forward-x11-trusted"
-                                                                                                            ] ;
-                                                                                                    integers =
-                                                                                                        [
-                                                                                                            "port"
-                                                                                                            "connect-timeout"
-                                                                                                            "server-alive-count-max"
-                                                                                                            "server-alive-interval"
-                                                                                                        ] ;
-                                                                                                    in
-                                                                                                        if builtins.any ( n : n == name ) booleans && builtins.typeOf value == "bool" then if value then ''"YES"'' else ''"NO"''
-                                                                                                        else if builtins.any ( n : n == name ) integers then builtins.concatStringsSep "" [ "\"" ( builtins.toString value ) "\"" ]
-                                                                                                        else if builtins.any ( n : n == name ) resources then value resources_
-                                                                                                        else builtins.concatStringsSep "" [ "\"" value "\"" ] ;
-                                                                                            } ;
-                                                                            in builtins.mapAttrs mapper primary ;
-                                                                    sorted = builtins.sort ( a : b : if a.index < b.index then true else if a.index > b.index then false else a.name < b.name ) listed ;
-                                                                    variabled =
-                                                                        let
-                                                                            mapper =
-                                                                                value :
-                                                                                    builtins.concatLists
-                                                                                        [
-                                                                                            ( if builtins.typeOf value.value == "string" then [ ''${ value.name }=${ value.value }'' ] else [ ''${ value.name }="$( ${ value.value.resource } )" || exit 64'' ] )
-                                                                                            ( if builtins.typeOf value.value == "string" then [ ] else [ ''ln --symbolic "${ builtins.concatStringsSep "" [ "$" value.name ] }" /links'' ] )
-                                                                                        ] ;
-                                                                            in builtins.map mapper sorted ;
+                                                                            mapper = name : value : builtins.concatStringsSep "" [ ( config-name name ) "=" ''"'' "$" ( bash-name name ) ''"'' ] ;
+                                                                            in builtins.attrValues ( builtins.mapAttrs mapper primary ) ;
+                                                                    config-name = name : builtins.replaceStrings [ "_" ] [ "" ] name ;
                                                                     in
                                                                         {
                                                                             init =
@@ -230,9 +156,8 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.concatLists variabled ) }
                                                                                                             cat > /mount/config <<EOF
-                                                                                                            ${ builtins.concatStringsSep "\n" catted }
+                                                                                                            ${ builtins.concatStringsSep "\n" cats }
                                                                                                             EOF
                                                                                                             chmod 0400 /mount/config
                                                                                                         '' ;
@@ -457,14 +382,14 @@
                                                                             dot-ssh
                                                                                 {
                                                                                     control-master = "auto" ;
-                                                                                    control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
+                                                                                    # control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
                                                                                     host = "mobile" ;
                                                                                     host-name = "192.168.1.202" ;
-                                                                                    identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
+                                                                                    # identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
                                                                                     user = "git" ;
-                                                                                    user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ; target = "secret" ; } ;
+                                                                                    user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
                                                                                 } ;
                                                                     } ;
                                                                 home =
@@ -483,12 +408,16 @@
                                                                                                             DOT_GNUPG="$( ${ resources.dot-gnupg } )" || ${ failure "6b717cd6" }
                                                                                                             ln --symbolic "$DOT_GNUPG" /links
                                                                                                             ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg
+                                                                                                            # DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
+                                                                                                            # ln --symbolic "$DOT_SSH" /links
+                                                                                                            # ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
                                                                                     "dot-gnupg"
+                                                                                    # "dot-ssh"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
@@ -831,9 +760,9 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
-                                                                                            name = "dot-gnupg" ;
+                                                                                            name = "dot-ssh" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.dot-gnupg ;
+                                                                                            text = resources_.dot-ssh.mobile ;
                                                                                         }
                                                                                 )
                                                                             ] ;
