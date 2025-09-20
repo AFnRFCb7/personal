@@ -143,6 +143,19 @@
                                                                         let
                                                                             mapper = name : value : builtins.concatStringsSep "" [ ( config-name name ) "=" ''"'' "$" ( bash-name name ) ''"'' ] ;
                                                                             in builtins.attrValues ( builtins.mapAttrs mapper primary ) ;
+                                                                    links =
+                                                                        let
+                                                                            mapper =
+                                                                                name : value :
+                                                                                    visitor.lib.implementation
+                                                                                        {
+                                                                                            bool = path : value : null;
+                                                                                            int = path : value : null ;
+                                                                                            lambda = path : value : "ln --symbolic ${ builtins.concatStringsSep "" [ "$" ( bash-name name ) ] } /links" ;
+                                                                                            string = path : value : null ;
+                                                                                        }
+                                                                                        primary ;
+                                                                            in builtins.filter ( link : builtins.typeOf link == "string" ) ( builtins.attrValues ( builtins.mapAttrs mapper primary ) ) ;
                                                                     config-name = name : builtins.replaceStrings [ "_" ] [ "" ] name ;
                                                                     in
                                                                         {
@@ -156,6 +169,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            ${ builtins.concatStringsSep "\n" links }
                                                                                                             cat > /mount/config <<EOF
                                                                                                             ${ builtins.concatStringsSep "\n" cats }
                                                                                                             EOF
