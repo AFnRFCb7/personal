@@ -143,6 +143,23 @@
                                                                         let
                                                                             mapper = name : value : builtins.concatStringsSep "" [ ( config-name name ) "=" ''"'' "$" ( bash-name name ) ''"'' ] ;
                                                                             in builtins.attrValues ( builtins.mapAttrs mapper primary ) ;
+                                                                    exports =
+                                                                        let
+                                                                            mapper =
+                                                                                name : value :
+                                                                                    let
+                                                                                        name_ = bash-name name ;
+                                                                                        value_ =
+                                                                                            visitor.lib.implementation
+                                                                                                {
+                                                                                                    bool = path : value : if value then "yes" else "no" ;
+                                                                                                    int = path : value : builtins.toString value ;
+                                                                                                    lambda = path : value : let v = value resources_ ; in ''"$( ${ v.resource } )" || exit 64'' ;
+                                                                                                    string = path : value : ''"${ value }"'' ;
+                                                                                                }
+                                                                                                primary ;
+                                                                                        in "export ${ name_ }=VALUE" ;
+                                                                            in builtins.attrValues ( builtins.mapAttrs mapper primary ) ;
                                                                     links =
                                                                         let
                                                                             mapper =
@@ -169,6 +186,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            ${ builtins.concatStringsSep "\n" exports }
                                                                                                             ${ builtins.concatStringsSep "\n" links }
                                                                                                             cat > /mount/config <<EOF
                                                                                                             ${ builtins.concatStringsSep "\n" cats }
