@@ -476,15 +476,15 @@
                                                                                                             ln --symbolic "$GITHUB_TOKEN_FILE" /links
                                                                                                             GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
                                                                                                             export GITHUB_TOKEN
-                                                                                                            # cat > /mount/.envrc <<EOF
-                                                                                                            # GITHUB_TOKEN=$GITHUB_TOKEN
-                                                                                                            # EOF
+                                                                                                            cat > /mount/.envrc <<EOF
+                                                                                                            GITHUB_TOKEN=$GITHUB_TOKEN
+                                                                                                            EOF
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
-                                                                                    # ".envrc"
+                                                                                    ".envrc"
                                                                                     "dot-gnupg"
                                                                                     "dot-ssh"
                                                                                 ] ;
