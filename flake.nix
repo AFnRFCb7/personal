@@ -472,11 +472,19 @@
                                                                                                             DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
                                                                                                             ln --symbolic "$DOT_SSH" /links
                                                                                                             ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
+                                                                                                            GITHUB_TOKEN_FILE="$( ${ resources.secrets."github-token.asc.age" } )" || ${ failure "66a59e49" }
+                                                                                                            ln --symbolic "$GITHUB_TOKEN_FILE" /links
+                                                                                                            GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
+                                                                                                            export GITHUB_TOKEN
+                                                                                                            # cat > /mount/.envrc <<EOF
+                                                                                                            # GITHUB_TOKEN=$GITHUB_TOKEN
+                                                                                                            # EOF
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
+                                                                                    # ".envrc"
                                                                                     "dot-gnupg"
                                                                                     "dot-ssh"
                                                                                 ] ;
@@ -829,9 +837,9 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
-                                                                                            name = "control-path" ;
+                                                                                            name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.control-paths.mobile ;
+                                                                                            text = resources_.secrets."github-token.asc.age" ;
                                                                                         }
                                                                                 )
                                                                             ] ;
