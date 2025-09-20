@@ -379,7 +379,25 @@
                                                                     } ;
                                                                 control-paths =
                                                                     {
-                                                                        mobile = ignore : { } ;
+                                                                        mobile =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    mkdir --parents /mount/control-path
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ "control-path" ] ;
+                                                                                } ;
                                                                     } ;
                                                                 dot-gnupg =
                                                                     dot-gnupg
@@ -425,7 +443,7 @@
                                                                             dot-ssh
                                                                                 {
                                                                                     control-master = "auto" ;
-                                                                                    # control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
+                                                                                    control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
                                                                                     host = "mobile" ;
                                                                                     host-name = "192.168.1.202" ;
                                                                                     identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
@@ -806,6 +824,14 @@
                                                                                             name = "dot-ssh" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.dot-ssh.mobile ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "control-path" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.control-paths.mobile ;
                                                                                         }
                                                                                 )
                                                                             ] ;
