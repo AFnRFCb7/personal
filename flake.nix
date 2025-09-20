@@ -469,16 +469,16 @@
                                                                                                             DOT_GNUPG="$( ${ resources.dot-gnupg } )" || ${ failure "6b717cd6" }
                                                                                                             ln --symbolic "$DOT_GNUPG" /links
                                                                                                             ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg
-                                                                                                            # DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
-                                                                                                            # ln --symbolic "$DOT_SSH" /links
-                                                                                                            # ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
+                                                                                                            DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
+                                                                                                            ln --symbolic "$DOT_SSH" /links
+                                                                                                            ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
                                                                                     "dot-gnupg"
-                                                                                    # "dot-ssh"
+                                                                                    "dot-ssh"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
@@ -1072,9 +1072,13 @@
                                                                                                                 echo "There was a problem executing home" >> /tmp/shared/FLAG
                                                                                                             else
                                                                                                                 RESOURCE="$( home )"
-                                                                                                                if [[ -L "$RESOURCE/.gpg" ]]
+                                                                                                                if [[ ! -L "$RESOURCE/dot-gpg" ]]
                                                                                                                 then
                                                                                                                     echo "There was no gpg directory" >> /tmp/shared/FLAG
+                                                                                                                fi
+                                                                                                                if [[ ! -d "$RESOURCE/dot-ssh" ]]
+                                                                                                                then
+                                                                                                                    echo "There was no ssh directory" >> /tmp/shared/FLAG
                                                                                                                 fi
                                                                                                             fi
                                                                                                         '' ;
