@@ -147,7 +147,7 @@
                                                                                     let
                                                                                         v = value resources_ ;
                                                                                         in
-                                                                                            [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) "=" ''"'' "$" ( bash-name ( builtins.elemAt path 0 ) ) "/" ( v.target ) ''"'' ] ) ] ;
+                                                                                            [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) " " "$" ( bash-name ( builtins.elemAt path 0 ) ) "/" ( v.target ) ] ) ] ;
                                                                             in
                                                                                 visitor.lib.implementation
                                                                                     {
@@ -428,11 +428,11 @@
                                                                                     # control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
                                                                                     host = "mobile" ;
                                                                                     host-name = "192.168.1.202" ;
-                                                                                    # identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
+                                                                                    identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
                                                                                     user = "git" ;
-                                                                                    user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
+                                                                                    user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ; target = "secret" ; } ;
                                                                                 } ;
                                                                     } ;
                                                                 home =
