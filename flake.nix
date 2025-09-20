@@ -482,13 +482,13 @@
                                                                                                         ''
                                                                                                             DOT_GNUPG="$( ${ resources.dot-gnupg } )" || ${ failure "6b717cd6" }
                                                                                                             ln --symbolic "$DOT_GNUPG" /links
-                                                                                                            ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/.gpg
+                                                                                                            ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
-                                                                                    ".gpg"
+                                                                                    "dot-gnupg"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
