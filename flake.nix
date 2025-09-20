@@ -173,7 +173,7 @@
                                                                                         }
                                                                                         primary ;
                                                                             in builtins.filter ( link : builtins.typeOf link == "string" ) ( builtins.attrValues ( builtins.mapAttrs mapper primary ) ) ;
-                                                                    config-name = name : builtins.replaceStrings [ "_" ] [ "" ] name ;
+                                                                    config-name = name : builtins.replaceStrings [ "-" ] [ "" ] name ;
                                                                     in
                                                                         {
                                                                             init =
