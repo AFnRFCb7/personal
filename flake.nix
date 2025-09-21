@@ -304,7 +304,7 @@
                                                                                         point = dot-ssh resources_ ;
                                                                                         in
                                                                                             ''
-                                                                                                DOT_SSH="$( ${ point.resource } )" || exit 64
+                                                                                                DOT_SSH="$( echo | ${ point.resource } )" || exit 64
                                                                                                 exec ssh -F "$DOT_SSH/${ point.target }" "$@"
                                                                                             '' ;
                                                                             } ;
@@ -498,7 +498,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = "${ pkgs.openssh }/bin/ssh -F ${ self }/config" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -519,8 +519,8 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                DOT_SSH="$( resources_.dot-ssh.mobile )" || exit 64
-                                                                                                                export DOT_SSH
+                                                                                                                # DOT_SSH="$( resources_.dot-ssh.mobile )" || exit 64
+                                                                                                                # export DOT_SSH
                                                                                                                 # ln --symbolic "$DOT_SSH" /links
                                                                                                                 # ln --symbolic "$DOT_SSH/config" /mount/config
                                                                                                                 # git fetch origin main 2>&1
