@@ -471,7 +471,6 @@
                                                                                                             ln --symbolic "$DOT_SSH" /links
                                                                                                             ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                             mkdir --parents /mount/repositories
-                                                                                                            PRIVATE_REPOSITORY="$( resources.repository.private )" || ${ failure "" }
                                                                                                             GITHUB_TOKEN_FILE="$( ${ resources.secrets."github-token.asc.age" } )" || ${ failure "66a59e49" }
                                                                                                             ln --symbolic "$GITHUB_TOKEN_FILE" /links
                                                                                                             GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
@@ -505,18 +504,18 @@
                                                                                         } ;
                                                                                     hooks =
                                                                                         {
-                                                                                            post-commit = post-commit "origin" ;
+                                                                                            # post-commit = post-commit "origin" ;
                                                                                         } ;
                                                                                     remotes =
                                                                                         {
-                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                            # origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     setup =
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
-                                                                                                        name = "application" ;
+                                                                                                        name = "setup" ;
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
@@ -525,7 +524,7 @@
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            in "${ application }/bin/application" ;
+                                                                                            in "${ application }/bin/setup" ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
@@ -840,7 +839,7 @@
                                                                                         {
                                                                                             name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.secrets."github-token.asc.age" ;
+                                                                                            text = resources_.repository.private ;
                                                                                         }
                                                                                 )
                                                                             ] ;
