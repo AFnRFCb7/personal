@@ -498,7 +498,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "core.sshCommand" = "${ pkgs.openssh }/bin/ssh -F ${ self }/config" ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -519,6 +519,10 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                DOT_SSH="$( resources_.dot-ssh.mobile )" || exit 64
+                                                                                                                export DOT_SSH
+                                                                                                                # ln --symbolic "$DOT_SSH" /links
+                                                                                                                # ln --symbolic "$DOT_SSH/config" /mount/config
                                                                                                                 # git fetch origin main 2>&1
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
@@ -840,6 +844,14 @@
                                                                                             name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.repository.private ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "foobar2" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.dot-ssh.mobile ;
                                                                                         }
                                                                                 )
                                                                             ] ;
