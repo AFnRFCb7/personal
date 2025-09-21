@@ -508,7 +508,7 @@
                                                                                         } ;
                                                                                     remotes =
                                                                                         {
-                                                                                            # origin = config.personal.repository.private.remote ;
+                                                                                            origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     setup =
                                                                                         let
