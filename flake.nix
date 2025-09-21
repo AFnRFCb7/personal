@@ -442,8 +442,6 @@
                                                                         mobile =
                                                                             dot-ssh
                                                                                 {
-                                                                                    control-master = "auto" ;
-                                                                                    control-path = resources : { resource = resources.control-paths.mobile ; target = "%C" ; } ;
                                                                                     host = "mobile" ;
                                                                                     host-name = "192.168.1.202" ;
                                                                                     identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
@@ -522,7 +520,7 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git fetch origin main 2>&1
+                                                                                                                # git fetch origin main 2>&1
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
