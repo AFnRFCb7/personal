@@ -234,6 +234,10 @@
                                                                                                     export GIT_WORK_TREE=/mount/work-tree
                                                                                                     mkdir --parents "$GIT_DIR"
                                                                                                     mkdir --parents "$GIT_WORK_TREE"
+                                                                                                    cat > /mount/.envrc <<EOF
+                                                                                                    export GIT_DIR=${ self }/git
+                                                                                                    export GIT_WORK_TREE=${ self }/work-tree
+                                                                                                    EOF
                                                                                                     git init 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/hooks/${ name }"'' ) hooks ) ) }
@@ -243,7 +247,7 @@
                                                                                         } ;
                                                                                     in "${ application }/bin/application" ;
                                                                     release = release ;
-                                                                    targets = [ "git" "work-tree" ] ;
+                                                                    targets = [ ".envrc" "git" "work-tree" ] ;
                                                                 } ;
                                                         milestone =
                                                             let
@@ -470,7 +474,7 @@
                                                                                                             DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
                                                                                                             ln --symbolic "$DOT_SSH" /links
                                                                                                             ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
-                                                                                                            mkdir --parents /mount/repositories
+                                                                                                            mkdir --parents /mount/repository
                                                                                                             GITHUB_TOKEN_FILE="$( ${ resources.secrets."github-token.asc.age" } )" || ${ failure "66a59e49" }
                                                                                                             ln --symbolic "$GITHUB_TOKEN_FILE" /links
                                                                                                             GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
@@ -498,7 +502,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            # "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -519,10 +523,10 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                # DOT_SSH="$( resources_.dot-ssh.mobile )" || exit 64
-                                                                                                                # export DOT_SSH
-                                                                                                                # ln --symbolic "$DOT_SSH" /links
-                                                                                                                # ln --symbolic "$DOT_SSH/config" /mount/config
+                                                                                                                cat > /mount/.envrc <<EOF
+                                                                                                                export GIT_DIR=${ self }/git
+                                                                                                                export GIT_WORK_TREE=${ self }/work-tree
+                                                                                                                EOF
                                                                                                                 # git fetch origin main 2>&1
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
@@ -819,6 +823,19 @@
                                                                                                 ''
                                                                                                     echo ALPHA=${ resources_.debug.alpha }
                                                                                                     echo BETA=${ resources_.debug.beta }
+                                                                                                '' ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "studio" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    HOMEY="$( ${ resources_.home } )" || exit 64
+                                                                                                    cd "$HOMEY"
+                                                                                                    idea-community
                                                                                                 '' ;
                                                                                         }
                                                                                 )
