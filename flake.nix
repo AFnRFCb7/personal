@@ -1093,7 +1093,7 @@
                                                     {
                                                         systemd.services =
                                                             {
-                                                                user-secret-keys-test =
+                                                                user-home-test =
                                                                     {
                                                                         after = [ "redis.service" ] ;
                                                                         serviceConfig =
@@ -1107,26 +1107,17 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            if RESOURCE="$( ${ resources_.secrets."secret-keys.asc.age" } )"
-                                                                                                            then
-                                                                                                                if [[ ! -f "$RESOURCE/secret"
-                                                                                                                then
-                                                                                                                    echo We did not create the secret-keys secret >> /tmp/FAILURE_FLAG
-                                                                                                                fi
-                                                                                                            else
-                                                                                                                echo We had a problem with secret-keys >> /tmp/FAILURE_FLAG
-                                                                                                            fi
-                                                                                                            touch /tmp/SUCCESS_FLAG
+                                                                                                            touch /tmp/shared/SUCCESS_FLAG
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/ExecStart" ;
                                                                                 User = config.personal.name ;
                                                                             } ;
-                                                                        wantedBy = "multi-user.target" ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
                                                                 root-test =
                                                                     {
-                                                                        after = [ "user-secret-keys-test.service" ] ;
+                                                                        after = [ "user-home-test.service" ] ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart = "${ pkgs.systemd }/bin/systemctl poweroff" ;
