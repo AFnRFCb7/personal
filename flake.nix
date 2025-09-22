@@ -490,7 +490,7 @@
                                                                                     ".envrc"
                                                                                     "dot-gnupg"
                                                                                     "dot-ssh"
-                                                                                    "repositories"
+                                                                                    "repository"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
