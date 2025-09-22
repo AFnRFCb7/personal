@@ -648,6 +648,17 @@
                                                                 efi.canTouchEfiVariables = true ;
                                                                 systemd-boot.enable = true ;
                                                             } ;
+                                                        environment.systemPackages =
+                                                            [
+                                                                (
+                                                                    pkgs.writeShellApplication
+                                                                        {
+                                                                            name = "home" ;
+                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                            text = resources_.home ;
+                                                                        }
+                                                                )
+                                                            ] ;
                                                         hardware.pulseaudio =
                                                             {
                                                                 enable = false ;
@@ -840,14 +851,6 @@
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community
                                                                                                 '' ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "home" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.home ;
                                                                                         }
                                                                                 )
                                                                                 (
@@ -1090,7 +1093,7 @@
                                                     {
                                                         systemd.services =
                                                             {
-                                                                user-home-test =
+                                                                user-secret-keys-test =
                                                                     {
                                                                         after = [ "redis.service" ] ;
                                                                         serviceConfig =
@@ -1100,37 +1103,30 @@
                                                                                         application =
                                                                                             pkgs.writeShellApplication
                                                                                                 {
-                                                                                                    name = "application" ;
+                                                                                                    name = "ExecStart" ;
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            if ! which home
+                                                                                                            if RESOURCE="$( ${ resources_.secrets."secret-keys.asc.age" } )"
                                                                                                             then
-                                                                                                                echo "There is no home" >> /tmp/shared/FLAG
-                                                                                                            elif ! home
-                                                                                                            then
-                                                                                                                echo "There was a problem executing home" >> /tmp/shared/FLAG
+                                                                                                                if [[ ! -f "$RESOURCE/secret"
+                                                                                                                then
+                                                                                                                    echo We did not create the secret-keys secret >> /tmp/FAILURE_FLAG
+                                                                                                                fi
                                                                                                             else
-                                                                                                                RESOURCE="$( home )"
-                                                                                                                if [[ ! -L "$RESOURCE/dot-gpg" ]]
-                                                                                                                then
-                                                                                                                    echo "There was no gpg directory" >> /tmp/shared/FLAG
-                                                                                                                fi
-                                                                                                                if [[ ! -d "$RESOURCE/dot-ssh" ]]
-                                                                                                                then
-                                                                                                                    echo "There was no ssh directory" >> /tmp/shared/FLAG
-                                                                                                                fi
+                                                                                                                echo We had a problem with secret-keys >> /tmp/FAILURE_FLAG
                                                                                                             fi
+                                                                                                            touch /tmp/SUCCESS_FLAG
                                                                                                         '' ;
                                                                                                 } ;
-                                                                                        in "${ application }/bin/application" ;
+                                                                                        in "${ application }/bin/ExecStart" ;
                                                                                 User = config.personal.name ;
                                                                             } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                        wantedBy = "multi-user.target" ;
                                                                     } ;
                                                                 root-test =
                                                                     {
-                                                                        after = [ "user-home-test.service" ] ;
+                                                                        after = [ "user-secret-keys-test.service" ] ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart = "${ pkgs.systemd }/bin/systemctl poweroff" ;
