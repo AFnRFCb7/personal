@@ -475,6 +475,9 @@
                                                                                                             ln --symbolic "$DOT_SSH" /links
                                                                                                             ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                             mkdir --parents /mount/repository
+                                                                                                            PRIVATE_REPOSITORY="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
+                                                                                                            ln --symbolic "$PRIVATE_REPOSITORY" /links
+                                                                                                            ln --symbolic "$PRIVATE_REPOSITORY" /mount/repository/private
                                                                                                             GITHUB_TOKEN_FILE="$( ${ resources.secrets."github-token.asc.age" } )" || ${ failure "66a59e49" }
                                                                                                             ln --symbolic "$GITHUB_TOKEN_FILE" /links
                                                                                                             GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
