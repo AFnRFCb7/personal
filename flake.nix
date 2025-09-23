@@ -15,6 +15,7 @@
                         visitor
                     } @primary :
                         let
+                            pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
@@ -650,14 +651,6 @@
                                                             } ;
                                                         environment.systemPackages =
                                                             [
-                                                                (
-                                                                    pkgs.writeShellApplication
-                                                                        {
-                                                                            name = "home" ;
-                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                            text = resources_.home ;
-                                                                        }
-                                                                )
                                                             ] ;
                                                         hardware.pulseaudio =
                                                             {
@@ -714,7 +707,7 @@
                                                                 gnupg.agent =
                                                                     {
                                                                         enable = true ;
-                                                                        pinentryFlavor = "curses" ;
+                                                                        pinentryPackage = pkgs.pinentry-curses ;
                                                                     } ;
                                                             } ;
                                                         security =
@@ -828,6 +821,14 @@
                                                                                 pkgs.yq
                                                                                 pkgs.lsof
                                                                                 pkgs.inotify-tools
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "home" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.home ;
+                                                                                        }
+                                                                                )
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
@@ -1008,7 +1009,6 @@
                                 {
                                     checks =
                                         let
-                                            pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                                             test-fun =
                                                 name : throws-error : has-standard-error : target-mismatch : is-transient : test :
                                                     let
@@ -1065,7 +1065,7 @@
                                                                 arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                                 expected-dependencies = [ ] ;
                                                                 expected-index = "0000000311691948" ;
-                                                                expected-originator-pid = 37 ;
+                                                                expected-originator-pid = 45 ;
                                                                 expected-provenance = "new" ;
                                                                 expected-standard-error = "" ;
                                                                 expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
@@ -1107,10 +1107,21 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            cleanup ( ) {
+                                                                                                                cat /run/current-system/sw/bin/home >> /tmp/shared/FAILURE_FLAG
+                                                                                                                cat /home/emory/resources/debug >> /tmp/shared/FAILURE_FLAG
+                                                                                                                echo DEBUGGING OFF >> /tmp/shared/FAILURE_FLOG
+                                                                                                            }
+                                                                                                            trap cleanup EXIT
+                                                                                                            mkdir --parents /build/mounts/0000000000000000
+                                                                                                            timeout 10s RESOURCE="$( /run/current-system/sw/bin/home 2>> /tmp/shared/FAILURE_FLAG )" || echo "We had a problem with home" >> /tmp/shared/FAILURE_FLAG
+                                                                                                            echo "RESOURCE=$RESOURCE" >> /tmp/shared/FAILURE_FLAG
                                                                                                             touch /tmp/shared/SUCCESS_FLAG
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/ExecStart" ;
+                                                                                StandardInput = null ;
+                                                                                Type = "oneshot" ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
@@ -1125,6 +1136,32 @@
                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
                                                             } ;
+                                                    } ;
+                                        } ;
+                                    tests =
+                                        {
+                                            home =
+                                                pkgs.nixosTest
+                                                    {
+                                                        name = "home-test" ;
+                                                        nodes.machine =
+                                                            { pkgs, ... } :
+                                                                {
+                                                                    services.redis.enable = true ;
+                                                                    users.users.emory =
+                                                                        {
+                                                                            isNormalUser = true ;
+                                                                            extraGroups = [ "wheel" ] ;
+                                                                            password = "password" ;
+                                                                        } ;
+                                                                    environment.systemPackages = [ pkgs.hello ] ;
+                                                                } ;
+                                                        testScript =
+                                                            ''
+                                                                start_all()
+                                                                machine.wait_for_unit("multi-user.target")
+                                                                machine.succeed("su - emory -c hello")
+                                                            '' ;
                                                     } ;
                                         } ;
                                 } ;
