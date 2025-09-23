@@ -1147,18 +1147,33 @@
                                                         nodes.machine =
                                                             { pkgs, ... } :
                                                                 {
-                                                                    services.redis.enable = true ;
-                                                                    users.users.emory =
+                                                                    imports = [ user ] ;
+                                                                    environment.systemPackages =
+                                                                        [
+                                                                            (
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "test-root" ;
+                                                                                        runtimeInputs = [ ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                            '' ;
+                                                                                    }
+                                                                            )
+                                                                        ] ;
+                                                                    personal =
                                                                         {
-                                                                            isNormalUser = true ;
+                                                                            agenix = self + "/age.test.key" ;
+                                                                            description = "Bob Wonderfull" ;
+                                                                            name = "bob" ;
+                                                                            password = "password" ;
                                                                         } ;
-                                                                    environment.systemPackages = [ pkgs.hello ] ;
                                                                 } ;
                                                         testScript =
                                                             ''
                                                                 start_all()
                                                                 machine.wait_for_unit("multi-user.target")
-                                                                machine.succeed("su - emory -c hello")
+                                                                machine.succeed("test-root")
                                                             '' ;
                                                     } ;
                                         } ;
