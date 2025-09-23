@@ -1152,7 +1152,6 @@
                                                                         {
                                                                             isNormalUser = true ;
                                                                             extraGroups = [ "wheel" ] ;
-                                                                            password = "password" ;
                                                                         } ;
                                                                     environment.systemPackages = [ pkgs.hello ] ;
                                                                 } ;
