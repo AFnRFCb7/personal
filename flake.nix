@@ -1153,7 +1153,7 @@
                                                                             (
                                                                                 pkgs.writeShellApplication
                                                                                     {
-                                                                                        name = "test-root" ;
+                                                                                        name = "test-bob" ;
                                                                                         runtimeInputs = [ ] ;
                                                                                         text =
                                                                                             ''
@@ -1173,7 +1173,7 @@
                                                             ''
                                                                 start_all()
                                                                 machine.wait_for_unit("multi-user.target")
-                                                                machine.succeed("test-root")
+                                                                machine.succeed("su - bob --command test-bob")
                                                             '' ;
                                                     } ;
                                         } ;
