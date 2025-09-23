@@ -1151,7 +1151,6 @@
                                                                     users.users.emory =
                                                                         {
                                                                             isNormalUser = true ;
-                                                                            extraGroups = [ "wheel" ] ;
                                                                         } ;
                                                                     environment.systemPackages = [ pkgs.hello ] ;
                                                                 } ;
