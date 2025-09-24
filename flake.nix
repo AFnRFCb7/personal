@@ -1001,7 +1001,74 @@
                                 {
                                     checks =
                                         let
-                                            test-fun =
+                                            test-foobar =
+                                                name :
+                                                    {
+                                                        name = "test-foobar:  ${ name }" ;
+                                                        value =
+                                                            pkgs.nixosTest
+                                                               {
+                                                                   name = "home-test" ;
+                                                                   nodes.machine =
+                                                                       { pkgs, ... } :
+                                                                           {
+                                                                               imports = [ user ] ;
+                                                                               environment.systemPackages =
+                                                                                   [
+                                                                                       (
+                                                                                           pkgs.writeShellApplication
+                                                                                               {
+                                                                                                   name = "test-bob" ;
+                                                                                                   runtimeInputs = [ ] ;
+                                                                                                   text =
+                                                                                                       ''
+                                                                                                           TEMPORARY="$( mktemp --directory )" || exit 64
+                                                                                                           if foobar > "$TEMPORARY/standard-output" 2> "$TEMPORARY/standard-error"
+                                                                                                           then
+                                                                                                               STATUS="$?"
+                                                                                                           else
+                                                                                                               STATUS="$?"
+                                                                                                           fi
+                                                                                                           STANDARD_OUTPUT="$( < "$TEMPORARY/standard-output" )" || exit 64
+                                                                                                           STANDARD_ERROR="$( < "$TEMPORARY/standard-error" )" || exit 64
+                                                                                                           if [[ "$STANDARD_OUTPUT" != "HI" ]]
+                                                                                                           then
+                                                                                                               echo "Test failed because of bad output - EXPECTED=HI OBSERVED=$STANDARD_OUTPUT"
+                                                                                                               exit 64
+                                                                                                           fi
+                                                                                                           if [[ -n "$STANDARD_ERROR" ]]
+                                                                                                           then
+                                                                                                               echo "Test failed because of standard error"
+                                                                                                               exit 64
+                                                                                                           fi
+                                                                                                           if [[ "$STATUS" != 0 ]]
+                                                                                                           then
+                                                                                                               echo "Test failed because of status"
+                                                                                                               exit 64
+                                                                                                           fi
+                                                                                                       '' ;
+                                                                                               }
+                                                                                       )
+                                                                                   ] ;
+                                                                               personal =
+                                                                                   {
+                                                                                       agenix = self + "/age.test.key" ;
+                                                                                       description = "Bob Wonderfull" ;
+                                                                                       name = "bob" ;
+                                                                                       password = "password" ;
+                                                                                   } ;
+                                                                           } ;
+                                                                   testScript =
+                                                                       ''
+                                                                           start_all()
+                                                                           machine.wait_for_unit("multi-user.target")
+                                                                           status, stdout = machine.execute("su - bob --command test-bob")
+                                                                           print("STDOUT:\n", stdout)
+                                                                           assert status == 0, "test-bob failed"
+                                                                       '' ;
+                                                               } ;
+                                                    } ;
+                                            test-resource =
                                                 name : throws-error : has-standard-error : target-mismatch : is-transient : test :
                                                     let
                                                         rsrcs =
@@ -1043,11 +1110,11 @@
                                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                                     yq-go = pkgs.yq-go ;
                                                                 } ;
-                                                            in { name = name ; value = rsrcs.check test ; } ;
+                                                            in { name = "test-resource:  ${ name }" ; value = rsrcs.check test ; } ;
                                             tests =
                                                 [
                                                     (
-                                                        test-fun
+                                                        test-resource
                                                             "Happy Case"
                                                             false
                                                             false
