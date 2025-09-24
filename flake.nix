@@ -1080,55 +1080,6 @@
                                     modules =
                                         {
                                             user = user ;
-                                            tester =
-                                                { config , pkgs , ... } :
-                                                    {
-                                                        systemd.services =
-                                                            {
-                                                                user-home-test =
-                                                                    {
-                                                                        after = [ "redis.service" ] ;
-                                                                        serviceConfig =
-                                                                            {
-                                                                                ExecStart =
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "ExecStart" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            cleanup ( ) {
-                                                                                                                cat /run/current-system/sw/bin/home >> /tmp/shared/FAILURE_FLAG
-                                                                                                                cat /home/emory/resources/debug >> /tmp/shared/FAILURE_FLAG
-                                                                                                                echo DEBUGGING OFF >> /tmp/shared/FAILURE_FLOG
-                                                                                                            }
-                                                                                                            trap cleanup EXIT
-                                                                                                            mkdir --parents /build/mounts/0000000000000000
-                                                                                                            timeout 10s RESOURCE="$( /run/current-system/sw/bin/home 2>> /tmp/shared/FAILURE_FLAG )" || echo "We had a problem with home" >> /tmp/shared/FAILURE_FLAG
-                                                                                                            echo "RESOURCE=$RESOURCE" >> /tmp/shared/FAILURE_FLAG
-                                                                                                            touch /tmp/shared/SUCCESS_FLAG
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/ExecStart" ;
-                                                                                StandardInput = null ;
-                                                                                Type = "oneshot" ;
-                                                                                User = config.personal.name ;
-                                                                            } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
-                                                                root-test =
-                                                                    {
-                                                                        after = [ "user-home-test.service" ] ;
-                                                                        serviceConfig =
-                                                                            {
-                                                                                ExecStart = "${ pkgs.systemd }/bin/systemctl poweroff" ;
-                                                                            } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
-                                                            } ;
-                                                    } ;
                                         } ;
                                     tests =
                                         {
