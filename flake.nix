@@ -649,9 +649,6 @@
                                                                 efi.canTouchEfiVariables = true ;
                                                                 systemd-boot.enable = true ;
                                                             } ;
-                                                        environment.systemPackages =
-                                                            [
-                                                            ] ;
                                                         hardware.pulseaudio =
                                                             {
                                                                 enable = false ;
@@ -1161,9 +1158,9 @@
                                                                                                 fi
                                                                                                 STANDARD_OUTPUT="$( < "$TEMPORARY/standard-output" )" || exit 64
                                                                                                 STANDARD_ERROR="$( < "$TEMPORARY/standard-error" )" || exit 64
-                                                                                                if [[ "$STANDARD_OUTPUT" != "Wrong Hello" ]]
+                                                                                                if [[ "$STANDARD_OUTPUT" != "HI" ]]
                                                                                                 then
-                                                                                                    echo "Test failed because of bad output"
+                                                                                                    echo "Test failed because of bad output - EXPECTED=HI OBSERVED=$STANDARD_OUTPUT"
                                                                                                     exit 64
                                                                                                 fi
                                                                                                 if [[ -n "$STANDARD_ERROR" ]]
