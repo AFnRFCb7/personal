@@ -1113,6 +1113,7 @@
                                                             in { name = "test-resource:  ${ name }" ; value = rsrcs.check test ; } ;
                                             tests =
                                                 [
+                                                    ( test-foobar "foobar test" )
                                                     (
                                                         test-resource
                                                             "Happy Case"
