@@ -867,15 +867,10 @@
                                                                                         {
                                                                                             name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.repository.private ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "foobar2" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.dot-ssh.mobile ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo HI
+                                                                                                '' ;
                                                                                         }
                                                                                 )
                                                                             ] ;
@@ -1157,6 +1152,30 @@
                                                                                         runtimeInputs = [ ] ;
                                                                                         text =
                                                                                             ''
+                                                                                                TEMPORARY="$( mktemp --directory )" || exit 64
+                                                                                                if foobar > "$TEMPORARY/standard-output" 2> "$TEMPORARY/standard-error"
+                                                                                                then
+                                                                                                    STATUS="$?"
+                                                                                                else
+                                                                                                    STATUS="$?"
+                                                                                                fi
+                                                                                                STANDARD_OUTPUT="$( < "$TEMPORARY/standard-output" )" || exit 64
+                                                                                                STANDARD_ERROR="$( < "$TEMPORARY/standard-error" )" || exit 64
+                                                                                                if [[ "$STANDARD_OUTPUT" != "Wrong Hello" ]]
+                                                                                                then
+                                                                                                    echo "Test failed because of bad output"
+                                                                                                    exit 64
+                                                                                                fi
+                                                                                                if [[ -n "$STANDARD_ERROR" ]]
+                                                                                                then
+                                                                                                    echo "Test failed because of standard error"
+                                                                                                    exit 64
+                                                                                                fi
+                                                                                                if [[ "$STATUS" != 0 ]]
+                                                                                                then
+                                                                                                    echo "Test failed because of status"
+                                                                                                    exit 64
+                                                                                                fi
                                                                                             '' ;
                                                                                     }
                                                                             )
@@ -1173,7 +1192,9 @@
                                                             ''
                                                                 start_all()
                                                                 machine.wait_for_unit("multi-user.target")
-                                                                machine.succeed("su - bob --command test-bob")
+                                                                status, stdout = machine.execute("su - bob --command test-bob")
+                                                                print("STDOUT:\n", stdout)
+                                                                assert status == 0, "test-bob failed"
                                                             '' ;
                                                     } ;
                                         } ;
