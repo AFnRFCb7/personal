@@ -491,7 +491,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            # "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
