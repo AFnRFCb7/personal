@@ -469,8 +469,8 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            # PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
-                                                                                                            # export PRIVATE
+                                                                                                            PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
+                                                                                                            export PRIVATE
                                                                                                             # ln --symbolic "$PRIVATE" /links
                                                                                                             # ln --symbolic "$PRIVATE" /mount/private
                                                                                                             ln --symbolic / /mount/private
@@ -491,7 +491,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            # "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -512,9 +512,7 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                echo BEFORE FAILURE
-                                                                                                                git fetch origin main 2>&1
-                                                                                                                echo AFTER FAILURE
+                                                                                                                # git fetch origin main 2>&1
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
