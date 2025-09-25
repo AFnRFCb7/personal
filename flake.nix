@@ -469,32 +469,16 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            DOT_GNUPG="$( ${ resources.dot-gnupg } )" || ${ failure "6b717cd6" }
-                                                                                                            ln --symbolic "$DOT_GNUPG" /links
-                                                                                                            ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg
-                                                                                                            DOT_SSH="$( ${ resources.dot-ssh.mobile } )" || ${ failure "6c398030" }
-                                                                                                            ln --symbolic "$DOT_SSH" /links
-                                                                                                            ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
-                                                                                                            mkdir --parents /mount/repository
-                                                                                                            PRIVATE_REPOSITORY="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
-                                                                                                            ln --symbolic "$PRIVATE_REPOSITORY" /links
-                                                                                                            ln --symbolic "$PRIVATE_REPOSITORY" /mount/repository/private
-                                                                                                            GITHUB_TOKEN_FILE="$( ${ resources.secrets."github-token.asc.age" } )" || ${ failure "66a59e49" }
-                                                                                                            ln --symbolic "$GITHUB_TOKEN_FILE" /links
-                                                                                                            GITHUB_TOKEN="$( < "$GITHUB_TOKEN_FILE/secret" )" || ${ failure "5aa58585" }
-                                                                                                            export GITHUB_TOKEN
-                                                                                                            cat > /mount/.envrc <<EOF
-                                                                                                            export GITHUB_TOKEN=$GITHUB_TOKEN
-                                                                                                            EOF
+                                                                                                            # PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
+                                                                                                            # ln --symbolic "$PRIVATE" /links
+                                                                                                            # ln --symbolic "$PRIVATE" /mount/private
+                                                                                                            ln --symbolic / /mount/private
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
-                                                                                    ".envrc"
-                                                                                    "dot-gnupg"
-                                                                                    "dot-ssh"
-                                                                                    "repository"
+                                                                                    "private"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
@@ -506,7 +490,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            # "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -527,11 +511,9 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                cat > /mount/.envrc <<EOF
-                                                                                                                export GIT_DIR=${ self }/git
-                                                                                                                export GIT_WORK_TREE=${ self }/work-tree
-                                                                                                                EOF
-                                                                                                                # git fetch origin main 2>&1
+                                                                                                                echo BEFORE FAILURE
+                                                                                                                git fetch origin main 2>&1
+                                                                                                                echo AFTER FAILURE
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
@@ -789,7 +771,33 @@
                                                                         xkbVariant = "" ;
                                                                     } ;
                                                             } ;
-                                                        system.stateVersion = "23.05" ;
+                                                        system =
+                                                            {
+                                                                activationScripts.resourcesSubvolume =
+                                                                    {
+                                                                        text =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "activation" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.mount pkgs.util-linux ] ;
+                                                                                            text  =
+                                                                                                ''
+                                                                                                    if [ ! -e /tmp/fake-btrfs.img ]
+                                                                                                    then
+                                                                                                        echo "Creating temporary Btrfs image for VM..."
+                                                                                                        truncate -s 1G /tmp/fake-btrfs.img
+                                                                                                        mkfs.btrfs /tmp/fake-btrfs.img
+                                                                                                        mkdir -p /home/${config.personal.name}/resources
+                                                                                                        mount -o subvol=resources /tmp/fake-btrfs.img /home/${config.personal.name}/resources
+                                                                                                    fi
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/activation" ;
+                                                                    } ;
+                                                                stateVersion = "23.05" ;
+                                                            } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
@@ -814,6 +822,19 @@
                                                                                     } ;
 									                                    in
                                                                             [
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "studio" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    HOMEY="$( resources_.home )"
+                                                                                                    cd "$HOMEY"
+                                                                                                    idea-community
+                                                                                                '' ;
+                                                                                        }
+                                                                                )
                                                                                 pkgs.git
                                                                                 pkgs.yq
                                                                                 pkgs.lsof
@@ -1001,10 +1022,10 @@
                                 {
                                     checks =
                                         let
-                                            test-foobar =
+                                            test-home =
                                                 name :
                                                     {
-                                                        name = "test-foobar:  ${ name }" ;
+                                                        name = "test-home:  ${ name }" ;
                                                         value =
                                                             pkgs.nixosTest
                                                                {
@@ -1016,55 +1037,93 @@
                                                                                environment.systemPackages =
                                                                                    [
                                                                                        (
-                                                                                           pkgs.writeShellApplication
+                                                                                            pkgs.writeShellApplication
                                                                                                {
-                                                                                                   name = "test-bob" ;
-                                                                                                   runtimeInputs = [ ] ;
-                                                                                                   text =
-                                                                                                       ''
-                                                                                                           TEMPORARY="$( mktemp --directory )" || exit 64
-                                                                                                           if foobar > "$TEMPORARY/standard-output" 2> "$TEMPORARY/standard-error"
-                                                                                                           then
-                                                                                                               STATUS="$?"
-                                                                                                           else
-                                                                                                               STATUS="$?"
-                                                                                                           fi
-                                                                                                           STANDARD_OUTPUT="$( < "$TEMPORARY/standard-output" )" || exit 64
-                                                                                                           STANDARD_ERROR="$( < "$TEMPORARY/standard-error" )" || exit 64
-                                                                                                           if [[ "$STANDARD_OUTPUT" != "HI" ]]
-                                                                                                           then
-                                                                                                               echo "Test failed because of bad output - EXPECTED=HI OBSERVED=$STANDARD_OUTPUT"
-                                                                                                               exit 64
-                                                                                                           fi
-                                                                                                           if [[ -n "$STANDARD_ERROR" ]]
-                                                                                                           then
-                                                                                                               echo "Test failed because of standard error"
-                                                                                                               exit 64
-                                                                                                           fi
-                                                                                                           if [[ "$STATUS" != 0 ]]
-                                                                                                           then
-                                                                                                               echo "Test failed because of status"
-                                                                                                               exit 64
-                                                                                                           fi
-                                                                                                       '' ;
+                                                                                                   name = "test-home" ;
+                                                                                                   runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.which pkgs.findutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo "Starting test-home with $# arguments"
+                                                                                                            BUILD="$1"
+                                                                                                            echo Using "BUILD=$BUILD"
+                                                                                                            mkdir --parents "$BUILD"
+                                                                                                            age-keygen -y ${ self }/age.test.key 2>&1
+                                                                                                            age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
+                                                                                                            age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
+                                                                                                            echo computed public key
+                                                                                                            mkdir --parents "$BUILD/secrets/dot-ssh/mobile"
+                                                                                                            echo 1fc11953a79d521af9082d3966596b1443048a8d2bbe7c5c2071c205211627fea557812b0014e3f6f3143d94edb2d54dfb728ea3ec3b2d622e35e1b323558494 > "$BUILD/secrets/dot-ssh/mobile/identity.asc"
+                                                                                                            echo 1572ace6d3ec3303f01f43c474c40e55f0d707596043b1ce49f7f98711814920e956cbc57754ae93f5f26b0489c2ac467fc7d3f73fb71749d5e861a70aa6245b > "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
+                                                                                                            mkdir --parents "$BUILD/repository/secrets"
+                                                                                                            git -C "$BUILD/repository/secrets" init
+                                                                                                            git -C "$BUILD/repository/secrets" config user.email nina.nix@example.com
+                                                                                                            git -C "$BUILD/repository/secrets" config user.name "Nina Nix"
+                                                                                                            mkdir --parents "$BUILD/repository/secrets/dot-ssh/mobile"
+                                                                                                            age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/identity.asc.age" "$BUILD/secrets/dot-ssh/mobile/identity.asc"
+                                                                                                            age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/unknown-hosts.asc.age" "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
+                                                                                                            git -C "$BUILD/repository/secrets" add dot-ssh/mobile/identity.asc.age
+                                                                                                            git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
+                                                                                                            git -C "$BUILD/repository/secrets" checkout -b branch/b7401820-6c35-4b8c-bf35-b116198f4cda
+                                                                                                            git -C "$BUILD/repository/secrets" commit -am "" --allow-empty-message
+                                                                                                            echo "created secrets repository at $BUILD/repository/secrets"
+                                                                                                            mkdir --parents "$BUILD/repository/private"
+                                                                                                            git -C "$BUILD/repository/private" init
+                                                                                                            git -C "$BUILD/repository/private" config user.email nina.nix@example.com
+                                                                                                            git -C "$BUILD/repository/private" config user.name "Nina Nix"
+                                                                                                            echo 89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42 > "$BUILD/repository/private/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8"
+                                                                                                            git -C "$BUILD/repository/private" add 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8
+                                                                                                            git -C "$BUILD/repository/private" checkout -b branch/92c8ce68-01d6-468b-ba5f-de75f511e95b
+                                                                                                            git -C "$BUILD/repository/private" commit -am --allow-empty-message
+                                                                                                            echo "created private repository at $BUILD/repository/private"
+                                                                                                            echo "IT WORKS TO HERE"
+                                                                                                            cat "$( which home )"
+                                                                                                            echo "DID IT WORK TO HERE 1"
+                                                                                                            HOMEY="$( echo hi | home )" || exit 64
+                                                                                                            echo "DID IT WORK TO HERE 2"
+                                                                                                            if [[ ! -d "$HOMEY" ]]
+                                                                                                            then
+                                                                                                                echo Missing HOME
+                                                                                                                exit 64
+                                                                                                            fi
+                                                                                                            find "$HOMEY"
+                                                                                                            if [[ ! -L "$HOMEY/private" ]]
+                                                                                                            then
+                                                                                                                echo Missing private
+                                                                                                                exit 64
+                                                                                                            fi
+                                                                                                            echo it finished
+                                                                                                        '' ;
                                                                                                }
-                                                                                       )
+                                                                                        )
                                                                                    ] ;
                                                                                personal =
                                                                                    {
-                                                                                       agenix = self + "/age.test.key" ;
-                                                                                       description = "Bob Wonderfull" ;
-                                                                                       name = "bob" ;
-                                                                                       password = "password" ;
+                                                                                        agenix = self + "/age.test.key" ;
+                                                                                        description = "Bob Wonderful" ;
+                                                                                        name = "bob" ;
+                                                                                        password = "password" ;
+                                                                                        repository =
+                                                                                            {
+                                                                                                private =
+                                                                                                    {
+                                                                                                        branch = "branch/92c8ce68-01d6-468b-ba5f-de75f511e95b" ;
+                                                                                                        remote = "file:///tmp/build/repository/private" ;
+                                                                                                    } ;
+                                                                                                secrets =
+                                                                                                    {
+                                                                                                        branch = "branch/b7401820-6c35-4b8c-bf35-b116198f4cda" ;
+                                                                                                        remote = "file:///tmp/build/repository/secrets" ;
+                                                                                                    } ;
+                                                                                            } ;
                                                                                    } ;
                                                                            } ;
                                                                    testScript =
                                                                        ''
                                                                            start_all()
                                                                            machine.wait_for_unit("multi-user.target")
-                                                                           status, stdout = machine.execute("su - bob --command test-bob")
+                                                                           status, stdout = machine.execute("su - bob --command 'test-home /tmp/build'")
                                                                            print("STDOUT:\n", stdout)
-                                                                           assert status == 0, "test-bob failed"
+                                                                           assert status == 0, "test-home failed"
                                                                        '' ;
                                                                } ;
                                                     } ;
@@ -1113,7 +1172,7 @@
                                                             in { name = "test-resource:  ${ name }" ; value = rsrcs.check test ; } ;
                                             tests =
                                                 [
-                                                    ( test-foobar "foobar test" )
+                                                    ( test-home "simple test" )
                                                     (
                                                         test-resource
                                                             "Happy Case"
