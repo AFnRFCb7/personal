@@ -309,8 +309,9 @@
                                                                                         point = dot-ssh resources_ ;
                                                                                         in
                                                                                             ''
-                                                                                                DOT_SSH="$( echo | ${ point.resource } )" || exit 64
-                                                                                                exec ssh -F "$DOT_SSH/${ point.target }" "$@"
+                                                                                                # DOT_SSH="$( echo | ${ point.resource } )" || exit 64
+                                                                                                # exec ssh -F "$DOT_SSH/${ point.target }" "$@"
+                                                                                                exec ssh "$@"
                                                                                             '' ;
                                                                             } ;
                                                                     in "${ ssh-command }/bin/ssh-command" ;
@@ -490,7 +491,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            # "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -511,7 +512,7 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git fetch origin main 2>&1
+                                                                                                                git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
