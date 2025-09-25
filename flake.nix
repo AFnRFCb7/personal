@@ -511,7 +511,7 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                # git fetch origin main 2>&1
+                                                                                                                git fetch origin main 2>&1
                                                                                                                 # git checkout origin/main
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
