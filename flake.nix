@@ -497,7 +497,7 @@
                                                                                         } ;
                                                                                     hooks =
                                                                                         {
-                                                                                            post-commit = post-commit "origin" ;
+                                                                                            # post-commit = post-commit "origin" ;
                                                                                         } ;
                                                                                     remotes =
                                                                                         {
@@ -512,8 +512,9 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                git commit -am "" --allow-empty --allow-empty-message
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                # git checkout -b ${ config.personal.repository.private.branch } FETCH_HEAD
+                                                                                                                # git checkout ${ config.personal.repository.private.branch }
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
                                                                                                     } ;
