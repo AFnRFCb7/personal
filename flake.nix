@@ -470,6 +470,7 @@
                                                                                                     text =
                                                                                                         ''
                                                                                                             # PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
+                                                                                                            # export PRIVATE
                                                                                                             # ln --symbolic "$PRIVATE" /links
                                                                                                             # ln --symbolic "$PRIVATE" /mount/private
                                                                                                             ln --symbolic / /mount/private
