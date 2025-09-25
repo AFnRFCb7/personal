@@ -1079,7 +1079,7 @@
                                                                                                             echo "IT WORKS TO HERE"
                                                                                                             cat "$( which home )"
                                                                                                             echo "DID IT WORK TO HERE 1"
-                                                                                                            HOMEY="$( echo hi | home )" || exit 64
+                                                                                                            HOMEY="$( home )" || exit 64
                                                                                                             echo "DID IT WORK TO HERE 2"
                                                                                                             if [[ ! -d "$HOMEY" ]]
                                                                                                             then
