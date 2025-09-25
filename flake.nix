@@ -309,9 +309,9 @@
                                                                                         point = dot-ssh resources_ ;
                                                                                         in
                                                                                             ''
-                                                                                                # DOT_SSH="$( echo | ${ point.resource } )" || exit 64
-                                                                                                # exec ssh -F "$DOT_SSH/${ point.target }" "$@"
-                                                                                                exec ssh "$@"
+                                                                                                DOT_SSH="$( echo | ${ point.resource } )" || exit 64
+                                                                                                exec ssh -F "$DOT_SSH/${ point.target }" "$@"
+                                                                                                # exec ssh "$@"
                                                                                             '' ;
                                                                             } ;
                                                                     in "${ ssh-command }/bin/ssh-command" ;
