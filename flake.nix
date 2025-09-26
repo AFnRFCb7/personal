@@ -516,13 +516,13 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                # if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
-                                                                                                                # then
-                                                                                                                #     echo "✅ Branch ${ config.personal.repository.private.branch } fetched successfully"
-                                                                                                                # else
-                                                                                                                #     echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
-                                                                                                                #     exit 1
-                                                                                                                # fi
+                                                                                                                if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
+                                                                                                                then
+                                                                                                                    echo "✅ Branch ${ config.personal.repository.private.branch } fetched successfully"
+                                                                                                                else
+                                                                                                                    echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
+                                                                                                                    exit 1
+                                                                                                                fi
                                                                                                                 # git checkout -B ${ config.personal.repository.private.branch } origin/${ config.personal.repository.private.branch }
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
