@@ -480,9 +480,9 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            # PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
-                                                                                                            # ln --symbolic "$PERSONAL" /links
-                                                                                                            # ln --symbolic "$PERSONAL" /mounts/personal
+                                                                                                            PERSONAL="$( ${ resources.repository.private  } )" || ${ failure "8af3601b" }
+                                                                                                            ln --symbolic "$PERSONAL" /links
+                                                                                                            ln --symbolic "$PERSONAL" /mount/personal
                                                                                                             PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
@@ -491,20 +491,20 @@
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
-                                                                                    # "personal"
+                                                                                    "personal"
                                                                                     "private"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
                                                                     {
-                                                                        personal =
+                                                                        personal2 =
                                                                             git
                                                                                 {
                                                                                     configs =
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.personal.email ;
                                                                                             "user.name" = config.personal.repository.personal.name ;
                                                                                         } ;
@@ -527,6 +527,40 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.personal.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.personal.branch } 2>&1
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        personal =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.private.email ;
+                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin ${ config.personal.repository.private.branch } 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -1204,6 +1238,11 @@
                                                                                         password = "password" ;
                                                                                         repository =
                                                                                             {
+                                                                                                personal =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repository/personal" ;
+                                                                                                    } ;
                                                                                                 private =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
@@ -1212,7 +1251,7 @@
                                                                                                 secrets =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
-                                                                                                        remote = "file:///tmp/build/repository/secrets" ;
+                                                                                                        remote = "/tmp/build/repository/secrets" ;
                                                                                                     } ;
                                                                                             } ;
                                                                                    } ;
