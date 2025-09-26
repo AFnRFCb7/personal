@@ -512,6 +512,7 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                git commit -m "" --allow-empty --allow-empty-message
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
                                                                                                                 then
