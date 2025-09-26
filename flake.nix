@@ -516,7 +516,11 @@
                                                                                                                     echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
                                                                                                                     exit 1
                                                                                                                 fi
-                                                                                                                # git checkout origin/${ config.personal.repository.private.branch }
+                                                                                                                COMMIT="$( git rev-parse refs/remotes/origin/${ config.personal.repository.private.branch } )" || exit 64
+                                                                                                                export COMMIT
+                                                                                                                echo "test" > .git/testfile || echo "❌ Cannot write to .git"
+                                                                                                                touch .git/index.lock && rm .git/index.lock && echo "✅ index.lock writable" || echo "❌ Cannot write index.lock"
+                                                                                                                git checkout "$COMMIT" >> /tmp/debug 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
