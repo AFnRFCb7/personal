@@ -1059,7 +1059,7 @@
                                                                                                                                 git init
                                                                                                                                 git config user.email nina.nix@example.com
                                                                                                                                 git config user.name "Nina Nix"
-                                                                                                                                git remote add origin "$BUILD/repository/private"
+                                                                                                                                git remote add origin "$BUILD/repository/$NAME"
                                                                                                                                 git checkout -b branch/test
                                                                                                                                 echo "$TOKEN" > "$FILE"
                                                                                                                                 git add "$FILE"
@@ -1138,7 +1138,7 @@
                                                                                                             create-mock-repository "$BUILD" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             PERSONAL_FILE=570ab8317345522e606bec96139429ff4a18b356cde20604c9c95f799ba0d3a54ee9e06bf2c609b073c50c2d25e9889fb39d63f924d6d405064367d3397d1585
                                                                                                             PERSONAL_TOKEN=44a65d206aeb170db164ebe10f4ea2e481c3db8ecad7a1aca05bf843d7f85ed8863cb6b2575fde720d270785bce70f2c451c3b0c91eb637633b470b053e611fd
-                                                                                                            echo create-mock-repository "$BUILD" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
+                                                                                                            create-mock-repository "$BUILD" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
