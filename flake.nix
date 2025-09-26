@@ -218,7 +218,8 @@
                                                                 hooks ? { } ,
                                                                 remotes ? { } ,
                                                                 setup ? null ,
-                                                                release ? null
+                                                                release ? null ,
+                                                                zero ? "branch/zero"
                                                             } : ignore :
                                                                 {
                                                                     init =
@@ -240,6 +241,8 @@
                                                                                                     export GIT_WORK_TREE=${ self }/work-tree
                                                                                                     EOF
                                                                                                     git init 2>&1
+                                                                                                    # git commit -m "" --allow-empty --allow-empty-message
+                                                                                                    # git checkout -b ${ zero }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
@@ -512,15 +515,14 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git commit -m "" --allow-empty --allow-empty-message
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
-                                                                                                                then
-                                                                                                                    echo "✅ Branch ${ config.personal.repository.private.branch } fetched successfully"
-                                                                                                                else
-                                                                                                                    echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
-                                                                                                                    exit 1
-                                                                                                                fi
+                                                                                                                # if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
+                                                                                                                # then
+                                                                                                                #     echo "✅ Branch ${ config.personal.repository.private.branch } fetched successfully"
+                                                                                                                # else
+                                                                                                                #     echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
+                                                                                                                #     exit 1
+                                                                                                                # fi
                                                                                                                 # git checkout -B ${ config.personal.repository.private.branch } origin/${ config.personal.repository.private.branch }
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
@@ -1118,7 +1120,7 @@
                                                                                                 private =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
-                                                                                                        remote = "file:///tmp/build/repository/private" ;
+                                                                                                        remote = "/tmp/build/repository/private" ;
                                                                                                     } ;
                                                                                                 secrets =
                                                                                                     {
