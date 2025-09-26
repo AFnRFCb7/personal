@@ -231,18 +231,24 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    mkdir --parents /mount/git
-                                                                                                    cd /mount/git
+                                                                                                    export GIT_DIR=/mount/git
+                                                                                                    export GIT_WORK_TREE=/mount/work-tree
+                                                                                                    mkdir --parents "$GIT_DIR"
+                                                                                                    mkdir --parents "$GIT_WORK_TREE"
+                                                                                                    cat > /mount/.envrc <<EOF
+                                                                                                    export GIT_DIR=${ self }/git
+                                                                                                    export GIT_WORK_TREE=${ self }/work-tree
+                                                                                                    EOF
                                                                                                     git init 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/.git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                                                     ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/application" ;
                                                                     release = release ;
-                                                                    targets = [ "git" ] ;
+                                                                    targets = [ ".envrc" "git" "work-tree" ] ;
                                                                 } ;
                                                         milestone =
                                                             let
@@ -506,7 +512,6 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                cd /mount/git
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } >> /tmp/debug 2>&1
                                                                                                             '' ;
@@ -1083,13 +1088,12 @@
                                                                                                                 echo Missing private
                                                                                                                 exit 64
                                                                                                             fi
-                                                                                                            cd "$HOMEY/private/git"
-                                                                                                            if [[ ! -f 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8 ]]
+                                                                                                            if [[ ! -f "$HOMEY/private/work-tree/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8" ]]
                                                                                                             then
                                                                                                                 echo Missing private file
                                                                                                                 exit 64
                                                                                                             fi
-                                                                                                            PRIVATE="$( < 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8 )" || exit 64
+                                                                                                            PRIVATE="$( < "$HOMEY/private/work-tree/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8" )" || exit 64
                                                                                                             if [[ "89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42" != "$PRIVATE" ]]
                                                                                                             then
                                                                                                                 echo Private file is wrong
