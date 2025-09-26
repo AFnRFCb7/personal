@@ -445,6 +445,16 @@
                                                                         } ;
                                                                 dot-ssh =
                                                                     {
+                                                                        github =
+                                                                            dot-ssh
+                                                                                {
+                                                                                    host = "github.com" ;
+                                                                                    host-name = "github.com" ;
+                                                                                    identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user = "git" ;
+                                                                                    user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ; target = "secret" ; } ;
+                                                                                } ;
                                                                         mobile =
                                                                             dot-ssh
                                                                                 {
@@ -470,8 +480,10 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            # PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
+                                                                                                            # ln --symbolic "$PERSONAL" /links
+                                                                                                            # ln --symbolic "$PERSONAL" /mounts/personal
                                                                                                             PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
-                                                                                                            export PRIVATE
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
                                                                                                         '' ;
@@ -479,11 +491,46 @@
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
+                                                                                    # "personal"
                                                                                     "private"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
                                                                     {
+                                                                        personal =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.personal.email ;
+                                                                                            "user.name" = config.personal.repository.personal.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.personal.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin ${ config.personal.repository.personal.branch } 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.personal.branch } 2>&1
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
                                                                         private =
                                                                             git
                                                                                 {
@@ -513,7 +560,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                git checkout origin/${ config.personal.repository.private.branch } >> /tmp/debug 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -963,6 +1010,8 @@
                                                                         personal =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/personal.git" ; type = lib.types.str ; } ;
                                                                                 repo = lib.mkOption { default = "personal.git" ; type = lib.types.str ; } ;
