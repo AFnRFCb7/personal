@@ -480,7 +480,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            RESOURCES="$( ${ resources.repository.personal } )" || ${ failure "3f26b4aa" }
+                                                                                                            RESOURCES="$( ${ resources.repository.resources } )" || ${ failure "3f26b4aa" }
                                                                                                             ln --symbolic "$RESOURCES" /links
                                                                                                             ln --symbolic "$RESOURCES" /mount/resources
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
@@ -1257,6 +1257,11 @@
                                                                                                     {
                                                                                                         branch = "branch/test" ;
                                                                                                         remote = "/tmp/build/repository/private" ;
+                                                                                                    } ;
+                                                                                                resources =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repository/resources" ;
                                                                                                     } ;
                                                                                                 secrets =
                                                                                                     {
