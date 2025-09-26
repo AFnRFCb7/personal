@@ -480,9 +480,9 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            # RESOURCES="$( ${ resources.repository.resources } )" || ${ failure "3f26b4aa" }
-                                                                                                            # ln --symbolic "$RESOURCES" /links
-                                                                                                            # ln --symbolic "$RESOURCES" /mount/resources
+                                                                                                            RESOURCES="$( ${ resources.repository.personal } )" || ${ failure "3f26b4aa" }
+                                                                                                            ln --symbolic "$RESOURCES" /links
+                                                                                                            ln --symbolic "$RESOURCES" /mount/resources
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
                                                                                                             ln --symbolic "$PERSONAL" /links
                                                                                                             ln --symbolic "$PERSONAL" /mount/personal
@@ -494,7 +494,7 @@
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
-                                                                                    # "resources"
+                                                                                    "resources"
                                                                                     "personal"
                                                                                     "private"
                                                                                 ] ;
