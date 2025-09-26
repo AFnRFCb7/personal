@@ -232,24 +232,18 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    export GIT_DIR=/mount/git
-                                                                                                    export GIT_WORK_TREE=/mount/work-tree
-                                                                                                    mkdir --parents "$GIT_DIR"
-                                                                                                    mkdir --parents "$GIT_WORK_TREE"
-                                                                                                    cat > /mount/.envrc <<EOF
-                                                                                                    export GIT_DIR=${ self }/git
-                                                                                                    export GIT_WORK_TREE=${ self }/work-tree
-                                                                                                    EOF
-                                                                                                    git init --initial-branch ${ zero } 2>&1
+                                                                                                    mkdir --parents /mount/git
+                                                                                                    cd /mount/git
+                                                                                                    git init 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/.git/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                                                     ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/application" ;
                                                                     release = release ;
-                                                                    targets = [ ".envrc" "git" "work-tree" ] ;
+                                                                    targets = [ "git" ] ;
                                                                 } ;
                                                         milestone =
                                                             let
@@ -513,6 +507,7 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                cd /mount/git
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
                                                                                                                 then
