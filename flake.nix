@@ -241,8 +241,6 @@
                                                                                                     export GIT_WORK_TREE=${ self }/work-tree
                                                                                                     EOF
                                                                                                     git init 2>&1
-                                                                                                    # git commit -m "" --allow-empty --allow-empty-message
-                                                                                                    # git checkout -b ${ zero }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
@@ -524,7 +522,6 @@
                                                                                                                     exit 1
                                                                                                                 fi
                                                                                                                 # git checkout -B ${ config.personal.repository.private.branch } origin/${ config.personal.repository.private.branch }
-                                                                                                                # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
