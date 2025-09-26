@@ -509,18 +509,7 @@
                                                                                                             ''
                                                                                                                 cd /mount/git
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
-                                                                                                                then
-                                                                                                                    echo "✅ Branch ${ config.personal.repository.private.branch } fetched successfully"
-                                                                                                                else
-                                                                                                                    echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
-                                                                                                                    exit 1
-                                                                                                                fi
-                                                                                                                COMMIT="$( git rev-parse refs/remotes/origin/${ config.personal.repository.private.branch } )" || exit 64
-                                                                                                                export COMMIT
-                                                                                                                echo "test" > .git/testfile || echo "❌ Cannot write to .git"
-                                                                                                                touch .git/index.lock && rm .git/index.lock && echo "✅ index.lock writable" || echo "❌ Cannot write index.lock"
-                                                                                                                git checkout "$COMMIT" >> /tmp/debug 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.private.branch } >> /tmp/debug 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -1108,7 +1097,6 @@
                                                                                                             echo brake
                                                                                                             git fetch 2>&1
                                                                                                             git branch --all 2>&1
-                                                                                                            git checkout origin/branch/test
                                                                                                             if [[ ! -f 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8 ]]
                                                                                                             then
                                                                                                                 echo Missing private file
