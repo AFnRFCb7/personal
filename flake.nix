@@ -512,9 +512,8 @@
                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git commit -am "" --allow-empty --allow-empty-message
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                # git checkout ${ config.personal.repository.private.branch }
+                                                                                                                # git checkout -B ${ config.personal.repository.private.branch } origin/${ config.personal.repository.private.branch }
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
                                                                                                     } ;
