@@ -1037,8 +1037,76 @@
                                                                                        (
                                                                                             pkgs.writeShellApplication
                                                                                                {
-                                                                                                   name = "test-home" ;
-                                                                                                   runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.which pkgs.findutils ] ;
+                                                                                                    name = "test-home" ;
+                                                                                                    runtimeInputs =
+                                                                                                        [
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "create-mock-repository" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                BUILD="$1"
+                                                                                                                                NAME="$2"
+                                                                                                                                FILE="$3"
+                                                                                                                                TOKEN="$4"
+                                                                                                                                mkdir --parents "$BUILD/repository/$NAME"
+                                                                                                                                cd "$BUILD/repository/$NAME"
+                                                                                                                                git init --bare
+                                                                                                                                mkdir --parents "$BUILD/work/$NAME"
+                                                                                                                                git init
+                                                                                                                                git config user.email nina.nix@example.com
+                                                                                                                                git config user.name "Nina Nix"
+                                                                                                                                git remote add origin "$BUILD/repository/private"
+                                                                                                                                git checkout -b branch/test
+                                                                                                                                echo "$TOKEN" > "$FILE"
+                                                                                                                                git add "$FILE"
+                                                                                                                                git commit -m "" --allow-empty-message
+                                                                                                                                git push origin branch/test
+                                                                                                                                echo "created $NAME repository at $BUILD/repository/$NAME"
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "verify-mock-repository" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                HOMEY="$1"
+                                                                                                                                NAME="$2"
+                                                                                                                                FILE="$3"
+                                                                                                                                TOKEN="$4"
+                                                                                                                                if [[ ! -d "$HOMEY" ]]
+                                                                                                                                then
+                                                                                                                                    echo Missing HOME
+                                                                                                                                    exit 64
+                                                                                                                                fi
+                                                                                                                                if [[ ! -L "$HOMEY/$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    echo "Missing $NAME"
+                                                                                                                                    exit 64
+                                                                                                                                fi
+                                                                                                                                if [[ ! -f "$HOMEY/$NAME/work-tree/$FILE" ]]
+                                                                                                                                then
+                                                                                                                                    echo "Missing $NAME file"
+                                                                                                                                    exit 64
+                                                                                                                                fi
+                                                                                                                                PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || exit 64
+                                                                                                                                if [[ "$TOKEN" != "$PRIVATE" ]]
+                                                                                                                                then
+                                                                                                                                    echo "Private $NAME file is wrong"
+                                                                                                                                    exit 64
+                                                                                                                                fi
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                            pkgs.age
+                                                                                                            pkgs.coreutils
+                                                                                                            pkgs.git
+                                                                                                        ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             echo "Starting test-home with $# arguments"
@@ -1064,41 +1132,13 @@
                                                                                                             git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
                                                                                                             git -C "$BUILD/repository/secrets" commit -m "" --allow-empty-message
                                                                                                             echo "created secrets repository at $BUILD/repository/secrets"
-                                                                                                            mkdir --parents "$BUILD/repository/private"
-                                                                                                            git -C "$BUILD/repository/private" init --bare
-                                                                                                            mkdir --parents "$BUILD/work/private"
-                                                                                                            git -C "$BUILD/work/private" init
-                                                                                                            git -C "$BUILD/work/private" config user.email nina.nix@example.com
-                                                                                                            git -C "$BUILD/work/private" config user.name "Nina Nix"
-                                                                                                            git -C "$BUILD/work/private" remote add origin "$BUILD/repository/private"
-                                                                                                            git -C "$BUILD/work/private" checkout -b branch/test
-                                                                                                            echo 89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42 > "$BUILD/work/private/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8"
-                                                                                                            git -C "$BUILD/work/private" add 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8
-                                                                                                            git -C "$BUILD/work/private" commit -m "" --allow-empty-message
-                                                                                                            git -C "$BUILD/work/private" push origin branch/test
-                                                                                                            echo "created private repository at $BUILD/repository/private"
+                                                                                                            PRIVATE_FILE=af96ff1062ec89ceee3384a4e3736b6b7bdbbd78e5ffcf356ee9f9012700baf1ad1ce7b48b25b0a5afc9eaca7e4c2db61d2e83cec49493b89486002ffc8f9302
+                                                                                                            PRIVATE_TOKEN=fbadd0b5f32d56b07db1fc5a17daaf574964a0dab54efc8b1932bf77a340af31cc44669859e06d880a3013fe70405058a89435f910b2b84c4bd378bd9cce1049
+                                                                                                            create-mock-repository "$BUILD" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                            echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
-                                                                                                            if [[ ! -d "$HOMEY" ]]
-                                                                                                            then
-                                                                                                                echo Missing HOME
-                                                                                                                exit 64
-                                                                                                            fi
-                                                                                                            if [[ ! -L "$HOMEY/private" ]]
-                                                                                                            then
-                                                                                                                echo Missing private
-                                                                                                                exit 64
-                                                                                                            fi
-                                                                                                            if [[ ! -f "$HOMEY/private/work-tree/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8" ]]
-                                                                                                            then
-                                                                                                                echo Missing private file
-                                                                                                                exit 64
-                                                                                                            fi
-                                                                                                            PRIVATE="$( < "$HOMEY/private/work-tree/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8" )" || exit 64
-                                                                                                            if [[ "89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42" != "$PRIVATE" ]]
-                                                                                                            then
-                                                                                                                echo Private file is wrong
-                                                                                                                exit 64
-                                                                                                            fi
+                                                                                                            echo after execute test code
+                                                                                                            verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                         '' ;
                                                                                                }
                                                                                         )
