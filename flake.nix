@@ -513,10 +513,11 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                if git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
-                                                                                                                    echo "✅ Branch $BRANCH fetched successfully"
+                                                                                                                if git show-ref --verify --quiet refs/remotes/origin/${ config.personal.repository.private.branch }
+                                                                                                                then
+                                                                                                                    echo "✅ Branch ${ config.personal.repository.private.branch } fetched successfully"
                                                                                                                 else
-                                                                                                                    echo "❌ Branch $BRANCH not found on origin"
+                                                                                                                    echo "❌ Branch ${ config.personal.repository.private.branch } not found on origin"
                                                                                                                     exit 1
                                                                                                                 fi
                                                                                                                 # git checkout -B ${ config.personal.repository.private.branch } origin/${ config.personal.repository.private.branch }
@@ -1063,13 +1064,13 @@
                                                                                                             git -C "$BUILD/repository/secrets" init
                                                                                                             git -C "$BUILD/repository/secrets" config user.email nina.nix@example.com
                                                                                                             git -C "$BUILD/repository/secrets" config user.name "Nina Nix"
+                                                                                                            git -C "$BUILD/repository/secrets" checkout -b branch/test
                                                                                                             mkdir --parents "$BUILD/repository/secrets/dot-ssh/mobile"
                                                                                                             age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/identity.asc.age" "$BUILD/secrets/dot-ssh/mobile/identity.asc"
                                                                                                             age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/unknown-hosts.asc.age" "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
                                                                                                             git -C "$BUILD/repository/secrets" add dot-ssh/mobile/identity.asc.age
                                                                                                             git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
-                                                                                                            git -C "$BUILD/repository/secrets" checkout -b branch/b7401820-6c35-4b8c-bf35-b116198f4cda
-                                                                                                            git -C "$BUILD/repository/secrets" commit -am "" --allow-empty-message
+                                                                                                            git -C "$BUILD/repository/secrets" commit -m "" --allow-empty-message
                                                                                                             echo "created secrets repository at $BUILD/repository/secrets"
                                                                                                             mkdir --parents "$BUILD/repository/private"
                                                                                                             git -C "$BUILD/repository/private" init --bare
@@ -1078,7 +1079,7 @@
                                                                                                             git -C "$BUILD/work/private" config user.email nina.nix@example.com
                                                                                                             git -C "$BUILD/work/private" config user.name "Nina Nix"
                                                                                                             git -C "$BUILD/work/private" remote add origin "$BUILD/repository/private"
-                                                                                                            git -C "$BUILD/work/private" checkout -b branch/92c8ce68-01d6-468b-ba5f-de75f511e95b
+                                                                                                            git -C "$BUILD/work/private" checkout -b branch/test
                                                                                                             echo 89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42 > "$BUILD/work/private/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8"
                                                                                                             git -C "$BUILD/work/private" add 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8
                                                                                                             git -C "$BUILD/work/private" commit -m "" --allow-empty-message
@@ -1115,12 +1116,12 @@
                                                                                             {
                                                                                                 private =
                                                                                                     {
-                                                                                                        branch = "branch/92c8ce68-01d6-468b-ba5f-de75f511e95b" ;
+                                                                                                        branch = "branch/test" ;
                                                                                                         remote = "file:///tmp/build/repository/private" ;
                                                                                                     } ;
                                                                                                 secrets =
                                                                                                     {
-                                                                                                        branch = "branch/b7401820-6c35-4b8c-bf35-b116198f4cda" ;
+                                                                                                        branch = "branch/test" ;
                                                                                                         remote = "file:///tmp/build/repository/secrets" ;
                                                                                                     } ;
                                                                                             } ;
