@@ -1188,10 +1188,14 @@
                                                                                                             PERSONAL_FILE=570ab8317345522e606bec96139429ff4a18b356cde20604c9c95f799ba0d3a54ee9e06bf2c609b073c50c2d25e9889fb39d63f924d6d405064367d3397d1585
                                                                                                             PERSONAL_TOKEN=44a65d206aeb170db164ebe10f4ea2e481c3db8ecad7a1aca05bf843d7f85ed8863cb6b2575fde720d270785bce70f2c451c3b0c91eb637633b470b053e611fd
                                                                                                             create-mock-repository "$BUILD" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
+                                                                                                            RESOURCES_FILE=1fc5bfc608d9cd345b7d4e3ee0ed073664cf0eda11412131a589fdf66aec961f7d522cc23cd4bf47929ac98bf07bbabe2222166fc4c1e07ecf8cd997c4ea1fe9
+                                                                                                            RESOURCES_TOKEN=aeab6d01077166bd8b32ccf8359a425d0bb7b8de4d08166d59482ef77e9de5b1e12cb96bf6dc2de6276bbcae2fb55fd15a81cb1afb70263a4d5048ab22c4fdbe
+                                                                                                            create-mock-repository "$BUILD" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                            verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                         '' ;
                                                                                                }
                                                                                         )
