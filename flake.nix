@@ -235,7 +235,7 @@
                                                                                                     cd /mount/git
                                                                                                     git init 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/.git/hooks/${ name }"'' ) hooks ) ) }
+                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/.git/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                                                     ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
                                                                                                 '' ;
@@ -491,7 +491,7 @@
                                                                                         } ;
                                                                                     hooks =
                                                                                         {
-                                                                                            # post-commit = post-commit "origin" ;
+                                                                                            post-commit = post-commit "origin" ;
                                                                                         } ;
                                                                                     remotes =
                                                                                         {
