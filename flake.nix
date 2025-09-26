@@ -480,6 +480,9 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            # RESOURCES="$( ${ resources.repository.resources } )" || ${ failure "3f26b4aa" }
+                                                                                                            # ln --symbolic "$RESOURCES" /links
+                                                                                                            # ln --symbolic "$RESOURCES" /mount/resources
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
                                                                                                             ln --symbolic "$PERSONAL" /links
                                                                                                             ln --symbolic "$PERSONAL" /mount/personal
@@ -491,6 +494,7 @@
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
+                                                                                    # "resources"
                                                                                     "personal"
                                                                                     "private"
                                                                                 ] ;
@@ -504,7 +508,7 @@
                                                                                         {
                                                                                             "alias.milestone" = "!${ milestone }" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.personal.email ;
                                                                                             "user.name" = config.personal.repository.personal.name ;
                                                                                         } ;
@@ -527,6 +531,40 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.personal.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.personal.branch } 2>&1
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        resources =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.resources.email ;
+                                                                                            "user.name" = config.personal.repository.resources.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.resources.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin ${ config.personal.repository.resources.branch } 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.resources.branch } 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -1028,6 +1066,8 @@
                                                                         resources =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resources.git" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                         secrets =
