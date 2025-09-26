@@ -1055,6 +1055,7 @@
                                                                                                                                 cd "$BUILD/repository/$NAME"
                                                                                                                                 git init --bare
                                                                                                                                 mkdir --parents "$BUILD/work/$NAME"
+                                                                                                                                cd "$BUILD/work/$NAME"
                                                                                                                                 git init
                                                                                                                                 git config user.email nina.nix@example.com
                                                                                                                                 git config user.name "Nina Nix"
@@ -1135,6 +1136,9 @@
                                                                                                             PRIVATE_FILE=af96ff1062ec89ceee3384a4e3736b6b7bdbbd78e5ffcf356ee9f9012700baf1ad1ce7b48b25b0a5afc9eaca7e4c2db61d2e83cec49493b89486002ffc8f9302
                                                                                                             PRIVATE_TOKEN=fbadd0b5f32d56b07db1fc5a17daaf574964a0dab54efc8b1932bf77a340af31cc44669859e06d880a3013fe70405058a89435f910b2b84c4bd378bd9cce1049
                                                                                                             create-mock-repository "$BUILD" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                            PERSONAL_FILE=570ab8317345522e606bec96139429ff4a18b356cde20604c9c95f799ba0d3a54ee9e06bf2c609b073c50c2d25e9889fb39d63f924d6d405064367d3397d1585
+                                                                                                            PERSONAL_TOKEN=44a65d206aeb170db164ebe10f4ea2e481c3db8ecad7a1aca05bf843d7f85ed8863cb6b2575fde720d270785bce70f2c451c3b0c91eb637633b470b053e611fd
+                                                                                                            echo create-mock-repository "$BUILD" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
