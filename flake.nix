@@ -513,6 +513,12 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
+                                                                                                                if git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+                                                                                                                    echo "✅ Branch $BRANCH fetched successfully"
+                                                                                                                else
+                                                                                                                    echo "❌ Branch $BRANCH not found on origin"
+                                                                                                                    exit 1
+                                                                                                                fi
                                                                                                                 # git checkout -B ${ config.personal.repository.private.branch } origin/${ config.personal.repository.private.branch }
                                                                                                                 # git checkout -b "scratch/$( uuidgen )"
                                                                                                             '' ;
@@ -1066,13 +1072,17 @@
                                                                                                             git -C "$BUILD/repository/secrets" commit -am "" --allow-empty-message
                                                                                                             echo "created secrets repository at $BUILD/repository/secrets"
                                                                                                             mkdir --parents "$BUILD/repository/private"
-                                                                                                            git -C "$BUILD/repository/private" init
-                                                                                                            git -C "$BUILD/repository/private" config user.email nina.nix@example.com
-                                                                                                            git -C "$BUILD/repository/private" config user.name "Nina Nix"
-                                                                                                            echo 89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42 > "$BUILD/repository/private/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8"
-                                                                                                            git -C "$BUILD/repository/private" add 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8
-                                                                                                            git -C "$BUILD/repository/private" checkout -b branch/92c8ce68-01d6-468b-ba5f-de75f511e95b
-                                                                                                            git -C "$BUILD/repository/private" commit -am --allow-empty-message
+                                                                                                            git -C "$BUILD/repository/private" init --bare
+                                                                                                            mkdir --parents "$BUILD/work/private"
+                                                                                                            git -C "$BUILD/work/private" init
+                                                                                                            git -C "$BUILD/work/private" config user.email nina.nix@example.com
+                                                                                                            git -C "$BUILD/work/private" config user.name "Nina Nix"
+                                                                                                            git -C "$BUILD/work/private" remote add origin "$BUILD/repository/private"
+                                                                                                            git -C "$BUILD/work/private" checkout -b branch/92c8ce68-01d6-468b-ba5f-de75f511e95b
+                                                                                                            echo 89945a4d6e1e84a6de663f375fedbd07c3f841f556baaf14d487af0e1b437b8a6d4dac05acfa904e016f77f3549d0234a5cb9f10cddfca04344379366049cc42 > "$BUILD/work/private/005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8"
+                                                                                                            git -C "$BUILD/work/private" add 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8
+                                                                                                            git -C "$BUILD/work/private" commit -m "" --allow-empty-message
+                                                                                                            git -C "$BUILD/work/private" push origin HEAD
                                                                                                             echo "created private repository at $BUILD/repository/private"
                                                                                                             echo "IT WORKS TO HERE"
                                                                                                             cat "$( which home )"
