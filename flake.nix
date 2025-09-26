@@ -219,7 +219,7 @@
                                                                 remotes ? { } ,
                                                                 setup ? null ,
                                                                 release ? null ,
-                                                                zero ? "branch/zero"
+                                                                zero ? "branch/test"
                                                             } : ignore :
                                                                 {
                                                                     init =
@@ -240,7 +240,7 @@
                                                                                                     export GIT_DIR=${ self }/git
                                                                                                     export GIT_WORK_TREE=${ self }/work-tree
                                                                                                     EOF
-                                                                                                    git init 2>&1
+                                                                                                    git init --initial-branch ${ zero } 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "/mount/git/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
