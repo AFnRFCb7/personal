@@ -1073,30 +1073,18 @@
                                                                                                             git -C "$BUILD/work/private" commit -m "" --allow-empty-message
                                                                                                             git -C "$BUILD/work/private" push origin branch/test
                                                                                                             echo "created private repository at $BUILD/repository/private"
-                                                                                                            echo "IT WORKS TO HERE"
-                                                                                                            cat "$( which home )"
-                                                                                                            echo "DID IT WORK TO HERE 1"
                                                                                                             HOMEY="$( home )" || exit 64
-                                                                                                            echo "DID IT WORK TO HERE 2"
                                                                                                             if [[ ! -d "$HOMEY" ]]
                                                                                                             then
                                                                                                                 echo Missing HOME
                                                                                                                 exit 64
                                                                                                             fi
-                                                                                                            find "$HOMEY"
                                                                                                             if [[ ! -L "$HOMEY/private" ]]
                                                                                                             then
                                                                                                                 echo Missing private
                                                                                                                 exit 64
                                                                                                             fi
-                                                                                                            echo it finished
                                                                                                             cd "$HOMEY/private/git"
-                                                                                                            echo extracurricular
-                                                                                                            find .
-                                                                                                            git branch --all 2>&1
-                                                                                                            echo brake
-                                                                                                            git fetch 2>&1
-                                                                                                            git branch --all 2>&1
                                                                                                             if [[ ! -f 005f0e4451738875570f863d4055cf06bb2d36582c629ba2c3d19ffefb1486bc6804608dc7526292df06083ebd4bc3f7c1e97cd58bdf8bdbd554c4c662d1a7a8 ]]
                                                                                                             then
                                                                                                                 echo Missing private file
