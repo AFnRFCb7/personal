@@ -218,8 +218,7 @@
                                                                 hooks ? { } ,
                                                                 remotes ? { } ,
                                                                 setup ? null ,
-                                                                release ? null ,
-                                                                zero ? "branch/test"
+                                                                release ? null
                                                             } : ignore :
                                                                 {
                                                                     init =
