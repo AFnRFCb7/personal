@@ -492,6 +492,9 @@
                                                                                                             SECRETS="$( ${ resources.repository.secrets } )" || ${ failure "04d6332b" }
                                                                                                             ln --symbolic "$SECRETS" /links
                                                                                                             ln --symbolic "$SECRETS" /mount/secrets
+                                                                                                            VISITOR="$( ${ resources.repository.visitor } )" || ${ failure "04d6332b" }
+                                                                                                            ln --symbolic "$VISITOR" /links
+                                                                                                            ln --symbolic "$VISITOR" /mount/visitor
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
@@ -501,6 +504,7 @@
                                                                                     "personal"
                                                                                     "private"
                                                                                     "secrets"
+                                                                                    "visitor"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
@@ -603,6 +607,40 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.secrets.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.secrets.branch } 2>&1
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        visitor =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.visitor.email ;
+                                                                                            "user.name" = config.personal.repository.visitor.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.visitor.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin ${ config.personal.repository.visitor.branch } 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.visitor.branch } 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -1123,6 +1161,8 @@
                                                                         visitor =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
@@ -1284,6 +1324,9 @@
                                                                                                             SECRETS_FILE=a863e91ebc08029e473e18f56c2c6b0808a52201a176372c5f67ac87067117ad167dac5b53d9fe932deefbba5b5c3d1efda925f3809560006e746e85e25a90aa
                                                                                                             SECRETS_TOKEN=d4067dcf3f4bec779f0a155eddb4af5397569ac0aa2cf20a3b64ba906cb1d693eae221622467ffe560b86aae678a37af2f8644830930313451f4004902dc8425
                                                                                                             create-mock-repository "$BUILD" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
+                                                                                                            VISITOR_FILE=16909325584e945fe34caa9626543411e777963ced9ee10d11953879f507d4d4c805cf5ccc1030d6297d58ea252c79431d4e76d8435f9444e003e362b9683093
+                                                                                                            VISITOR_TOKEN=6d63c2e3a4048012194e5d63436f3e636d73a865c96fa86387e5602d7366df04f87c5ec95922273292268a4976f3c2901a933ce5173b2ce8400de162e440bec1
+                                                                                                            create-mock-repository "$BUILD" visitor "$VISITOR_FILE" "$VISITOR_TOKEN"
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
@@ -1291,6 +1334,7 @@
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
+                                                                                                            verify-mock-repository "$HOMEY" visitor "$VISITOR_FILE" "$VISITOR_TOKEN"
                                                                                                         '' ;
                                                                                                }
                                                                                         )
@@ -1322,6 +1366,11 @@
                                                                                                     {
                                                                                                         branch = "branch/test" ;
                                                                                                         remote = "/tmp/build/repo/secrets" ;
+                                                                                                    } ;
+                                                                                                visitor =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/visitor" ;
                                                                                                     } ;
                                                                                             } ;
                                                                                    } ;
