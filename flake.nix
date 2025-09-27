@@ -489,7 +489,7 @@
                                                                                                             PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
-                                                                                                            SECRETS="$( ${ resources.repository.resources } )" || ${ failure "04d6332b" }
+                                                                                                            SECRETS="$( ${ resources.repository.secrets } )" || ${ failure "04d6332b" }
                                                                                                             ln --symbolic "$SECRETS" /links
                                                                                                             ln --symbolic "$SECRETS" /mount/secrets
                                                                                                         '' ;
@@ -1290,7 +1290,10 @@
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
-                                                                                                            # verify-mock-repository "$HOMEY" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
+                                                                                                            ls "$HOMEY/resources/work-tree"
+                                                                                                            echo
+                                                                                                            ls "$HOMEY/secrets/work-tree"
+                                                                                                            verify-mock-repository "$HOMEY" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
                                                                                                         '' ;
                                                                                                }
                                                                                         )
