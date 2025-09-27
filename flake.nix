@@ -574,6 +574,7 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.resources.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.resources.branch } 2>&1
+                                                                                                                git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -608,6 +609,7 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.secrets.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.secrets.branch } 2>&1
+                                                                                                                git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -642,6 +644,7 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.visitor.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.visitor.branch } 2>&1
+                                                                                                                git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -664,6 +667,10 @@
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*secret[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/sync-promote" ;
