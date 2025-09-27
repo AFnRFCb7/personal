@@ -292,7 +292,7 @@
                                                                                 ''
                                                                                     SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
                                                                                     BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || exit 64
-                                                                                    git checkout -b "$BRANCH"
+                                                                                    git checkout -b "$BRANCH" 2>&1
                                                                                 '' ;
                                                                         } ;
                                                                     in "${ scratch }/bin/scratch" ;
@@ -539,6 +539,7 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.personal.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.personal.branch } 2>&1
+                                                                                                                git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -649,13 +650,32 @@
                                                                             git
                                                                                 {
                                                                                     configs =
-                                                                                        {
-                                                                                            "alias.milestone" = "!${ milestone }" ;
-                                                                                            "alias.scratch" = "!${ scratch }" ;
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                            "user.email" = config.personal.repository.private.email ;
-                                                                                            "user.name" = config.personal.repository.private.name ;
-                                                                                        } ;
+                                                                                        let
+                                                                                            sync-promote =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "sync-promote" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
+                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/sync-promote" ;
+                                                                                            in
+                                                                                                {
+                                                                                                    "alias.milestone" = "!${ milestone }" ;
+                                                                                                    "alias.promote" = "!${ sync-promote }" ;
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
                                                                                     hooks =
                                                                                         {
                                                                                             post-commit = post-commit "origin" ;
@@ -670,11 +690,12 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "setup" ;
-                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ] ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
+                                                                                                                git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
