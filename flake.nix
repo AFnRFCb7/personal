@@ -489,6 +489,9 @@
                                                                                                             PRIVATE="$( ${ resources.repository.private } )" || ${ failure "35b067fd" }
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
+                                                                                                            SECRETS="$( ${ resources.repository.resources } )" || ${ failure "04d6332b" }
+                                                                                                            ln --symbolic "$SECRETS" /links
+                                                                                                            ln --symbolic "$SECRETS" /mount/secrets
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/application" ;
@@ -497,6 +500,7 @@
                                                                                     "resources"
                                                                                     "personal"
                                                                                     "private"
+                                                                                    "secrets"
                                                                                 ] ;
                                                                         } ;
                                                                 repository =
@@ -565,6 +569,40 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.resources.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.resources.branch } 2>&1
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        secrets =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.secrets.email ;
+                                                                                            "user.name" = config.personal.repository.secrets.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.secrets.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin ${ config.personal.repository.secrets.branch } 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.secrets.branch } 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -1073,6 +1111,8 @@
                                                                         secrets =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                         temporary =
@@ -1140,15 +1180,25 @@
                                                                                                                                 NAME="$2"
                                                                                                                                 FILE="$3"
                                                                                                                                 TOKEN="$4"
-                                                                                                                                mkdir --parents "$BUILD/repository/$NAME"
-                                                                                                                                cd "$BUILD/repository/$NAME"
+                                                                                                                                if [[ -e "$BUILD/repo/$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    echo "$BUILD/repo/$NAME" already exists
+                                                                                                                                    exit 64
+                                                                                                                                fi
+                                                                                                                                mkdir --parents "$BUILD/repo/$NAME"
+                                                                                                                                cd "$BUILD/repo/$NAME"
                                                                                                                                 git init --bare
+                                                                                                                                if [[ -e "$BUILD/work/$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    echo "$BUILD/work/$NAME already exists"
+                                                                                                                                    exit 64
+                                                                                                                                fi
                                                                                                                                 mkdir --parents "$BUILD/work/$NAME"
                                                                                                                                 cd "$BUILD/work/$NAME"
                                                                                                                                 git init
                                                                                                                                 git config user.email nina.nix@example.com
                                                                                                                                 git config user.name "Nina Nix"
-                                                                                                                                git remote add origin "$BUILD/repository/$NAME"
+                                                                                                                                git remote add origin "$BUILD/repo/$NAME"
                                                                                                                                 git checkout -b branch/test
                                                                                                                                 echo "$TOKEN" > "$FILE"
                                                                                                                                 git add "$FILE"
@@ -1231,12 +1281,16 @@
                                                                                                             RESOURCES_FILE=1fc5bfc608d9cd345b7d4e3ee0ed073664cf0eda11412131a589fdf66aec961f7d522cc23cd4bf47929ac98bf07bbabe2222166fc4c1e07ecf8cd997c4ea1fe9
                                                                                                             RESOURCES_TOKEN=aeab6d01077166bd8b32ccf8359a425d0bb7b8de4d08166d59482ef77e9de5b1e12cb96bf6dc2de6276bbcae2fb55fd15a81cb1afb70263a4d5048ab22c4fdbe
                                                                                                             create-mock-repository "$BUILD" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
+                                                                                                            SECRETS_FILE=a863e91ebc08029e473e18f56c2c6b0808a52201a176372c5f67ac87067117ad167dac5b53d9fe932deefbba5b5c3d1efda925f3809560006e746e85e25a90aa
+                                                                                                            SECRETS_TOKEN=d4067dcf3f4bec779f0a155eddb4af5397569ac0aa2cf20a3b64ba906cb1d693eae221622467ffe560b86aae678a37af2f8644830930313451f4004902dc8425
+                                                                                                            create-mock-repository "$BUILD" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
+                                                                                                            # verify-mock-repository "$HOMEY" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
                                                                                                         '' ;
                                                                                                }
                                                                                         )
@@ -1252,22 +1306,22 @@
                                                                                                 personal =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
-                                                                                                        remote = "/tmp/build/repository/personal" ;
+                                                                                                        remote = "/tmp/build/repo/personal" ;
                                                                                                     } ;
                                                                                                 private =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
-                                                                                                        remote = "/tmp/build/repository/private" ;
+                                                                                                        remote = "/tmp/build/repo/private" ;
                                                                                                     } ;
                                                                                                 resources =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
-                                                                                                        remote = "/tmp/build/repository/resources" ;
+                                                                                                        remote = "/tmp/build/repo/resources" ;
                                                                                                     } ;
                                                                                                 secrets =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
-                                                                                                        remote = "/tmp/build/repository/secrets" ;
+                                                                                                        remote = "/tmp/build/repo/secrets" ;
                                                                                                     } ;
                                                                                             } ;
                                                                                    } ;
