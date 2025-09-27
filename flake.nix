@@ -1290,9 +1290,6 @@
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
-                                                                                                            ls "$HOMEY/resources/work-tree"
-                                                                                                            echo
-                                                                                                            ls "$HOMEY/secrets/work-tree"
                                                                                                             verify-mock-repository "$HOMEY" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
                                                                                                         '' ;
                                                                                                }
