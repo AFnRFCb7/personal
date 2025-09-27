@@ -660,7 +660,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "sync-promote" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
@@ -679,6 +679,11 @@
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        nix flake check ./work-tree
+                                                                                                                        nixos-rebuild build-vm --flake ./work-tree#user
+                                                                                                                        nixos-rebuild build-vm-with-bootloader ./work-tree#user
+                                                                                                                        nixos-rebuild build ./work-tree#user
+                                                                                                                        nixos-rebuild test ./work-tree#user
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/sync-promote" ;
@@ -743,6 +748,11 @@
                                                                                else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
                                                                                else builtins.throw "We can not handle ${ value }." ;
                                                                         in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
+                                                                temporary-directory =
+                                                                    {
+                                                                        init = failure : resources : self : "" ;
+                                                                        targets = [ ] ;
+                                                                    } ;
                                                             } ;
                                                 in
                                                     visitor.lib.implementation
