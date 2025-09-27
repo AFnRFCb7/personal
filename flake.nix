@@ -671,6 +671,14 @@
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*secret[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
+                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/sync-promote" ;
