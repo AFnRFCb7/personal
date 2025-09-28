@@ -7,6 +7,7 @@
             {
                 lib =
                     {
+                        channel ? "git" ,
                         nixpkgs ,
 			            resources ,
                         secrets ,
@@ -273,9 +274,11 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "post-commit" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jq pkgs.redis ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                        redis-cli PUBLISH "${ channel }" "{ \"git-dir\" : \"$GIT_DIR\" , \"git-work-tree\" : \"$GIT_WORK_TREE\" , \"commit\" : \"$COMMIT\"  }" 2> /dev/null || true
                                                                                         while ! git push origin HEAD
                                                                                         do
                                                                                             sleep 1s
@@ -693,14 +696,61 @@
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.promote" = "!${ sync-promote }" ;
                                                                                                     "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "alias.sync-promote" = "!${ sync-promote }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
                                                                                     hooks =
                                                                                         {
+                                                                                            pre-commit =
+                                                                                                let
+                                                                                                    pre-commit =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "application" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.nix pkgs.nixos-rebuild ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        PRIVATE="$( ${ resources_.repository.private } )" || exit 64
+                                                                                                                        COMMIT="$( git rev-parse HEAD} )" || exit 64
+                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
+                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*sresources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
+                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        mkdir --parents "$PRIVATE/check/$COMMIT
+                                                                                                                        nix flake check "$PRIVATE/work-tree" > "$PRIVATE/check/$COMMIT/standard-output" 2> "$PRIVATE/check/$COMMIT/standard-error"
+                                                                                                                        touch "$PRIVATE/check/$COMMIT/SUCCESS"
+                                                                                                                        mkdir --parents "$PRIVATE/vm"
+                                                                                                                        nixos-rebuild build-vm --flake "$PRIVATE/work-tree#user" > "$PRIVATE/vm/$COMMIT/standard-output 2> "$PRIVATE/vm/$COMMIT/standard-error"
+                                                                                                                        mv result "$PRIVATE/vm/$COMMIT"
+                                                                                                                        touch "$PRIVATE/vm/$COMMIT/SUCCESS"
+                                                                                                                        mkdir --parents "$PRIVATE/vm-with-bootloader/$COMMIT"
+                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE/work-tree#user" > "$PRIVATE/vm-with-bootloader/$COMMIT/standard-output" 2> "$PRIVATE/vm-with-bootloader/$COMMIT/standard-error"
+                                                                                                                        mv result "$PRIVATE/vm-with-bootloader/$COMMIT"
+                                                                                                                        touch "$PRIVATE/vm-with-bootloader/$COMMITT/SUCCESS"
+                                                                                                                        mkdir --parents "$PRIVATE/build/$COMMIT"
+                                                                                                                        nixos-rebuild build --flake ./work-tree#user > "$PRIVATE/build/$COMMIT/standard-output" 2> "$PRIVATE/build/$COMMIT/standard-error"
+                                                                                                                        touch "$PRIVATE/vm-with-bootloader/$COMMIT/SUCCESS"
+                                                                                                                        mkdir --parents "$PRIVATE/test/$COMMIT"
+                                                                                                                        nixos-rebuild test --flake ./work-tree#user > "$PRIVATE/test/$COMMIT/standard-output" 2> "$PRIVATE/test/$COMMIT/standard-error"
+                                                                                                                        touch "$PRIVATE/test/$COMMIT/SUCCESS"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/pre-commit" ;
                                                                                             post-commit = post-commit "origin" ;
                                                                                         } ;
                                                                                     remotes =
@@ -713,9 +763,40 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "setup" ;
-                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        runtimeInputs =
+                                                                                                            [
+                                                                                                                (
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "monitor-commits" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.redis ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    EXPECTED_GIT_DIR="$1"
+                                                                                                                                    EXPECTED_GIT_WORK_TREE="$2"
+                                                                                                                                    redis-cli --raw SUBSCRIBE "${channel}" | while true
+                                                                                                                                    do
+                                                                                                                                        read -r KIND || break
+                                                                                                                                        read -r CHANNEL || break
+                                                                                                                                        read -r PAYLOAD || break
+                                                                                                                                        if [[ "$KIND" == "message" ]]
+                                                                                                                                        then
+                                                                                                                                            echo "Got payload on $CHANNEL: $PAYLOAD"
+                                                                                                                                            OBSERVED_GIT_DIR="$( jq --raw-output '.["git-dir"]' <<< "$PAYLOAD" )" || exit 64
+                                                                                                                                            OBSERVED_GIT_WORK_TREE="$( jq --raw-output '.["git-work-tree"]' <<< "$PAYLOAD" )" || exit 64
+                                                                                                                                            if [[ "$EXPECTED_GIT_DIR" =="$OBSERVED_GIT_DIR" ]] && [[ "$EXPECTED_GIT_WORK_TREE" == "$OBSERVED_GIT_WORK_TREE" ]]
+                                                                                                                                            then
+                                                                                                                                            fi
+                                                                                                                                        fi
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        }
+                                                                                                                )
+                                                                                                                pkgs.git
+                                                                                                            ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                monitor-commits "$GIT_DIR" "$GIT_WORK_TREE" &
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git scratch
