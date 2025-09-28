@@ -1060,7 +1060,7 @@
                                                                                         {
                                                                                             name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.secrets.dot-ssh.mobile."identity.asc.age" ;
+                                                                                            text = resources_.secrets.dot-ssh.boot."identity.asc.age" ;
                                                                                         }
                                                                                 )
                                                                                 (
