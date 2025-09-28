@@ -1058,6 +1058,14 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
+                                                                                            name = "home" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.repository.private ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
                                                                                             name = "debugging" ;
                                                                                             runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
                                                                                             text =
