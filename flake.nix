@@ -763,40 +763,9 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "setup" ;
-                                                                                                        runtimeInputs =
-                                                                                                            [
-                                                                                                                (
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "monitor-commits" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.redis ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    EXPECTED_GIT_DIR="$1"
-                                                                                                                                    EXPECTED_GIT_WORK_TREE="$2"
-                                                                                                                                    redis-cli --raw SUBSCRIBE "${channel}" | while true
-                                                                                                                                    do
-                                                                                                                                        read -r KIND || break
-                                                                                                                                        read -r CHANNEL || break
-                                                                                                                                        read -r PAYLOAD || break
-                                                                                                                                        if [[ "$KIND" == "message" ]]
-                                                                                                                                        then
-                                                                                                                                            echo "Got payload on $CHANNEL: $PAYLOAD"
-                                                                                                                                            OBSERVED_GIT_DIR="$( jq --raw-output '.["git-dir"]' <<< "$PAYLOAD" )" || exit 64
-                                                                                                                                            OBSERVED_GIT_WORK_TREE="$( jq --raw-output '.["git-work-tree"]' <<< "$PAYLOAD" )" || exit 64
-                                                                                                                                            if [[ "$EXPECTED_GIT_DIR" =="$OBSERVED_GIT_DIR" ]] && [[ "$EXPECTED_GIT_WORK_TREE" == "$OBSERVED_GIT_WORK_TREE" ]]
-                                                                                                                                            then
-                                                                                                                                            fi
-                                                                                                                                        fi
-                                                                                                                                    done
-                                                                                                                                '' ;
-                                                                                                                        }
-                                                                                                                )
-                                                                                                                pkgs.git
-                                                                                                            ] ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                monitor-commits "$GIT_DIR" "$GIT_WORK_TREE" &
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git scratch
