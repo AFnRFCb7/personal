@@ -1060,7 +1060,7 @@
                                                                                         {
                                                                                             name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.repository.private ;
+                                                                                            text = resources_.repository.personal ;
                                                                                         }
                                                                                 )
                                                                                 (
