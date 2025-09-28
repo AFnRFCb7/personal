@@ -211,6 +211,7 @@
                                                                                 [
                                                                                     "config"
                                                                                 ] ;
+                                                                            transient = false ;
                                                                         } ;
                                                         git =
                                                             {
@@ -249,6 +250,7 @@
                                                                                     in "${ application }/bin/application" ;
                                                                     release = release ;
                                                                     targets = [ ".envrc" "git" "work-tree" ] ;
+                                                                    transient = false ;
                                                                 } ;
                                                         milestone =
                                                             let
@@ -506,6 +508,7 @@
                                                                                     "secrets"
                                                                                     "visitor"
                                                                                 ] ;
+                                                                            transient = false ;
                                                                         } ;
                                                                 repository =
                                                                     {
@@ -1036,7 +1039,7 @@
                                                                                                 ''
                                                                                                     HOMEY="$( ${ resources_.home } )" || exit 64
                                                                                                     cd "$HOMEY"
-                                                                                                    idea-community
+                                                                                                    idea-community .
                                                                                                 '' ;
                                                                                         }
                                                                                 )
