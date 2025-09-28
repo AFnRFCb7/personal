@@ -211,6 +211,7 @@
                                                                                 [
                                                                                     "config"
                                                                                 ] ;
+                                                                            transient = false ;
                                                                         } ;
                                                         git =
                                                             {
@@ -249,6 +250,7 @@
                                                                                     in "${ application }/bin/application" ;
                                                                     release = release ;
                                                                     targets = [ ".envrc" "git" "work-tree" ] ;
+                                                                    transient = false ;
                                                                 } ;
                                                         milestone =
                                                             let
@@ -506,6 +508,7 @@
                                                                                     "secrets"
                                                                                     "visitor"
                                                                                 ] ;
+                                                                            transient = false ;
                                                                         } ;
                                                                 repository =
                                                                     {
@@ -670,7 +673,7 @@
                                                                                                                         RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*secret[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        sed --regexp-extended -i "s#(^.*sresources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                         SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
                                                                                                                         GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
@@ -681,9 +684,9 @@
                                                                                                                         sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                         nix flake check ./work-tree
                                                                                                                         nixos-rebuild build-vm --flake ./work-tree#user
-                                                                                                                        nixos-rebuild build-vm-with-bootloader ./work-tree#user
-                                                                                                                        nixos-rebuild build ./work-tree#user
-                                                                                                                        nixos-rebuild test ./work-tree#user
+                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake ./work-tree#user
+                                                                                                                        nixos-rebuild build --flake ./work-tree#user
+                                                                                                                        nixos-rebuild test --flake ./work-tree#user
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/sync-promote" ;
@@ -1034,9 +1037,9 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( resources_.home )"
+                                                                                                    HOMEY="$( ${ resources_.home } )" || exit 64
                                                                                                     cd "$HOMEY"
-                                                                                                    idea-community
+                                                                                                    idea-community .
                                                                                                 '' ;
                                                                                         }
                                                                                 )
@@ -1050,6 +1053,14 @@
                                                                                             name = "home" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.home ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "foobar" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = resources_.secrets.dot-ssh.boot."identity.asc.age" ;
                                                                                         }
                                                                                 )
                                                                                 (
