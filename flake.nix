@@ -540,9 +540,9 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                git fetch origin ${ config.personal.repository.personal.branch } 2>&1
-                                                                                                                git checkout origin/${ config.personal.repository.personal.branch } 2>&1
-                                                                                                                git scratch
+                                                                                                                # git fetch origin ${ config.personal.repository.personal.branch } 2>&1
+                                                                                                                # git checkout origin/${ config.personal.repository.personal.branch } 2>&1
+                                                                                                                # git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
