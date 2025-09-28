@@ -713,7 +713,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        PRIVATE="$( ${ resources_.repository.private } )" || exit 64
+                                                                                                                        PRIVATE=
                                                                                                                         COMMIT="$( git rev-parse HEAD} )" || exit 64
                                                                                                                         PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
