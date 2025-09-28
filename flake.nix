@@ -1058,7 +1058,7 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
-                                                                                            name = "home" ;
+                                                                                            name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.repository.private ;
                                                                                         }
