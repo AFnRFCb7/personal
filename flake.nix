@@ -706,7 +706,7 @@
                                                                                         {
                                                                                             pre-commit =
                                                                                                 let
-                                                                                                    pre-commit =
+                                                                                                    application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "application" ;
