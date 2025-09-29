@@ -707,7 +707,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "pre-commit" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.flake pkgs.gnused ] ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
