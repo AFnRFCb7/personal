@@ -709,7 +709,7 @@
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "application" ;
+                                                                                                                name = "pre-commit" ;
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnused pkgs.nix pkgs.nixos-rebuild ] ;
                                                                                                                 text =
                                                                                                                     ''
