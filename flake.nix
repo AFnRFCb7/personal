@@ -701,6 +701,108 @@
                                                                                                 } ;
                                                                                     hooks =
                                                                                         {
+                                                                                            pre-commit =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "pre-commit" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.flake pkgs.gnused ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
+                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*sresources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
+                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        mkdir --parents "${ self }/check/$HASH"
+                                                                                                                        HASH="$( git rev-parse HEAD )" || exit 64
+                                                                                                                        nix flake check ${ self }/work-tree > "${ self }/check/$HASH/standard-output" 2> "${ self }/check/$HASH/standard-error"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/pre-commit" ;
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git fetch origin ${ config.personal.repository.private.branch } 2>&1
+                                                                                                                git checkout origin/${ config.personal.repository.private.branch } 2>&1
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        promote =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        let
+                                                                                            sync-promote =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "sync-promote" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused pkgs.nix ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
+                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*sresources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
+                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
+                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        nix flake check ./work-tree
+                                                                                                                        nixos-rebuild build-vm --flake ./work-tree#user
+                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake ./work-tree#user
+                                                                                                                        nixos-rebuild build --flake ./work-tree#user
+                                                                                                                        nixos-rebuild test --flake ./work-tree#user
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/sync-promote" ;
+                                                                                            in
+                                                                                                {
+                                                                                                    "alias.milestone" = "!${ milestone }" ;
+                                                                                                    "alias.promote" = "!${ sync-promote }" ;
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                    hooks =
+                                                                                        {
                                                                                             post-commit = post-commit "origin" ;
                                                                                         } ;
                                                                                     remotes =
