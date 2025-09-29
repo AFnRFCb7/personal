@@ -714,7 +714,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         PRIVATE=
-                                                                                                                        COMMIT="$( git rev-parse HEAD} )" || exit 64
+                                                                                                                        COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                         PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
@@ -731,7 +731,7 @@
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        mkdir --parents "$PRIVATE/check/$COMMIT
+                                                                                                                        mkdir --parents "$PRIVATE/check/$COMMIT"
                                                                                                                         nix flake check "$PRIVATE/work-tree" > "$PRIVATE/check/$COMMIT/standard-output" 2> "$PRIVATE/check/$COMMIT/standard-error"
                                                                                                                         touch "$PRIVATE/check/$COMMIT/SUCCESS"
                                                                                                                         mkdir --parents "$PRIVATE/vm"
@@ -741,7 +741,7 @@
                                                                                                                         mkdir --parents "$PRIVATE/vm-with-bootloader/$COMMIT"
                                                                                                                         nixos-rebuild build-vm-with-bootloader --flake "$PRIVATE/work-tree#user" > "$PRIVATE/vm-with-bootloader/$COMMIT/standard-output" 2> "$PRIVATE/vm-with-bootloader/$COMMIT/standard-error"
                                                                                                                         mv result "$PRIVATE/vm-with-bootloader/$COMMIT"
-                                                                                                                        touch "$PRIVATE/vm-with-bootloader/$COMMITT/SUCCESS"
+                                                                                                                        touch "$PRIVATE/vm-with-bootloader/$COMMIT/SUCCESS"
                                                                                                                         mkdir --parents "$PRIVATE/build/$COMMIT"
                                                                                                                         nixos-rebuild build --flake ./work-tree#user > "$PRIVATE/build/$COMMIT/standard-output" 2> "$PRIVATE/build/$COMMIT/standard-error"
                                                                                                                         touch "$PRIVATE/vm-with-bootloader/$COMMIT/SUCCESS"
