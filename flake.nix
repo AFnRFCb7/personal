@@ -735,7 +735,7 @@
                                                                                                                         nix flake check "$PRIVATE/work-tree" > "$PRIVATE/check/$COMMIT/standard-output" 2> "$PRIVATE/check/$COMMIT/standard-error"
                                                                                                                         touch "$PRIVATE/check/$COMMIT/SUCCESS"
                                                                                                                         mkdir --parents "$PRIVATE/vm"
-                                                                                                                        nixos-rebuild build-vm --flake "$PRIVATE/work-tree#user" > "$PRIVATE/vm/$COMMIT/standard-output 2> "$PRIVATE/vm/$COMMIT/standard-error"
+                                                                                                                        nixos-rebuild build-vm --flake "$PRIVATE/work-tree#user" > "$PRIVATE/vm/$COMMIT/standard-output" 2> "$PRIVATE/vm/$COMMIT/standard-error"
                                                                                                                         mv result "$PRIVATE/vm/$COMMIT"
                                                                                                                         touch "$PRIVATE/vm/$COMMIT/SUCCESS"
                                                                                                                         mkdir --parents "$PRIVATE/vm-with-bootloader/$COMMIT"
