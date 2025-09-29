@@ -689,7 +689,7 @@
                                                                                                                         nixos-rebuild build-vm --flake ./work-tree#user
                                                                                                                         nixos-rebuild build-vm-with-bootloader --flake ./work-tree#user
                                                                                                                         nixos-rebuild build --flake ./work-tree#user
-                                                                                                                        nixos-rebuild test --flake ./work-tree#user
+                                                                                                                        sudo nixos-rebuild test --flake ./work-tree#user
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/sync-promote" ;
