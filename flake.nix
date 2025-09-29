@@ -746,7 +746,7 @@
                                                                                                                         nixos-rebuild build --flake ./work-tree#user > "$PRIVATE/build/$COMMIT/standard-output" 2> "$PRIVATE/build/$COMMIT/standard-error"
                                                                                                                         touch "$PRIVATE/vm-with-bootloader/$COMMIT/SUCCESS"
                                                                                                                         mkdir --parents "$PRIVATE/test/$COMMIT"
-                                                                                                                        nixos-rebuild test --flake ./work-tree#user > "$PRIVATE/test/$COMMIT/standard-output" 2> "$PRIVATE/test/$COMMIT/standard-error"
+                                                                                                                        sudo nixos-rebuild test --flake ./work-tree#user > "$PRIVATE/test/$COMMIT/standard-output" 2> "$PRIVATE/test/$COMMIT/standard-error"
                                                                                                                         touch "$PRIVATE/test/$COMMIT/SUCCESS"
                                                                                                                     '' ;
                                                                                                             } ;
