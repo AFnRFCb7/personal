@@ -794,27 +794,6 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
-                                                                        build-vm =
-                                                                            ignore :
-                                                                                {
-                                                                                    init =
-                                                                                        failure : resource : self :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellScript
-                                                                                                        {
-                                                                                                            name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.nix ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    cd /mount
-                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/init" ;
-                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
-                                                                                } ;
                                                                         check =
                                                                             ignore :
                                                                                 {
