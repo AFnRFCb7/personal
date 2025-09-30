@@ -738,17 +738,6 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                 text =
                                                                                                                     let
-                                                                                                                        build-vm =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "build-vm" ;
-                                                                                                                                    runtimeInputs = [ pkgs.nix ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            BUILD_VM="$( ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                                            echo "$BUILD_VM"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
                                                                                                                         check =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
@@ -778,7 +767,6 @@
                                                                                                                                 mkdir --parents "${ self }/$BRANCH/$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ check }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ check }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
