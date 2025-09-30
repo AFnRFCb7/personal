@@ -31,7 +31,7 @@
                                                                 makeWrapper "$out/src/${ target }" "$out/bin/${ target }" --run "sudo"
                                                             '' ;
                                                         name = target ;
-                                                        nativeBuildInputs = [ pkgs.coreutils pkgs.mkWrapper ] ;
+                                                        nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
                                                         src = ./. ;
                                                     } ;
                                         resources_ =
