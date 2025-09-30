@@ -808,7 +808,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nix flake check "$SOURCE/work-tree > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
