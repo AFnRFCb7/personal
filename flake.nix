@@ -738,7 +738,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                 text =
                                                                                                                     let
-                                                                                                                        source =
+                                                                                                                        check =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "check" ;
