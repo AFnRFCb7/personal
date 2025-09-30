@@ -870,6 +870,7 @@
                                                                                                                 ''
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
                                                                                                                     nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
@@ -891,6 +892,7 @@
                                                                                                                 ''
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
                                                                                                                     nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
@@ -913,6 +915,7 @@
                                                                                                                     nix-collect-garbage
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
                                                                                                                     nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
@@ -933,6 +936,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
                                                                                                                     nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
