@@ -738,6 +738,15 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                 text =
                                                                                                                     let
+                                                                                                                        check =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "check" ;
+                                                                                                                                    runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                        '' ;
+                                                                                                                                } ;
                                                                                                                         source =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
@@ -754,7 +763,8 @@
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 mkdir --parents "${ self }/$BRANCH/$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT $COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ check }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
