@@ -738,6 +738,17 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                 text =
                                                                                                                     let
+                                                                                                                        build =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "build-vm" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            BUILD="$( ${ resources_.promotion.build } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$BUILD_VM"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
                                                                                                                         build-vm =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
@@ -791,6 +802,7 @@
                                                                                                                                 makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build-vm-with-bootloader" "${ self }/$BRANCH/$COMMIT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
@@ -818,6 +830,27 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
+                                                                        build =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resource : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellScript
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
+                                                                                } ;
                                                                         build-vm =
                                                                             ignore :
                                                                                 {
@@ -833,7 +866,7 @@
                                                                                                                 ''
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nixos-rebuild --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -854,7 +887,7 @@
                                                                                                                 ''
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nixos-rebuild-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
