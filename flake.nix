@@ -19,6 +19,21 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        password-less =
+                                            derivation : target :
+                                                pkgs.stdenv.mkDerivation
+                                                    {
+                                                        installPhase =
+                                                            ''
+                                                                mkdir --parents $out/src
+                                                                makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
+                                                                mkdir --parents $out/bin
+                                                                makeWrapper "$out/src/${ target }" "$out/bin/${ target }" --run "sudo"
+                                                            '' ;
+                                                        name = target ;
+                                                        nativeBuildInputs = [ pkgs.coreutils pkgs.mkWrapper ] ;
+                                                        src = ./. ;
+                                                    } ;
                                         resources_ =
                                             let
                                                 seed =
@@ -753,7 +768,6 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "build-vm" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             BUILD_VM="$( ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT" )" || exit 64
@@ -764,7 +778,6 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "build-vm-with-bootloader" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             BUILD_VM_WITH_BOOTLOADER="$( ${ resources_.promotion.build-vm-with-bootloader } "$BRANCH" "$COMMIT" )" || exit 64
@@ -894,9 +907,10 @@
                                                                                                     pkgs.writeShellScript
                                                                                                         {
                                                                                                             name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            runtimeInputs = [ pkgs.nix ( passwordless pkgs.nix "nix-collect-garbage" ) ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    nix-collect-garbage
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
@@ -1155,6 +1169,7 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
                                                                         %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-collect-garbage
