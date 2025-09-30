@@ -907,7 +907,7 @@
                                                                                                     pkgs.writeShellScript
                                                                                                         {
                                                                                                             name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.nix ( passwordless pkgs.nix "nix-collect-garbage" ) ] ;
+                                                                                                            runtimeInputs = [ pkgs.nix ( password-less pkgs.nix "nix-collect-garbage" ) ] ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     nix-collect-garbage
