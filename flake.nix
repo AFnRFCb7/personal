@@ -793,6 +793,17 @@
                                                                                                                                             echo "$SOURCE"
                                                                                                                                         '' ;
                                                                                                                                 } ;
+                                                                                                                        test =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "test" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            TEST="$( ${ resources_.promotion.test } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$TEST"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
                                                                                                                         in
                                                                                                                             ''
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
@@ -802,7 +813,8 @@
                                                                                                                                 makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build-vm-with-bootloader" "${ self }/$BRANCH/$COMMIT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/build" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/test" "${ self }/$BRANCH/$COMMIT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
@@ -942,6 +954,27 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        test =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resource : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellScript
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
