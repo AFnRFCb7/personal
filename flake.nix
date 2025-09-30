@@ -751,7 +751,7 @@
                                                                                                                                 } ;
                                                                                                                         in
                                                                                                                             ''
-                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure "da3d5d51" }
+                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || ${ failure "4c2b43b8" }
                                                                                                                                 mkdir --parents "${ self }/$BRANCH/$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh --set BRANCH "$BRANCH" --set COMMIT $COMMIT
