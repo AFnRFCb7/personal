@@ -742,7 +742,7 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "source" ;
-                                                                                                                                    runtimeInputs = [ pkgs.]
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     source =
                                                                                                                                         ''
                                                                                                                                             SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "edcc8e25" }
