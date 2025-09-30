@@ -741,6 +741,17 @@
                                                                                                                         source =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
+                                                                                                                                    name = "check" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            CHECK="$( ${ resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$CHECK"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        source =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
                                                                                                                                     name = "source" ;
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
@@ -755,6 +766,7 @@
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 mkdir --parents "${ self }/$BRANCH/$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
