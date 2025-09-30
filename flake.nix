@@ -743,7 +743,7 @@
                                                                                                                                 {
                                                                                                                                     name = "source" ;
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                    source =
+                                                                                                                                    text =
                                                                                                                                         ''
                                                                                                                                             SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             echo "$SOURCE"
