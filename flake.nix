@@ -738,6 +738,17 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                 text =
                                                                                                                     let
+                                                                                                                        build-vm =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "build-vm" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            BUILD_VM="$( ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            "$BUILD_VM/result/bin/run-nix-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
                                                                                                                         check =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
@@ -767,6 +778,7 @@
                                                                                                                                 mkdir --parents "${ self }/$BRANCH/$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
@@ -794,6 +806,27 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
+                                                                        build-vm =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resource : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellScript
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    nixos-rebuild --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
+                                                                                } ;
                                                                         check =
                                                                             ignore :
                                                                                 {
