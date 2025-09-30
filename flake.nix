@@ -745,7 +745,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     source =
                                                                                                                                         ''
-                                                                                                                                            SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "edcc8e25" }
+                                                                                                                                            SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             echo "$SOURCE"
                                                                                                                                         '' ;
                                                                                                                                 } ;
