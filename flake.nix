@@ -821,7 +821,7 @@
                                                                                                                 ''
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output /mount/standard-error
+                                                                                                                    nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -841,7 +841,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nix flake check "$SOURCE/work-tree > /mount/standard-output /mount/standard-error
+                                                                                                                    nix flake check "$SOURCE/work-tree > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
