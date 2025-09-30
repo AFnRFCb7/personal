@@ -745,7 +745,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            SOURCE="$( ${ resources_.promotion.source } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             echo "$SOURCE"
                                                                                                                                         '' ;
                                                                                                                                 } ;
