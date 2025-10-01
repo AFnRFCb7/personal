@@ -1044,7 +1044,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "switch" ;
-                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         PERSONAL="$( ${ resources_.promotion.source.dependents.personal } )" || exit 64
@@ -1068,9 +1068,18 @@
                                                                                                                                             GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit --verbose
                                                                                                                                         fi
                                                                                                                                         git scratch
+                                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*visitorblueberry[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        nixos-rebuild test --flake "$GIT_WORK_TREE#user"
                                                                                                                                         git fetch origin main
                                                                                                                                         git reset --soft origin/main
                                                                                                                                         git commit --verbose
+                                                                                                                                        CURRENT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                        git checkout main
+                                                                                                                                        git rebase "$CURRENT"
+                                                                                                                                        git push origin main
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in
@@ -1263,6 +1272,7 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
                                                                         %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
