@@ -945,6 +945,45 @@
                                                                                 } ;
                                                                         source =
                                                                             {
+                                                                                dependents =
+                                                                                    let
+                                                                                        fun =
+                                                                                            email : name : remote :
+                                                                                                git
+                                                                                                    {
+                                                                                                        configs =
+                                                                                                            {
+                                                                                                                "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                                                "user.email" = email ;
+                                                                                                                "user.name" = name ;
+                                                                                                            } ;
+                                                                                                        remotes =
+                                                                                                            {
+                                                                                                                origin = remote ;
+                                                                                                            } ;
+                                                                                                        setup =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    COMMIT="$1"
+                                                                                                                                    git fetch origin
+                                                                                                                                    git checkout "$COMMIT"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                    } ;
+                                                                                        in
+                                                                                            {
+                                                                                                personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.remote ;
+                                                                                                resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.remote ;
+                                                                                                secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.remote ;
+                                                                                                visitor = fun config.personal.repository.visitor.email config.personal.repository.visitor.name config.personal.repository.visitor.remote ;
+                                                                                            } ;
                                                                                 root =
                                                                                     git
                                                                                         {
