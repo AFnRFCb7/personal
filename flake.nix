@@ -869,7 +869,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     cd /mount
-                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
@@ -891,7 +891,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     cd /mount
-                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
@@ -914,7 +914,7 @@
                                                                                                                 ''
                                                                                                                     nix-collect-garbage
                                                                                                                     cd /mount
-                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
@@ -935,7 +935,7 @@
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
@@ -944,34 +944,37 @@
                                                                                         targets = [ "standard-output" "standard-error" ] ;
                                                                                 } ;
                                                                         source =
-                                                                            git
-                                                                                {
-                                                                                    configs =
+                                                                            {
+                                                                                root =
+                                                                                    git
                                                                                         {
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                            "user.email" = config.personal.repository.private.email ;
-                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                            configs =
+                                                                                                {
+                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                            remotes =
+                                                                                                {
+                                                                                                    origin = config.personal.repository.private.remote ;
+                                                                                                } ;
+                                                                                            setup =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "setup" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        BRANCH="$1"
+                                                                                                                        COMMIT="$2"
+                                                                                                                        git fetch origin "$BRANCH"
+                                                                                                                        git checkout "$COMMIT"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/setup" ;
                                                                                         } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            origin = config.personal.repository.private.remote ;
-                                                                                        } ;
-                                                                                    setup =
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "setup" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                BRANCH="$1"
-                                                                                                                COMMIT="$2"
-                                                                                                                git fetch origin "$BRANCH"
-                                                                                                                git checkout "$COMMIT"
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/setup" ;
                                                                                 } ;
                                                                         test =
                                                                             ignore :
@@ -987,7 +990,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     cd /mount
-                                                                                                                    SOURCE="$( ${ resources.promotion.source } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
