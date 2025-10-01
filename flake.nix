@@ -958,6 +958,10 @@
                                                                                                                 "user.email" = email ;
                                                                                                                 "user.name" = name ;
                                                                                                             } ;
+                                                                                                        hooks =
+                                                                                                            {
+                                                                                                                post-commit = post-commit "origin" ;
+                                                                                                            } ;
                                                                                                         remotes =
                                                                                                             {
                                                                                                                 origin = remote ;
@@ -975,9 +979,7 @@
                                                                                                                                     git fetch origin
                                                                                                                                     git checkout "$COMMIT"
                                                                                                                                     git scratch
-                                                                                                                                    DIFF="$( git diff --unstaged origin/main )" || exit 64
-                                                                                                                                    git config promotion.diff "$DIFF"
-                                                                                                                                    git reset --hard origin/main
+                                                                                                                                    git reset --soft origin/main
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
@@ -1040,6 +1042,9 @@
                                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        PERSONAL="$( ${ resources_.promotion.source.dependents.personal } )" || exit 64
+                                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit --verbose
+                                                                                                                                        g
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in
