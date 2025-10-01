@@ -996,9 +996,14 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                            hooks =
+                                                                                                {
+                                                                                                    post-commit = post-commit "origin" ;
                                                                                                 } ;
                                                                                             remotes =
                                                                                                 {
@@ -1047,6 +1052,25 @@
                                                                                                                                         then
                                                                                                                                             GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit --verbose
                                                                                                                                         fi
+                                                                                                                                        RESOURCES="$( ${ resources_.promotion.source.dependents.resources } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        SECRETS="$( ${ resources_.promotion.source.dependents.secrets } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        VISITOR="$( ${ resources_.promotion.source.dependents.visitor } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        git scratch
+                                                                                                                                        git fetch origin main
+                                                                                                                                        git reset --soft origin/main
+                                                                                                                                        git commit --verbose
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in
@@ -1054,7 +1078,7 @@
                                                                                                                             cd /mount
                                                                                                                             SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                             nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            makeWrapper ${ switch } /mount/switch.sh
+                                                                                                                            makeWrapper ${ switch } /mount/switch.sh --set GIT_DIR "$GIT_DIR" --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
