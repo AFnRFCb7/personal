@@ -975,6 +975,8 @@
                                                                                                                                     git fetch origin
                                                                                                                                     git checkout "$COMMIT"
                                                                                                                                     git scratch
+                                                                                                                                    DIFF="$( git diff --unstaged origin/main )" || exit 64
+                                                                                                                                    git config promotion.diff "DIFF"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
