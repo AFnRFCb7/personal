@@ -871,6 +871,8 @@
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "eff963f3" }
+                                                                                                                    ln --symbolic "$CHECK" /links
                                                                                                                     nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
@@ -893,6 +895,8 @@
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
+                                                                                                                    ln --symbolic "$CHECK" /links
                                                                                                                     nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
@@ -916,6 +920,8 @@
                                                                                                                     cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "998b4971" }
+                                                                                                                    ln --symbolic "$CHECK" /links
                                                                                                                     nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
@@ -1089,6 +1095,8 @@
                                                                                                                         ''
                                                                                                                             cd /mount
                                                                                                                             SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                            BUILD="$( ${ resources.promotion.build } "$BRANCH" "$COMMIT" )" || ${ failure "ac7724aa" }
+                                                                                                                            ln --symbolic "$BUILD" /links
                                                                                                                             nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             makeWrapper ${ switch } /mount/switch.sh --set GIT_DIR "$GIT_DIR" --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                         '' ;
