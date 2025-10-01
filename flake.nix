@@ -1075,11 +1075,14 @@
                                                                                                                                         nixos-rebuild test --flake "$GIT_WORK_TREE#user"
                                                                                                                                         git fetch origin main
                                                                                                                                         git reset --soft origin/main
-                                                                                                                                        git commit --verbose
-                                                                                                                                        CURRENT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                        git checkout main
-                                                                                                                                        git rebase "$CURRENT"
-                                                                                                                                        git push origin main
+                                                                                                                                        if ! git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            git commit --verbose
+                                                                                                                                            CURRENT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                            git checkout main
+                                                                                                                                            git rebase "$CURRENT"
+                                                                                                                                            git push origin main
+                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in
