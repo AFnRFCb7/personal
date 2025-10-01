@@ -953,6 +953,7 @@
                                                                                                     {
                                                                                                         configs =
                                                                                                             {
+                                                                                                                "alias.scratch" = "!${ scratch }" ;
                                                                                                                 "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
                                                                                                                 "user.email" = email ;
                                                                                                                 "user.name" = name ;
@@ -973,6 +974,7 @@
                                                                                                                                     COMMIT="$1"
                                                                                                                                     git fetch origin
                                                                                                                                     git checkout "$COMMIT"
+                                                                                                                                    git scratch
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
@@ -1025,16 +1027,28 @@
                                                                                                     pkgs.writeShellScript
                                                                                                         {
                                                                                                             name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            runtimeInputs = [ pkgs.nix pkgs.makeWrapper ] ;
                                                                                                             text =
-                                                                                                                ''
-                                                                                                                    cd /mount
-                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                '' ;
+                                                                                                                let
+                                                                                                                    switch =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "switch" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            cd /mount
+                                                                                                                            SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                            nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            makeWrapper ${ switch } /mount/switch.sh
+                                                                                                                        '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "switch.sh" ] ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
