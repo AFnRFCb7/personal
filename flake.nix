@@ -1043,8 +1043,10 @@
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         PERSONAL="$( ${ resources_.promotion.source.dependents.personal } )" || exit 64
-                                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit --verbose
-                                                                                                                                        g
+                                                                                                                                        if ! GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit --verbose
+                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in
