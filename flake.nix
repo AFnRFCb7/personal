@@ -849,7 +849,7 @@
                                                                                                                 ln --symbolic "$RESOURCES" /links
                                                                                                                 ln --symbolic "$SECRETS" /links
                                                                                                                 ln --symbolic "$VISITOR" /links
-                                                                                                                cat >> /mount/.envrc <<
+                                                                                                                cat >> /mount/.envrc <<EOF
                                                                                                                 export PERSONAL="$PERSONAL"
                                                                                                                 export RESOURCES="$RESOURCES"
                                                                                                                 export SECRETS="$SECRETS"
