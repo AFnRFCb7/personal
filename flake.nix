@@ -252,6 +252,7 @@
                                                                                                     mkdir --parents "$GIT_DIR"
                                                                                                     mkdir --parents "$GIT_WORK_TREE"
                                                                                                     cat > /mount/.envrc <<EOF
+                                                                                                    export REPOSITORY_ROOT=${ self }
                                                                                                     export GIT_DIR=${ self }/git
                                                                                                     export GIT_WORK_TREE=${ self }/work-tree
                                                                                                     EOF
@@ -817,7 +818,7 @@
                                                                                                                             ''
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                mkdir --parents "$SELF/$BRANCH/$COMMIT"
+                                                                                                                                mkdir --parents "$REPOSITORY_ROOT/$BRANCH/$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
