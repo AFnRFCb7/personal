@@ -725,19 +725,15 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*sresources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
                                                                                                                         GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
@@ -821,7 +817,7 @@
                                                                                                                             ''
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                mkdir --parents "${ self }/$BRANCH/$COMMIT"
+                                                                                                                                mkdir --parents "$SELF/$BRANCH/$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
@@ -845,6 +841,20 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
+                                                                                                                RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
+                                                                                                                SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
+                                                                                                                VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                ln --symbolic "$PERSONAL" /links
+                                                                                                                ln --symbolic "$RESOURCES" /links
+                                                                                                                ln --symbolic "$SECRETS" /links
+                                                                                                                ln --symbolic "$VISITOR" /links
+                                                                                                                cat >> /mount/.envrc <<
+                                                                                                                export PERSONAL="$PERSONAL"
+                                                                                                                export RESOURCES="$RESOURCES"
+                                                                                                                export SECRETS="$SECRETS"
+                                                                                                                export VISITOR="$VISITOR"
+                                                                                                                EOF
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git scratch
