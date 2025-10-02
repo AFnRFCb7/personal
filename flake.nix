@@ -1044,8 +1044,12 @@
 															echo "1 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                         COMMIT="$2"
 															echo "2 COMMIT=$COMMIT" >> /tmp/DEBUG
-                                                                                                                        git fetch origin "$BRANCH"
-															echo 3 >> /tmp/DEBUG
+                                                                                                                        if git fetch origin "$BRANCH" >> /tmp/DEBUG 2>&1
+															then
+																echo 3.0 >> /tmp/DEBUG
+															else
+																echo 3.1 >> /tmp/DEBUG
+															fi
                                                                                                                         git checkout "$COMMIT"
 															echo 4 >> /tmp/DEBUG
                                                                                                                     '' ;
