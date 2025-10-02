@@ -946,7 +946,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        failure : resource : self :
+                                                                                        failure : resources : self :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellScript
