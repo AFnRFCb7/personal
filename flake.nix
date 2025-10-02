@@ -820,6 +820,7 @@
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 mkdir --parents "$REPOSITORY_ROOT/$BRANCH/$COMMIT"
+																# shellcheck disable=SC1091
 																source ${ pkgs.makeWrapper }/nix-support/setup-hook
                                                                                                                                 makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
