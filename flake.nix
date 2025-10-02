@@ -789,6 +789,9 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
+                                                                                                                                        ''
+                                                                                                                                            CHECK="$( ${ resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$CHECK"
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         source =
