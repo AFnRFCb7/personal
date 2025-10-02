@@ -789,7 +789,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            CHECK="$( ${ resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            CHECK="$( ${ builtins.trace ( builtins.typeOf resources_.promotion.check ) resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             echo "$CHECK"
                                                                                                                                         '' ;
                                                                                                                                 } ;
