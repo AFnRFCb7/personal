@@ -689,7 +689,7 @@
                                                                                                                         RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                        sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                         SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
                                                                                                                         GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
                                                                                                                         SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
@@ -888,7 +888,11 @@
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "eff963f3" }
                                                                                                                     ln --symbolic "$CHECK" /links
+															STATUS="$( < "$CHECK" )" || ${ failure "" }
+															if [[ 0 == "$STATUS" ]]
+															then
                                                                                                                     nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
