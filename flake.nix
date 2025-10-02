@@ -782,7 +782,7 @@
                                                                                                                                             "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nix-vm"
                                                                                                                                         '' ;
                                                                                                                                 } ;
-                                                                                                                        check =
+                                                                                                                        check_ =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "check" ;
@@ -822,7 +822,7 @@
                                                                                                                                 COMMIT_ROOT="$REPOSITORY_ROOT/commit/$BRANCH/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh"
-                                                                                                                                ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT/check.sh"
+                                                                                                                                ln --symbolic "${ check_ }/bin/check" "$COMMIT_ROOT/check.sh"
 																while ! git push origin HEAD
 																do
 																	sleep 1s
