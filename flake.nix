@@ -821,12 +821,12 @@
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 COMMIT_ROOT="$REPOSITORY_ROOT/commit/$BRANCH/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
-                                                                                                                                ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                ln --symbolic "${ source }/bin/check" "$COMMIT_ROOT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh"
+                                                                                                                                ln --symbolic "${ source }/bin/check" "$COMMIT_ROOT/check.sh"
                                                                                                                                 ln --symbolic "${ source }/bin/build-vm" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                ln --symbolic "${ source }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                ln --symbolic "${ source }/bin/build" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                ln --symbolic "${ source }/bin/test" "$COMMIT_ROOT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                ln --symbolic "${ source }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/build-vm-with-bootloader.sh"
+                                                                                                                                ln --symbolic "${ source }/bin/build" "$COMMIT_ROOT/build-vm.sh"
+                                                                                                                                ln --symbolic "${ source }/bin/test" "$COMMIT_ROOT/test.sh"
 																while ! git push origin HEAD
 																do
 																	sleep 1s
