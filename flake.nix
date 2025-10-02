@@ -1049,6 +1049,7 @@
 															echo "1 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                         COMMIT="$2"
 															echo "2 COMMIT=$COMMIT" >> /tmp/DEBUG
+															git config --get core.sshCommand >> /tmp/DEBUG 2>&1
                                                                                                                         if git fetch origin "$BRANCH" >> /tmp/DEBUG 2>&1
 															then
 																echo 3.0 >> /tmp/DEBUG
