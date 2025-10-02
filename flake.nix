@@ -1130,7 +1130,7 @@
                                                                                                                             nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             makeWrapper ${ switch } /mount/switch.sh --set GIT_DIR "$GIT_DIR" --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                         '' ;
-                                                                                                        } ;
+                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
                                                                                         targets = [ "result" "standard-output" "standard-error" "switch.sh" ] ;
                                                                                 } ;
