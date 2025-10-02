@@ -1039,10 +1039,15 @@
                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                 text =
                                                                                                                     ''
+															echo START > /tmp/DEBUG
                                                                                                                         BRANCH="$1"
+															echo "1 BRANCH=$BRANCH" >> /tmp/DEBUG
                                                                                                                         COMMIT="$2"
+															echo "2 COMMIT=$COMMIT" >> /tmp/DEBUG
                                                                                                                         git fetch origin "$BRANCH"
+															echo 3 >> /tmp/DEBUG
                                                                                                                         git checkout "$COMMIT"
+															echo 4 >> /tmp/DEBUG
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/setup" ;
