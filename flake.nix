@@ -957,12 +957,17 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    nix flake check "$SOURCE" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     ln --symbolic "$SOURCE" /links
+                                                                                                                    if nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "$?" > /mount/status
+															fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                        		targets = [ "standard-output" "standard-error" ] ;
+                                                                        		targets = [ "standard-output" "standard-error" "status" ] ;
                                                                                 } ;
                                                                         source =
                                                                             {
