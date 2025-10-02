@@ -819,15 +819,16 @@
                                                                                                                             ''
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                mkdir --parents "$REPOSITORY_ROOT/$BRANCH/$COMMIT"
+                                                                                                                                COMMIT_ROOT="commit/$REPOSITORY_ROOT/$BRANCH/$COMMIT"
+																mkdir --parents "$COMMIT_ROOT"
 																# shellcheck disable=SC1091
 																source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                makeWrapper "${ source }/bin/source" "${ self }/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/check" "${ self }/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build-vm" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build-vm-with-bootloader" "${ self }/$BRANCH/$COMMIT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build" "${ self }/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/test" "${ self }/$BRANCH/$COMMIT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/source" "$COMMIT_ROOT/$BRANCH/$COMMIT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/check" "$COMMIT_ROOT/$BRANCH/$COMMIT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/build-vm" "$COMMIT_ROOT/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/$BRANCH/$COMMIT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/build" "$COMMIT_ROOT/$BRANCH/$COMMIT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                makeWrapper "${ source }/bin/test" "$COMMIT_ROOT/$BRANCH/$COMMIT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
