@@ -782,14 +782,14 @@
                                                                                                                                             "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nix-vm"
                                                                                                                                         '' ;
                                                                                                                                 } ;
-                                                                                                                        check_ =
+                                                                                                                        check =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "check" ;
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            CHECK="$( ${ builtins.trace ( builtins.typeOf resources_.promotion.check ) resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            CHECK="$( ${ resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             echo "$CHECK"
                                                                                                                                         '' ;
                                                                                                                                 } ;
@@ -822,7 +822,7 @@
                                                                                                                                 COMMIT_ROOT="$REPOSITORY_ROOT/commit/$BRANCH/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh"
-                                                                                                                                ln --symbolic "${ check_ }/bin/check" "$COMMIT_ROOT/check.sh"
+                                                                                                                                ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT/check.sh"
 																while ! git push origin HEAD
 																do
 																	sleep 1s
@@ -943,7 +943,7 @@
                                                                                         targets = [ "result" "standard-output" "standard-error" ] ;
                                                                                 } ;
                                                                         check =
-                                                                            ignore :
+#                                                                            ignore :
                                                                                 {
                                                                                     init =
                                                                                         failure : resources : self :
