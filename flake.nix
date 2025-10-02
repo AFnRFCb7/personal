@@ -823,12 +823,12 @@
 																mkdir --parents "$COMMIT_ROOT"
 																# shellcheck disable=SC1091
 																source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                makeWrapper "${ source }/bin/source" "$COMMIT_ROOT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/check" "$COMMIT_ROOT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build-vm" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/build" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                makeWrapper "${ source }/bin/test" "$COMMIT_ROOT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                wrapProgram "${ source }/bin/source" "$COMMIT_ROOT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                wrapProgram "${ source }/bin/check" "$COMMIT_ROOT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                wrapProgram "${ source }/bin/build-vm" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                wrapProgram "${ source }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                wrapProgram "${ source }/bin/build" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+                                                                                                                                wrapProgram "${ source }/bin/test" "$COMMIT_ROOT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
 																while ! git push origin HEAD
 																do
 																	sleep 1s
