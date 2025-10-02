@@ -311,7 +311,6 @@
                                                                                     SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
                                                                                     BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || exit 64
                                                                                     git checkout -b "$BRANCH" 2>&1
-										    git push origin HEAD 2>&1
                                                                                 '' ;
                                                                         } ;
                                                                     in "${ scratch }/bin/scratch" ;
@@ -869,6 +868,10 @@
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git scratch
+														while ! git push origin HEAD
+														do
+															sleep 1s
+														done
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
