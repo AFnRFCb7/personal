@@ -673,43 +673,9 @@
                                                                                 {
                                                                                     configs =
                                                                                         let
-                                                                                            sync-promote =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "sync-promote" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused pkgs.nix ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
-                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                        PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
-                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                        RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
-                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                        SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
-                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                        VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        nix flake check ./work-tree
-                                                                                                                        nixos-rebuild build-vm --flake ./work-tree#user
-                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake ./work-tree#user
-                                                                                                                        nixos-rebuild build --flake ./work-tree#user
-                                                                                                                        sudo /run/current-system/sw/bin/nixos-rebuild test --flake ./work-tree#user
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/sync-promote" ;
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.promote" = "!${ sync-promote }" ;
                                                                                                     "alias.scratch" = "!${ scratch }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
@@ -1111,7 +1077,7 @@
                                                                                                                                         sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                                         sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                                         sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                                        sed --regexp-extended -i "s#(^.*visitorblueberry[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
                                                                                                                                         nixos-rebuild test --flake "$GIT_WORK_TREE#user"
                                                                                                                                         git fetch origin main
                                                                                                                                         git reset --soft origin/main
