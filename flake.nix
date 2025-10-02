@@ -829,6 +829,11 @@
                                                                                                                                 makeWrapper "${ source }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/build-vm-with-bootloader.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/build" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 makeWrapper "${ source }/bin/test" "$COMMIT_ROOT/test.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
+																while ! git push origin HEAD
+																do
+																	sleep 1s
+																done
+
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
