@@ -931,9 +931,9 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     nix-collect-garbage
-                                                                                                                    cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
+                                                                                                                    cd /mount
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "998b4971" }
                                                                                                                     ln --symbolic "$CHECK" /links
                                                                                                                     nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
@@ -955,6 +955,8 @@
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
 															touch /mount/standard-output
 															touch /mount/standard-error
                                                                                                                 '' ;
