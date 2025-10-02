@@ -789,7 +789,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            CHECK="$( ${ resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             echo "$CHECK"
                                                                                                                                         '' ;
                                                                                                                                 } ;
@@ -958,7 +958,7 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                        targets = [ "standard-output" "standard-error" ] ;
+                                                                        		targets = [ "standard-output" "standard-error" ] ;
                                                                                 } ;
                                                                         source =
                                                                             {
