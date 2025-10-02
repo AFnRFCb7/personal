@@ -868,10 +868,6 @@
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git scratch
-														while ! git push origin HEAD
-														do
-															sleep 1s
-														done
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
