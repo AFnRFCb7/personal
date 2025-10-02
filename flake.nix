@@ -943,13 +943,13 @@
                                                                                         targets = [ "result" "standard-output" "standard-error" ] ;
                                                                                 } ;
                                                                         check =
-#                                                                            ignore :
+                                                                            ignore :
                                                                                 {
                                                                                     init =
                                                                                         failure : resources : self :
                                                                                             let
                                                                                                 application =
-                                                                                                    pkgs.writeShellScript
+                                                                                                    pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
