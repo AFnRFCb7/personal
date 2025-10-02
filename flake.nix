@@ -821,8 +821,9 @@
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 COMMIT_ROOT="$REPOSITORY_ROOT/commit/$BRANCH/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
-                                                                                                                                ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh"
-                                                                                                                                ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT/check.sh"
+                                                                                                                                ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build-vm }/bin/build-vm" "$COMMIT_ROOT"
 																while ! git push origin HEAD
 																do
 																	sleep 1s
@@ -956,9 +957,8 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    nix flake check "$SOURCE" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     ln --symbolic "$SOURCE" /links
-															touch /mount/standard-output
-															touch /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
