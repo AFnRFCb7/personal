@@ -8,7 +8,7 @@
                 lib =
                     {
                         nixpkgs ,
-			            resources ,
+			resources ,
                         secrets ,
                         private ,
                         system ,
@@ -821,8 +821,6 @@
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 COMMIT_ROOT="$REPOSITORY_ROOT/commit/$BRANCH/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
-																# shellcheck disable=SC1091
-																source ${ pkgs.makeWrapper }/nix-support/setup-hook
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 ln --symbolic "${ source }/bin/check" "$COMMIT_ROOT/check.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                 ln --symbolic "${ source }/bin/build-vm" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
