@@ -955,9 +955,6 @@
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
-                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                    nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
