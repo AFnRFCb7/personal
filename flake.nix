@@ -1057,7 +1057,7 @@
 															else
 																echo 3.1 >> /tmp/DEBUG
 															fi
-                                                                                                                        git checkout "$COMMIT"
+                                                                                                                        git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
 															echo 4 >> /tmp/DEBUG
                                                                                                                     '' ;
                                                                                                             } ;
