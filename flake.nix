@@ -823,10 +823,6 @@
 																mkdir --parents "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT/source.sh"
                                                                                                                                 ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT/check.sh"
-                                                                                                                                ln --symbolic "${ build-vm }/bin/build-vm" "$COMMIT_ROOT/build-vm.sh" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                ln --symbolic "${ build-vm-with-bootloader }/bin/build-vm-with-bootloader" "$COMMIT_ROOT/build-vm-with-bootloader.sh"
-                                                                                                                                ln --symbolic "${ build }/bin/build" "$COMMIT_ROOT/build-vm.sh"
-                                                                                                                                ln --symbolic "${ test }/bin/test" "$COMMIT_ROOT/test.sh"
 																while ! git push origin HEAD
 																do
 																	sleep 1s
