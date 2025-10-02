@@ -876,7 +876,7 @@
                                                                                         failure : resource : self :
                                                                                             let
                                                                                                 application =
-                                                                                                    pkgs.writeShellScript
+                                                                                                    pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
@@ -900,7 +900,7 @@
                                                                                         failure : resource : self :
                                                                                             let
                                                                                                 application =
-                                                                                                    pkgs.writeShellScript
+                                                                                                    pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
@@ -924,7 +924,7 @@
                                                                                         failure : resource : self :
                                                                                             let
                                                                                                 application =
-                                                                                                    pkgs.writeShellScript
+                                                                                                    pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.nix ( password-less pkgs.nix "nix-collect-garbage" ) ] ;
@@ -955,6 +955,10 @@
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    cd /mount
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    nix flake check "$SOURCE" > standard-output 2> standard-error
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -1061,7 +1065,7 @@
                                                                                         failure : resource : self :
                                                                                             let
                                                                                                 application =
-                                                                                                    pkgs.writeShellScript
+                                                                                                    pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.nix pkgs.makeWrapper ] ;
