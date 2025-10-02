@@ -311,6 +311,7 @@
                                                                                     SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || exit 64
                                                                                     BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || exit 64
                                                                                     git checkout -b "$BRANCH" 2>&1
+										    git push origin HEAD 2>&1
                                                                                 '' ;
                                                                         } ;
                                                                     in "${ scratch }/bin/scratch" ;
