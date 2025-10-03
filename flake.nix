@@ -707,6 +707,7 @@
                                                                                                                         VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$ROOT_WORK_TREE/flake.nix"															
 															GIT_DIR="$ROOT_GIT_DIR" GIT_WORK_TREE="$ROOT_WORK_TREE" git add flake.nix
+															echo FINISH PRE-COMMIT
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/pre-commit" ;
@@ -785,9 +786,9 @@
                                                                                                                                 } ;
                                                                                                                         in
                                                                                                                             ''
-                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+																echo BEGIN POST-COMMIT
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                COMMIT_ROOT="$REPOSITORY_ROOT/commit/$BRANCH/$COMMIT"
+                                                                                                                                COMMIT_ROOT="$REPOSITORY_ROOT/commit/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT"
