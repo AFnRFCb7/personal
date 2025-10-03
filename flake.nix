@@ -693,20 +693,31 @@
                                                                                                                 text =
                                                                                                                     ''
 															ROOT_GIT_DIR="$GIT_DIR"
-															ROOT_WORK_TREE="$GIT_WORK_TREE"
+															ROOT_WORK_TREE="$GIT_WORK_TREE"															
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
+															GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git --no-pager status --porcelain
+															echo "COMMITED PERSONAL=$PERSONAL"
                                                                                                                         PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$ROOT_WORK_TREE/flake.nix"
                                                                                                                         GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
+															GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git --no-pager status --porcelain
+															echo "COMMITED RESOURCES=$RESOURCES"
                                                                                                                         RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$ROOT_WORK_TREE/flake.nix"
                                                                                                                         GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
+															GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git --no-pager status --porcelain
+															echo "COMMITED SECRETS=$SECRETS"
                                                                                                                         SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$ROOT_WORK_TREE/flake.nix"
                                                                                                                         GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
+															GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git --no-pager status --porcelain
+															echo "COMMITED VISITOR=$VISITOR"
                                                                                                                         VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
                                                                                                                         sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$ROOT_WORK_TREE/flake.nix"															
+															echo "BEFORE ADD ROOT ROOT_GIT_DIR=$ROOT_GIT_DIR ROOT_WORK_TREE=$ROOT_WORK_TREE"
 															GIT_DIR="$ROOT_GIT_DIR" GIT_WORK_TREE="$ROOT_WORK_TREE" git add flake.nix
+															GIT_DIR="$ROOT_GIT_DIR" GIT_WORK_TREE="$ROOT_WORK_TREE" git --no-pager status --porcelain
+															echo AFTER ADD ROOT
 															echo FINISH PRE-COMMIT
                                                                                                                     '' ;
                                                                                                             } ;
@@ -793,10 +804,10 @@
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ build-vm }/bin/build-vm" "$COMMIT_ROOT"
-																while ! git push origin HEAD
-																do
-																	sleep 1s
-																done
+																# while ! git push origin HEAD
+																# do
+																# 	sleep 1s
+																# done
 
                                                                                                                             '' ;
                                                                                                             } ;
