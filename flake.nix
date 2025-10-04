@@ -693,6 +693,7 @@
                                                                                                                 text =
                                                                                                                     ''
 															ROOTDIR="$( dirname "$0" )" || exit 64
+															# shellcheck disable=SC1091
 															source "$ROOTDIR/.envrc"
 															ROOT_GIT_DIR="$GIT_DIR"
 															ROOT_WORK_TREE="$GIT_WORK_TREE"															
