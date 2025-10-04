@@ -692,9 +692,11 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                 text =
                                                                                                                     ''
-															ROOTDIR="$( dirname "$0" )" || exit 64
+															ROOTDIR1="$( dirname "$0" )" || exit 64
+															ROOTDIR2="$( dirname "$ROOT_DIR1" )" || exit 64
+															ROOTDIR3="$( dirname "$ROOT_DIR2" )" || exit 64
 															# shellcheck disable=SC1091
-															source "$ROOTDIR/.envrc"
+															source "$ROOTDIR3/.envrc"
 															ROOT_GIT_DIR="$GIT_DIR"
 															ROOT_WORK_TREE="$GIT_WORK_TREE"															
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git add -A
@@ -805,6 +807,11 @@
                                                                                                                         in
                                                                                                                             ''
 																echo BEGIN POST-COMMIT
+																ROOTDIR1="$( dirname "$0" )" || exit 64
+																ROOTDIR2="$( dirname "$ROOT_DIR1" )" || exit 64
+																ROOTDIR3="$( dirname "$ROOT_DIR2" )" || exit 64
+																# shellcheck disable=SC1091
+																source "$ROOTDIR3/.envrc"
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                                                                 COMMIT_ROOT="$REPOSITORY_ROOT/commit/$COMMIT"
 																mkdir --parents "$COMMIT_ROOT"
