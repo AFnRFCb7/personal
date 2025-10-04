@@ -693,8 +693,8 @@
                                                                                                                 text =
                                                                                                                     ''
 															ROOTDIR1="$( dirname "$0" )" || exit 64
-															ROOTDIR2="$( dirname "$ROOT_DIR1" )" || exit 64
-															ROOTDIR3="$( dirname "$ROOT_DIR2" )" || exit 64
+															ROOTDIR2="$( dirname "$ROOTDIR1" )" || exit 64
+															ROOTDIR3="$( dirname "$ROOTDIR2" )" || exit 64
 															# shellcheck disable=SC1091
 															source "$ROOTDIR3/.envrc"
 															ROOT_GIT_DIR="$GIT_DIR"
@@ -808,8 +808,8 @@
                                                                                                                             ''
 																echo BEGIN POST-COMMIT
 																ROOTDIR1="$( dirname "$0" )" || exit 64
-																ROOTDIR2="$( dirname "$ROOT_DIR1" )" || exit 64
-																ROOTDIR3="$( dirname "$ROOT_DIR2" )" || exit 64
+																ROOTDIR2="$( dirname "$ROOTDIR1" )" || exit 64
+																ROOTDIR3="$( dirname "$ROOTDIR2" )" || exit 64
 																# shellcheck disable=SC1091
 																source "$ROOTDIR3/.envrc"
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 64
