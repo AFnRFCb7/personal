@@ -676,14 +676,7 @@
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                                    "user.email" = config.personal.repository.private.email ;
-                                                                                                    "user.name" = config.personal.repository.private.name ;
-                                                                                                } ;
-                                                                                    hooks =
-                                                                                        {
-                                                                                            pre-commit =
+												"alias.pin-pre-commit" =
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -730,8 +723,8 @@
 															echo FINISH PRE-COMMIT
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "${ application }/bin/pre-commit" ;
-                                                                                            post-commit =
+                                                                                                    in "!${ application }/bin/pre-commit" ;
+													"alias.pin-post-commit" =
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -825,8 +818,13 @@
 
                                                                                                                             '' ;
                                                                                                             } ;
-                                                                                                        in "${ application }/bin/post-commit" ;
-                                                                                        } ;
+                                                                                                        in "!${ application }/bin/post-commit" ;
+
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
                                                                                     remotes =
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
