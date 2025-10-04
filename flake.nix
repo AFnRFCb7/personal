@@ -692,6 +692,8 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                 text =
                                                                                                                     ''
+															ROOTDIR="$( dirname "$0" )" || exit 64
+															source "$ROOTDIR/.envrc"
 															ROOT_GIT_DIR="$GIT_DIR"
 															ROOT_WORK_TREE="$GIT_WORK_TREE"															
                                                                                                                         GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git add -A
