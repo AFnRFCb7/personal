@@ -751,7 +751,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             BUILD_VM="$( ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                                            "$BUILD_VM/result/bin/run-nix-vm"
+                                                                                                                                            "$BUILD_VM/result/bin/run-nixos-vm"
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         build-vm-with-bootloader =
@@ -761,7 +761,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             BUILD_VM_WITH_BOOTLOADER="$( ${ resources_.promotion.build-vm-with-bootloader } "$BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                                            "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nix-vm"
+                                                                                                                                            "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         check =
@@ -811,6 +811,9 @@
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ build-vm }/bin/build-vm" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build-vm-with-bootloader }/bin/build-vm" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build }/bin/build-vm" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ test }/bin/build-vm" "$COMMIT_ROOT"
 																# while ! git push origin HEAD
 																# do
 																# 	sleep 1s
