@@ -811,9 +811,9 @@
                                                                                                                                 ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT"
                                                                                                                                 ln --symbolic "${ build-vm }/bin/build-vm" "$COMMIT_ROOT"
-                                                                                                                                ln --symbolic "${ build-vm-with-bootloader }/bin/build-vm" "$COMMIT_ROOT"
-                                                                                                                                ln --symbolic "${ build }/bin/build-vm" "$COMMIT_ROOT"
-                                                                                                                                ln --symbolic "${ test }/bin/build-vm" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build-vm-with-bootloader }/bin/build-vm-with-bootloader" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build }/bin/build" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ test }/bin/test" "$COMMIT_ROOT"
 																# while ! git push origin HEAD
 																# do
 																# 	sleep 1s
