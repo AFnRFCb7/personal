@@ -736,7 +736,7 @@
                                                                                                                         build =
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
-                                                                                                                                    name = "build-vm" ;
+                                                                                                                                    name = "build" ;
                                                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                     text =
                                                                                                                                         ''
