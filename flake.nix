@@ -741,7 +741,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             BUILD="$( ${ resources_.promotion.build } "$BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                                            echo "$BUILD_VM"
+                                                                                                                                            echo "$BUILD"
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         build-vm =
