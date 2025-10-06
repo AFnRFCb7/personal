@@ -330,6 +330,7 @@
                                                                                     sed --regexp-extended -i "s#(^.*$TOKEN[.]url.*\?ref=)(.*)(\".*\$)#\1$HASH\3#" "$FLAKE_FILE"
                                                                                 '' ;
                                                                         } ;
+                                                            in "${ application }/bin/snapshot" ;
                                                         ssh-command =
                                                             dot-ssh :
                                                                 let
