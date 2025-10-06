@@ -760,6 +760,7 @@
                                                                                                                                     name = "build-vm-with-bootloader" ;
                                                                                                                                     text =
                                                                                                                                         ''
+																	echo DONT DO THIS
                                                                                                                                             BUILD_VM_WITH_BOOTLOADER="$( ${ resources_.promotion.build-vm-with-bootloader } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
                                                                                                                                         '' ;
