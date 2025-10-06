@@ -829,6 +829,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 BRANCH="$1"
+                                                                                                                export BRANCH
                                                                                                                 # COMMIT="$2"
                                                                                                                 # git fetch origin "$BRANCH"
                                                                                                                 # git checkout "$COMMIT"
