@@ -706,11 +706,11 @@
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                if read -t 0
                                                                                                                                 then
-                                                                                                                                    MESSAGE="$( cat )" || exit 64
-                                                                                                                                else
                                                                                                                                     MESSAGE="$1"
+                                                                                                                                else
+                                                                                                                                    MESSAGE="$( cat )" || exit 64
                                                                                                                                 fi
                                                                                                                                 git commit -am "$MESSAGE" --allow-empty --allow-empty-message
                                                                                                                                 mkdir --parents "$REPOSITORY_ROOT/pins"
@@ -832,7 +832,7 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                # git fetch origin "$BRANCH"
+                                                                                                                git fetch origin "$BRANCH"
                                                                                                                 # git checkout "$COMMIT"
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
