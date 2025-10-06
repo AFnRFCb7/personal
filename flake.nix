@@ -833,7 +833,7 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                echo git fetch origin "$BRANCH" > /mount/command.sh
+                                                                                                                echo git fetch origin "$BRANCH" > "$GIT_WORK_TREE/command.sh"
                                                                                                                 # git checkout "$COMMIT"
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
