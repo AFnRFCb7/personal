@@ -947,7 +947,7 @@
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
                                                                                                                     ln --symbolic "$CHECK" /links
 															CHECK_STATUS="$( < "$CHECK/status" )" || exit 65
-                                                                                                                    if [[ "$CHECK_STATUS" ==0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
 															then
 																echo "$?" > /mount/status
 															else
