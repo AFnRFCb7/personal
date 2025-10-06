@@ -833,7 +833,7 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                if git fetch origin "$BRANCH" > "$GIT_WORK_TREE/command.sh" 2> "$GIT_WORK_TREE/standard-output" 2> $GIT_WORK_TREE/standard-error"
+                                                                                                                if git fetch origin "$BRANCH" > "$GIT_WORK_TREE/command.sh" 2> "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$GIT_WORK_TREE/status"
                                                                                                                 else
