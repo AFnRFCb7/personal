@@ -758,10 +758,35 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
+                                                                        check =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    if nix flake check "$GIT_WORK_TREE" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    then
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    else
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ "standard-error" "standard-output" "status" ] ;
+                                                                                } ;
                                                                         root =
                                                                             git
                                                                                 {
-                                                                                    config =
+                                                                                    configs =
                                                                                         {
                                                                                             "alias.check" =
                                                                                                 let
@@ -772,7 +797,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        nix flake check "$GIT_WORK_TREE" > "$REPOSITORY_ROOT/check/standard-output" 2> "$REPOSITORY_ROOT/check/standard-error"
+                                                                                                                        ${ resources_.promotion.check } "$GIT_WORK_TREE"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/check" ;
