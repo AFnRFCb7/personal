@@ -833,13 +833,8 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                if git fetch origin "$BRANCH" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
-                                                                                                                then
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                else
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                fi
-                                                                                                                # git checkout "$COMMIT"
+                                                                                                                git fetch origin "$BRANCH" 2>&1
+                                                                                                                git checkout "$COMMIT" 2>&1
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
