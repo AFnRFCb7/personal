@@ -750,6 +750,7 @@
                                                                                                                                     name = "build-vm" ;
                                                                                                                                     text =
                                                                                                                                         ''
+																		echo DONT DO THIS
                                                                                                                                             BUILD_VM="$( ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                             "$BUILD_VM/result/bin/run-nixos-vm"
                                                                                                                                         '' ;
