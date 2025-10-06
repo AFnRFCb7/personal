@@ -8,7 +8,7 @@
                 lib =
                     {
                         nixpkgs ,
-			            resources ,
+			resources ,
                         secrets ,
                         private ,
                         system ,
@@ -19,6 +19,21 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        password-less =
+                                            derivation : target :
+                                                pkgs.stdenv.mkDerivation
+                                                    {
+                                                        installPhase =
+                                                            ''
+                                                                mkdir --parents $out/src
+                                                                makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
+                                                                mkdir --parents $out/bin
+                                                                makeWrapper "$out/src/${ target }" "$out/bin/${ target }" --run "sudo"
+                                                            '' ;
+                                                        name = target ;
+                                                        nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
+                                                        src = ./. ;
+                                                    } ;
                                         resources_ =
                                             let
                                                 seed =
@@ -237,6 +252,7 @@
                                                                                                     mkdir --parents "$GIT_DIR"
                                                                                                     mkdir --parents "$GIT_WORK_TREE"
                                                                                                     cat > /mount/.envrc <<EOF
+                                                                                                    export REPOSITORY_ROOT=${ self }
                                                                                                     export GIT_DIR=${ self }/git
                                                                                                     export GIT_WORK_TREE=${ self }/work-tree
                                                                                                     EOF
@@ -657,52 +673,163 @@
                                                                                 {
                                                                                     configs =
                                                                                         let
-                                                                                            sync-promote =
+                                                                                            in
+                                                                                                {
+                                                                                                    "alias.milestone" = "!${ milestone }" ;
+												"alias.pin-pre-commit" =
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "sync-promote" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused pkgs.nix ] ;
+                                                                                                                name = "pre-commit" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
-                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -am "" --allow-empty --allow-empty-message
+															# ROOTDIR1="$( dirname "$0" )" || exit 64
+															# ROOTDIR2="$( dirname "$ROOTDIR1" )" || exit 64
+															# ROOTDIR3="$( dirname "$ROOTDIR2" )" || exit 64
+															# shellcheck disable=SC1091
+															# source "$ROOTDIR3/.envrc"
+															ROOT_GIT_DIR="$GIT_DIR"
+															ROOT_WORK_TREE="$GIT_WORK_TREE"															
+                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git add -A
+                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit -m "" --allow-empty --allow-empty-message
+															GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git --no-pager status --porcelain
+															echo "COMMITED PERSONAL=$PERSONAL"
                                                                                                                         PERSONAL_HASH="$( GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
-                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1$PERSONAL_HASH\3#" "$ROOT_WORK_TREE/flake.nix"
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git add -A
+                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit -m "" --allow-empty --allow-empty-message
+															GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git --no-pager status --porcelain
+															echo "COMMITED RESOURCES=$RESOURCES"
                                                                                                                         RESOURCES_HASH="$( GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*sresources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
-                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1$RESOURCES_HASH\3#" "$ROOT_WORK_TREE/flake.nix"
+                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git add -A
+                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit -m "" --allow-empty --allow-empty-message
+															GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git --no-pager status --porcelain
+															echo "COMMITED SECRETS=$SECRETS"
                                                                                                                         SECRETS_HASH="$( GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
-                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1$SECRETS_HASH\3#" "$ROOT_WORK_TREE/flake.nix"
+                                                                                                                        GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git add -A
+                                                                                                                        GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit -m "" --allow-empty --allow-empty-message
+															GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git --no-pager status --porcelain
+															echo "COMMITED VISITOR=$VISITOR"
                                                                                                                         VISITOR_HASH="$( GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git rev-parse HEAD )" || exit 64
-                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$GIT_WORK_TREE/flake.nix"
-                                                                                                                        nix flake check ./work-tree
-                                                                                                                        nixos-rebuild build-vm --flake ./work-tree#user
-                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake ./work-tree#user
-                                                                                                                        nixos-rebuild build --flake ./work-tree#user
-                                                                                                                        nixos-rebuild test --flake ./work-tree#user
+                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1$VISITOR_HASH\3#" "$ROOT_WORK_TREE/flake.nix"															
+															echo "BEFORE ADD ROOT ROOT_GIT_DIR=$ROOT_GIT_DIR ROOT_WORK_TREE=$ROOT_WORK_TREE"
+															GIT_DIR="$ROOT_GIT_DIR" GIT_WORK_TREE="$ROOT_WORK_TREE" git add flake.nix
+															GIT_DIR="$ROOT_GIT_DIR" GIT_WORK_TREE="$ROOT_WORK_TREE" git --no-pager status --porcelain
+															echo AFTER ADD ROOT
+															echo FINISH PRE-COMMIT
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "${ application }/bin/sync-promote" ;
-                                                                                            in
-                                                                                                {
-                                                                                                    "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.promote" = "!${ sync-promote }" ;
+                                                                                                    in "!${ application }/bin/pre-commit" ;
+													"alias.pin-post-commit" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "post-commit" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.makeWrapper ] ;
+                                                                                                                text =
+                                                                                                                    let
+                                                                                                                        build =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "build" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            BUILD="$( ${ resources_.promotion.build } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$BUILD"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        build-vm =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "build-vm" ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+																		echo DONT DO THIS
+                                                                                                                                            BUILD_VM="$( ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            "$BUILD_VM/result/bin/run-nixos-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        build-vm-with-bootloader =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "build-vm-with-bootloader" ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+																	echo DONT DO THIS
+                                                                                                                                            BUILD_VM_WITH_BOOTLOADER="$( ${ resources_.promotion.build-vm-with-bootloader } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            "$BUILD_VM_WITH_BOOTLOADER/result/bin/run-nixos-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        check =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "check" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            CHECK="$( ${ resources_.promotion.check } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$CHECK"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        source =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "source" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            SOURCE="$( ${ resources_.promotion.source.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$SOURCE"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        test =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "test" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            TEST="$( ${ resources_.promotion.test } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                            echo "$TEST"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in
+                                                                                                                            ''
+																echo BEGIN POST-COMMIT
+																# ROOTDIR1="$( dirname "$0" )" || exit 64
+																# ROOTDIR2="$( dirname "$ROOTDIR1" )" || exit 64
+																# ROOTDIR3="$( dirname "$ROOTDIR2" )" || exit 64
+																# # shellcheck disable=SC1091
+																# source "$ROOTDIR3/.envrc"
+                                                                                                                                COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                COMMIT_ROOT="$REPOSITORY_ROOT/commit/$COMMIT"
+																mkdir --parents "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ source }/bin/source" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ check }/bin/check" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build-vm }/bin/build-vm" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build-vm-with-bootloader }/bin/build-vm-with-bootloader" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ build }/bin/build" "$COMMIT_ROOT"
+                                                                                                                                ln --symbolic "${ test }/bin/test" "$COMMIT_ROOT"
+																# while ! git push origin HEAD
+																# do
+																# 	sleep 1s
+																# done
+
+                                                                                                                            '' ;
+                                                                                                            } ;
+                                                                                                        in "!${ application }/bin/post-commit" ;
+
                                                                                                     "alias.scratch" = "!${ scratch }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
-                                                                                    hooks =
-                                                                                        {
-                                                                                            post-commit = post-commit "origin" ;
-                                                                                        } ;
                                                                                     remotes =
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
@@ -716,12 +843,318 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
+                                                                                                                RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
+                                                                                                                SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
+                                                                                                                VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                ln --symbolic "$PERSONAL" /links
+                                                                                                                ln --symbolic "$RESOURCES" /links
+                                                                                                                ln --symbolic "$SECRETS" /links
+                                                                                                                ln --symbolic "$VISITOR" /links
+                                                                                                                cat >> /mount/.envrc <<EOF
+                                                                                                                export PERSONAL="$PERSONAL"
+                                                                                                                export RESOURCES="$RESOURCES"
+                                                                                                                export SECRETS="$SECRETS"
+                                                                                                                export VISITOR="$VISITOR"
+                                                                                                                EOF
                                                                                                                 git fetch origin ${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.private.branch } 2>&1
                                                                                                                 git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                    } ;
+                                                                promotion =
+                                                                    {
+                                                                        build =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    cd /mount
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "998b4971" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+															CHECK_STATUS="$( < "$CHECK/status" )" || exit 64
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "$?" > /mount/statu
+															fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "status" ] ;
+                                                                                } ;
+                                                                        build-vm =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+															CHECK_STATUS="$( < "$CHECK/status" )" || exit 64
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "1$?" > /mount/status
+															fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "status" ] ;
+                                                                                } ;
+                                                                        build-vm-with-bootloader =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ( password-less pkgs.nix "nix-collect-garbage" ) ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+															CHECK_STATUS="$( < "$CHECK/status" )" || exit 65
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "1$?" > /mount/status
+															fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "status" ] ;
+                                                                                } ;
+                                                                        check =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    if nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "1$?" > /mount/status
+															fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                        		targets = [ "standard-output" "standard-error" "status" ] ;
+                                                                                } ;
+                                                                        source =
+                                                                            {
+                                                                                dependents =
+                                                                                    let
+                                                                                        fun =
+                                                                                            email : name : remote : type :
+                                                                                                git
+                                                                                                    {
+                                                                                                        configs =
+                                                                                                            {
+                                                                                                                "alias.scratch" = "!${ scratch }" ;
+                                                                                                                "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                                                "user.email" = email ;
+                                                                                                                "user.name" = name ;
+                                                                                                            } ;
+                                                                                                        hooks =
+                                                                                                            {
+                                                                                                                post-commit = post-commit "origin" ;
+                                                                                                            } ;
+                                                                                                        remotes =
+                                                                                                            {
+                                                                                                                origin = remote ;
+                                                                                                            } ;
+                                                                                                        setup =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    COMMIT="$( grep -Po '(?<=^.*${ type }\.url.*\?ref=).*(?=".*$)' "$ROOT_SOURCE/work-tree/flake.nix" )" || exit 64
+                                                                                                                                    git fetch origin
+                                                                                                                                    git checkout "$COMMIT"
+                                                                                                                                    git scratch
+                                                                                                                                    git reset --soft origin/main
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                    } ;
+                                                                                        in
+                                                                                            {
+                                                                                                personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.remote "personal" ;
+                                                                                                resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.remote "resources" ;
+                                                                                                secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.remote "secrets" ;
+                                                                                                visitor = fun config.personal.repository.visitor.email config.personal.repository.visitor.name config.personal.repository.visitor.remote "visitor" ;
+                                                                                            } ;
+                                                                                root =
+                                                                                    git
+                                                                                        {
+                                                                                            configs =
+                                                                                                {
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                            hooks =
+                                                                                                {
+                                                                                                    post-commit = post-commit "origin" ;
+                                                                                                } ;
+                                                                                            remotes =
+                                                                                                {
+                                                                                                    origin = config.personal.repository.private.remote ;
+                                                                                                } ;
+                                                                                            setup =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "setup" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    ''
+															echo START > /tmp/DEBUG
+                                                                                                                        BRANCH="$1"
+															echo "1 BRANCH=$BRANCH" >> /tmp/DEBUG
+                                                                                                                        COMMIT="$2"
+															echo "2 COMMIT=$COMMIT" >> /tmp/DEBUG
+															git config --get core.sshCommand >> /tmp/DEBUG 2>&1
+                                                                                                                        if git fetch origin "$BRANCH" >> /tmp/DEBUG 2>&1
+															then
+																echo 3.0 >> /tmp/DEBUG
+															else
+																echo 3.1 >> /tmp/DEBUG
+															fi
+                                                                                                                        git checkout "$COMMIT" >> /tmp/DEBUG 2>&1
+															echo 4 >> /tmp/DEBUG
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/setup" ;
+                                                                                        } ;
+                                                                                } ;
+                                                                        test =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.nix pkgs.makeWrapper ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    switch =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "switch" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        PERSONAL="$( ${ resources_.promotion.source.dependents.personal } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        RESOURCES="$( ${ resources_.promotion.source.dependents.resources } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        SECRETS="$( ${ resources_.promotion.source.dependents.secrets } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        VISITOR="$( ${ resources_.promotion.source.dependents.visitor } )" || exit 64
+                                                                                                                                        if ! GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git commit --verbose
+                                                                                                                                        fi
+                                                                                                                                        git scratch
+                                                                                                                                        sed --regexp-extended -i "s#(^.*personal[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*resources[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*secrets[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        sed --regexp-extended -i "s#(^.*visitor[.]url.*\?ref=)(.*)(\".*\$)#\1main\3#" "$GIT_WORK_TREE/flake.nix"
+                                                                                                                                        nixos-rebuild test --flake "$GIT_WORK_TREE#user"
+                                                                                                                                        git fetch origin main
+                                                                                                                                        git reset --soft origin/main
+                                                                                                                                        if ! git diff-index --quiet HEAD --
+                                                                                                                                        then
+                                                                                                                                            git commit --verbose
+                                                                                                                                            CURRENT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                            git checkout main
+                                                                                                                                            git rebase "$CURRENT"
+                                                                                                                                            git push origin main
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            cd /mount
+                                                                                                                            SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
+                                                                                                                            BUILD="$( ${ resources.promotion.build } "$BRANCH" "$COMMIT" )" || ${ failure "ac7724aa" }
+                                                                                                                            ln --symbolic "$BUILD" /links
+																BUILD_STATUS="$( < "$BUILD/status" )" || exit 64
+                                                                                                                            if [[ "$BUILD_STATUS" == 0 ]] && nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+																then
+																    echo "$?" > /mount/status
+	                                                                                                                            makeWrapper ${ switch } /mount/switch.sh --set GIT_DIR "$GIT_DIR" --set GIT_WORK_TREE "$GIT_WORK_TREE"
+																else
+																	touch /mount/switch.sh
+																	echo "1$?" > /mount/status
+															    fi
+                                                                                                                        '' ;
+                                                                                                         } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "switch.sh" "status" ] ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
@@ -902,6 +1335,8 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
                                                                         %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-collect-garbage
