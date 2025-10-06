@@ -833,7 +833,12 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                echo git fetch origin "$BRANCH" > "$GIT_WORK_TREE/command.sh"
+                                                                                                                if git fetch origin "$BRANCH" > "$GIT_WORK_TREE/command.sh" 2> "$GIT_WORK_TREE/standard-output" 2> $GIT_WORK_TREE/standard-error"
+                                                                                                                then
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                fi
                                                                                                                 # git checkout "$COMMIT"
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
