@@ -823,10 +823,10 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                BRANCH="$1"
-                                                                                                                COMMIT="$2"
-                                                                                                                git fetch origin "$BRANCH"
-                                                                                                                git checkout "$COMMIT"
+                                                                                                                # BRANCH="$1"
+                                                                                                                # COMMIT="$2"
+                                                                                                                # git fetch origin "$BRANCH"
+                                                                                                                # git checkout "$COMMIT"
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
