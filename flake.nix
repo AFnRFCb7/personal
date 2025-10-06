@@ -880,16 +880,13 @@
                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    cd /mount
+
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
-                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "eff963f3" }
+                                                                                                                    cd /mount
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "998b4971" }
                                                                                                                     ln --symbolic "$CHECK" /links
-															STATUS="$( < "$CHECK" )" || ${ failure "" }
-															if [[ 0 == "$STATUS" ]]
-															then
                                                                                                                     nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-															fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -932,10 +929,10 @@
                                                                                                             runtimeInputs = [ pkgs.nix ( password-less pkgs.nix "nix-collect-garbage" ) ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    cd /mount
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
-                                                                                                                    cd /mount
-                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "998b4971" }
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
                                                                                                                     ln --symbolic "$CHECK" /links
                                                                                                                     nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 '' ;
