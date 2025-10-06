@@ -697,30 +697,31 @@
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.pin" =
+                                                                                                    "alias.promote" =
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
-                                                                                                                        name = "pin" ;
+                                                                                                                        name = "promote" ;
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 if read -t 0
                                                                                                                                 then
-                                                                                                                                    MESSAGE="$1"
-                                                                                                                                else
                                                                                                                                     MESSAGE="$( cat )" || exit 64
+                                                                                                                                else
+                                                                                                                                    MESSAGE="$1"
                                                                                                                                 fi
                                                                                                                                 git commit -am "$MESSAGE" --allow-empty --allow-empty-message
                                                                                                                                 mkdir --parents "$REPOSITORY_ROOT/pins"
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 66
+                                                                                                                                echo "BRANCH=$BRANCH COMMIT=$COMMIT"
                                                                                                                                 PIN="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
                                                                                                                                 ln --symbolic "$PIN" "$REPOSITORY_ROOT/pins/$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                            in "!${ application }/bin/pin" ;
+                                                                                                            in "!${ application }/bin/promote" ;
                                                                                                     "alias.scratch" = "!${ scratch }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
