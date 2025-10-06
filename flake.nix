@@ -830,7 +830,8 @@
                                                                                                             ''
                                                                                                                 BRANCH="$1"
                                                                                                                 export BRANCH
-                                                                                                                # COMMIT="$2"
+                                                                                                                COMMIT="$2"
+                                                                                                                export COMMIT
                                                                                                                 # git fetch origin "$BRANCH"
                                                                                                                 # git checkout "$COMMIT"
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
