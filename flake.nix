@@ -709,9 +709,9 @@
                                                                                                                                 MESSAGE="$( cat )" || exit 64
                                                                                                                                 git commit -am "$MESSAGE" --allow-empty --allow-empty-message
                                                                                                                                 mkdir --parents "$REPOSITORY_ROOT/pins"
-                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                PIN="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
+                                                                                                                                COMMIT="$( git rev-parse HEAD )" || exit 66
+                                                                                                                                PIN="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
                                                                                                                                 ln --symbolic "$PIN" "$REPOSITORY_ROOT/pins/$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
