@@ -886,11 +886,17 @@
                                                                                                                     cd /mount
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "998b4971" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															CHECK_STATUS="$( < "$CHECK/status" )" || exit 64
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "$?" > /mount/statu
+															fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "status" ] ;
                                                                                 } ;
                                                                         build-vm =
                                                                             ignore :
@@ -910,11 +916,17 @@
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															CHECK_STATUS="$( < "$CHECK/status" )" || exit 64
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "1$?" > /mount/status
+															fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "status" ] ;
                                                                                 } ;
                                                                         build-vm-with-bootloader =
                                                                             ignore :
@@ -934,11 +946,17 @@
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$BRANCH" "$COMMIT" )" || ${ failure "e9b24f10" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															CHECK_STATUS="$( < "$CHECK/status" )" || exit 65
+                                                                                                                    if [[ "$CHECK_STATUS" ==0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+															then
+																echo "$?" > /mount/status
+															else
+																echo "1$?" > /mount/status
+															fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                        targets = [ "result" "standard-output" "standard-error" ] ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "status" ] ;
                                                                                 } ;
                                                                         check =
                                                                             ignore :
@@ -959,7 +977,7 @@
 															then
 																echo "$?" > /mount/status
 															else
-																echo "$?" > /mount/status
+																echo "1$?" > /mount/status
 															fi
                                                                                                                 '' ;
                                                                                                         } ;
@@ -1124,12 +1142,19 @@
                                                                                                                             SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                             BUILD="$( ${ resources.promotion.build } "$BRANCH" "$COMMIT" )" || ${ failure "ac7724aa" }
                                                                                                                             ln --symbolic "$BUILD" /links
-                                                                                                                            nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            makeWrapper ${ switch } /mount/switch.sh --set GIT_DIR "$GIT_DIR" --set GIT_WORK_TREE "$GIT_WORK_TREE"
+																BUILD_STATUS="$( < "$BUILD/status" )" || exit 64
+                                                                                                                            if [[ "$BUILD_STATUS" == 0 ]] && nixos-rebuild test --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+																then
+																    echo "$?" > /mount/status
+	                                                                                                                            makeWrapper ${ switch } /mount/switch.sh --set GIT_DIR "$GIT_DIR" --set GIT_WORK_TREE "$GIT_WORK_TREE"
+																else
+																	touch /mount/switch.sh
+																	echo "1$?" > /mount/status
+															    fi
                                                                                                                         '' ;
                                                                                                          } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                        targets = [ "result" "standard-output" "standard-error" "switch.sh" ] ;
+                                                                                        targets = [ "result" "standard-output" "standard-error" "switch.sh" "status" ] ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
