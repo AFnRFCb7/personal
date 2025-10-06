@@ -706,7 +706,12 @@
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                MESSAGE="$( cat )" || exit 64
+                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                then
+                                                                                                                                    MESSAGE="$( cat )" || exit 64
+                                                                                                                                else
+                                                                                                                                    MESSAGE="$1"
+                                                                                                                                fi
                                                                                                                                 git commit -am "$MESSAGE" --allow-empty --allow-empty-message
                                                                                                                                 mkdir --parents "$REPOSITORY_ROOT/pins"
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
@@ -823,7 +828,7 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                # BRANCH="$1"
+                                                                                                                BRANCH="$1"
                                                                                                                 # COMMIT="$2"
                                                                                                                 # git fetch origin "$BRANCH"
                                                                                                                 # git checkout "$COMMIT"
