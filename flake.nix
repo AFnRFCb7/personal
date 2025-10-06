@@ -327,7 +327,7 @@
                                                                                     FLAKE_FILE="$2"
                                                                                     git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
                                                                                     HASH="$( git rev-parse HEAD )" || exit 64
-                                                                                    sed --regexp-extended -i "s#(^.*$TOKEN[.]url.*\?ref=)(.*)(\".*\$)#\1$HASH\3#" "$FLAKE_FILE"
+                                                                                    sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$HASH\3#" "$FLAKE_FILE"
                                                                                 '' ;
                                                                         } ;
                                                             in "${ application }/bin/snapshot" ;
@@ -703,15 +703,16 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "pin" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gnused ] ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                FLAKE_FILE="$WORK_TREE/flake.nix"
-                                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
-                                                                                                                                GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
-                                                                                                                                GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
-                                                                                                                                GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
-                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                MESSAGE="$( cat )" || exit 64
+                                                                                                                                git commit -am "$MESSAGE" --allow-empty --allow-empty-message
+                                                                                                                                mkdir --parents "$REPOSITORY_ROOT/pins"
+                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                                COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                PIN="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                ln --symbolic "$PIN" "$REPOSITORY_ROOT/pins/$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/pin" ;
@@ -757,6 +758,55 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
+                                                                        root =
+                                                                            git
+                                                                                {
+                                                                                    config =
+                                                                                        {
+                                                                                            "alias.check" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "check" ;
+                                                                                                                runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        nix flake check "$GIT_WORK_TREE" > "$REPOSITORY_ROOT/check/standard-output" 2> "$REPOSITORY_ROOT/check/standard-error"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/check" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.private.email ;
+                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                BRANCH="$1"
+                                                                                                                COMMIT="$2"
+                                                                                                                git fetch origin "$BRANCH"
+                                                                                                                git checkout "$COMMIT"
+                                                                                                                FLAKE_FILE="$WORK_TREE/flake.nix"
+                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
                                                                     } ;
                                                                 secrets =
                                                                     let
