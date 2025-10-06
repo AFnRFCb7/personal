@@ -930,7 +930,6 @@
                                                                                                             runtimeInputs = [ pkgs.nix ( password-less pkgs.nix "nix-collect-garbage" ) ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    nix-collect-garbage
                                                                                                                     SOURCE="$( ${ resources.promotion.source.root } "$BRANCH" "$COMMIT" )" || ${ failure "ade78a9d" }
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     cd /mount
