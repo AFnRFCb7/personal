@@ -713,15 +713,22 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        echo 1
                                                                                                                         while ! git push origin HEAD
                                                                                                                         do
                                                                                                                             sleep 1s
                                                                                                                         done
+                                                                                                                        echo 2
                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
+                                                                                                                        echo 2
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
+                                                                                                                        echo 3
                                                                                                                         PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
+                                                                                                                        echo 4
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
+                                                                                                                        echo 5
                                                                                                                         ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotions/$COMMIT"
+                                                                                                                        echo 6
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
