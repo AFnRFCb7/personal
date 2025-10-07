@@ -725,8 +725,9 @@
                                                                                                                         echo 3 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                         # shellcheck disable=SC2181,SC2034
                                                                                                                         PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )"
+                                                                                                                        STATUS="$?"
                                                                                                                         # shellcheck disable=SC2181
-                                                                                                                        [[ "$?" == "0" ]] || exit 67
+                                                                                                                        [[ "$?" -ne "0" ]] && exit 67
                                                                                                                         echo 4
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
                                                                                                                         echo 5
