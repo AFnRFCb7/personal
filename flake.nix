@@ -247,8 +247,6 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    export GIT_DIR=/mount/git
-                                                                                                    export GIT_WORK_TREE=/mount/work-tree
                                                                                                     mkdir --parents "$GIT_DIR"
                                                                                                     mkdir --parents "$GIT_WORK_TREE"
                                                                                                     cat > /mount/.envrc <<EOF
@@ -835,7 +833,7 @@
                                                                                                                 mkdir --parents "$ENV"
                                                                                                                 export GIT_DIR
                                                                                                                 export GIT_WORK_TREE
-                                                                                                                if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
+                                                                                                                if git checkout --git-dir "$GIT_DIR" --git-work-tree "$GIT_WORK_TREE" "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$ENV/checkout.status"
                                                                                                                 else
