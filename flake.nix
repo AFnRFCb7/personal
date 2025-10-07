@@ -707,7 +707,7 @@
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if [[ read -t 0 ]]
+                                                                                                                                if read -t 0
                                                                                                                                 then
                                                                                                                                     MESSAGE="$( cat )" || exit 64
                                                                                                                                 elif [[ "$#" -gt 1 ]
