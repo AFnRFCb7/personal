@@ -836,25 +836,7 @@
                                                                                                                 BRANCH="$1"
                                                                                                                 COMMIT="$2"
                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                echo "BRANCH=$BRANCH COMMIT=$COMMIT" > "$GIT_WORK_TREE/commit.env"
-                                                                                                                git fetch origin "$BRANCH" 2>&1
-                                                                                                                git checkout "$SCRATCH" 2>&1
-                                                                                                                #
-                                                                                                                # cat > "$ENV/.envrc" <<EOF
-                                                                                                                # BRANCH="$BRANCH"
-                                                                                                                # COMMIT="$COMMIT"
-                                                                                                                # PERSONAL="$PERSONAL"
-                                                                                                                # EOF
-                                                                                                                # FLAKE_FILE="$WORK_TREE/flake.nix"
-                                                                                                                # echo "$FLAKE_FILE" > "$GIT_WORK_TREE/git-flake-file"
-                                                                                                                # cat > "$GIT_WORK_TREE/command" <<EOF
-                                                                                                                # if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
-                                                                                                                # then
-                                                                                                                #     echo "\$?" > "$GIT_WORK_TREE/status"
-                                                                                                                # else
-                                                                                                                #     echo "\$?" > "$GIT_WORK_TREE/status"
-                                                                                                                # fi
-                                                                                                                # EOF
+                                                                                                                git checkout "$COMMIT" 2>&1
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
