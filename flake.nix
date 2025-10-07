@@ -711,6 +711,7 @@
                                                                                                                                 then
                                                                                                                                     MESSAGE="$( cat )" || exit 64
                                                                                                                                 elif [[ "$#" -gt 1 ]]
+                                                                                                                                then
                                                                                                                                     MESSAGE="$1"
                                                                                                                                 else
                                                                                                                                     MESSAGE=
