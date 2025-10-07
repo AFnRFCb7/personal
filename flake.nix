@@ -830,12 +830,12 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                git --git-dir "$GIT_DIR" --git-work-tree "$GIT_WORK_TREE" fetch origin "$BRANCH" 2>&1
+                                                                                                                git --git-dir /mount/git --git-work-tree /mount/work-tree fetch origin "$BRANCH" 2>&1
                                                                                                                 ENV="$GIT_DIR/env"
                                                                                                                 mkdir --parents "$ENV"
                                                                                                                 export GIT_DIR
                                                                                                                 export GIT_WORK_TREE
-                                                                                                                if git --git-dir "$GIT_DIR" --git-work-tree "$GIT_WORK_TREE" checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
+                                                                                                                if git --git-dir /mount/git --git-work-tree /mount/work-tree checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$ENV/checkout.status"
                                                                                                                 else
