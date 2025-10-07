@@ -830,14 +830,14 @@
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                # ENV="$GIT_DIR/env"
-                                                                                                                # mkdir --parents "$ENV"
-                                                                                                                # if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
-                                                                                                                # then
-                                                                                                                #     echo "$?" > "$ENV/checkout.status"
-                                                                                                                # else
-                                                                                                                #     echo "$?" > "$ENV/checkout.status"
-                                                                                                                # fi
+                                                                                                                ENV="$GIT_DIR/env"
+                                                                                                                mkdir --parents "$ENV"
+                                                                                                                if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
+                                                                                                                then
+                                                                                                                    echo "$?" > "$ENV/checkout.status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$ENV/checkout.status"
+                                                                                                                fi
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
                                                                                                                 # COMMIT="$COMMIT"
