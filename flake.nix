@@ -723,9 +723,9 @@
                                                                                                                         echo 2
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
                                                                                                                         echo 3 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
-                                                                                                                        # shellcheck disable=SC2181,SC2034
-                                                                                                                        PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )"
-                                                                                                                        [[ -n "$PROMOTION" ]] || exit 67
+                                                                                                                        PROMOTION=$("${resources_.promotion.root}" "$BRANCH" "$COMMIT")
+                                                                                                                        status=$?
+                                                                                                                        [ $status -ne 0 ] && exit 67
                                                                                                                         echo 4
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
                                                                                                                         echo 5
