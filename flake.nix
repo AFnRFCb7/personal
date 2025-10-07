@@ -836,6 +836,7 @@
                                                                                                                 BRANCH="$1"
                                                                                                                 COMMIT="$2"
                                                                                                                 git fetch origin "$BRANCH" 2>&1
+                                                                                                                echo $
                                                                                                                 # git fetch checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
