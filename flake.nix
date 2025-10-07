@@ -772,6 +772,35 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
+                                                                        build-vm =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    mkdir --parents /mount/shared
+                                                                                                                    cat > .envrc <<EOF
+                                                                                                                    export SHARED_DIR=${ self }/shared
+                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    if nixos-rebuild build-vm --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    then
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    else
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envirc" "result" "shared" "standard-error" "standard-output" "status" ] ;
+                                                                                } ;
                                                                         check =
                                                                             ignore :
                                                                                 {
@@ -802,6 +831,19 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.build-vm" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "build-vm" ;
+                                                                                                                runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ${ resources_.promotion.build-vm } "$GIT_WORK_TREE"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "!${ application }/bin/check" ;
                                                                                             "alias.check" =
                                                                                                 let
                                                                                                     application =
@@ -815,10 +857,7 @@
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
-                                                                                            "alias.scratch" = "!${ scratch }" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                            "user.email" = config.personal.repository.private.email ;
-                                                                                            "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
                                                                                     remotes =
                                                                                         {
