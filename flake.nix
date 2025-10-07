@@ -723,8 +723,10 @@
                                                                                                                         echo 2
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
                                                                                                                         echo 3 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
-                                                                                                                        PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )"
-                                                                                                                        [[ "$?" == "0" ]] || exit 67
+                                                                                                                        if ! PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )"
+                                                                                                                        then
+                                                                                                                            exit 67
+                                                                                                                        fi
                                                                                                                         echo 4
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
                                                                                                                         echo 5
