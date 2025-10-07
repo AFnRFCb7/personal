@@ -836,8 +836,8 @@
                                                                                                                 else
                                                                                                                     echo "$?" > "$GIT_WORK_TREE/checkout.status"
                                                                                                                 fi
-                                                                                                                # FLAKE_FILE="$WORK_TREE/flake.nix"
-                                                                                                                # echo "$FLAKE_FILE" > "$GIT_WORK_TREE/git-flake-file"
+                                                                                                                FLAKE_FILE="$WORK_TREE/flake.nix"
+                                                                                                                echo "$FLAKE_FILE" > "$GIT_WORK_TREE/git-flake-file"
                                                                                                                 echo "$PERSONAL" > "$GIT_WORK_TREE/personal"
                                                                                                                 # cat > "$GIT_WORK_TREE/command" <<EOF
                                                                                                                 # if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
