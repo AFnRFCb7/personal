@@ -805,7 +805,7 @@
                                                                                                                         ${ resources_.promotion.check } "$GIT_WORK_TREE"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "!${ application }/check" ;
+                                                                                                    in "!${ application }/bin/check" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
