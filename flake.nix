@@ -713,24 +713,17 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        echo 1
                                                                                                                         while ! git push origin HEAD
                                                                                                                         do
                                                                                                                             sleep 1s
                                                                                                                         done
-                                                                                                                        echo 2
                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
-                                                                                                                        echo 2
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                        echo 3 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
-                                                                                                                        PROMOTION=$("${resources_.promotion.root}" "$BRANCH" "$COMMIT")
+                                                                                                                        PROMOTION=$( "${ resources_.promotion.root }" "$BRANCH" "$COMMIT" ) || exit 67
                                                                                                                         status=$?
                                                                                                                         [ $status -ne 0 ] && exit 67
-                                                                                                                        echo 4
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
-                                                                                                                        echo 5
                                                                                                                         ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotions/$COMMIT"
-                                                                                                                        echo 6
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
@@ -841,12 +834,12 @@
                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                 FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 echo "$PERSONAL" > "$GIT_WORK_TREE/personal"
-                                                                                                                if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
-                                                                                                                then
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                else
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                fi
+                                                                                                                # if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
+                                                                                                                # then
+                                                                                                                #     echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                # else
+                                                                                                                #     echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                # fi
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
