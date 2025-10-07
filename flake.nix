@@ -837,7 +837,7 @@
                                                                                                                 COMMIT="$2"
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 echo "BRANCH=$BRANCH COMMIT=$COMMIT" > "$GIT_WORK_TREE/commit.env"
-                                                                                                                if git fetch checkout "$COMMIT" > "$GIT_WORK_TREE/checkout.standard-output" 2> "$GIT_WORK_TREE/checkout.standard-error"
+                                                                                                                if git fetch origin "$BRANCH" > "$GIT_WORK_TREE/checkout.standard-output" 2> "$GIT_WORK_TREE/checkout.standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$GIT_WORK_TREE/checkout.status"
                                                                                                                 else
