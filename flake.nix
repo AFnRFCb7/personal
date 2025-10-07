@@ -719,7 +719,8 @@
                                                                                                                         done
                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                        PROMOTION=$( "${ resources_.promotion.root }" "$BRANCH" "$COMMIT" ) || exit 67
+                                                                                                                        echo "${ resources_.promotion.root } \"$BRANCH\" \"$COMMIT\"
+                                                                                                                        PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
                                                                                                                         ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotions/$COMMIT"
                                                                                                                     '' ;
