@@ -802,6 +802,36 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envirc" "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                                 } ;
+                                                                        build-vm-with-bootloader =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    cd /mount
+                                                                                                                    mkdir --parents /mount/shared
+                                                                                                                    cat > .envrc <<EOF
+                                                                                                                    export SHARED_DIR=${ self }/shared
+                                                                                                                    EOF
+                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    then
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    else
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envirc" "result" "shared" "standard-error" "standard-output" "status" ] ;
+                                                                                } ;
                                                                         check =
                                                                             ignore :
                                                                                 {
