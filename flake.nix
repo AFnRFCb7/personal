@@ -830,7 +830,7 @@
                                                                                                                 export BRANCH
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
-                                                                                                                git --git-dir /mount/git --git-work-tree /mount/work-tree fetch origin "$BRANCH" 2>&1
+                                                                                                                git fetch origin "$BRANCH" 2>&1
                                                                                                                 ENV="$GIT_DIR/env"
                                                                                                                 mkdir --parents "$ENV"
                                                                                                                 export GIT_DIR
