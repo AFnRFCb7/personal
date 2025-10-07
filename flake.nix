@@ -831,9 +831,7 @@
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 ENV="$GIT_DIR/env"
                                                                                                                 mkdir --parents "$ENV"
-                                                                                                                export GIT_DIR
-                                                                                                                export GIT_WORK_TREE
-                                                                                                                if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
+                                                                                                                if git --git-dir "$GIT_DIR" --git-work-tree "$GIT_WORK_TREE" checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$ENV/checkout.status"
                                                                                                                 else
