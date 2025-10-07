@@ -830,7 +830,12 @@
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                git checkout "$COMMIT" > "$GIT_WORK_TREE/checkout" 2>&1
+                                                                                                                if git checkout "$COMMIT" > "$GIT_WORK_TREE/checkout.standard-output" 2> "$GIT_WORK_TREE/checkout.standard-error"
+                                                                                                                then
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
+                                                                                                                fi
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # echo "$FLAKE_FILE" > "$GIT_WORK_TREE/git-flake-file"
                                                                                                                 echo "$PERSONAL" > "$GIT_WORK_TREE/personal"
