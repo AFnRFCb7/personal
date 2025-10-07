@@ -722,7 +722,7 @@
                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                         echo 2
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                        echo 3
+                                                                                                                        echo 3 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                         PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
                                                                                                                         echo 4
                                                                                                                         mkdir --parents "$REPOSITORY_ROOT/promotions"
