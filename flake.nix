@@ -724,7 +724,7 @@
                                                                                                                                 ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotions/$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                                in "${ application }/bin/post-commit" ;
+                                                                                                                in "!${ application }/bin/promote" ;
                                                                                                     "alias.scratch" = "!${ scratch }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
