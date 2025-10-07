@@ -720,8 +720,8 @@
                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                         COMMIT="$( git rev-parse HEAD )" || exit 66
                                                                                                                         PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
-                                                                                                                        mkdir --parents "$REPOSITORY_ROOT/promotion"
-                                                                                                                        ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotion/$COMMIT"
+                                                                                                                        mkdir --parents "$REPOSITORY_ROOT/promotions"
+                                                                                                                        ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotions/$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
@@ -805,7 +805,7 @@
                                                                                                                         ${ resources_.promotion.check } "$GIT_WORK_TREE"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "${ application }/check" ;
+                                                                                                    in "!${ application }/check" ;
                                                                                             "alias.scratch" = "!${ scratch }" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                             "user.email" = config.personal.repository.private.email ;
