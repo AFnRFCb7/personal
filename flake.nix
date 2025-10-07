@@ -785,11 +785,12 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    GIT_WORK_TREE="$1"
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > .envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
-                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    EOF
                                                                                                                     if nixos-rebuild build-vm --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
@@ -877,7 +878,6 @@
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                 FLAKE_FILE="$GIT_WORK_TREE/flake.nix"
-                                                                                                                # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git config --get alias.snapshot > "$GIT_WORK_TREE/snapshot.sh"
                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
                                                                                                                 GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
                                                                                                                 GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
