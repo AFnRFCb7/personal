@@ -697,31 +697,6 @@
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.promote" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "promote" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                if read -t 0
-                                                                                                                                then
-                                                                                                                                    MESSAGE="$( cat )" || exit 64
-                                                                                                                                else
-                                                                                                                                    MESSAGE="$1"
-                                                                                                                                fi
-                                                                                                                                git commit -am "$MESSAGE" --allow-empty --allow-empty-message
-                                                                                                                                mkdir --parents "$REPOSITORY_ROOT/pins"
-                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
-                                                                                                                                COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                                echo "BRANCH=$BRANCH COMMIT=$COMMIT"
-                                                                                                                                PIN="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
-                                                                                                                                ln --symbolic "$PIN" "$REPOSITORY_ROOT/pins/$COMMIT"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/promote" ;
                                                                                                     "alias.scratch" = "!${ scratch }" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
@@ -729,7 +704,27 @@
                                                                                                 } ;
                                                                                     hooks =
                                                                                         {
-                                                                                            post-commit = post-commit "origin" ;
+                                                                                            post-commit =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "post-commit" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        while ! git push origin HEAD
+                                                                                                                        do
+                                                                                                                            sleep 1s
+                                                                                                                        done
+                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
+                                                                                                                        COMMIT="$( git rev-parse HEAD )" || exit 66
+                                                                                                                        PROMOTION="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 67
+                                                                                                                        mkdir --parents "$REPOSITORY_ROOT/promotion"
+                                                                                                                        ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotion/$COMMIT"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                        in "${ application }/bin/post-commit" ;
                                                                                         } ;
                                                                                     remotes =
                                                                                         {
