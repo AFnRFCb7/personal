@@ -731,7 +731,6 @@
                                                                                                                         echo 5
                                                                                                                         ln --symbolic "$PROMOTION" "$REPOSITORY_ROOT/promotions/$COMMIT"
                                                                                                                         echo 6
-                                                                                                                        BUG=1
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/post-commit" ;
