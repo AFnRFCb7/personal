@@ -843,6 +843,7 @@
                                                                                                                 echo "$GIT_DIR" > "$ENV/git-dir"
                                                                                                                 echo "$GIT_WORK_TREE" > "$ENV/git-work-tree"
                                                                                                                 echo "$BRANCH" > "$ENV/branch"
+                                                                                                                pwd > "$ENV/pwd"
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
                                                                                                                 # COMMIT="$COMMIT"
