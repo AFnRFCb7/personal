@@ -833,7 +833,7 @@
                                                                                                                 mkdir --parents "$ENV"
                                                                                                                 export GIT_DIR
                                                                                                                 export GIT_WORK_TREE
-                                                                                                                if git checkout --git-dir "$GIT_DIR" --git-work-tree "$GIT_WORK_TREE" "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
+                                                                                                                if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$ENV/checkout.status"
                                                                                                                 else
