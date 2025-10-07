@@ -837,12 +837,8 @@
                                                                                                                 COMMIT="$2"
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 echo "BRANCH=$BRANCH COMMIT=$COMMIT" > "$GIT_WORK_TREE/commit.env"
-                                                                                                                if git fetch origin "$BRANCH" > "$GIT_WORK_TREE/checkout.standard-output" 2> "$GIT_WORK_TREE/checkout.standard-error"
-                                                                                                                then
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
-                                                                                                                else
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
-                                                                                                                fi
+                                                                                                                git fetch origin "$BRANCH" 2>&1
+                                                                                                                git checkout "$SCRATCH" 2>&1
                                                                                                                 #
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
