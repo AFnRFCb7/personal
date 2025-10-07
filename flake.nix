@@ -834,15 +834,9 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 BRANCH="$1"
-                                                                                                                export BRANCH
                                                                                                                 COMMIT="$2"
-                                                                                                                export COMMIT
                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                ENV="$GIT_DIR/env"
-                                                                                                                mkdir --parents "$ENV"
-                                                                                                                export GIT_DIR
-                                                                                                                export GIT_WORK_TREE
-                                                                                                                git fetch checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
+                                                                                                                # git fetch checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
                                                                                                                 # COMMIT="$COMMIT"
