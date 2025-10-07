@@ -837,9 +837,9 @@
                                                                                                                 cat > "$GIT_WORK_TREE/command" <<EOF
                                                                                                                 if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
                                                                                                                 then
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                    echo "\$?" > "$GIT_WORK_TREE/status"
                                                                                                                 else
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                    echo "\$?" > "$GIT_WORK_TREE/status"
                                                                                                                 fi
                                                                                                                 EOF
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
