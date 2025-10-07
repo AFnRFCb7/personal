@@ -710,7 +710,7 @@
                                                                                                                                 if read -t 0
                                                                                                                                 then
                                                                                                                                     MESSAGE="$( cat )" || exit 64
-                                                                                                                                elif [[ "$#" -gt 1 ]
+                                                                                                                                elif [[ "$#" -gt 1 ]]
                                                                                                                                     MESSAGE="$1"
                                                                                                                                 else
                                                                                                                                     MESSAGE=
