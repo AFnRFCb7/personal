@@ -832,12 +832,17 @@
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 ENV="$GIT_DIR/env"
                                                                                                                 mkdir --parents "$ENV"
+                                                                                                                export GIT_DIR
+                                                                                                                export GIT_WORK_TREE
                                                                                                                 if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 then
                                                                                                                     echo "$?" > "$ENV/checkout.status"
                                                                                                                 else
                                                                                                                     echo "$?" > "$ENV/checkout.status"
                                                                                                                 fi
+                                                                                                                echo "$GIT_DIR" > "$ENV/git-dir"
+                                                                                                                echo "$GIT_WORK_TREE" > "$ENV/git-work-tree"
+                                                                                                                echo "$BRANCH" > "$ENV/branch"
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
                                                                                                                 # COMMIT="$COMMIT"
