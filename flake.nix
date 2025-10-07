@@ -716,7 +716,7 @@
                                                                                                                                 else
                                                                                                                                     MESSAGE=
                                                                                                                                 fi
-                                                                                                                                git commit -am "$MESSAGE" --allow-empty-message
+                                                                                                                                git commit -am "$MESSAGE" --allow-empty --allow-empty-message
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 66
                                                                                                                                 echo "${ resources_.promotion.root } \"$BRANCH\" \"$COMMIT\""
