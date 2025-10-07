@@ -256,6 +256,7 @@
                                                                                                     export GIT_DIR=${ self }/git
                                                                                                     export GIT_WORK_TREE=${ self }/work-tree
                                                                                                     EOF
+                                                                                                    cd /mount
                                                                                                     git init 2>&1
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
