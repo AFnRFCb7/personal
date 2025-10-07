@@ -830,13 +830,19 @@
                                                                                                                 COMMIT="$2"
                                                                                                                 export COMMIT
                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                if git checkout "$COMMIT" > "$GIT_WORK_TREE/checkout.standard-output" 2> "$GIT_WORK_TREE/checkout.standard-error"
+                                                                                                                ENV="$GIT_DIR/env"
+                                                                                                                mkdir --parents "$ENV"
+                                                                                                                if git checkout "$COMMIT" > "$ENV/checkout.standard-output" 2> "$ENV/checkout.standard-error"
                                                                                                                 then
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
+                                                                                                                    echo "$?" > "$ENV/checkout.status"
                                                                                                                 else
-                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
+                                                                                                                    echo "$?" > "$ENV/checkout.status"
                                                                                                                 fi
-                                                                                                                echo "$PERSONAL" > "$GIT_WORK_TREE/personal"
+                                                                                                                cat > "$ENV/.envrc" <<EOF
+                                                                                                                BRANCH="$BRANCH"
+                                                                                                                COMMIT="$COMMIT"
+                                                                                                                PERSONAL="$PERSONAL"
+                                                                                                                EOF
                                                                                                                 # FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 # echo "$FLAKE_FILE" > "$GIT_WORK_TREE/git-flake-file"
                                                                                                                 # cat > "$GIT_WORK_TREE/command" <<EOF
