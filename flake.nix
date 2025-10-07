@@ -841,7 +841,7 @@
                                                                                                                     echo "$?" > "$GIT_WORK_TREE/status"
                                                                                                                 else
                                                                                                                     echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                fii
+                                                                                                                fi
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
