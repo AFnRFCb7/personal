@@ -830,14 +830,14 @@
                                                                                                                 export COMMIT
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 git checkout "$COMMIT" 2>&1
-                                                                                                                # FLAKE_FILE="$WORK_TREE/flake.nix"
+                                                                                                                FLAKE_FILE="$WORK_TREE/flake.nix"
                                                                                                                 echo "$PERSONAL" > "$GIT_WORK_TREE/personal"
-                                                                                                                # if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
-                                                                                                                # then
-                                                                                                                #     echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                # else
-                                                                                                                #     echo "$?" > "$GIT_WORK_TREE/status"
-                                                                                                                # fi
+                                                                                                                if GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE" > "$GIT_WORK_TREE/standard-output" 2> "$GIT_WORK_TREE/standard-error"
+                                                                                                                then
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/status"
+                                                                                                                fi
                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
                                                                                                                 # GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
