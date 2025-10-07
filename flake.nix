@@ -840,9 +840,9 @@
                                                                                                                 FLAKE_FILE="$GIT_WORK_TREE/flake.nix"
                                                                                                                 # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git config --get alias.snapshot > "$GIT_WORK_TREE/snapshot.sh"
                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
-                                                                                                                # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
-                                                                                                                # GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
-                                                                                                                # GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
