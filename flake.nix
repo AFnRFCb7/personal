@@ -836,7 +836,13 @@
                                                                                                                 BRANCH="$1"
                                                                                                                 COMMIT="$2"
                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                git fetch checkout "$COMMIT" 2>&1
+                                                                                                                if git fetch checkout "$COMMIT" > "$GIT_WORK_TREE/checkout.standard-output" 2> "$GIT_WORK_TREE/checkout.standard-error"
+                                                                                                                then
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
+                                                                                                                else
+                                                                                                                    echo "$?" > "$GIT_WORK_TREE/checkout.status"
+                                                                                                                fi
+                                                                                                                #
                                                                                                                 # cat > "$ENV/.envrc" <<EOF
                                                                                                                 # BRANCH="$BRANCH"
                                                                                                                 # COMMIT="$COMMIT"
