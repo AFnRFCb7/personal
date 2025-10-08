@@ -804,7 +804,7 @@
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "test" ;
+                                                                                                                                        name = "switch" ;
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
@@ -814,6 +814,7 @@
                                                                                                                                                 ${ resources_.promotion.squash.dependents.visitor } "$COMMIT" "$BRANCH"
                                                                                                                                                 ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
                                                                                                                                                 nixos-rebuild switch --flake "$ROOT/work-tree#user"
+                                                                                                                                                GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/switch" ;
