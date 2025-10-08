@@ -803,8 +803,10 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
-                                                                                                                                                                            if nixos-rebuild switch --flake "$GIT_WORK_TREE#user"
+                                                                                                                                                                            SQUASH="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                                                            if nixos-rebuild switch --flake "$SQUASH/work-tree#user"
                                                                                                                                                                             then
+                                                                                                                                                                                GIT_DIR="$SQUASH/git" GIT_WORK_TREE="$SQUASH/work-tree" git push origin main
                                                                                                                                                                                 echo We successfully switch
                                                                                                                                                                             else
                                                                                                                                                                                 echo We failed to switch
@@ -819,7 +821,7 @@
                                                                                                                                                             echo We are testing.  If the tests are successful we can switch.
                                                                                                                                                             # shellcheck disable=SC1091
                                                                                                                                                             source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                                            makeWrapper ${ switch } "${ self }/switch" --set GIT_WORK_TREE "$GIT_WORK_TREE"
+                                                                                                                                                            makeWrapper ${ switch } "${ self }/switch" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                                                         else
                                                                                                                                                             echo We failed to nixos-rebuild test
                                                                                                                                                         fi
@@ -828,13 +830,16 @@
                                                                                                                             in "${ application }/bin/test" ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            GIT_WORK_TREE="$1"
+                                                                                                                            BRANCH="$1"
+                                                                                                                            COMMIT="$2"
+                                                                                                                            SOURCE="$( ${ resources_.promotion.root } "BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                            ln --symbolic "$SOURCE" /links
                                                                                                                             cd /mount
                                                                                                                             mkdir --parents /mount/shared
                                                                                                                             cat > .envrc <<EOF
                                                                                                                             export SHARED_DIR=${ self }/shared
                                                                                                                             EOF
-                                                                                                                            if nixos-rebuild build --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             then
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             else
@@ -842,7 +847,7 @@
                                                                                                                             fi
                                                                                                                             # shellcheck disable=SC1091
                                                                                                                             source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                            makeWrapper ${ test } /mount/test --set GIT_WORK_TREE "$GIT_WORK_TREE"
+                                                                                                                            makeWrapper ${ test } /mount/test --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -861,13 +866,16 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    BRANCH="$1"
+                                                                                                                    COMMIT="$2"
+                                                                                                                    SOURCE="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                    ln --symbolic "$SOURCE" /links
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > .envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
                                                                                                                     EOF
-                                                                                                                    if nixos-rebuild build-vm --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
@@ -891,13 +899,16 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    BRANCH="$1"
+                                                                                                                    COMMIT="$2"
+                                                                                                                    SOURCE="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                    ln --symbolic "$SOURCE" /links
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > .envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
                                                                                                                     EOF
-                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
@@ -921,8 +932,11 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    GIT_WORK_TREE="$1"
-                                                                                                                    if nix flake check "$GIT_WORK_TREE" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    BRANCH="$1"
+                                                                                                                    COMMIT="$2"
+                                                                                                                    SOURCE="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    if nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
@@ -947,7 +961,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ${ resources_.promotion.build } "$GIT_WORK_TREE"
+                                                                                                                        ${ resources_.promotion.build } "$BRANCH" "$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/build" ;
@@ -960,7 +974,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ${ resources_.promotion.build-vm } "$GIT_WORK_TREE"
+                                                                                                                        ${ resources_.promotion.build-vm } "$BRANCH" "$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/build-vm" ;
@@ -973,7 +987,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ${ resources_.promotion.build-vm-with-bootloader } "$GIT_WORK_TREE"
+                                                                                                                        ${ resources_.promotion.build-vm-with-bootloader } "$SOURCE" "$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/build-vm-with-bootloader" ;
@@ -986,7 +1000,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ${ resources_.promotion.check } "$GIT_WORK_TREE"
+                                                                                                                        ${ resources_.promotion.check } "$BRANCH" "$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
@@ -1007,6 +1021,10 @@
                                                                                                             ''
                                                                                                                 BRANCH="$1"
                                                                                                                 COMMIT="$2"
+                                                                                                                cat >> /mount/.envrc <<EOF
+                                                                                                                export BRANCH="$BRANCH"
+                                                                                                                export COMMIT="$COMMIT"
+                                                                                                                EOF
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                 FLAKE_FILE="$GIT_WORK_TREE/flake.nix"
@@ -1017,6 +1035,103 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                            squash =
+                                                                                {
+                                                                                    dependents =
+                                                                                        let
+                                                                                            fun =
+                                                                                                origin :
+                                                                                                    git
+                                                                                                        {
+                                                                                                            config =
+                                                                                                                {
+                                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                                } ;
+                                                                                                            remotes =
+                                                                                                                {
+                                                                                                                    origin = origin ;
+                                                                                                                } ;
+                                                                                                            setup =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "setup" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gh ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        BRANCH="$1"
+                                                                                                                                        COMMIT="$2"
+                                                                                                                                        git fetch origin "$BRANCH" 2>&1
+                                                                                                                                        git checkout "$COMMIT" 2>&1
+                                                                                                                                        git fetch origin main 2>&1
+                                                                                                                                        if ! git diff --exit-code origin/main
+                                                                                                                                        then
+                                                                                                                                            git scratch
+                                                                                                                                            git reset --soft origin/main
+                                                                                                                                            git commit -a --verbose 2>&1
+                                                                                                                                            git push origin HEAD
+                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                                            TOKEN="$( "${ resources_.secrets.github-token.asc.age }" ) || exit 64
+                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                            gh pr create --title "Sync branch $BRANCH into main" --body "Automated squash sync of $BRANCH into main" --base main --head "$SQUASH_BRANCH"
+                                                                                                                                            gh pr merge "$BRANCH" --rebase
+                                                                                                                                            gh auth logout
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/setup" ;
+                                                                                                        } ;
+                                                                                            in
+                                                                                                {
+                                                                                                    personal = fun ;
+                                                                                                } ;
+                                                                                    root =
+                                                                                        git
+                                                                                            {
+                                                                                                config =
+                                                                                                    {
+                                                                                                        "alias.scratch" = "!${ scratch }" ;
+                                                                                                        "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                        "user.email" = config.personal.repository.private.email ;
+                                                                                                        "user.name" = config.personal.repository.private.name ;
+                                                                                                    } ;
+                                                                                                remotes =
+                                                                                                    {
+                                                                                                        origin = config.personal.repository.origin ;
+                                                                                                    } ;
+                                                                                                setup =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            BRANCH="$1"
+                                                                                                                            COMMIT="$2"
+                                                                                                                            git fetch origin "$BRANCH" 2>&1
+                                                                                                                            git checkout "$COMMIT" 2>&1
+                                                                                                                            git fetch origin main 2>&1
+                                                                                                                            if ! git diff --exit-code origin/main
+                                                                                                                            then
+                                                                                                                                git scratch
+                                                                                                                                git reset --soft origin/main
+                                                                                                                                git commit -a --verbose 2>&1
+                                                                                                                                git push origin HEAD
+                                                                                                                                SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                git checkout main 2>&1
+                                                                                                                                git rebase "SQUASH_COMMIT" 2>&1
+                                                                                                                            fi
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
+                                                                                            } ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
