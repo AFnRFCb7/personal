@@ -817,7 +817,8 @@
                                                                                                                                                         if nixos-rebuild test --flake "$GIT_WORK_TREE#user"
                                                                                                                                                         then
                                                                                                                                                             echo We are testing.  If the tests are successful then we can switch.
-                                                                                                                                                            makeWrapper ${ switch } "${ self }/switch
+                                                                                                                                                            source ${ pkgs.makeWrapper }/nix-support/setup-hook
+                                                                                                                                                            makeWrapper ${ switch } "${ self }/switch" --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                                                         else
                                                                                                                                                             echo We failed to nixos-rebuild test
                                                                                                                                                         fi
@@ -838,6 +839,7 @@
                                                                                                                             else
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             fi
+                                                                                                                            source ${ pkgs.makeWrapper }/nix-support/setup-hook
                                                                                                                             makeWrapper ${ test } /mount/test --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                         '' ;
                                                                                                         } ;
