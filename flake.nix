@@ -811,17 +811,17 @@
                                                                                                                             export COMMIT="$COMMIT"
                                                                                                                             EOF
                                                                                                                             ln --symbolic "$SOURCE" /links
-                                                                                                                            if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            then
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            else
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            fi
+                                                                                                                            # if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            # then
+                                                                                                                            #     echo "$?" > /mount/status
+                                                                                                                            # else
+                                                                                                                            #     echo "$?" > /mount/status
+                                                                                                                            # fi
                                                                                                                             # ln --symbolic ${ test } /mount/test
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" ] ;
+                                                                                    targets = [ ".envrc" ] ;
                                                                                 } ;
                                                                         build-vm =
                                                                             ignore :
