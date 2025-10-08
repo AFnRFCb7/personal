@@ -1074,22 +1074,38 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        echo "# 1 >> /mount/.envrc
                                                                                                                                         git fetch origin "$BRANCH" 2>&1
+                                                                                                                                        echo "# 2 >> /mount/.envrc
                                                                                                                                         git checkout "$COMMIT" 2>&1
+                                                                                                                                        echo "# 3 >> /mount/.envrc
                                                                                                                                         git fetch origin main 2>&1
+                                                                                                                                        echo "# 4 >> /mount/.envrc
                                                                                                                                         if ! git diff --exit-code origin/main
                                                                                                                                         then
+                                                                                                                                        echo "# 5 >> /mount/.envrc
                                                                                                                                             git scratch
+                                                                                                                                        echo "# 6 >> /mount/.envrc
                                                                                                                                             git reset --soft origin/main 2>&1
+                                                                                                                                        echo "# 7 >> /mount/.envrc
                                                                                                                                             git commit --verbose 2>&1
+                                                                                                                                        echo "# 8 >> /mount/.envrc
                                                                                                                                             git push origin HEAD 2>&1
+                                                                                                                                        echo "# 9 >> /mount/.envrc
                                                                                                                                             SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                                        echo "# 10 >> /mount/.envrc
                                                                                                                                             GITHUB_TOKEN="$( resources_.secrets."github-token.asc.age" )" || exit 64
+                                                                                                                                        echo "# 11 >> /mount/.envrc
                                                                                                                                             gh auth login --with-token < "$GITHUB_TOKEN"
+                                                                                                                                        echo "# 12 >> /mount/.envrc
                                                                                                                                             SQUASH_PR="$( gh pr create --fill --base main --head "$SQUASH_BRANCH" )" || exit 65
+                                                                                                                                        echo "# 13 >> /mount/.envrc
                                                                                                                                             gh pr review "$SQUASH_PR" --approve --body "Auto-approved by setup script"
+                                                                                                                                        echo "# 14 >> /mount/.envrc
                                                                                                                                             gh auth logout
+                                                                                                                                        echo "# 15 >> /mount/.envrc
                                                                                                                                         fi
+                                                                                                                                        echo "# 16 >> /mount/.envrc
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
