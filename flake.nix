@@ -804,13 +804,12 @@
                                                                                                                             BRANCH="$2"
                                                                                                                             COMMIT="$3"
                                                                                                                             cd /mount
-                                                                                                                            mkdir --parents /mount/shared
                                                                                                                             cat > /mount/.envrc <<EOF
                                                                                                                             export SOURCE="$SOURCE"
                                                                                                                             export BRANCH="$BRANCH"
                                                                                                                             export COMMIT="$COMMIT"
                                                                                                                             EOF
-                                                                                                                            # ln --symbolic "$SOURCE" /links
+                                                                                                                            ln --symbolic "$SOURCE" /links
                                                                                                                             if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             then
                                                                                                                                 echo "$?" > /mount/status
@@ -821,7 +820,7 @@
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" ] ;
+                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "test" ] ;
                                                                                 } ;
                                                                         build-vm =
                                                                             ignore :
