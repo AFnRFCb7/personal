@@ -888,7 +888,7 @@
                                                                                                                         ${ resources_.promotion.build-vm-with-bootloader } "$REPOSITORY_ROOT"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "!${ application }/bin/check" ;
+                                                                                                    in "!${ application }/bin/build-vm-with-bootloader" ;
                                                                                             "alias.check" =
                                                                                                 let
                                                                                                     application =
