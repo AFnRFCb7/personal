@@ -28,7 +28,7 @@
                                                                 mkdir --parents $out/src
                                                                 makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
                                                                 mkdir --parents $out/bin
-                                                                makeWrapper "$out/src/${ target }" "$out/bin/${ target }" --run "sudo \"
+                                                                makeWrapper "$out/src/${ target }" "$out/bin/${ target }" --run "sudo /"
                                                             '' ;
                                                         name = target ;
                                                         nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
