@@ -805,6 +805,19 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.check" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "check" ;
+                                                                                                                runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ${ resources_.promotion.check } "$BRANCH" "$COMMIT"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "!${ application }/bin/check" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                         } ;
                                                                                     remotes =
