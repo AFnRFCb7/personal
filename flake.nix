@@ -800,42 +800,28 @@
                                                                                                                             in "${ application }/bin/test" ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            echo 1
                                                                                                                             SOURCE="$1"
-                                                                                                                            echo 2
                                                                                                                             BRANCH="$2"
-                                                                                                                            echo 3
                                                                                                                             COMMIT="$3"
-                                                                                                                            echo 4
                                                                                                                             cd /mount
-                                                                                                                            echo 5
                                                                                                                             mkdir --parents /mount/shared
-                                                                                                                            echo 6
                                                                                                                             cat > /mount/.envrc <<EOF
                                                                                                                             export SOURCE="$SOURCE"
                                                                                                                             export BRANCH="$BRANCH"
                                                                                                                             export COMMIT="$COMMIT"
                                                                                                                             EOF
-                                                                                                                            echo 7
                                                                                                                             ln --symbolic "$SOURCE" /links
-                                                                                                                            echo 8
                                                                                                                             if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             then
-                                                                                                                                echo 9
                                                                                                                                 echo "$?" > /mount/status
-                                                                                                                                echo 10
                                                                                                                             else
-                                                                                                                                echo 11
                                                                                                                                 echo "$?" > /mount/status
-                                                                                                                                echo 12
                                                                                                                             fi
-                                                                                                                            echo 13
-                                                                                                                            ln --symbolic ${ test } /mount/test
-                                                                                                                            echo 14
+                                                                                                                            # ln --symbolic ${ test } /mount/test
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" "test" ] ;
+                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" ] ;
                                                                                 } ;
                                                                         build-vm =
                                                                             ignore :
