@@ -803,6 +803,37 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                                 } ;
+                                                                        build-vm-with-bootloader =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    mkdir --parents /mount/shared
+                                                                                                                    cat > /mount/.envrc <<EOF
+                                                                                                                    export SHARED_DIR=${ self }/shared
+                                                                                                                    EOF
+                                                                                                                    SOURCE="$1"
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    then
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    else
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
+                                                                                } ;
                                                                         check =
                                                                             ignore :
                                                                                 {
@@ -839,10 +870,22 @@
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "check" ;
+                                                                                                                name = "build-vm" ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ${ resources_.promotion.build-vm } "$REPOSITORY_ROOT"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "!${ application }/bin/build-vm" ;
+                                                                                            "alias.build-vm-with-bootloader" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "build-vm-with-bootloader" ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ${ resources_.promotion.build-vm-with-bootloader } "$REPOSITORY_ROOT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
@@ -859,6 +902,7 @@
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
+                                                                                            "alias.garbage-collect" = "!${ pkgs.nix }/bin/nix-collect-garbage" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                         } ;
                                                                                     remotes =
