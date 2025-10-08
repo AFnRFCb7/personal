@@ -784,20 +784,36 @@
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
-                                                                                                                ''
-                                                                                                                    GIT_WORK_TREE="$1"
-                                                                                                                    cd /mount
-                                                                                                                    mkdir --parents /mount/shared
-                                                                                                                    cat > .envrc <<EOF
-                                                                                                                    export SHARED_DIR=${ self }/shared
-                                                                                                                    EOF
-                                                                                                                    if nixos-rebuild build --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                    then
-                                                                                                                        echo "$?" > /mount/status
-                                                                                                                    else
-                                                                                                                        echo "$?" > /mount/status
-                                                                                                                    fi
-                                                                                                                '' ;
+                                                                                                                let
+                                                                                                                    test =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "test" ;
+                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                nixos-rebuild test --flake ${ self }/work-tree
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/test" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            GIT_WORK_TREE="$1"
+                                                                                                                            cd /mount
+                                                                                                                            mkdir --parents /mount/shared
+                                                                                                                            cat > .envrc <<EOF
+                                                                                                                            export SHARED_DIR=${ self }/shared
+                                                                                                                            EOF
+                                                                                                                            if nixos-rebuild build --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            then
+                                                                                                                                echo "$?" > /mount/status
+                                                                                                                            else
+                                                                                                                                echo "$?" > /mount/status
+                                                                                                                            fi
+                                                                                                                            makeWrapper ${ test } /mount/test --set GIT_WORK_TREE "$GIT_WORK_TREE"
+                                                                                                                        '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
@@ -817,6 +833,10 @@
                                                                                                                 ''
                                                                                                                     GIT_WORK_TREE="$1"
                                                                                                                     cd /mount
+                                                                                                                    mkdir --parents /mount/shared
+                                                                                                                    cat > .envrc <<EOF
+                                                                                                                    export SHARED_DIR=${ self }/shared
+                                                                                                                    EOF
                                                                                                                     if nixos-rebuild build-vm --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
@@ -826,7 +846,7 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ "result" "standard-error" "standard-output" "status" ] ;
+                                                                                    targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                                 } ;
                                                                         build-vm-with-bootloader =
                                                                             ignore :
