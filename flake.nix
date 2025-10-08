@@ -772,7 +772,7 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
-                                                                        build-vm =
+                                                                        build =
                                                                             ignore :
                                                                                 {
                                                                                     init =
@@ -791,6 +791,32 @@
                                                                                                                     cat > .envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
                                                                                                                     EOF
+                                                                                                                    if nixos-rebuild build --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    then
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    else
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
+                                                                                } ;
+                                                                        build-vm =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    GIT_WORK_TREE="$1"
+                                                                                                                    cd /mount
                                                                                                                     if nixos-rebuild build-vm --flake "$GIT_WORK_TREE#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
@@ -800,7 +826,7 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envirc" "result" "shared" "standard-error" "standard-output" "status" ] ;
+                                                                                    targets = [ "result" "standard-error" "standard-output" "status" ] ;
                                                                                 } ;
                                                                         build-vm-with-bootloader =
                                                                             ignore :
@@ -830,7 +856,7 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envirc" "result" "shared" "standard-error" "standard-output" "status" ] ;
+                                                                                    targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                                 } ;
                                                                         check =
                                                                             ignore :
@@ -862,6 +888,19 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.build" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "build" ;
+                                                                                                                runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ${ resources_.promotion.build } "$GIT_WORK_TREE"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "!${ application }/bin/build" ;
                                                                                             "alias.build-vm" =
                                                                                                 let
                                                                                                     application =
@@ -874,7 +913,20 @@
                                                                                                                         ${ resources_.promotion.build-vm } "$GIT_WORK_TREE"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "!${ application }/bin/check" ;
+                                                                                                    in "!${ application }/bin/build-vm" ;
+                                                                                            "alias.build-vm-with-bootloader" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "build-vm-with-bootloader" ;
+                                                                                                                runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ${ resources_.promotion.build-vm-with-bootloader } "$GIT_WORK_TREE"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "!${ application }/bin/build-vm-with-bootloader" ;
                                                                                             "alias.check" =
                                                                                                 let
                                                                                                     application =
