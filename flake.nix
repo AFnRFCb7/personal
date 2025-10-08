@@ -803,14 +803,6 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
-                                                                                                                                                                            SQUASH="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                                                                            if nixos-rebuild switch --flake "$SQUASH/work-tree#user"
-                                                                                                                                                                            then
-                                                                                                                                                                                GIT_DIR="$SQUASH/git" GIT_WORK_TREE="$SQUASH/work-tree" git push origin main
-                                                                                                                                                                                echo We successfully switch
-                                                                                                                                                                            else
-                                                                                                                                                                                echo We failed to switch
-                                                                                                                                                                            fi
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         in "${ application }/bin/switch" ;
@@ -1038,100 +1030,7 @@
                                                                                 } ;
                                                                             squash =
                                                                                 {
-                                                                                    dependents =
-                                                                                        let
-                                                                                            fun =
-                                                                                                origin :
-                                                                                                    git
-                                                                                                        {
-                                                                                                            config =
-                                                                                                                {
-                                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                                    "user.email" = config.personal.repository.private.email ;
-                                                                                                                    "user.name" = config.personal.repository.private.name ;
-                                                                                                                } ;
-                                                                                                            remotes =
-                                                                                                                {
-                                                                                                                    origin = origin ;
-                                                                                                                } ;
-                                                                                                            setup =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "setup" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gh ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        BRANCH="$1"
-                                                                                                                                        COMMIT="$2"
-                                                                                                                                        git fetch origin "$BRANCH" 2>&1
-                                                                                                                                        git checkout "$COMMIT" 2>&1
-                                                                                                                                        git fetch origin main 2>&1
-                                                                                                                                        if ! git diff --exit-code origin/main
-                                                                                                                                        then
-                                                                                                                                            git scratch
-                                                                                                                                            git reset --soft origin/main
-                                                                                                                                            git commit -a --verbose 2>&1
-                                                                                                                                            git push origin HEAD
-                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                            TOKEN="$( "${ resources_.secrets.github-token.asc.age }" ) || exit 64
-                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                            gh pr create --title "Sync branch $BRANCH into main" --body "Automated squash sync of $BRANCH into main" --base main --head "$SQUASH_BRANCH"
-                                                                                                                                            gh pr merge "$BRANCH" --rebase
-                                                                                                                                            gh auth logout
-                                                                                                                                        fi
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/setup" ;
-                                                                                                        } ;
-                                                                                            in
-                                                                                                {
-                                                                                                    personal = fun ;
-                                                                                                } ;
-                                                                                    root =
-                                                                                        git
-                                                                                            {
-                                                                                                config =
-                                                                                                    {
-                                                                                                        "alias.scratch" = "!${ scratch }" ;
-                                                                                                        "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                                        "user.email" = config.personal.repository.private.email ;
-                                                                                                        "user.name" = config.personal.repository.private.name ;
-                                                                                                    } ;
-                                                                                                remotes =
-                                                                                                    {
-                                                                                                        origin = config.personal.repository.origin ;
-                                                                                                    } ;
-                                                                                                setup =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            BRANCH="$1"
-                                                                                                                            COMMIT="$2"
-                                                                                                                            git fetch origin "$BRANCH" 2>&1
-                                                                                                                            git checkout "$COMMIT" 2>&1
-                                                                                                                            git fetch origin main 2>&1
-                                                                                                                            if ! git diff --exit-code origin/main
-                                                                                                                            then
-                                                                                                                                git scratch
-                                                                                                                                git reset --soft origin/main
-                                                                                                                                git commit -a --verbose 2>&1
-                                                                                                                                git push origin HEAD
-                                                                                                                                SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                                git checkout main 2>&1
-                                                                                                                                git rebase "SQUASH_COMMIT" 2>&1
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/setup" ;
-                                                                                            } ;
+
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
