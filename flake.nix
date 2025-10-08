@@ -772,39 +772,6 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
-                                                                        build =
-                                                                            ignore :
-                                                                                {
-                                                                                    init =
-                                                                                        failure : resources : self :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.makeWrapper pkgs.nixos-rebuild ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    BRANCH="$1"
-                                                                                                                    COMMIT="$2"
-                                                                                                                    SOURCE="$( ${ resources_.promotion.root } "BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                    cd /mount
-                                                                                                                    mkdir --parents /mount/shared
-                                                                                                                    cat > .envrc <<EOF
-                                                                                                                    export SHARED_DIR=${ self }/shared
-                                                                                                                    EOF
-                                                                                                                    if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                    then
-                                                                                                                        echo "$?" > /mount/status
-                                                                                                                    else
-                                                                                                                        echo "$?" > /mount/status
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
-                                                                                } ;
                                                                         build-vm =
                                                                             ignore :
                                                                                 {
@@ -904,19 +871,6 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.build" =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "build" ;
-                                                                                                                runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        ${ resources_.promotion.build } "$BRANCH" "$COMMIT"
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "!${ application }/bin/build" ;
                                                                                             "alias.build-vm" =
                                                                                                 let
                                                                                                     application =
