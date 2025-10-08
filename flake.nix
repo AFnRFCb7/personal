@@ -1085,7 +1085,7 @@
                                                                                                                                             GITHUB_TOKEN="$( resources_.secrets."github-token.asc.age" )" || exit 64
                                                                                                                                             gh auth login --with-token < "$GITHUB_TOKEN"
                                                                                                                                             SQUASH_PR="$( gh pr create --fill --base main --head "$SQUASH_BRANCH" )" || exit 65
-                                                                                                                                            gh pr review "$SQUASH_URL" --approve --body "Auto-approved by setup script"
+                                                                                                                                            gh pr review "$SQUASH_PR" --approve --body "Auto-approved by setup script"
                                                                                                                                             gh auth logout
                                                                                                                                         fi
                                                                                                                                     '' ;
