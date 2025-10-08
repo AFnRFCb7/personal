@@ -785,9 +785,9 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    BRANCH="$1"
-                                                                                                                    COMMIT="$2"
-                                                                                                                    SOURCE="$( ${ resources_.promotion.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                    SOURCE="$1"
+                                                                                                                    BRANCH="$2"
+                                                                                                                    COMMIT="$3"
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     if nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
@@ -814,7 +814,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ${ resources_.promotion.check } "$BRANCH" "$COMMIT"
+                                                                                                                        ${ resources_.promotion.check } "$REPOSITORY_ROOT" "$BRANCH" "$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
