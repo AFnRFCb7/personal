@@ -786,8 +786,6 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SOURCE="$1"
-                                                                                                                    BRANCH="$2"
-                                                                                                                    COMMIT="$3"
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     if nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
@@ -814,7 +812,7 @@
                                                                                                                 runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ${ resources_.promotion.check } "$REPOSITORY_ROOT" "$BRANCH" "$COMMIT"
+                                                                                                                        ${ resources_.promotion.check } "$REPOSITORY_ROOT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
