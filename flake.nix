@@ -1084,7 +1084,7 @@
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
-                                                                                                                    in "${ application }/bin/setup"
+                                                                                                                    in "${ application }/bin/setup" ;
                                                                                                         } ;
                                                                                             in
                                                                                                 {
