@@ -784,48 +784,23 @@
                                                                                                             name = "init" ;
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.makeWrapper pkgs.nixos-rebuild ] ;
                                                                                                             text =
-                                                                                                                let
-                                                                                                                    test =
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "test" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                if nixos-rebuild test --flake "$GIT_WORK_TREE#user"
-                                                                                                                                                then
-                                                                                                                                                    echo We are testing.  If the tests are successful we can switch.
-                                                                                                                                                    # shellcheck disable=SC1091
-                                                                                                                                                    source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                                else
-                                                                                                                                                    echo We failed to nixos-rebuild test
-                                                                                                                                                fi
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                            in "${ application }/bin/test" ;
-                                                                                                                    in
-                                                                                                                        ''
-                                                                                                                            BRANCH="$1"
-                                                                                                                            COMMIT="$2"
-                                                                                                                            SOURCE="$( ${ resources_.promotion.root } "BRANCH" "$COMMIT" )" || exit 64
-                                                                                                                            ln --symbolic "$SOURCE" /links
-                                                                                                                            cd /mount
-                                                                                                                            mkdir --parents /mount/shared
-                                                                                                                            cat > .envrc <<EOF
-                                                                                                                            export SHARED_DIR=${ self }/shared
-                                                                                                                            EOF
-                                                                                                                            if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            then
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            else
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            fi
-                                                                                                                            # shellcheck disable=SC1091
-                                                                                                                            source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                            makeWrapper ${ test } /mount/test --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                        '' ;
+                                                                                                                ''
+                                                                                                                    BRANCH="$1"
+                                                                                                                    COMMIT="$2"
+                                                                                                                    SOURCE="$( ${ resources_.promotion.root } "BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    cd /mount
+                                                                                                                    mkdir --parents /mount/shared
+                                                                                                                    cat > .envrc <<EOF
+                                                                                                                    export SHARED_DIR=${ self }/shared
+                                                                                                                    EOF
+                                                                                                                    if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    then
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    else
+                                                                                                                        echo "$?" > /mount/status
+                                                                                                                    fi
+                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
