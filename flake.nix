@@ -772,6 +772,56 @@
                                                                     } ;
                                                                 promotion =
                                                                     {
+                                                                        build =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    test =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "test" ;
+                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                nixos-rebuild test --flake "$SOURCE/work-tree#user"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/test" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            SOURCE="$1"
+                                                                                                                            BRANCH="$2"
+                                                                                                                            COMMIT="$3"
+                                                                                                                            cd /mount
+                                                                                                                            mkdir --parents /mount/shared
+                                                                                                                            cat > /mount/.envrc <<EOF
+                                                                                                                            export BRANCH="$BRANCH"
+                                                                                                                            export COMMIT="$COMMIT"
+                                                                                                                            EOF
+                                                                                                                            ln --symbolic "$SOURCE" /links
+                                                                                                                            if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            then
+                                                                                                                                echo "$?" > /mount/status
+                                                                                                                            else
+                                                                                                                                echo "$?" > /mount/status
+                                                                                                                            fi
+                                                                                                                            ln --symbolic ${ test } /mount/test
+                                                                                                                        '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" "test" ] ;
+                                                                                } ;
                                                                         build-vm =
                                                                             ignore :
                                                                                 {
@@ -865,6 +915,18 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.build" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "build" ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ${ resources_.promotion.build } "$REPOSITORY_ROOT" "$BRANCH" "$COMMIT"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "!${ application }/bin/build-vm" ;
                                                                                             "alias.build-vm" =
                                                                                                 let
                                                                                                     application =
