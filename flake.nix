@@ -33,7 +33,7 @@
                                                                                     name = target ;
                                                                                     text =
                                                                                         ''
-                                                                                            sudo "$OUT/src/${ target } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }
+                                                                                            sudo "$OUT/src/${ target }" ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/${ target }" ;
