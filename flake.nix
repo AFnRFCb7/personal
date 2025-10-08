@@ -799,6 +799,24 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 let
+                                                                                                                    switch =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "test" ;
+                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                ${ resources_.promotion.squash.dependents.personal } "$COMMIT" "$BRANCH"
+                                                                                                                                                ${ resources_.promotion.squash.dependents.resources } "$COMMIT" "$BRANCH"
+                                                                                                                                                ${ resources_.promotion.squash.dependents.secrets } "$COMMIT" "$BRANCH"
+                                                                                                                                                ${ resources_.promotion.squash.dependents.visitor } "$COMMIT" "$BRANCH"
+                                                                                                                                                ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
+                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/test" ;
                                                                                                                     test =
                                                                                                                         let
                                                                                                                             application =
@@ -808,7 +826,7 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                nixos-rebuild build --flake "$SOURCE/work-tree#user"
+                                                                                                                                                nixos-rebuild test --flake "$SOURCE/work-tree#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/test" ;
@@ -830,11 +848,12 @@
                                                                                                                             else
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             fi
+                                                                                                                            ln --symbolic ${ switch } /mount
                                                                                                                             ln --symbolic ${ test } /mount
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" "test" ] ;
+                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" "switch" "test" ] ;
                                                                                 } ;
                                                                         build-vm =
                                                                             ignore :
@@ -1028,7 +1047,78 @@
                                                                                 } ;
                                                                             squash =
                                                                                 {
-
+                                                                                    dependents =
+                                                                                        let
+                                                                                            fun =
+                                                                                                email : name : origin :
+                                                                                                    git
+                                                                                                        {
+                                                                                                            configs =
+                                                                                                                {
+                                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                                                    "user.email" = email ;
+                                                                                                                    "user.name" = name ;
+                                                                                                                } ;
+                                                                                                            remotes =
+                                                                                                                {
+                                                                                                                    origin = origin ;
+                                                                                                                } ;
+                                                                                                            setup =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "setup" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        git fetch origin "$BRANCH" 2>&1
+                                                                                                                                        git checkout "$COMMIT" 2>&1
+                                                                                                                                        git fetch origin main 2>&1
+                                                                                                                                        if ! git diff --exit-code origin/main
+                                                                                                                                        then
+                                                                                                                                            git scratch
+                                                                                                                                            git reset --soft origin/main 2>&1
+                                                                                                                                            git commit --verbose 2>&1
+                                                                                                                                            git push origin HEAD 2>&1
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/setup"
+                                                                                                        } ;
+                                                                                            in
+                                                                                                {
+                                                                                                    personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.origin ;
+                                                                                                    resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.origin ;
+                                                                                                    secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.origin ;
+                                                                                                    visitor = fun config.personal.repository.visitor.email config.personal.repository.visitor.name config.personal.repository.visitor.origin ;
+                                                                                                } ;
+                                                                                    root =
+                                                                                        git
+                                                                                            {
+                                                                                                configs =
+                                                                                                    {
+                                                                                                        "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
+                                                                                                        "user.email" = config.personal.repository.private.email ;
+                                                                                                        "user.name" = config.personal.repository.private.name ;
+                                                                                                    } ;
+                                                                                            } ;
+                                                                                        remotes =
+                                                                                            {
+                                                                                                origin = config.personal.repository.private.origin ;
+                                                                                            } ;
+                                                                                        setup =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "setup" ;
+                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/setup" ;
                                                                                 } ;
                                                                     } ;
                                                                 secrets =
