@@ -1069,7 +1069,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "setup" ;
-                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.github ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         git fetch origin "$BRANCH" 2>&1
@@ -1081,6 +1081,12 @@
                                                                                                                                             git reset --soft origin/main 2>&1
                                                                                                                                             git commit --verbose 2>&1
                                                                                                                                             git push origin HEAD 2>&1
+                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                                            GITHUB_TOKEN="$( resources_.secrets."github-token.asc.age" )" || exit 64
+                                                                                                                                            gh auth login --with-token < "$GITHUB_TOKEN"
+                                                                                                                                            SQUASH_PR="$( gh pr create --fill --base main --head "$SQUASH_ \BRANCH" )" || exit 65
+                                                                                                                                            gh pr review "$SQUASH_URL" --approve --body "Auto-approved by setup script"
+                                                                                                                                            gh auth logout
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -1116,6 +1122,18 @@
                                                                                                             runtimeInputs = [ ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    git fetch origin "$BRANCH"
+                                                                                                                    git checkout "$COMMIT"
+                                                                                                                    git fetch origin main
+                                                                                                                    if ! diff origin/main
+                                                                                                                    then
+                                                                                                                        git scratch
+                                                                                                                        git reset --soft origin/main
+                                                                                                                        git commit --verbose
+                                                                                                                        SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                        git checkout main
+                                                                                                                        git rebase "$SQUASH_COMMIT"
+                                                                                                                    fi
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
