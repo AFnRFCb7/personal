@@ -793,31 +793,16 @@
                                                                                                                                         name = "test" ;
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
-                                                                                                                                            let
-                                                                                                                                                switch =
-                                                                                                                                                    let
-                                                                                                                                                        application =
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "switch" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                        '' ;
-                                                                                                                                                                } ;
-                                                                                                                                                        in "${ application }/bin/switch" ;
-                                                                                                                                                in
-                                                                                                                                                    ''
-                                                                                                                                                        if nixos-rebuild test --flake "$GIT_WORK_TREE#user"
-                                                                                                                                                        then
-                                                                                                                                                            echo We are testing.  If the tests are successful we can switch.
-                                                                                                                                                            # shellcheck disable=SC1091
-                                                                                                                                                            source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                                            makeWrapper ${ switch } "${ self }/switch" --set BRANCH "$BRANCH" --set COMMIT "$COMMIT"
-                                                                                                                                                        else
-                                                                                                                                                            echo We failed to nixos-rebuild test
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
+                                                                                                                                            ''
+                                                                                                                                                if nixos-rebuild test --flake "$GIT_WORK_TREE#user"
+                                                                                                                                                then
+                                                                                                                                                    echo We are testing.  If the tests are successful we can switch.
+                                                                                                                                                    # shellcheck disable=SC1091
+                                                                                                                                                    source ${ pkgs.makeWrapper }/nix-support/setup-hook
+                                                                                                                                                else
+                                                                                                                                                    echo We failed to nixos-rebuild test
+                                                                                                                                                fi
+                                                                                                                                            '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/test" ;
                                                                                                                     in
