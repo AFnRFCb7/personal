@@ -42,7 +42,7 @@
                                                                         mkdir --parents $out/src
                                                                         makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
                                                                         mkdir --parents $out/bin
-                                                                        makeWrapper ${ binary } $out/bin/${ target }" --set OUT $out
+                                                                        makeWrapper ${ binary } "$out/bin/${ target }" --set OUT $out
                                                                     '' ;
                                                         name = target ;
                                                         nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
