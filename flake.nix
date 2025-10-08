@@ -785,6 +785,7 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
