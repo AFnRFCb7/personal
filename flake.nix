@@ -998,7 +998,7 @@
                                                                                                                 BRANCH="$1"
                                                                                                                 COMMIT="$2"
                                                                                                                 cat >> /mount/.envrc <<EOF
-                                                                                                                export SOURCE=${ self }
+                                                                                                                export SOURCE="$REPOSITORY_ROOT"
                                                                                                                 export BRANCH="$BRANCH"
                                                                                                                 export COMMIT="$COMMIT"
                                                                                                                 EOF
