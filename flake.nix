@@ -24,12 +24,26 @@
                                                 pkgs.stdenv.mkDerivation
                                                     {
                                                         installPhase =
-                                                            ''
-                                                                mkdir --parents $out/src
-                                                                makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
-                                                                mkdir --parents $out/bin
-                                                                makeWrapper "$out/src/${ target }" "$out/bin/${ target }" --run "sudo \/"
-                                                            '' ;
+                                                            let
+                                                                binary =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = target ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            sudo "$OUT/src/${ target } ${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/${ target }" ;
+                                                                in
+                                                                    ''
+                                                                        mkdir --parents $out/src
+                                                                        makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
+                                                                        mkdir --parents $out/bin
+                                                                        makeWrapper ${ binary } $out/bin/${ target }" --set OUT $out
+                                                                    '' ;
                                                         name = target ;
                                                         nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
                                                         src = ./. ;
