@@ -816,7 +816,8 @@
                                                                                                                                                     ''
                                                                                                                                                         if nixos-rebuild test --flake "$GIT_WORK_TREE#user"
                                                                                                                                                         then
-                                                                                                                                                            echo We are testing.  If the tests are successful then we can switch.
+                                                                                                                                                            echo We are testing.  If the tests are successful we can switch.
+                                                                                                                                                            # shellcheck disable=SC1091
                                                                                                                                                             source ${ pkgs.makeWrapper }/nix-support/setup-hook
                                                                                                                                                             makeWrapper ${ switch } "${ self }/switch" --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                                                         else
@@ -839,6 +840,7 @@
                                                                                                                             else
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             fi
+                                                                                                                            # shellcheck disable=SC1091
                                                                                                                             source ${ pkgs.makeWrapper }/nix-support/setup-hook
                                                                                                                             makeWrapper ${ test } /mount/test --set GIT_WORK_TREE "$GIT_WORK_TREE"
                                                                                                                         '' ;
