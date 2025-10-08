@@ -782,7 +782,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.makeWrapper pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     test =
@@ -791,11 +791,37 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "test" ;
-                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
-                                                                                                                                            ''
-                                                                                                                                                nixos-rebuild test --flake ${ self }/work-tree
-                                                                                                                                            '' ;
+                                                                                                                                            let
+                                                                                                                                                switch =
+                                                                                                                                                    let
+                                                                                                                                                        application =
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "switch" ;
+                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ]
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            if nixos-rebuild switch --flake "$GIT_WORK_TREE#user"
+                                                                                                                                                                            then
+                                                                                                                                                                                echo We successfully switch
+                                                                                                                                                                            else
+                                                                                                                                                                                echo We failed to switch
+                                                                                                                                                                            fi
+                                                                                                                                                                        '' ;
+                                                                                                                                                                } ;
+                                                                                                                                                        in "${ application }/bin/switch" ;
+                                                                                                                                                in
+                                                                                                                                                    ''
+                                                                                                                                                        if nixos-rebuild test --flake "$GIT_WORK_TREE#user"
+                                                                                                                                                        then
+                                                                                                                                                            echo We are testing.  If the tests are successful then we can switch.
+                                                                                                                                                            makeWrapper ${ switch } "${ self }/switch
+                                                                                                                                                        else
+                                                                                                                                                            echo We failed to nixos-rebuild test
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/test" ;
                                                                                                                     in
