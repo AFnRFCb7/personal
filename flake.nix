@@ -806,6 +806,7 @@
                                                                                                                             cd /mount
                                                                                                                             mkdir --parents /mount/shared
                                                                                                                             cat > /mount/.envrc <<EOF
+                                                                                                                            export SOURCE="$SOURCE"
                                                                                                                             export BRANCH="$BRANCH"
                                                                                                                             export COMMIT="$COMMIT"
                                                                                                                             EOF
