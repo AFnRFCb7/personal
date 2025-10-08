@@ -1056,6 +1056,7 @@
                                                                                                         {
                                                                                                             configs =
                                                                                                                 {
+                                                                                                                    "alias.scratch" = "!${ scratch }" ;
                                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
                                                                                                                     "user.email" = email ;
                                                                                                                     "user.name" = name ;
@@ -1105,6 +1106,7 @@
                                                                                             {
                                                                                                 configs =
                                                                                                     {
+                                                                                                        "alias.scratch" = "!${ scratch }" ;
                                                                                                         "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                         "user.email" = config.personal.repository.private.email ;
                                                                                                         "user.name" = config.personal.repository.private.name ;
