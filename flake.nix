@@ -800,7 +800,7 @@
                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                 {
                                                                                                                                                                     name = "switch" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ]
+                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
                                                                                                                                                                             if nixos-rebuild switch --flake "$GIT_WORK_TREE#user"
