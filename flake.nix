@@ -816,7 +816,7 @@
                                                                                                                                                 nixos-rebuild switch --flake "$ROOT/work-tree#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                            in "${ application }/bin/test" ;
+                                                                                                                            in "${ application }/bin/switch" ;
                                                                                                                     test =
                                                                                                                         let
                                                                                                                             application =
