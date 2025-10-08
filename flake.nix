@@ -1088,10 +1088,10 @@
                                                                                                         } ;
                                                                                             in
                                                                                                 {
-                                                                                                    personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.origin ;
-                                                                                                    resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.origin ;
-                                                                                                    secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.origin ;
-                                                                                                    visitor = fun config.personal.repository.visitor.email config.personal.repository.visitor.name config.personal.repository.visitor.origin ;
+                                                                                                    personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.remote ;
+                                                                                                    resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.remote ;
+                                                                                                    secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.remote ;
+                                                                                                    visitor = fun config.personal.repository.visitor.email config.personal.repository.visitor.name config.personal.repository.visitor.remote ;
                                                                                                 } ;
                                                                                     root =
                                                                                         git
