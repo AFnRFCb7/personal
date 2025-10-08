@@ -1069,7 +1069,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "setup" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.github ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         git fetch origin "$BRANCH" 2>&1
