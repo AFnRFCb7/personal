@@ -816,11 +816,11 @@
                                                                                                                             else
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             fi
-                                                                                                                            ln --symbolic ${ test } /mount/test
+                                                                                                                            ln --symbolic ${ test } /mount
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "test" ] ;
+                                                                                    targets = [ ".envrc" "result" "standard-error" "standard-output" "status" "test" ] ;
                                                                                 } ;
                                                                         build-vm =
                                                                             ignore :
