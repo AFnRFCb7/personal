@@ -902,7 +902,21 @@
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "!${ application }/bin/check" ;
-                                                                                            "alias.garbage-collect" = "!${ pkgs.nix }/bin/nix-collect-garbage" ;
+                                                                                            "alias.garbage-collect" =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "garbage-colllect" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nix pkgs.time ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        df -h
+                                                                                                                        time ${ pkgs.nix }/bin/nix-collect-garbage 2> /dev/null
+                                                                                                                        df -h
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "$!${ application }/bin/garbage-collect" ;
                                                                                             "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                         } ;
                                                                                     remotes =
