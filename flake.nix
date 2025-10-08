@@ -1129,11 +1129,12 @@
                                                                                                                     if ! diff origin/main
                                                                                                                     then
                                                                                                                         git scratch
-                                                                                                                        git reset --soft origin/main
-                                                                                                                        git commit --verbose
+                                                                                                                        git reset --soft origin/main 2>&1
+                                                                                                                        git commit --verbose 2>&1
+                                                                                                                        git push origin HEAD 2>&1
                                                                                                                         SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                        git checkout main
-                                                                                                                        git rebase "$SQUASH_COMMIT"
+                                                                                                                        git checkout main 2>&1
+                                                                                                                        git rebase "$SQUASH_COMMIT" 2>&1
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
