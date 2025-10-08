@@ -926,7 +926,7 @@
                                                                                                                         ${ resources_.promotion.build } "$REPOSITORY_ROOT" "$BRANCH" "$COMMIT"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "!${ application }/bin/build-vm" ;
+                                                                                                    in "!${ application }/bin/build" ;
                                                                                             "alias.build-vm" =
                                                                                                 let
                                                                                                     application =
