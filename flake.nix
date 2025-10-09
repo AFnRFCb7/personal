@@ -277,11 +277,12 @@
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
                                                                                                     ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
+                                                                                                    touch /mount/debug
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/application" ;
                                                                     release = release ;
-                                                                    targets = [ ".envrc" "git" "work-tree" ] ;
+                                                                    targets = [ ".envrc" "debug" "git" "work-tree" ] ;
                                                                     transient = false ;
                                                                 } ;
                                                         milestone =
@@ -1079,7 +1080,7 @@
                                                                                                                                         SOURCE="$1"
                                                                                                                                         TYPE="$2"
                                                                                                                                         DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || exit 64
-                                                                                                                                        git fetch origin "$DEPENDENT_BRANCH" > "$GIT_DIR/wtf" 2>&1
+                                                                                                                                        git fetch origin "$DEPENDENT_BRANCH" > /mount/debug 2>&1
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
