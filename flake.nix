@@ -737,8 +737,8 @@
                                                                                                                                 git commit -am "$MESSAGE" --allow-empty --allow-empty-message
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                                echo
-                                                                                                                                echo
+                                                                                                                                echo A
+                                                                                                                                echo B
                                                                                                                                 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
