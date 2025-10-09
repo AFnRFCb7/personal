@@ -1082,7 +1082,14 @@
                                                                                                                                         git fetch origin "$DEPENDENT_BRANCH" 2>&1
                                                                                                                                         DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || exit 64
                                                                                                                                         git checkout "$DEPENDENT_COMMIT"
-                                                                                                                                        git scratch
+                                                                                                                                        git fetch origin main
+                                                                                                                                        if git diff --exit-code origin/main
+                                                                                                                                        then
+                                                                                                                                            git scratch
+                                                                                                                                            git reset --soft origin/main 2>&1
+                                                                                                                                            git commit --verbose 2>&1
+                                                                                                                                            SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
