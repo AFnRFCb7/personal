@@ -831,6 +831,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 nixos-rebuild test --flake "$SOURCE/work-tree#user"
+                                                                                                                                                exit 99
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/test" ;
@@ -1080,6 +1081,8 @@
                                                                                                                                         TYPE="$2"
                                                                                                                                         DEPENDENT_BRANCH="$( GIT_DIR="$REPOSITORY_ROOT/git" GIT_WORK_TREE="$REPOSITORY_ROOT/work-tree" git config --get "dependents.$TYPE.branch" ) || exit 64
                                                                                                                                         DEPENDENT_COMMIT="$( GIT_DIR="$REPOSITORY_ROOT/git" GIT_WORK_TREE="$REPOSITORY_ROOT/work-tree" git config --get "dependents.$TYPE.commit" ) || exit 64
+                                                                                                                                        export DEPENDENT_BRANCH
+                                                                                                                                        export DEPENDENT_COMMIT
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
