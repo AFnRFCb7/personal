@@ -1089,6 +1089,7 @@
                                                                                                                                             git reset --soft origin/main 2>&1
                                                                                                                                             git commit --verbose 2>&1
                                                                                                                                             SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                                                                            echo "$SQUASH_COMMIT"
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
