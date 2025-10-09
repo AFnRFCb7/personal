@@ -1075,10 +1075,13 @@
                                                                                                                                                     git scratch
                                                                                                                                                     git reset --soft origin/main 2>&1
                                                                                                                                                     git commit --verbose 2>&1
+                                                                                                                                                    git push origin HEAD
                                                                                                                                                     SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                                     echo "$SQUASH_BRANCH"
                                                                                                                                                     TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || exit 64
                                                                                                                                                     gh auth login --with-token < "$TOKEN"
+                                                                                                                                                    URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || exit 64
+                                                                                                                                                    gh pr merge --rebase --subject "Promotion Merge" "$URL"
                                                                                                                                                     gh auth logout
                                                                                                                                                 fi
                                                                                                                                             '' ;
