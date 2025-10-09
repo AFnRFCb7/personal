@@ -261,6 +261,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    export REPOSITORY_ROOT=/mount
                                                                                                     export GIT_DIR=/mount/git
                                                                                                     export GIT_WORK_TREE=/mount/work-tree
                                                                                                     mkdir --parents "$GIT_DIR"
@@ -345,7 +346,7 @@
                                                                                     GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.branch" "$BRANCH"
                                                                                     COMMIT="$( git rev-parse HEAD )" || exit 64
                                                                                     GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.commit" "$COMMIT"
-                                                                                     sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$COMMIT\3#" "$ROOT/work-tree/flake.nix"
+                                                                                    sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$COMMIT\3#" "$ROOT/work-tree/flake.nix"
                                                                                 '' ;
                                                                         } ;
                                                             in "${ application }/bin/snapshot" ;
