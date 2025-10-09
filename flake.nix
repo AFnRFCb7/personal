@@ -1080,7 +1080,8 @@
                                                                                                                                         TYPE="$2"
                                                                                                                                         DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || exit 64
                                                                                                                                         git fetch origin "$DEPENDENT_BRANCH" 2>&1
-                                                                                                                                        # DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || exit 64
+                                                                                                                                        DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || exit 64
+                                                                                                                                        echo "$DEPENDENT_COMMIT" > "$GIT_DIR/wtf"
                                                                                                                                         # git checkout "$DEPENDENT_COMMIT"
                                                                                                                                         # git fetch origin main
                                                                                                                                         # if git diff --exit-code origin/main
