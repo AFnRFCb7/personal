@@ -1079,7 +1079,7 @@
                                                                                                                                         SOURCE="$1"
                                                                                                                                         TYPE="$2"
                                                                                                                                         DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || exit 64
-                                                                                                                                        echo $DEPENDENT_BRANCH
+                                                                                                                                        echo "$DEPENDENT_BRANCH"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
