@@ -815,9 +815,9 @@
                                                                                                                                                 ${ resources_.promotion.squash.dependents.resources } "$REPOSITORY_ROOT" resources
                                                                                                                                                 ${ resources_.promotion.squash.dependents.secrets } "$REPOSITORY_ROOT" secrets
                                                                                                                                                 ${ resources_.promotion.squash.dependents.visitor } "$REPOSITORY_ROOT" visitor
-                                                                                                                                                ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
-                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user"
-                                                                                                                                                GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
+                                                                                                                                                # ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
+                                                                                                                                                # nixos-rebuild switch --flake "$ROOT/work-tree#user"
+                                                                                                                                                # GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/switch" ;
@@ -830,8 +830,8 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                nixos-rebuild test --flake "$SOURCE/work-tree#user"
-                                                                                                                                                exit 99
+
+                                                                                                                                                # nixos-rebuild test --flake "$SOURCE/work-tree#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/test" ;
