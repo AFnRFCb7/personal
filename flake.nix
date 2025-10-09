@@ -339,10 +339,13 @@
                                                                             text =
                                                                                 ''
                                                                                     TOKEN="$1"
-                                                                                    FLAKE_FILE="$2"
+                                                                                    ROOT="$2"
                                                                                     git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                    HASH="$( git rev-parse HEAD )" || exit 64
-                                                                                    sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$HASH\3#" "$FLAKE_FILE"
+                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                    GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.branch" "$BRANCH"
+                                                                                    COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                                    GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.commit" "$COMMIT"
+                                                                                     sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$COMMIT\3#" "$ROOT/work-tree/flake.nix"
                                                                                 '' ;
                                                                         } ;
                                                             in "${ application }/bin/snapshot" ;
@@ -808,10 +811,10 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ${ resources_.promotion.squash.dependents.personal } "$COMMIT" "$BRANCH"
-                                                                                                                                                ${ resources_.promotion.squash.dependents.resources } "$COMMIT" "$BRANCH"
-                                                                                                                                                ${ resources_.promotion.squash.dependents.secrets } "$COMMIT" "$BRANCH"
-                                                                                                                                                ${ resources_.promotion.squash.dependents.visitor } "$COMMIT" "$BRANCH"
+                                                                                                                                                ${ resources_.promotion.squash.dependents.personal } "$COMMIT" "$BRANCH" personal
+                                                                                                                                                ${ resources_.promotion.squash.dependents.resources } "$COMMIT" "$BRANCH" resources
+                                                                                                                                                ${ resources_.promotion.squash.dependents.secrets } "$COMMIT" "$BRANCH" secrets
+                                                                                                                                                ${ resources_.promotion.squash.dependents.visitor } "$COMMIT" "$BRANCH" visitor
                                                                                                                                                 ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
                                                                                                                                                 nixos-rebuild switch --flake "$ROOT/work-tree#user"
                                                                                                                                                 GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
@@ -1037,11 +1040,10 @@
                                                                                                                 EOF
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 git checkout "$COMMIT" 2>&1
-                                                                                                                FLAKE_FILE="$GIT_WORK_TREE/flake.nix"
-                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$FLAKE_FILE"
-                                                                                                                GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$FLAKE_FILE"
-                                                                                                                GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$FLAKE_FILE"
-                                                                                                                GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$FLAKE_FILE"
+                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$REPOSITORY_ROOT"
+                                                                                                                GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$REPOSITORY_ROOT"
+                                                                                                                GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$REPOSITORY_ROOT"
+                                                                                                                GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$REPOSITORY_ROOT"
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
@@ -1074,38 +1076,28 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        echo "# 1" >> /mount/.envrc
-                                                                                                                                        git fetch origin "$BRANCH" 2>&1
-                                                                                                                                        echo "# 2" >> /mount/.envrc
-                                                                                                                                        git checkout "$COMMIT" 2>&1
-                                                                                                                                        echo "# 3" >> /mount/.envrc
+                                                                                                                                        ROOT_BRANCH="$1"
+                                                                                                                                        ROOT_COMMIT="$2"
+                                                                                                                                        TYPE="$3"
+                                                                                                                                        ROOT="$( ${ resources_.promotion.root } "$ROOT_BRANCH" "$ROOT_COMMIT" )" || exit 64
+                                                                                                                                        DEPENDENT_BRANCH="$( GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config --get "dependents.$TYPE.branch" )" || exit 64
+                                                                                                                                        git fetch origin "$DEPENDENT_BRANCH" 2>&1
+                                                                                                                                        DEPENDENT_COMMIT="$( GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config --get "dependents.$TYPE.commit" )" || exit 64
+                                                                                                                                        git checkout "$DEPENDENT_COMMIT" 2>&1
                                                                                                                                         git fetch origin main 2>&1
-                                                                                                                                        echo "# 4" >> /mount/.envrc
                                                                                                                                         if ! git diff --exit-code origin/main
                                                                                                                                         then
-                                                                                                                                        echo "# 5" >> /mount/.envrc
                                                                                                                                             git scratch
-                                                                                                                                        echo "# 6" >> /mount/.envrc
                                                                                                                                             git reset --soft origin/main 2>&1
-                                                                                                                                        echo "# 7" >> /mount/.envrc
                                                                                                                                             git commit --verbose 2>&1
-                                                                                                                                        echo "# 8" >> /mount/.envrc
                                                                                                                                             git push origin HEAD 2>&1
-                                                                                                                                        echo "# 9" >> /mount/.envrc
                                                                                                                                             SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                        echo "# 10" >> /mount/.envrc
                                                                                                                                             GITHUB_TOKEN="$( resources_.secrets."github-token.asc.age" )" || exit 64
-                                                                                                                                        echo "# 11" >> /mount/.envrc
                                                                                                                                             gh auth login --with-token < "$GITHUB_TOKEN"
-                                                                                                                                        echo "# 12" >> /mount/.envrc
                                                                                                                                             SQUASH_PR="$( gh pr create --fill --base main --head "$SQUASH_BRANCH" )" || exit 65
-                                                                                                                                        echo "# 13" >> /mount/.envrc
                                                                                                                                             gh pr review "$SQUASH_PR" --approve --body "Auto-approved by setup script"
-                                                                                                                                        echo "# 14" >> /mount/.envrc
                                                                                                                                             gh auth logout
-                                                                                                                                        echo "# 15" >> /mount/.envrc
                                                                                                                                         fi
-                                                                                                                                        echo "# 16" >> /mount/.envrc
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
