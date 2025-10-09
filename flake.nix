@@ -1076,28 +1076,6 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        ROOT_BRANCH="$1"
-                                                                                                                                        ROOT_COMMIT="$2"
-                                                                                                                                        TYPE="$3"
-                                                                                                                                        ROOT="$( ${ resources_.promotion.root } "$ROOT_BRANCH" "$ROOT_COMMIT" )" || exit 64
-                                                                                                                                        DEPENDENT_BRANCH="$( GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config --get "dependents.$TYPE.branch" )" || exit 64
-                                                                                                                                        git fetch origin "$DEPENDENT_BRANCH" 2>&1
-                                                                                                                                        DEPENDENT_COMMIT="$( GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config --get "dependents.$TYPE.commit" )" || exit 64
-                                                                                                                                        git checkout "$DEPENDENT_COMMIT" 2>&1
-                                                                                                                                        git fetch origin main 2>&1
-                                                                                                                                        if ! git diff --exit-code origin/main
-                                                                                                                                        then
-                                                                                                                                            git scratch
-                                                                                                                                            git reset --soft origin/main 2>&1
-                                                                                                                                            git commit --verbose 2>&1
-                                                                                                                                            git push origin HEAD 2>&1
-                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                            GITHUB_TOKEN="$( resources_.secrets."github-token.asc.age" )" || exit 64
-                                                                                                                                            gh auth login --with-token < "$GITHUB_TOKEN"
-                                                                                                                                            SQUASH_PR="$( gh pr create --fill --base main --head "$SQUASH_BRANCH" )" || exit 65
-                                                                                                                                            gh pr review "$SQUASH_PR" --approve --body "Auto-approved by setup script"
-                                                                                                                                            gh auth logout
-                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
