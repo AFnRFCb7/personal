@@ -1079,7 +1079,7 @@
                                                                                                                                         SOURCE="$1"
                                                                                                                                         TYPE="$2"
                                                                                                                                         DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || exit 64
-                                                                                                                                        git fetch origin "$DEPENDENT_BRANCH" > "$GIT/wtf" 2>&1
+                                                                                                                                        git fetch origin "$DEPENDENT_BRANCH" > "$GIT_DIR/wtf" 2>&1
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
