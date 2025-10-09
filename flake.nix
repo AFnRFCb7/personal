@@ -811,10 +811,10 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ${ resources_.promotion.squash.dependents.personal } "$COMMIT" "$BRANCH" personal
-                                                                                                                                                ${ resources_.promotion.squash.dependents.resources } "$COMMIT" "$BRANCH" resources
-                                                                                                                                                ${ resources_.promotion.squash.dependents.secrets } "$COMMIT" "$BRANCH" secrets
-                                                                                                                                                ${ resources_.promotion.squash.dependents.visitor } "$COMMIT" "$BRANCH" visitor
+                                                                                                                                                ${ resources_.promotion.squash.dependents.personal } "$REPOSITORY_ROOT" personal
+                                                                                                                                                ${ resources_.promotion.squash.dependents.resources } "$REPOSITORY_ROOT" resources
+                                                                                                                                                ${ resources_.promotion.squash.dependents.secrets } "$REPOSITORY_ROOT" secrets
+                                                                                                                                                ${ resources_.promotion.squash.dependents.visitor } "$REPOSITORY_ROOT" visitor
                                                                                                                                                 ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
                                                                                                                                                 nixos-rebuild switch --flake "$ROOT/work-tree#user"
                                                                                                                                                 GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
@@ -1076,6 +1076,10 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        REPOSITORY_ROOT="$1"
+                                                                                                                                        TYPE="$2"
+                                                                                                                                        DEPENDENT_BRANCH="$( GIT_DIR="$REPOSITORY_ROOT/git" GIT_WORK_TREE="$REPOSITORY_ROOT/work-tree" git config --get "dependents.$TYPE.branch" ) || exit 64
+                                                                                                                                        DEPENDENT_COMMIT="$( GIT_DIR="$REPOSITORY_ROOT/git" GIT_WORK_TREE="$REPOSITORY_ROOT/work-tree" git config --get "dependents.$TYPE.commit" ) || exit 64
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
