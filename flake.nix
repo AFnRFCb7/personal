@@ -1087,7 +1087,7 @@
                                                                                                                                         then
                                                                                                                                             git scratch
                                                                                                                                             git reset --soft origin/main 2>&1
-                                                                                                                                            # git commit --verbose 2>&1
+                                                                                                                                            git commit --verbose 2>&1
                                                                                                                                             # SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                             # echo "$SQUASH_BRANCH"
                                                                                                                                         fi
