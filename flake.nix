@@ -1061,7 +1061,7 @@
                                                                                                             configs =
                                                                                                                 {
                                                                                                                     "alias.scratch" = "!${ scratch }" ;
-                                                                                                                    "alisas.squash-and-merge" =
+                                                                                                                    "alias.squash-and-merge" =
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
