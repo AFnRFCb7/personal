@@ -811,7 +811,8 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal
+                                                                                                                                                PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
+                                                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor
@@ -1059,6 +1060,26 @@
                                                                                                             configs =
                                                                                                                 {
                                                                                                                     "alias.scratch" = "!${ scratch }" ;
+                                                                                                                    "alisas.squash-and-merge" =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "squash-and-merge" ;
+                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                if git diff --exit-code origin/main
+                                                                                                                                                then
+                                                                                                                                                    git scratch
+                                                                                                                                                    git reset --soft origin/main 2>&1
+                                                                                                                                                    git commit --verbose 2>&1
+                                                                                                                                                    SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                                                    echo "$SQUASH_BRANCH"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "!${ application }/bin/squash-and-merge" ;
                                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
                                                                                                                     "user.email" = email ;
                                                                                                                     "user.name" = name ;
@@ -1083,14 +1104,6 @@
                                                                                                                                         DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || exit 64
                                                                                                                                         git checkout "$DEPENDENT_COMMIT" 2>&1
                                                                                                                                         git fetch origin main 2>&1
-                                                                                                                                        if git diff --exit-code origin/main
-                                                                                                                                        then
-                                                                                                                                            git scratch
-                                                                                                                                            git reset --soft origin/main 2>&1
-                                                                                                                                            git commit --verbose 2>&1
-                                                                                                                                            # SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                            # echo "$SQUASH_BRANCH"
-                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/setup" ;
