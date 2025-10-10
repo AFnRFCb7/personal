@@ -814,6 +814,7 @@
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
                                                                                                                                                 echo "PERSONAL=$PERSONAL"
                                                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
+                                                                                                                                                echo DONE
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor
