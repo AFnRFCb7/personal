@@ -1085,7 +1085,6 @@
                                                                                                                                                     gh pr merge --rebase --subject "Promotion Merge" "$URL"
                                                                                                                                                     gh auth logout                                                                                                                                                                                                                                                                                               fi
                                                                                                                                                 fi
-
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "!${ application }/bin/squash-and-merge" ;
