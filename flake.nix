@@ -1090,6 +1090,7 @@
                                                                                                                                                     URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || exit 64
                                                                                                                                                     gh pr merge --rebase --subject "Promotion Merge" "$URL"
                                                                                                                                                     gh auth logout                                                                                                                                                fi
+                                                                                                                                                fi
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "!${ application }/bin/squash-and-merge" ;
