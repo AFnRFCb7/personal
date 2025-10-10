@@ -1077,7 +1077,6 @@
                                                                                                                                                     git commit --verbose 2>&1
                                                                                                                                                     git push origin HEAD
                                                                                                                                                     SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                                    echo "$SQUASH_BRANCH"
                                                                                                                                                     TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || exit 64
                                                                                                                                                     echo "TOKEN=$TOKEN"
                                                                                                                                                     gh auth login --host-name github.com --with-token < "$TOKEN/secret"
