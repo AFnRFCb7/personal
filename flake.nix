@@ -1081,7 +1081,7 @@
                                                                                                                                                     echo "TOKEN=$TOKEN"
                                                                                                                                                     cat <<EOF
                                                                                                                                                     gh auth login --host-name github.com --with-token < "$TOKEN/secret"
-                                                                                                                                                    URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || exit 64
+                                                                                                                                                    URL="\$( gh pr create --base main --head \"$SQUASH_BRANCH\" --title \"Promotion\" --body \"Automated Promotion Merge" )\" || exit 64
                                                                                                                                                     gh pr merge --rebase --subject "Promotion Merge" "$URL"
                                                                                                                                                     gh auth logout
                                                                                                                                                     EOF
