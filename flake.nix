@@ -819,11 +819,9 @@
                                                                                                                                                 GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git squash-and-merge
                                                                                                                                                 VISITOR="$( ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor )" || exit 64
                                                                                                                                                 GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git squash-and-merge
-                                                                                                                                                # ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources
-                                                                                                                                                # ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets
-                                                                                                                                                # ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor
-                                                                                                                                                # ROOT="$( ${ resources_.promotion.squash.root } "$COMMIT" "$BRANCH" )" || exit 64
-                                                                                                                                                # nixos-rebuild switch --flake "$ROOT/work-tree#user"
+                                                                                                                                                ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || exit 64
+                                                                                                                                                GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git squash-and-merge
+                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user" --update-input personal --update-input resources --update-input secrets --update-input visitor
                                                                                                                                                 # GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1132,41 +1130,63 @@
                                                                                                 configs =
                                                                                                     {
                                                                                                         "alias.scratch" = "!${ scratch }" ;
+                                                                                                                    "alias.squash-and-merge" =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "squash-and-merge" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                if ! git diff --exit-code origin/main
+                                                                                                                                                then
+                                                                                                                                                    git scratch
+                                                                                                                                                    git reset --soft origin/main 2>&1
+                                                                                                                                                    git commit --verbose 2>&1
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    SQUASH_COMMIT="$( git rev-parse --abbrev-ref --abbrev-ref HEAD )" || exit 64
+																			git checkout main
+																			git rebase "$SQUASH_COMMIT"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "!${ application }/bin/squash-and-merge" ;
+
                                                                                                         "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                         "user.email" = config.personal.repository.private.email ;
                                                                                                         "user.name" = config.personal.repository.private.name ;
                                                                                                     } ;
-                                                                                            } ;
-                                                                                        remotes =
-                                                                                            {
-                                                                                                origin = config.personal.repository.private.origin ;
-                                                                                            } ;
-                                                                                        setup =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "setup" ;
-                                                                                                            runtimeInputs = [ ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    git fetch origin "$BRANCH"
-                                                                                                                    git checkout "$COMMIT"
-                                                                                                                    git fetch origin main
-                                                                                                                    if ! diff origin/main
-                                                                                                                    then
-                                                                                                                        git scratch
-                                                                                                                        git reset --soft origin/main 2>&1
-                                                                                                                        git commit --verbose 2>&1
-                                                                                                                        git push origin HEAD 2>&1
-                                                                                                                        SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
-                                                                                                                        git checkout main 2>&1
-                                                                                                                        git rebase "$SQUASH_COMMIT" 2>&1
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/setup" ;
-                                                                                } ;
+	                                                                                        remotes =
+        	                                                                                    {
+                	                                                                                origin = config.personal.repository.private.origin ;
+                        	                                                                    } ;
+                                	                                                        setup =
+                                        	                                                    let
+                                                	                                                application =
+                                                        	                                            pkgs.writeShellApplication
+                                                                	                                        {
+                                                                        	                                    name = "setup" ;
+                                                                                	                            runtimeInputs = [ ] ;
+                                                                                        	                    text =
+                                                                                                	                ''
+                                                                                                        	            git fetch origin "$BRANCH"
+                                                                                                                	    git checkout "$COMMIT"
+	                                                                                                                    git fetch origin main
+        	                                                                                                            if ! diff origin/main
+                	                                                                                                    then
+                        	                                                                                                git scratch
+                                	                                                                                        git reset --soft origin/main 2>&1
+                                        	                                                                                git commit --verbose 2>&1
+                                                	                                                                        git push origin HEAD 2>&1
+                                                        	                                                                SQUASH_COMMIT="$( git rev-parse HEAD )" || exit 64
+                                                                	                                                        git checkout main 2>&1
+                                                                        	                                                git rebase "$SQUASH_COMMIT" 2>&1
+                                                                                	                                    fi
+                                                                                        	                        '' ;
+                                                                                                	        } ;
+	                                                                                                in "${ application }/bin/setup" ;
+        	                                                                        	} ;
                                                                     } ;
                                                                 secrets =
                                                                     let
