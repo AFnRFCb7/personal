@@ -1079,7 +1079,6 @@
                                                                                                                                                     git push origin HEAD
                                                                                                                                                     SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
                                                                                                                                                     TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || exit 64
-                                                                                                                                                    echo "TOKEN=$TOKEN"
                                                                                                                                                     gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                     URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || exit 64
                                                                                                                                                     gh pr merge --rebase --subject "Promotion Merge" "$URL"
