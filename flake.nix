@@ -812,7 +812,8 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
-                                                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
+                                                                                                                                                export PERSONAL
+                                                                                                                                                # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
                                                                                                                                                 # RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || exit 64
                                                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git squash-and-merge
                                                                                                                                                 # SECRETS="$( ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets )" || exit 64
