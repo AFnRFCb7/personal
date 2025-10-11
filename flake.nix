@@ -1249,7 +1249,7 @@
                                                                                     visitor = visitor ;
                                                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                                                     yq-go = pkgs.yq-go ;
-                                                                                } ;
+                                                                                }.setup ;
                                                                         point =
                                                                             let
                                                                                 identity =
@@ -1950,7 +1950,7 @@
                                                                     visitor = visitor ;
                                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                                     yq-go = pkgs.yq-go ;
-                                                                } ;
+                                                                }.setup ;
                                                             in { name = "test-resource:  ${ name }" ; value = rsrcs.check test ; } ;
                                             tests =
                                                 [
