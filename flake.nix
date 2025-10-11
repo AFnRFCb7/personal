@@ -1491,6 +1491,13 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
+                                                                                            name = "alpha" ;
+                                                                                            text = "echo hi" ;
+                                                                                        } ;
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
                                                                                             name = "studio" ;
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
                                                                                             text =
