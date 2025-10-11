@@ -836,7 +836,6 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                # 6c49ce0e-949e-447f-ad92-69a4acf45340
                                                                                                                                                 nixos-rebuild test --flake "$SOURCE/work-tree#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
