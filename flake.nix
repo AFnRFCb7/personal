@@ -1187,6 +1187,7 @@
                                                                                                 	        } ;
 	                                                                                                in "${ application }/bin/setup" ;
         	                                                                        	} ;
+										} ;
                                                                     } ;
                                                                 secrets =
                                                                     let
