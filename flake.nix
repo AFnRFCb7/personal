@@ -1493,7 +1493,7 @@
                                                                                         {
                                                                                             name = "alpha" ;
                                                                                             text = "echo hi" ;
-                                                                                        } ;
+                                                                                        }
                                                                                 )
                                                                                 (
                                                                                     pkgs.writeShellApplication
