@@ -812,9 +812,13 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
-                                                                                                                                                echo "PERSONAL=$PERSONAL"
                                                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
-                                                                                                                                                echo DONE
+                                                                                                                                                RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || exit 64
+                                                                                                                                                GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git squash-and-merge
+                                                                                                                                                SECRETS="$( ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets )" || exit 64
+                                                                                                                                                GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git squash-and-merge
+                                                                                                                                                VISITOR="$( ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor )" || exit 64
+                                                                                                                                                GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git squash-and-merge
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets
                                                                                                                                                 # ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor
