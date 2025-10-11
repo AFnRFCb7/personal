@@ -822,7 +822,7 @@
                                                                                                                                                 ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                                 GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git squash-and-merge
                                                                                                                                                 nixos-rebuild switch --flake "$ROOT/work-tree#user" --update-input personal --update-input resources --update-input secrets --update-input visitor
-                                                                                                                                                # GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
+                                                                                                                                                GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/switch" ;
