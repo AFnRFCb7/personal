@@ -812,8 +812,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
-                                                                                                                                                export PERSONAL
-                                                                                                                                                # GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
+                                                                                                                                                GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
                                                                                                                                                 # RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || exit 64
                                                                                                                                                 # GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git squash-and-merge
                                                                                                                                                 # SECRETS="$( ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets )" || exit 64
@@ -836,7 +835,6 @@
                                                                                                                                         runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                # 6c49ce0e-949e-447f-ad92-69a4acf45340
                                                                                                                                                 nixos-rebuild test --flake "$SOURCE/work-tree#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1489,6 +1487,13 @@
                                                                                     } ;
 									                                    in
                                                                             [
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "alpha" ;
+                                                                                            text = "echo hi" ;
+                                                                                        }
+                                                                                )
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
