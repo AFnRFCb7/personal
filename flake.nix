@@ -1719,6 +1719,15 @@
                                 {
                                     checks =
                                         let
+                                            rsrcs2 =
+                                                resources.lib.event-listener
+                                                    {
+                                                        coreutils = pkgs.coreutils ;
+                                                        flock = pkgs.flock ;
+                                                        redis = pkgs.redis ;
+                                                        resources-directory = "/build/resources" ;
+                                                        yq-go = pkgs.yq-go ;
+                                                    } ;
                                             test-home =
                                                 name :
                                                     {
@@ -1918,15 +1927,6 @@
                                             test-resource =
                                                 name : throws-error : has-standard-error : target-mismatch : is-transient : test :
                                                     let
-                                                        rsrcs2 =
-                                                            resources.lib.event-listener
-                                                                {
-                                                                    coreutils = pkgs.coreutils ;
-                                                                    flock = pkgs.flock ;
-                                                                    redis = pkgs.redis ;
-                                                                    resources-directory = "/build/resources" ;
-                                                                    yq-go = pkgs.yq-go ;
-                                                                } ;
                                                         rsrcs =
                                                             resources.lib.setup
                                                                 {
