@@ -1465,6 +1465,28 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
+                                                        systemd.services.resources-log-listener =
+                                                            {
+                                                                after = [ "network.target" ] ;
+                                                                serviceConfig =
+                                                                    {
+                                                                        ExecStart =
+                                                                            let
+                                                                                event-listener =
+                                                                                    resources
+                                                                                        {
+                                                                                            coreutils = pkgs.coreutils ;
+                                                                                            flock = pkgs.flock ;
+                                                                                            redis = pkgs.redis ;
+                                                                                            resources-directory = "/home/${ config.personal. name }/resources" ;
+                                                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                                                            yq-go = pkgs.yq-go ;
+                                                                                        } ;
+                                                                                in "${ event-listener.implementation }/bin/event-listener" ;
+                                                                        User = config.personal.name ;
+                                                                    } ;
+                                                                wantedBy = [ "multi-user.target" ] ;
+                                                            } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
