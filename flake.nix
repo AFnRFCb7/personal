@@ -1524,6 +1524,13 @@
                                                                                 (
                                                                                     pkgs.writeShellApplication
                                                                                         {
+                                                                                            name = "double-check-promotion" ;
+                                                                                            text = "echo promotion works" ;
+                                                                                        }
+                                                                                )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
                                                                                             name = "foobar" ;
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text = resources_.secrets.dot-ssh.boot."identity.asc.age" ;
