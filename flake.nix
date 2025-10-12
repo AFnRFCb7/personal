@@ -1221,7 +1221,7 @@
                                                                 path : value :
                                                                     let
                                                                         rsrcs =
-                                                                            resources.lib
+                                                                            resources.lib.setup
                                                                                 {
                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                                     coreutils = pkgs.coreutils ;
@@ -1919,7 +1919,7 @@
                                                 name : throws-error : has-standard-error : target-mismatch : is-transient : test :
                                                     let
                                                         rsrcs =
-                                                            resources.lib
+                                                            resources.lib.setup
                                                                 {
                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                     coreutils = pkgs.coreutils ;
