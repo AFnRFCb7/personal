@@ -821,7 +821,7 @@
                                                                                                                                                 GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git squash-and-merge
                                                                                                                                                 ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                                 nix flake update --flake "$ROOT/work-tree" personal resources secrets visitor
-                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user" --update-input personal
+                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user"
                                                                                                                                                 GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git squash-and-merge
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1143,6 +1143,7 @@
                                                                                                                                     then
                                                                                                                                         git scratch
                                                                                                                                         git reset --soft origin/main 2>&1
+                                                                                                                                        git commit -A
                                                                                                                                         git commit --verbose 2>&1
                                                                                                                                         git push origin HEAD 2>&1
                                                                                                                                         SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || exit 64
