@@ -1473,7 +1473,7 @@
                                                                         ExecStart =
                                                                             let
                                                                                 event-listener =
-                                                                                    resources.event-listener
+                                                                                    resources.lib.event-listener
                                                                                         {
                                                                                             coreutils = pkgs.coreutils ;
                                                                                             flock = pkgs.flock ;
