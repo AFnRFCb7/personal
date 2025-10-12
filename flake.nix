@@ -821,7 +821,7 @@
                                                                                                                                                 GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git squash-and-merge
                                                                                                                                                 ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || exit 64
                                                                                                                                                 nix flake update --flake "$ROOT/work-tree" personal resources secrets visitor
-                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user" --update-input personal --update-input resources --update-input secrets --update-input visitor
+                                                                                                                                                nixos-rebuild switch --flake "$ROOT/work-tree#user" --update-input personal
                                                                                                                                                 # GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git squash-and-merge
                                                                                                                                                 # GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git push origin HEAD
                                                                                                                                             '' ;
