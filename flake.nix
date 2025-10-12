@@ -1143,7 +1143,7 @@
                                                                                                                                     then
                                                                                                                                         git scratch
                                                                                                                                         git reset --soft origin/main 2>&1
-                                                                                                                                        git commit -A
+                                                                                                                                        git add -A
                                                                                                                                         git commit --verbose 2>&1
                                                                                                                                         git push origin HEAD 2>&1
                                                                                                                                         SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || exit 64
