@@ -24,7 +24,7 @@
                                                 pkgs.writeShellApplication
                                                     {
                                                         name = target ;
-                                                        runtimeInputs = [ ( password-less derivation target ) ] ;
+                                                        runtimeInputs = [ ( password-less-core derivation target ) ] ;
                                                         text =
                                                             ''
                                                                 if read -t 0
