@@ -1221,7 +1221,7 @@
                                                                 path : value :
                                                                     let
                                                                         rsrcs =
-                                                                            resources.lib
+                                                                            resources.lib.setup
                                                                                 {
                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                                     coreutils = pkgs.coreutils ;
@@ -1464,6 +1464,28 @@
                                                                                     in "${ application }/bin/activation" ;
                                                                     } ;
                                                                 stateVersion = "23.05" ;
+                                                            } ;
+                                                        systemd.services.resources-log-listener =
+                                                            {
+                                                                after = [ "network.target" ] ;
+                                                                serviceConfig =
+                                                                    {
+                                                                        ExecStart =
+                                                                            let
+                                                                                event-listener =
+                                                                                    resources.lib.event-listener
+                                                                                        {
+                                                                                            coreutils = pkgs.coreutils ;
+                                                                                            flock = pkgs.flock ;
+                                                                                            redis = pkgs.redis ;
+                                                                                            resources-directory = "/home/${ config.personal. name }/resources" ;
+                                                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                                                            yq-go = pkgs.yq-go ;
+                                                                                        } ;
+                                                                                in "${ event-listener.implementation }/bin/event-listener" ;
+                                                                        User = config.personal.name ;
+                                                                    } ;
+                                                                wantedBy = [ "multi-user.target" ] ;
                                                             } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
@@ -1719,6 +1741,16 @@
                                 {
                                     checks =
                                         let
+                                            rsrcs2 =
+                                                resources.lib.event-listener
+                                                    {
+                                                        coreutils = pkgs.coreutils ;
+                                                        flock = pkgs.flock ;
+                                                        redis = pkgs.redis ;
+                                                        resources-directory = "/build/resources" ;
+                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                        yq-go = pkgs.yq-go ;
+                                                    } ;
                                             test-home =
                                                 name :
                                                     {
@@ -1919,7 +1951,7 @@
                                                 name : throws-error : has-standard-error : target-mismatch : is-transient : test :
                                                     let
                                                         rsrcs =
-                                                            resources.lib
+                                                            resources.lib.setup
                                                                 {
                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                     coreutils = pkgs.coreutils ;
@@ -1960,6 +1992,8 @@
                                                             in { name = "test-resource:  ${ name }" ; value = rsrcs.check test ; } ;
                                             tests =
                                                 [
+                                                    # { name = "t2" ; value = rsrcs2.check { log-file = [ "WRONG" "cb530ae0685c39cf856fbef11a8dd0a7345c88c0e76be94a36db7bbc90441d9f858238d65e2aee0293f62d0cfc7520cca766cb0a10c7497adbee4c1647110ad0" "db82bfb27b0bbd524de7967935c64c44abca9c78b6b6882e7ea35e6e2e097f3c899119ed431d257c8a34b537adf87bd464a59022eab26eba7f7cb2daf2ac5a5" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
+                                                    { name = "t1" ; value = rsrcs2.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
                                                     ( test-home "simple test" )
                                                     (
                                                         test-resource
