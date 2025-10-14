@@ -722,7 +722,7 @@
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
-                                                                                                                        name = "promote" ;
+                                                                                                                        name = "snapshot" ;
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                         text =
                                                                                                                             ''
