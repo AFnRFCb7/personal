@@ -1221,7 +1221,7 @@
                                                                 path : value :
                                                                     let
                                                                         resource-factory =
-                                                                            resources.lib.setup
+                                                                            resources.lib.factories.generic
                                                                                 {
                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                                     coreutils = pkgs.coreutils ;
@@ -1473,7 +1473,7 @@
                                                                         ExecStart =
                                                                             let
                                                                                 log-event-listener =
-                                                                                    resources.lib.log-event-listener
+                                                                                    resources.lib.listeners.log-event-listener
                                                                                         {
                                                                                             coreutils = pkgs.coreutils ;
                                                                                             flock = pkgs.flock ;
@@ -1742,7 +1742,7 @@
                                     checks =
                                         let
                                             log-event-listener =
-                                                resources.lib.log-event-listener
+                                                resources.lib.listeners.log-event-listener
                                                     {
                                                         coreutils = pkgs.coreutils ;
                                                         flock = pkgs.flock ;
@@ -1951,7 +1951,7 @@
                                                 name : throws-error : has-standard-error : target-mismatch : is-transient : test :
                                                     let
                                                         resource-factory =
-                                                            resources.lib.setup
+                                                            resources.lib.factories.generic
                                                                 {
                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                                     coreutils = pkgs.coreutils ;
