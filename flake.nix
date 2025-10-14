@@ -716,7 +716,8 @@
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.promote" =
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "alias.snapshot" =
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -725,25 +726,13 @@
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if read -t 0
-                                                                                                                                then
-                                                                                                                                    MESSAGE="$( cat )" || exit 64
-                                                                                                                                elif [[ "$#" -gt 1 ]]
-                                                                                                                                then
-                                                                                                                                    MESSAGE="$1"
-                                                                                                                                else
-                                                                                                                                    MESSAGE=
-                                                                                                                                fi
-                                                                                                                                git commit -am "$MESSAGE" --allow-empty --allow-empty-message
+                                                                                                                                git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                                echo A
-                                                                                                                                echo B
                                                                                                                                 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                                in "!${ application }/bin/promote" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                                in "!${ application }/bin/snapshot" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
@@ -844,18 +833,24 @@
                                                                                                                             SOURCE="$1"
                                                                                                                             BRANCH="$2"
                                                                                                                             COMMIT="$3"
+                                                                                                                            ln --symbolic "$SOURCE" /links
+                                                                                                                            CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure "9767b8fa" }
+                                                                                                                            ln --symbolic "$CHECK" /links
+                                                                                                                            CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "e80f0ccf" }
                                                                                                                             cd /mount
                                                                                                                             cat > /mount/.envrc <<EOF
                                                                                                                             export SOURCE="$SOURCE"
                                                                                                                             export BRANCH="$BRANCH"
                                                                                                                             export COMMIT="$COMMIT"
+                                                                                                                            export CHECK_STATUS="$CHECK_STATUS"
                                                                                                                             EOF
-                                                                                                                            ln --symbolic "$SOURCE" /links
-                                                                                                                            if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             then
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             else
                                                                                                                                 echo "$?" > /mount/status
+                                                                                                                                touch /mount/standard-output
+                                                                                                                                touch /mount/standard-error
                                                                                                                             fi
                                                                                                                             ln --symbolic ${ switch } /mount
                                                                                                                             ln --symbolic ${ test } /mount
@@ -877,18 +872,24 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    SOURCE="$1"
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure "9d52c6ca" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "a6c0086f" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
+                                                                                                                    export CHECK_STATUS="$CHECK_STATUS"
                                                                                                                     EOF
-                                                                                                                    SOURCE="$1"
-                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                    if nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
                                                                                                                         echo "$?" > /mount/status
+                                                                                                                        touch /mount/standard-output
+                                                                                                                        touch /mount/standard-error
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
@@ -908,18 +909,24 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    SOURCE="$1"
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure "4f0b67b3" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "683f774e" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
+                                                                                                                    export CHECK_STATUS="$CHECK_STATUS"
                                                                                                                     EOF
-                                                                                                                    SOURCE="$1"
-                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
                                                                                                                         echo "$?" > /mount/status
+                                                                                                                        touch /mount/standard-output
+                                                                                                                        touch /mount/standard-error
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
