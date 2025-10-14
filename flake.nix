@@ -92,7 +92,6 @@
                                                                                                         visitor.lib.implementation
                                                                                                             {
                                                                                                                 lambda = path : value : value resources_ ;
-                                                                                                                # path = path : value : value ;
                                                                                                                 set = path : set : set ;
                                                                                                             }
                                                                                                             primary ;
@@ -374,6 +373,29 @@
                                                                     in "${ ssh-command }/bin/ssh-command" ;
                                                         in
                                                             {
+                                                                applications =
+                                                                    {
+                                                                        chromium =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        failure : resources : self :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    mkdir --parents /mount/bin
+                                                                                                                    nix-shell --packages pkgs.chromium pkgs.which --run "ln --symbolic \$( which chromium ) /mount/bin"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                        targets = [ "bin" ] ;
+                                                                                } ;
+                                                                    } ;
                                                                 debug =
                                                                     {
                                                                         alpha =
@@ -537,6 +559,10 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            mkdir --parents /mount/bin
+                                                                                                            CHROMIUM="$( ${ resources.applications.chromium } )" || ${ failure "5ffb69d7" }
+                                                                                                            ln --symbolic "$CHROMIUM" /links
+                                                                                                            ln --symbolic "$CHROMIUM/bin/chromium" /mount/bin
                                                                                                             RESOURCES="$( ${ resources.repository.resources } )" || ${ failure "3f26b4aa" }
                                                                                                             ln --symbolic "$RESOURCES" /links
                                                                                                             ln --symbolic "$RESOURCES" /mount/resources
@@ -557,6 +583,7 @@
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
+                                                                                    "bin"
                                                                                     "resources"
                                                                                     "personal"
                                                                                     "private"
