@@ -19,34 +19,37 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        password-less =
+                                        password-less-wrap =
                                             derivation : target :
-                                                pkgs.stdenv.mkDerivation
+                                                pkgs.writeShellApplication
                                                     {
-                                                        installPhase =
-                                                            let
-                                                                binary =
-                                                                    let
-                                                                        application =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = target ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            sudo "$OUT/src/${ target }" "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"
-                                                                                        '' ;
-                                                                                } ;
-                                                                        in "${ application }/bin/${ target }" ;
-                                                                in
-                                                                    ''
-                                                                        mkdir --parents $out/src
-                                                                        makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
-                                                                        mkdir --parents $out/bin
-                                                                        makeWrapper ${ binary } "$out/bin/${ target }" --set OUT $out
-                                                                    '' ;
                                                         name = target ;
-                                                        nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                        src = ./. ;
+                                                        runtimeInputs = [ ( password-less-core derivation target ) ] ;
+                                                        text =
+                                                            ''
+                                                                if read -t 0
+                                                                then
+                                                                    cat | sudo ${ target } "$@"
+                                                                else
+                                                                    sudo ${ target } "$@"
+                                                                fi
+                                                            '' ;
+                                                    } ;
+                                        password-less-core =
+                                            derivation : target :
+                                                pkgs.writeShellApplication
+                                                    {
+                                                        name = target ;
+                                                        runtimeInputs = [ pkgs.coreutils derivation ] ;
+                                                        text =
+                                                            ''
+                                                                if read -t 0
+                                                                then
+                                                                    cat | ${ target } "$@"
+                                                                else
+                                                                    ${ target } "$@"
+                                                                fi
+                                                            '' ;
                                                     } ;
                                         resources_ =
                                             let
@@ -716,34 +719,23 @@
                                                                                             in
                                                                                                 {
                                                                                                     "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.promote" =
+                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                    "alias.snapshot" =
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
-                                                                                                                        name = "promote" ;
+                                                                                                                        name = "snapshot" ;
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if read -t 0
-                                                                                                                                then
-                                                                                                                                    MESSAGE="$( cat )" || exit 64
-                                                                                                                                elif [[ "$#" -gt 1 ]]
-                                                                                                                                then
-                                                                                                                                    MESSAGE="$1"
-                                                                                                                                else
-                                                                                                                                    MESSAGE=
-                                                                                                                                fi
-                                                                                                                                git commit -am "$MESSAGE" --allow-empty --allow-empty-message
+                                                                                                                                git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                                echo A
-                                                                                                                                echo B
                                                                                                                                 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                                in "!${ application }/bin/promote" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
+                                                                                                                in "!${ application }/bin/snapshot" ;
                                                                                                     "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
@@ -808,7 +800,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "switch" ;
-                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
@@ -832,7 +824,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "test" ;
-                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 nixos-rebuild test --flake "$SOURCE/work-tree#user"
@@ -844,18 +836,24 @@
                                                                                                                             SOURCE="$1"
                                                                                                                             BRANCH="$2"
                                                                                                                             COMMIT="$3"
+                                                                                                                            ln --symbolic "$SOURCE" /links
+                                                                                                                            CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure "9767b8fa" }
+                                                                                                                            ln --symbolic "$CHECK" /links
+                                                                                                                            CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "e80f0ccf" }
                                                                                                                             cd /mount
                                                                                                                             cat > /mount/.envrc <<EOF
                                                                                                                             export SOURCE="$SOURCE"
                                                                                                                             export BRANCH="$BRANCH"
                                                                                                                             export COMMIT="$COMMIT"
+                                                                                                                            export CHECK_STATUS="$CHECK_STATUS"
                                                                                                                             EOF
-                                                                                                                            ln --symbolic "$SOURCE" /links
-                                                                                                                            if nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                            if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                             then
                                                                                                                                 echo "$?" > /mount/status
                                                                                                                             else
                                                                                                                                 echo "$?" > /mount/status
+                                                                                                                                touch /mount/standard-output
+                                                                                                                                touch /mount/standard-error
                                                                                                                             fi
                                                                                                                             ln --symbolic ${ switch } /mount
                                                                                                                             ln --symbolic ${ test } /mount
@@ -877,18 +875,24 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    SOURCE="$1"
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure "9d52c6ca" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "a6c0086f" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
+                                                                                                                    export CHECK_STATUS="$CHECK_STATUS"
                                                                                                                     EOF
-                                                                                                                    SOURCE="$1"
-                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                    if nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
                                                                                                                         echo "$?" > /mount/status
+                                                                                                                        touch /mount/standard-output
+                                                                                                                        touch /mount/standard-error
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
@@ -908,18 +912,24 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    SOURCE="$1"
+                                                                                                                    ln --symbolic "$SOURCE" /links
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure "4f0b67b3" }
+                                                                                                                    ln --symbolic "$CHECK" /links
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "683f774e" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export SHARED_DIR=${ self }/shared
+                                                                                                                    export CHECK_STATUS="$CHECK_STATUS"
                                                                                                                     EOF
-                                                                                                                    SOURCE="$1"
-                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                    if nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
                                                                                                                     then
                                                                                                                         echo "$?" > /mount/status
                                                                                                                     else
                                                                                                                         echo "$?" > /mount/status
+                                                                                                                        touch /mount/standard-output
+                                                                                                                        touch /mount/standard-error
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
@@ -1359,12 +1369,8 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-collect-garbage
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-store
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
                                                                     '' ;
                                                             } ;
                                                         services =
