@@ -19,34 +19,37 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        password-less =
+                                        password-less-wrap =
                                             derivation : target :
-                                                pkgs.stdenv.mkDerivation
+                                                pkgs.writeShellApplication
                                                     {
-                                                        installPhase =
-                                                            let
-                                                                binary =
-                                                                    let
-                                                                        application =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = target ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            sudo "$OUT/src/${ target }" "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"
-                                                                                        '' ;
-                                                                                } ;
-                                                                        in "${ application }/bin/${ target }" ;
-                                                                in
-                                                                    ''
-                                                                        mkdir --parents $out/src
-                                                                        makeWrapper ${ derivation }/bin/${ target } "$out/src/${ target }"
-                                                                        mkdir --parents $out/bin
-                                                                        makeWrapper ${ binary } "$out/bin/${ target }" --set OUT $out
-                                                                    '' ;
                                                         name = target ;
-                                                        nativeBuildInputs = [ pkgs.coreutils pkgs.makeWrapper ] ;
-                                                        src = ./. ;
+                                                        runtimeInputs = [ ( password-less derivation target ) ] ;
+                                                        text =
+                                                            ''
+                                                                if read -t 0
+                                                                then
+                                                                    cat | sudo ${ target } "$@"
+                                                                else
+                                                                    sudo ${ target } "$@"
+                                                                fi
+                                                            '' ;
+                                                    } ;
+                                        password-less-core =
+                                            derivation : target :
+                                                pkgs.writeShellApplication
+                                                    {
+                                                        name = target ;
+                                                        runtimeInputs = [ pkgs.coreutils derivation ] ;
+                                                        text =
+                                                            ''
+                                                                if read -t 0
+                                                                then
+                                                                    cat | ${ target } "$@"
+                                                                else
+                                                                    ${ target } "$@"
+                                                                fi
+                                                            '' ;
                                                     } ;
                                         resources_ =
                                             let
@@ -797,7 +800,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "switch" ;
-                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
@@ -821,7 +824,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "test" ;
-                                                                                                                                        runtimeInputs = [ ( password-less pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 nixos-rebuild test --flake "$SOURCE/work-tree#user"
@@ -1366,12 +1369,8 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/shutdown
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nixos-rebuild }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-collect-garbage
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nix }/bin/nix-store
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
                                                                     '' ;
                                                             } ;
                                                         services =
