@@ -16,15 +16,17 @@
                     } @primary :
                         let
                             failureX =
-                                resources.lib.util.failure
-                                    {
-                                        coreutils = pkgs.coreutils ;
-                                        jq = pkgs.jq ;
-                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                        writeShellApplication = pkgs.writeShellApplication ;
-                                        yq-go = pkgs.yq-go ;
-                                    } ;
-                            failureY = failureX ;
+                                let
+                                    failureX =
+                                        resources.lib.util.failure
+                                            {
+                                                coreutils = pkgs.coreutils ;
+                                                jq = pkgs.jq ;
+                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                writeShellApplication = pkgs.writeShellApplication ;
+                                                yq-go = pkgs.yq-go ;
+                                            } ;
+                                    in failureX.implementation ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
