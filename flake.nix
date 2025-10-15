@@ -1823,7 +1823,8 @@
                                                                                                                                 if [[ -e "$BUILD/repo/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/repo/$NAME" already exists
-                                                                                                                                    ${ failureY "60cad19f" }
+                                                                                                                                    # KLUDGE
+                                                                                                                                    exit 65
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/repo/$NAME"
                                                                                                                                 cd "$BUILD/repo/$NAME"
@@ -1831,7 +1832,8 @@
                                                                                                                                 if [[ -e "$BUILD/work/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/work/$NAME already exists"
-                                                                                                                                    ${ failureX "36376a6a" }
+                                                                                                                                    # KLUDGE
+                                                                                                                                    exit 65
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/work/$NAME"
                                                                                                                                 cd "$BUILD/work/$NAME"
