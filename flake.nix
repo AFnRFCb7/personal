@@ -2041,7 +2041,7 @@
                                                                                     '' ;
                                                                             standard-input = null ;
                                                                             standard-output = "" ;
-                                                                            status = 0 ;
+                                                                            status = 128 ;
                                                                         } ;
                                                     resource-yes =
                                                         let
