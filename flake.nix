@@ -2040,7 +2040,7 @@
                                                                                         echo 531592906 > ${ resources-directory }/sequential/sequential.counter
                                                                                     '' ;
                                                                             standard-input = null ;
-                                                                            standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                                            standard-output = "" ;
                                                                             status = 0 ;
                                                                         } ;
                                                     resource-yes =
