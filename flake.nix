@@ -1876,7 +1876,8 @@
                                                                                                                                 if [[ ! -f "$HOMEY/$NAME/work-tree/$FILE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Missing $NAME file" >&2
-                                                                                                                                    ${ failureX "e0a83c28" }
+                                                                                                                                    # KLUDGE
+                                                                                                                                    exit 65
                                                                                                                                 fi
                                                                                                                                 PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || ${ failureX "20d25bab" }
                                                                                                                                 if [[ "$TOKEN" != "$PRIVATE" ]]
