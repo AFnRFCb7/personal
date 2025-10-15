@@ -15,19 +15,19 @@
                         visitor
                     } @primary :
                         let
+                            failureX =
+                                resources.lib.util.failure
+                                    {
+                                        coreutils = pkgs.coreutils ;
+                                        jq = pkgs.jq ;
+                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                        writeShellApplication = pkgs.writeShellApplication ;
+                                        yq-go = pkgs.yq-go ;
+                                    } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        failureX =
-                                            resources.lib.util.failure
-                                                {
-                                                    coreutils = pkgs.coreutils ;
-                                                    jq = pkgs.jq ;
-                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                    yq-go = pkgs.yq-go ;
-                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
