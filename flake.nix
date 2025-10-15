@@ -19,6 +19,15 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        failureX =
+                                            resources.lib.util.failure
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    jq = pkgs.jq ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
@@ -1245,15 +1254,6 @@
                                                                         targets = [ ] ;
                                                                     } ;
                                                             } ;
-                                                failureX =
-                                                    resources.lib.util.failure
-                                                        {
-                                                            coreutils = pkgs.coreutils ;
-                                                            jq = pkgs.jq ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                            yq-go = pkgs.yq-go ;
-                                                        } ;
                                                 in
                                                     visitor.lib.implementation
                                                         {
