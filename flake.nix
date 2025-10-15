@@ -1822,7 +1822,7 @@
                                                                                                                                 TOKEN="$4"
                                                                                                                                 if [[ -e "$BUILD/repo/$NAME" ]]
                                                                                                                                 then
-                                                                                                                                    echo "$BUILD/repo/$NAME" already exists
+                                                                                                                                    echo "$BUILD/repo/$NAME" already exists >&2
                                                                                                                                     # KLUDGE
                                                                                                                                     exit 65
                                                                                                                                 fi
@@ -1831,7 +1831,7 @@
                                                                                                                                 git init --bare
                                                                                                                                 if [[ -e "$BUILD/work/$NAME" ]]
                                                                                                                                 then
-                                                                                                                                    echo "$BUILD/work/$NAME already exists"
+                                                                                                                                    echo "$BUILD/work/$NAME already exists" >&2
                                                                                                                                     # KLUDGE
                                                                                                                                     exit 65
                                                                                                                                 fi
@@ -1864,12 +1864,14 @@
                                                                                                                                 if [[ ! -d "$HOMEY" ]]
                                                                                                                                 then
                                                                                                                                     echo Missing HOME >&2
-                                                                                                                                    ${ failureX "22db8f73" }
-                                                                                                                                fi
+                                                                                                                                    # KLUDGE
+                                                                                                                                    exit 65
+                                                                                                                               fi
                                                                                                                                 if [[ ! -L "$HOMEY/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "Missing $NAME" >&2
-                                                                                                                                    ${ failureX "f713d1cf" }
+                                                                                                                                    # KLUDGE
+                                                                                                                                    exit 65
                                                                                                                                 fi
                                                                                                                                 if [[ ! -f "$HOMEY/$NAME/work-tree/$FILE" ]]
                                                                                                                                 then
@@ -1880,7 +1882,8 @@
                                                                                                                                 if [[ "$TOKEN" != "$PRIVATE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Private $NAME file is wrong" >&2
-                                                                                                                                    ${ failureX "23a4d374" }
+                                                                                                                                    # KLUDGE
+                                                                                                                                    exit 65
                                                                                                                                 fi
                                                                                                                             '' ;
                                                                                                                     }
