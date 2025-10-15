@@ -1934,7 +1934,7 @@
                                                                                                             VISITOR_TOKEN=6d63c2e3a4048012194e5d63436f3e636d73a865c96fa86387e5602d7366df04f87c5ec95922273292268a4976f3c2901a933ce5173b2ce8400de162e440bec1
                                                                                                             create-mock-repository "$BUILD" visitor "$VISITOR_FILE" "$VISITOR_TOKEN"
                                                                                                             echo before execute test code
-                                                                                                            HOMEY="$( home )" || ${ failureX "046850ee" }
+                                                                                                            HOMEY="$( home )" || exit 65
                                                                                                             echo after execute test code
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
