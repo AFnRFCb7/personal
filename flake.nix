@@ -559,7 +559,6 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            ln --symbolic "$CHROMIUM/bin/chromium" /mount/bin
                                                                                                             RESOURCES="$( ${ resources.repository.resources } )" || ${ failure "3f26b4aa" }
                                                                                                             ln --symbolic "$RESOURCES" /links
                                                                                                             ln --symbolic "$RESOURCES" /mount/resources
@@ -1212,7 +1211,7 @@
                                                                                                 	        } ;
 	                                                                                                in "${ application }/bin/setup" ;
         	                                                                        	} ;
-										} ;
+										                                        } ;
                                                                     } ;
                                                                 secrets =
                                                                     let
