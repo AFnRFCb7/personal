@@ -1879,7 +1879,7 @@
                                                                                                                                     # KLUDGE
                                                                                                                                     exit 65
                                                                                                                                 fi
-                                                                                                                                PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || ${ failureX "20d25bab" }
+                                                                                                                                PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || exit 65 }
                                                                                                                                 if [[ "$TOKEN" != "$PRIVATE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Private $NAME file is wrong" >&2
