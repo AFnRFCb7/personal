@@ -305,7 +305,7 @@
                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
-                                                                                    NOW="$( date +%s )" || ${ failureX "f2c1a8a4" }
+                                                                                    NOW="$( date +%s )" || exit 65
                                                                                     date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
                                                                                 '' ;
                                                                         } ;
