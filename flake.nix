@@ -101,9 +101,9 @@
                                                                                                             export GNUPGHOME
                                                                                                             mkdir --parents "$GNUPGHOME"
                                                                                                             chmod 0700 "$GNUPGHOME"
-                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || ${ failure "1107ddcd" }
+                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || ${ failureX "1107ddcd" }
                                                                                                             gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/secret" 2>&1
-                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || ${ failure "1471b338" }
+                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || ${ failureX "1471b338" }
                                                                                                             gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }" 2>&1
                                                                                                             gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                         '' ;
@@ -454,7 +454,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 echo "${ self }" > /mount/self
-                                                                                                                ${ failure "b2c1ccd0" }
+                                                                                                                ${ failureX "b2c1ccd0" }
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/release" ;
@@ -467,7 +467,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        resources : self :failure :
+                                                                                        resources : self :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -900,7 +900,7 @@
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failureX "9d52c6ca" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "a6c0086f" }
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failureX "a6c0086f" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
@@ -937,7 +937,7 @@
                                                                                                                     ln --symbolic "$SOURCE" /links
                                                                                                                     CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failureX "4f0b67b3" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure "683f774e" }
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failureX "683f774e" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
@@ -1241,7 +1241,7 @@
                                                                         in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
                                                                 temporary-directory =
                                                                     {
-                                                                        init = failure : resources : self : "" ;
+                                                                        init = resources : self : "" ;
                                                                         targets = [ ] ;
                                                                     } ;
                                                             } ;
@@ -2008,7 +2008,7 @@
                                                                                                     echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                                     echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 ${ if has-standard-error then ">&2" else "> /scratch/null" }
                                                                                                     touch /mount/${ if target-mismatch then "98236ab2df439c61422251ca03830facf0e9a1e06fecb2d267f8c4574cd8a05b12224b536ab5661adc9a0347fba244e1a3db425ec7044166ae861cc93e50bd49" else "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" }
-                                                                                                    ${ if throws-error then failure "74e8c518" else "exit 0" }
+                                                                                                    ${ if throws-error then failureX "74e8c518" else "exit 0" }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
