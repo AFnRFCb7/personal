@@ -2014,7 +2014,6 @@
                                                                     jq = pkgs.jq ;
                                                                     makeBinPath = pkgs.lib.makeBinPath ;
                                                                     makeWrapper = pkgs.makeWrapper ;
-                                                                    seed = name ;
                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                     ps = pkgs.ps ;
                                                                     redis = pkgs.redis ;
