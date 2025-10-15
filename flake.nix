@@ -2039,7 +2039,7 @@
                                                                                         mkdir --parents ${ resources-directory }/sequential
                                                                                         echo 531592906 > ${ resources-directory }/sequential/sequential.counter
                                                                                     '' ;
-                                                                            standard-input = "c29dc73f73346f790e911263b7c429e77fc517c06544c8a6585c24b9ada35ded308f702a77d2615662134d8c8070b06674e8fc0eb91bf45310b944d6bc332a42" ;
+                                                                            standard-input = null ;
                                                                             standard-output = "" ;
                                                                             status = 128 ;
                                                                         } ;
