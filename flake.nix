@@ -1980,6 +1980,7 @@
                                                                        print("STDOUT:\n", stdout)
                                                                        assert status == 0, "test-home failed"
                                                                    '' ;
+                                                           } ;
                                                     resource =
                                                         let
                                                             generic =
@@ -2042,7 +2043,6 @@
                                                                             standard-output = "/build/resources/mounts/0000000311691948" ;
                                                                             status = 0 ;
                                                                         } ;
-                                                            } ;
                                                 } ;
                                     modules =
                                         {
