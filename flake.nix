@@ -307,7 +307,7 @@
                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
-                                                                                    NOW="$( date +%s )" || exit 65
+                                                                                    NOW="$( date +%s )" || ${ failureX "f6b7a148" }
                                                                                     date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
                                                                                 '' ;
                                                                         } ;
@@ -1825,8 +1825,7 @@
                                                                                                                                 if [[ -e "$BUILD/repo/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/repo/$NAME" already exists >&2
-                                                                                                                                    # KLUDGE
-                                                                                                                                    exit 65
+                                                                                                                                    ${ failureX "47ed812d" }
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/repo/$NAME"
                                                                                                                                 cd "$BUILD/repo/$NAME"
@@ -1834,8 +1833,7 @@
                                                                                                                                 if [[ -e "$BUILD/work/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/work/$NAME already exists" >&2
-                                                                                                                                    # KLUDGE
-                                                                                                                                    exit 65
+                                                                                                                                    ${ failureX "8e304631" }
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/work/$NAME"
                                                                                                                                 cd "$BUILD/work/$NAME"
@@ -1866,27 +1864,23 @@
                                                                                                                                 if [[ ! -d "$HOMEY" ]]
                                                                                                                                 then
                                                                                                                                     echo Missing HOME >&2
-                                                                                                                                    # KLUDGE
-                                                                                                                                    exit 65
+                                                                                                                                    ${ failureX "b107a9c5" }
                                                                                                                                fi
                                                                                                                                 if [[ ! -L "$HOMEY/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "Missing $NAME" >&2
-                                                                                                                                    # KLUDGE
-                                                                                                                                    exit 65
+                                                                                                                                    ${ failureX "2d6d9d93" }
                                                                                                                                 fi
                                                                                                                                 if [[ ! -f "$HOMEY/$NAME/work-tree/$FILE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Missing $NAME file" >&2
-                                                                                                                                    # KLUDGE
-                                                                                                                                    exit 65
+                                                                                                                                    ${ failureX "ef07df87" }
                                                                                                                                 fi
                                                                                                                                 PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || ${ failureX "1c1f9ad4" }
                                                                                                                                 if [[ "$TOKEN" != "$PRIVATE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Private $NAME file is wrong" >&2
-                                                                                                                                    # KLUDGE
-                                                                                                                                    exit 65
+                                                                                                                                    ${ failureX "8358e4e7" }
                                                                                                                                 fi
                                                                                                                             '' ;
                                                                                                                     }
@@ -1936,7 +1930,7 @@
                                                                                                             VISITOR_TOKEN=6d63c2e3a4048012194e5d63436f3e636d73a865c96fa86387e5602d7366df04f87c5ec95922273292268a4976f3c2901a933ce5173b2ce8400de162e440bec1
                                                                                                             create-mock-repository "$BUILD" visitor "$VISITOR_FILE" "$VISITOR_TOKEN"
                                                                                                             echo before execute test code
-                                                                                                            HOMEY="$( home )" || exit 65
+                                                                                                            HOMEY="$( home )" || ${ failureX "15e25c62" }
                                                                                                             echo after execute test code
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
