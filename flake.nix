@@ -24,6 +24,7 @@
                                         writeShellApplication = pkgs.writeShellApplication ;
                                         yq-go = pkgs.yq-go ;
                                     } ;
+                            failureY = failureX ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
@@ -1822,7 +1823,7 @@
                                                                                                                                 if [[ -e "$BUILD/repo/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/repo/$NAME" already exists
-                                                                                                                                    ${ failureX "60cad19f" }
+                                                                                                                                    ${ failureY "60cad19f" }
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/repo/$NAME"
                                                                                                                                 cd "$BUILD/repo/$NAME"
