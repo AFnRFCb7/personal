@@ -559,9 +559,6 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            mkdir --parents /mount/bin
-                                                                                                            # CHROMIUM="$( ${ resources.applications.chromium } )" || ${ failure "5ffb69d7" }
-                                                                                                            ln --symbolic "$CHROMIUM" /links
                                                                                                             ln --symbolic "$CHROMIUM/bin/chromium" /mount/bin
                                                                                                             RESOURCES="$( ${ resources.repository.resources } )" || ${ failure "3f26b4aa" }
                                                                                                             ln --symbolic "$RESOURCES" /links
@@ -583,7 +580,6 @@
                                                                                         in "${ application }/bin/application" ;
                                                                             targets =
                                                                                 [
-                                                                                    "bin"
                                                                                     "resources"
                                                                                     "personal"
                                                                                     "private"
