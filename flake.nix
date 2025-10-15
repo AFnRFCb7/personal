@@ -1981,7 +1981,68 @@
                                                                    '' ;
                                                            } ;
                                                     log-event-listener = log-event-listener.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-
+                                                    resource-no =
+                                                        let
+                                                            generic =
+                                                                resources.lib.factories.generic
+                                                                    {
+                                                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                        coreutils = pkgs.coreutils ;
+                                                                        findutils = pkgs.findutils ;
+                                                                        error = 128 ;
+                                                                        flock = pkgs.flock ;
+                                                                        init =
+                                                                            self :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        echo e944d62236602b8f92204d51f2ed1fb3f867094b882fb045b2bb3fd6f3c65d88d565520291e54a6af8d8c72dfad96e4f777d54ae4372d714abb96fdffdefe715
+                                                                                                        echo ec2b1b90df5e404dfb4e717e2c87df187971f600678cd35110031279ebf1b9538756e63f59c647925dc16d202123eeacced9e81700209456f9d0db1d81f8f749 > /mount/c3d8a41142ee95cd6fce9247e009dfc308dd96e2688d7058f3574e3c805d273103288772660ebdc15da2f5b627671dbad1922a212be3b272499c2597733d939f
+                                                                                                        exit 243
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        jq = pkgs.jq ;
+                                                                        makeBinPath = pkgs.lib.makeBinPath ;
+                                                                        makeWrapper = pkgs.makeWrapper ;
+                                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                        ps = pkgs.ps ;
+                                                                        redis = pkgs.redis ;
+                                                                        resources-directory = "/build/resources" ;
+                                                                        targets = [ "9a504ab24b8d89e56d1f283a2c7cd78cf9f5ae95abc3c2fe4d39ef4eab2f16d6826b208115c13c097e505889676af6bac58bb2831a0817463d8ad6377c56c2fd" ] ;
+                                                                        transient = false ;
+                                                                        visitor = visitor ;
+                                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                                        yq-go = pkgs.yq-go ;
+                                                                    } ;
+                                                                in
+                                                                    generic.check
+                                                                        {
+                                                                            arguments = [ "e4bd7c1e115d4de6256f4a2e6c66e7a574efd4a5434902a74b6231ecf118f6ae7d091b60f2d276c0d87de5e21f39d6d6bb067fb76f31f93d5884e29501ef69c8" "7c2e822b52e70392eb0858ea8e44d62045c4e64001d13fdacb8a32bd9140b15a09ea85ac233729d8f2206f4ee5ca401d179892a6adcf5d0bc2a7543911d55c48" ] ;
+                                                                            expected-dependencies = [ ] ;
+                                                                            expected-index = "0000000531592906" ;
+                                                                            expected-originator-pid = 45 ;
+                                                                            expected-provenance = "new" ;
+                                                                            expected-standard-error = "" ;
+                                                                            expected-standard-output = "e944d62236602b8f92204d51f2ed1fb3f867094b882fb045b2bb3fd6f3c65d88d565520291e54a6af8d8c72dfad96e4f777d54ae4372d714abb96fdffdefe715" ;
+                                                                            expected-status = 243 ;
+                                                                            expected-targets = [ "c3d8a41142ee95cd6fce9247e009dfc308dd96e2688d7058f3574e3c805d273103288772660ebdc15da2f5b627671dbad1922a212be3b272499c2597733d939f" ] ;
+                                                                            expected-transient = -1 ;
+                                                                            resources-directory-fixture =
+                                                                                resources-directory :
+                                                                                    ''
+                                                                                        mkdir --parents ${ resources-directory }/sequential
+                                                                                        echo 531592906 > ${ resources-directory }/sequential/sequential.counter
+                                                                                    '' ;
+                                                                            standard-input = null ;
+                                                                            standard-output = "" ;
+                                                                            status = 128 ;
+                                                                        } ;
                                                     resource-yes =
                                                         let
                                                             generic =
