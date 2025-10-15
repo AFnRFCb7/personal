@@ -778,7 +778,7 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                PERSONAL="$( ${ resources_.repository.personal } )" || ${ failurex "a60e198b" }
+                                                                                                                PERSONAL="$( ${ resources_.repository.personal } )" || ${ failureX "a60e198b" }
                                                                                                                 RESOURCES="$( ${ resources_.repository.resources } )" || ${ failureX "00af3985" }
                                                                                                                 SECRETS="$( ${ resources_.repository.secrets } )" || ${ failureX "a81a6ac1" }
                                                                                                                 VISITOR="$( ${ resources_.repository.visitor } )" || ${ failureX "a64b742f" }
