@@ -1776,8 +1776,6 @@
                                 {
                                     checks =
                                         let
-                                            failure =
-                                                resources.lib.util.failure { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                                             log-event-listener =
                                                 resources.lib.listeners.log-event-listener
                                                     {
