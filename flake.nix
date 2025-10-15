@@ -15,18 +15,15 @@
                         visitor
                     } @primary :
                         let
-                            failureX =
-                                let
-                                    failureX =
-                                        resources.lib.util.failure
-                                            {
-                                                coreutils = pkgs.coreutils ;
-                                                jq = pkgs.jq ;
-                                                mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                writeShellApplication = pkgs.writeShellApplication ;
-                                                yq-go = pkgs.yq-go ;
-                                            } ;
-                                    in failureX.implementation ;
+                            failure =
+                                resources.lib.util.failure
+                                    {
+                                        coreutils = pkgs.coreutils ;
+                                        jq = pkgs.jq ;
+                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                        writeShellApplication = pkgs.writeShellApplication ;
+                                        yq-go = pkgs.yq-go ;
+                                    } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
@@ -113,9 +110,9 @@
                                                                                                             export GNUPGHOME
                                                                                                             mkdir --parents "$GNUPGHOME"
                                                                                                             chmod 0700 "$GNUPGHOME"
-                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || ${ failureX "1107ddcd" }
+                                                                                                            SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || ${ failure.implementation "1107ddcd" }
                                                                                                             gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/secret" 2>&1
-                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || ${ failureX "1471b338" }
+                                                                                                            OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || ${ failure.implementation "1471b338" }
                                                                                                             gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }" 2>&1
                                                                                                             gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                         '' ;
@@ -210,7 +207,7 @@
                                                                                     {
                                                                                         bool = path : value : if value then export path "yes" else "no" ;
                                                                                         int = path : value : export path ( builtins.toString value ) ;
-                                                                                        lambda = path : value : let v = value resources_ ; in export path ( ''"$( ${ v.resource } )" || ${ failureX "8e90ad2a" }'' ) ;
+                                                                                        lambda = path : value : let v = value resources_ ; in export path ( ''"$( ${ v.resource } )" || ${ failure.implementation "8e90ad2a" }'' ) ;
                                                                                         set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                         string = path : value : export path ''"${ value }"'' ;
                                                                                     }
@@ -307,7 +304,7 @@
                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                             text =
                                                                                 ''
-                                                                                    NOW="$( date +%s )" || ${ failureX "f6b7a148" }
+                                                                                    NOW="$( date +%s )" || ${ failure.implementation "f6b7a148" }
                                                                                     date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
                                                                                 '' ;
                                                                         } ;
@@ -338,8 +335,8 @@
                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
                                                                             text =
                                                                                 ''
-                                                                                    SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || ${ failureX "e93c4402" }
-                                                                                    BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || ${ failureX "5f0e6fe8" }
+                                                                                    SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || ${ failure.implementation "e93c4402" }
+                                                                                    BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || ${ failure.implementation "5f0e6fe8" }
                                                                                     git checkout -b "$BRANCH" 2>&1
                                                                                 '' ;
                                                                         } ;
@@ -356,9 +353,9 @@
                                                                                     TOKEN="$1"
                                                                                     ROOT="$2"
                                                                                     git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failureX "4a921647" }
+                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure.implementation "4a921647" }
                                                                                     GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.branch" "$BRANCH"
-                                                                                    COMMIT="$( git rev-parse HEAD )" || ${ failureX "20c91416" }
+                                                                                    COMMIT="$( git rev-parse HEAD )" || ${ failure.implementation "20c91416" }
                                                                                     GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.commit" "$COMMIT"
                                                                                     sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$COMMIT\3#" "$ROOT/work-tree/flake.nix"
                                                                                 '' ;
@@ -377,7 +374,7 @@
                                                                                         point = dot-ssh resources_ ;
                                                                                         in
                                                                                             ''
-                                                                                                DOT_SSH="$( echo | ${ point.resource } )" || ${ failureX "ef7a1272" }
+                                                                                                DOT_SSH="$( echo | ${ point.resource } )" || ${ failure.implementation "ef7a1272" }
                                                                                                 exec ssh -F "$DOT_SSH/${ point.target }" "$@"
                                                                                             '' ;
                                                                             } ;
@@ -434,7 +431,7 @@
                                                                                                         name = "release" ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                ${ failureX "43dd6f7d" }
+                                                                                                                ${ failure.implementation "43dd6f7d" }
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/release" ;
@@ -466,7 +463,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 echo "${ self }" > /mount/self
-                                                                                                                ${ failureX "b2c1ccd0" }
+                                                                                                                ${ failure.implementation "b2c1ccd0" }
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/release" ;
@@ -570,19 +567,19 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            RESOURCES="$( ${ resources.repository.resources } )" || ${ failureX "3f26b4aa" }
+                                                                                                            RESOURCES="$( ${ resources.repository.resources } )" || ${ failure.implementation "3f26b4aa" }
                                                                                                             ln --symbolic "$RESOURCES" /links
                                                                                                             ln --symbolic "$RESOURCES" /mount/resources
-                                                                                                            PERSONAL="$( ${ resources.repository.personal } )" || ${ failureX "8af3601b" }
+                                                                                                            PERSONAL="$( ${ resources.repository.personal } )" || ${ failure.implementation "8af3601b" }
                                                                                                             ln --symbolic "$PERSONAL" /links
                                                                                                             ln --symbolic "$PERSONAL" /mount/personal
-                                                                                                            PRIVATE="$( ${ resources.repository.private } )" || ${ failureX "35b067fd" }
+                                                                                                            PRIVATE="$( ${ resources.repository.private } )" || ${ failure.implementation "35b067fd" }
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
-                                                                                                            SECRETS="$( ${ resources.repository.secrets } )" || ${ failureX "04d6332b" }
+                                                                                                            SECRETS="$( ${ resources.repository.secrets } )" || ${ failure.implementation "04d6332b" }
                                                                                                             ln --symbolic "$SECRETS" /links
                                                                                                             ln --symbolic "$SECRETS" /mount/secrets
-                                                                                                            VISITOR="$( ${ resources.repository.visitor } )" || ${ failureX "04d6332b" }
+                                                                                                            VISITOR="$( ${ resources.repository.visitor } )" || ${ failure.implementation "04d6332b" }
                                                                                                             ln --symbolic "$VISITOR" /links
                                                                                                             ln --symbolic "$VISITOR" /mount/visitor
                                                                                                         '' ;
@@ -763,8 +760,8 @@
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failureX "f39f8735" }
-                                                                                                                                COMMIT="$( git rev-parse HEAD )" || ${ failureX "28ca95c9" }
+                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure.implementation "f39f8735" }
+                                                                                                                                COMMIT="$( git rev-parse HEAD )" || ${ failure.implementation "28ca95c9" }
                                                                                                                                 ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                             '' ;
                                                                                                                     } ;
@@ -790,10 +787,10 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                PERSONAL="$( ${ resources_.repository.personal } )" || ${ failureX "a60e198b" }
-                                                                                                                RESOURCES="$( ${ resources_.repository.resources } )" || ${ failureX "00af3985" }
-                                                                                                                SECRETS="$( ${ resources_.repository.secrets } )" || ${ failureX "a81a6ac1" }
-                                                                                                                VISITOR="$( ${ resources_.repository.visitor } )" || ${ failureX "a64b742f" }
+                                                                                                                PERSONAL="$( ${ resources_.repository.personal } )" || ${ failure.implementation "a60e198b" }
+                                                                                                                RESOURCES="$( ${ resources_.repository.resources } )" || ${ failure.implementation "00af3985" }
+                                                                                                                SECRETS="$( ${ resources_.repository.secrets } )" || ${ failure.implementation "a81a6ac1" }
+                                                                                                                VISITOR="$( ${ resources_.repository.visitor } )" || ${ failure.implementation "a64b742f" }
                                                                                                                 ln --symbolic "$PERSONAL" /links
                                                                                                                 ln --symbolic "$RESOURCES" /links
                                                                                                                 ln --symbolic "$SECRETS" /links
@@ -836,15 +833,15 @@
                                                                                                                                         runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || ${ failureX "91c4c535" }
+                                                                                                                                                PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || ${ failure.implementation "91c4c535" }
                                                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
-                                                                                                                                                RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || ${ failureX "8dd9d1be" }
+                                                                                                                                                RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || ${ failure.implementation "8dd9d1be" }
                                                                                                                                                 GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git squash-and-merge
-                                                                                                                                                SECRETS="$( ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets )" || ${ failureX "7564ae81" }
+                                                                                                                                                SECRETS="$( ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets )" || ${ failure.implementation "7564ae81" }
                                                                                                                                                 GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git squash-and-merge
-                                                                                                                                                VISITOR="$( ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor )" || ${ failureX "0aa09fa8" }
+                                                                                                                                                VISITOR="$( ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor )" || ${ failure.implementation "0aa09fa8" }
                                                                                                                                                 GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git squash-and-merge
-                                                                                                                                                ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || ${ failureX "a3cdd707" }
+                                                                                                                                                ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || ${ failure.implementation "a3cdd707" }
                                                                                                                                                 nix flake update --flake "$ROOT/work-tree" personal resources secrets visitor
                                                                                                                                                 nixos-rebuild switch --flake "$ROOT/work-tree#user"
                                                                                                                                                 GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git squash-and-merge
@@ -870,9 +867,9 @@
                                                                                                                             BRANCH="$2"
                                                                                                                             COMMIT="$3"
                                                                                                                             ln --symbolic "$SOURCE" /links
-                                                                                                                            CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failureX "9767b8fa" }
+                                                                                                                            CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure.implementation "9767b8fa" }
                                                                                                                             ln --symbolic "$CHECK" /links
-                                                                                                                            CHECK_STATUS="$( < "$CHECK/status" )" || ${ failureX "e80f0ccf" }
+                                                                                                                            CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure.implementation "e80f0ccf" }
                                                                                                                             cd /mount
                                                                                                                             cat > /mount/.envrc <<EOF
                                                                                                                             export SOURCE="$SOURCE"
@@ -910,9 +907,9 @@
                                                                                                                 ''
                                                                                                                     SOURCE="$1"
                                                                                                                     ln --symbolic "$SOURCE" /links
-                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failureX "9d52c6ca" }
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure.implementation "9d52c6ca" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failureX "a6c0086f" }
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure.implementation "a6c0086f" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
@@ -947,9 +944,9 @@
                                                                                                                 ''
                                                                                                                     SOURCE="$1"
                                                                                                                     ln --symbolic "$SOURCE" /links
-                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failureX "4f0b67b3" }
+                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure.implementation "4f0b67b3" }
                                                                                                                     ln --symbolic "$CHECK" /links
-                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failureX "683f774e" }
+                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure.implementation "683f774e" }
                                                                                                                     cd /mount
                                                                                                                     mkdir --parents /mount/shared
                                                                                                                     cat > /mount/.envrc <<EOF
@@ -1122,10 +1119,10 @@
                                                                                                                                                     git reset --soft origin/main 2>&1
                                                                                                                                                     git commit --verbose 2>&1
                                                                                                                                                     git push origin HEAD
-                                                                                                                                                    SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failureX "4ae5068e" }
-                                                                                                                                                    TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || ${ failureX "2a2a175a" }
+                                                                                                                                                    SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure.implementation "4ae5068e" }
+                                                                                                                                                    TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || ${ failure.implementation "2a2a175a" }
                                                                                                                                                     gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                    URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || ${ failureX "58c20779" }
+                                                                                                                                                    URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || ${ failure.implementation "58c20779" }
                                                                                                                                                     gh pr merge --rebase --subject "Promotion Merge" "$URL"
                                                                                                                                                     gh auth logout
                                                                                                                                                 fi
@@ -1151,9 +1148,9 @@
                                                                                                                                     ''
                                                                                                                                         SOURCE="$1"
                                                                                                                                         TYPE="$2"
-                                                                                                                                        DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || ${ failureX "eb615c70" }
+                                                                                                                                        DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || ${ failure.implementation "eb615c70" }
                                                                                                                                         git fetch origin "$DEPENDENT_BRANCH" 2>&1
-                                                                                                                                        DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || ${ failureX "1bcc7194" }
+                                                                                                                                        DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || ${ failure.implementation "1bcc7194" }
                                                                                                                                         git checkout "$DEPENDENT_COMMIT" 2>&1
                                                                                                                                         git fetch origin main 2>&1
                                                                                                                                     '' ;
@@ -1189,7 +1186,7 @@
                                                                                                                                         git add -A
                                                                                                                                         git commit --verbose 2>&1
                                                                                                                                         git push origin HEAD 2>&1
-                                                                                                                                        SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || ${ failureX "bcf90683" }
+                                                                                                                                        SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || ${ failure.implementation "bcf90683" }
                                                                                                                                         git checkout main 2>&1
                                                                                                                                         git rebase "$SQUASH_COMMIT" 2>&1
                                                                                                                                         git push origin HEAD 2>&1
@@ -1541,7 +1538,7 @@
                                                                                         installPhase =
                                                                                             ''
                                                                                                 mkdir --parents $out/bin
-                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || ${ failureX "b7c33f28" }" --add-flags "\$REPO"
+                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || ${ failure.implementation "b7c33f28" }" --add-flags "\$REPO"
                                                                                             '' ;
                                                                                         name = "derivation" ;
                                                                                         nativeBuildInputs = [ pkgs.makeWrapper ] ;
@@ -1563,7 +1560,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failureX "15daa579" }
+                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failure.implementation "15daa579" }
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community .
                                                                                                 '' ;
@@ -1615,7 +1612,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failureX "c664bcd6" }
+                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failure.implementation "c664bcd6" }
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community
                                                                                                 '' ;
@@ -1825,7 +1822,7 @@
                                                                                                                                 if [[ -e "$BUILD/repo/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/repo/$NAME" already exists >&2
-                                                                                                                                    ${ failureX "47ed812d" }
+                                                                                                                                    ${ failure.implementation "47ed812d" }
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/repo/$NAME"
                                                                                                                                 cd "$BUILD/repo/$NAME"
@@ -1833,7 +1830,7 @@
                                                                                                                                 if [[ -e "$BUILD/work/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "$BUILD/work/$NAME already exists" >&2
-                                                                                                                                    ${ failureX "8e304631" }
+                                                                                                                                    ${ failure.implementation "8e304631" }
                                                                                                                                 fi
                                                                                                                                 mkdir --parents "$BUILD/work/$NAME"
                                                                                                                                 cd "$BUILD/work/$NAME"
@@ -1864,23 +1861,23 @@
                                                                                                                                 if [[ ! -d "$HOMEY" ]]
                                                                                                                                 then
                                                                                                                                     echo Missing HOME >&2
-                                                                                                                                    ${ failureX "b107a9c5" }
+                                                                                                                                    ${ failure.implementation "b107a9c5" }
                                                                                                                                fi
                                                                                                                                 if [[ ! -L "$HOMEY/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     echo "Missing $NAME" >&2
-                                                                                                                                    ${ failureX "2d6d9d93" }
+                                                                                                                                    ${ failure.implementation "2d6d9d93" }
                                                                                                                                 fi
                                                                                                                                 if [[ ! -f "$HOMEY/$NAME/work-tree/$FILE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Missing $NAME file" >&2
-                                                                                                                                    ${ failureX "ef07df87" }
+                                                                                                                                    ${ failure.implementation "ef07df87" }
                                                                                                                                 fi
-                                                                                                                                PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || ${ failureX "1c1f9ad4" }
+                                                                                                                                PRIVATE="$( < "$HOMEY/$NAME/work-tree/$FILE" )" || ${ failure.implementation "1c1f9ad4" }
                                                                                                                                 if [[ "$TOKEN" != "$PRIVATE" ]]
                                                                                                                                 then
                                                                                                                                     echo "Private $NAME file is wrong" >&2
-                                                                                                                                    ${ failureX "8358e4e7" }
+                                                                                                                                    ${ failure.implementation "8358e4e7" }
                                                                                                                                 fi
                                                                                                                             '' ;
                                                                                                                     }
@@ -1930,7 +1927,7 @@
                                                                                                             VISITOR_TOKEN=6d63c2e3a4048012194e5d63436f3e636d73a865c96fa86387e5602d7366df04f87c5ec95922273292268a4976f3c2901a933ce5173b2ce8400de162e440bec1
                                                                                                             create-mock-repository "$BUILD" visitor "$VISITOR_FILE" "$VISITOR_TOKEN"
                                                                                                             echo before execute test code
-                                                                                                            HOMEY="$( home )" || ${ failureX "15e25c62" }
+                                                                                                            HOMEY="$( home )" || ${ failure.implementation "15e25c62" }
                                                                                                             echo after execute test code
                                                                                                             verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
                                                                                                             verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
@@ -2011,7 +2008,7 @@
                                                                                                     echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                                     echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 ${ if has-standard-error then ">&2" else "> /scratch/null" }
                                                                                                     touch /mount/${ if target-mismatch then "98236ab2df439c61422251ca03830facf0e9a1e06fecb2d267f8c4574cd8a05b12224b536ab5661adc9a0347fba244e1a3db425ec7044166ae861cc93e50bd49" else "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" }
-                                                                                                    ${ if throws-error then failureX "74e8c518" else "exit 0" }
+                                                                                                    ${ if throws-error then failure.implementation "74e8c518" else "exit 0" }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
