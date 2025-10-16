@@ -561,10 +561,10 @@
                                                                             targets =
                                                                                 [
                                                                                     "failure"
-                                                                                    "resources"
                                                                                     "personal"
                                                                                     "private"
                                                                                     "secrets"
+                                                                                    "resources"
                                                                                     "visitor"
                                                                                 ] ;
                                                                             transient = false ;
