@@ -577,7 +577,7 @@
                                                                                                             ln --symbolic "$DOT_GNUPG" /mount/dot-gnupg
                                                                                                             DOT_SSH="$( ${ resources.repository.dot-ssh } )" || ${ failure.implementation "7a5c58ee" }
                                                                                                             ln --symbolic "DOT_SSH" /links
-                                                                                                            ln --symbolic "$DOT_SSH" /mount/dot-gnupg
+                                                                                                            ln --symbolic "$DOT_SSH" /mount/dot-ssh
                                                                                                             FAILURE="$( ${ resources.repository.failure } )" || ${ failure.implementation "e23b5c7d" }
                                                                                                             ln --symbolic "$FAILURE" /links
                                                                                                             ln --symbolic "$FAILURE" /mount/failure
