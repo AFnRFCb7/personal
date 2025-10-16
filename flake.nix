@@ -699,6 +699,47 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
                                                                                 } ;
+                                                                        failure =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "alias.snapshot" = "!${ snapshot }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.failure.email ;
+                                                                                            "user.name" = config.personal.repository.failure.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.dot-ssh.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                if git fetch origin ${ config.personal.repository.failure.branch } 2>&1
+                                                                                                                then
+                                                                                                                    git checkout origin/${ config.personal.repository.failure.branch } 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b ${ config.personal.repository.failure.branch } 2>&1
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                fi
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
                                                                         github-repository =
                                                                             git
                                                                                 {
