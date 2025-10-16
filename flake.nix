@@ -1802,14 +1802,18 @@
                                                                                                                                     echo "$BUILD/work/$NAME already exists"
                                                                                                                                     exit 64
                                                                                                                                 fi
-                                                                                                                                mkdir --parents "$BUILD/work/$NAME"
-                                                                                                                                cd "$BUILD/work/$NAME"
+                                                                                                                                GIT_DIR="$BUILD/work/$NAME/git"
+                                                                                                                                export GIT_DIR
+                                                                                                                                mkdir --parents "$GIT_DIR"
+                                                                                                                                GIT_WORK_TREE="$BUILD/work/$NAME/work-tree"
+                                                                                                                                export GIT_WORK_TREE
+                                                                                                                                mkdir --parents "$GIT_WORK_TREE"
                                                                                                                                 git init
                                                                                                                                 git config user.email nina.nix@example.com
                                                                                                                                 git config user.name "Nina Nix"
                                                                                                                                 git remote add origin "$BUILD/repo/$NAME"
                                                                                                                                 git checkout -b branch/test
-                                                                                                                                touch "$TOKEN"
+                                                                                                                                touch "$GIT_WORK_TREE/$TOKEN"
                                                                                                                                 git add "$TOKEN"
                                                                                                                                 git commit -m "" --allow-empty-message
                                                                                                                                 git push origin branch/test
@@ -1836,9 +1840,9 @@
                                                                                                                                     echo "Missing $NAME" >&2
                                                                                                                                     exit 64
                                                                                                                                 fi
-                                                                                                                                if ! diff "$HOMEY/$NAME/work-tree
+                                                                                                                                if ! diff "/build/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
                                                                                                                                 then
-                                                                                                                                    echo "Not the same" >&2
+                                                                                                                                    echo Not the same >&2
                                                                                                                                     exit 64
                                                                                                                                 fi
                                                                                                                             '' ;
