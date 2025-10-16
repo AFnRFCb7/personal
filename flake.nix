@@ -575,27 +575,27 @@
                                                                                                             DOT_GNUPG="$( ${ resources.repository.dot-gnupg } )" || ${ failure.implementation "e2ae42fe" }
                                                                                                             ln --symbolic "$DOT_GNUPG" /links
                                                                                                             ln --symbolic "$DOT_GNUPG" /mount/dot-gnupg
-                                                                                                            DOT_SSH="$( ${ resources.repository.dot-ssh } )" || ${ failure.implementation "7a5c58ee" }
-                                                                                                            ln --symbolic "DOT_SSH" /links
-                                                                                                            ln --symbolic "$DOT_SSH" /mount/dot-ssh
-                                                                                                            FAILURE="$( ${ resources.repository.failure } )" || ${ failure.implementation "e23b5c7d" }
-                                                                                                            ln --symbolic "$FAILURE" /links
-                                                                                                            ln --symbolic "$FAILURE" /mount/failure
+                                                                                                            # DOT_SSH="$( ${ resources.repository.dot-ssh } )" || ${ failure.implementation "7a5c58ee" }
+                                                                                                            # ln --symbolic "DOT_SSH" /links
+                                                                                                            # ln --symbolic "$DOT_SSH" /mount/dot-ssh
+                                                                                                            # FAILURE="$( ${ resources.repository.failure } )" || ${ failure.implementation "e23b5c7d" }
+                                                                                                            # ln --symbolic "$FAILURE" /links
+                                                                                                            # ln --symbolic "$FAILURE" /mount/failure
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure.implementation "8af3601b" }
                                                                                                             ln --symbolic "$PERSONAL" /links
                                                                                                             ln --symbolic "$PERSONAL" /mount/personal
                                                                                                             PRIVATE="$( ${ resources.repository.private } )" || ${ failure.implementation "35b067fd" }
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
-                                                                                                            RESOURCE_LISTENER="$( ${ resources.repository.resource-listener } )" || ${ failure.implementation "0f29b150" }
-                                                                                                            ln --symbolic "$RESOURCE_LISTENER" /links
-                                                                                                            ln --symbolic "$RESOURCE_LISTENER" /mount/resource-listener
+                                                                                                            # RESOURCE_LISTENER="$( ${ resources.repository.resource-listener } )" || ${ failure.implementation "0f29b150" }
+                                                                                                            # ln --symbolic "$RESOURCE_LISTENER" /links
+                                                                                                            # ln --symbolic "$RESOURCE_LISTENER" /mount/resource-listener
                                                                                                             RESOURCES="$( ${ resources.repository.resources } )" || ${ failure.implementation "3f26b4aa" }
                                                                                                             ln --symbolic "$RESOURCES" /links
                                                                                                             ln --symbolic "$RESOURCES" /mount/resources
-                                                                                                            SECRET="$( ${ resources.repository.secret } )" || ${ failure.implementation "9aca5d4a" }
-                                                                                                            ln --symbolic "$SECRET" /links
-                                                                                                            ln --symbolic "$SECRET" /mount/secret
+                                                                                                            # SECRET="$( ${ resources.repository.secret } )" || ${ failure.implementation "9aca5d4a" }
+                                                                                                            # ln --symbolic "$SECRET" /links
+                                                                                                            # ln --symbolic "$SECRET" /mount/secret
                                                                                                             SECRETS="$( ${ resources.repository.secrets } )" || ${ failure.implementation "04d6332b" }
                                                                                                             ln --symbolic "$SECRETS" /links
                                                                                                             ln --symbolic "$SECRETS" /mount/secrets
