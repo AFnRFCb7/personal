@@ -1828,8 +1828,9 @@
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.diffutils ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                HOMEY="$1"
-                                                                                                                                NAME="$2"
+                                                                                                                                BUILD="$1"
+                                                                                                                                HOMEY="$2"
+                                                                                                                                NAME="$3"
                                                                                                                                 if [[ ! -d "$HOMEY" ]]
                                                                                                                                 then
                                                                                                                                     echo Missing HOME >&2
@@ -1840,7 +1841,7 @@
                                                                                                                                     echo "Missing $NAME" >&2
                                                                                                                                     exit 64
                                                                                                                                 fi
-                                                                                                                                if ! diff --recursive "/build/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
+                                                                                                                                if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
                                                                                                                                 then
                                                                                                                                     echo Not the same >&2
                                                                                                                                     exit 64
@@ -1885,11 +1886,11 @@
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
-                                                                                                            verify-mock-repository "$HOMEY" private
-                                                                                                            verify-mock-repository "$HOMEY" personal
-                                                                                                            verify-mock-repository "$HOMEY" resources
-                                                                                                            verify-mock-repository "$HOMEY" secrets
-                                                                                                            verify-mock-repository "$HOMEY" visitor
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" private
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" personal
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" resources
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" secrets
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" visitor
                                                                                                         '' ;
                                                                                                }
                                                                                         )
