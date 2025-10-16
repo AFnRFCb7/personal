@@ -1939,10 +1939,7 @@
                                                                                                             create-mock-repository "$BUILD" resources 604966cdd13bc61481fd84915aac1639a409de6020b88a0ac0f95196cd29201beae8d4c30990325a799c8ee14c44d9f038bae7963e83c368e5c48f43cd8b5e90
                                                                                                             create-mock-repository "$BUILD" secrets 386436e6b7328385c261d1ec574c023f88140e66507f698968014281f02d15b2eb17d0d7f434ce7f6b0298e23c47da4f78e32a8e1c0b54bb2902948d1be1c8bb
                                                                                                             create-mock-repository "$BUILD" visitor 0cd4c650d1051817e663a4a1a5e3133f029919991ab5fa85845d5c0ac1c09e2e0bb4ae65fc8e3c3735c123993ff75e6f5359572a344b6c060c844378a9788ef3
-                                                                                                            HOME_MESSAGE_1="$( which home )" || exit 64
-                                                                                                            HOME_MESSAGE_2="$( readlink "$HOME_MESSAGE_1" )" || exit 64
-                                                                                                            cat "$HOME_MESSAGE_1"
-                                                                                                            echo "before execute test code $HOME_MESSAGE_2"
+                                                                                                            echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
                                                                                                             verify-mock-repository "$BUILD" "$HOMEY" failure
@@ -1963,6 +1960,11 @@
                                                                                         password = "password" ;
                                                                                         repository =
                                                                                             {
+                                                                                                failure =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/failure" ;
+                                                                                                    } ;
                                                                                                 personal =
                                                                                                     {
                                                                                                         branch = "branch/test" ;
