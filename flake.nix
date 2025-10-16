@@ -572,9 +572,9 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            DOT_GNUPG="$( ${ resources.repository.dot-gnupg } )" || ${ failure.implementation "e2ae42fe" }
-                                                                                                            ln --symbolic "$DOT_GNUPG" /links
-                                                                                                            ln --symbolic "$DOT_GNUPG" /mount/dot-gnupg
+                                                                                                            # DOT_GNUPG="$( ${ resources.repository.dot-gnupg } )" || ${ failure.implementation "e2ae42fe" }
+                                                                                                            # ln --symbolic "$DOT_GNUPG" /links
+                                                                                                            # ln --symbolic "$DOT_GNUPG" /mount/dot-gnupg
                                                                                                             # DOT_SSH="$( ${ resources.repository.dot-ssh } )" || ${ failure.implementation "7a5c58ee" }
                                                                                                             # ln --symbolic "DOT_SSH" /links
                                                                                                             # ln --symbolic "$DOT_SSH" /mount/dot-ssh
