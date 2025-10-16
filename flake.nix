@@ -7,6 +7,7 @@
             {
                 lib =
                     {
+                        failure ,
                         nixpkgs ,
                         resources ,
                         secrets ,
