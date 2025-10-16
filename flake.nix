@@ -804,6 +804,7 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                FAILURE="$( ${ resources_.repository.failure } )" || exit 64
                                                                                                                 PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
                                                                                                                 RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
                                                                                                                 SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
@@ -813,6 +814,7 @@
                                                                                                                 ln --symbolic "$SECRETS" /links
                                                                                                                 ln --symbolic "$VISITOR" /links
                                                                                                                 cat >> /mount/.envrc <<EOF
+                                                                                                                export FAILURE="$FAILURE"
                                                                                                                 export PERSONAL="$PERSONAL"
                                                                                                                 export RESOURCES="$RESOURCES"
                                                                                                                 export SECRETS="$SECRETS"
@@ -850,6 +852,8 @@
                                                                                                                                         runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                FAILURE="$( ${ resources_.promotion.squash.dependents.failure } "$SOURCE" personal )" || exit 64
+                                                                                                                                                GIT_DIR="$FAILURE/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
                                                                                                                                                 PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || exit 64
                                                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
                                                                                                                                                 RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || exit 64
@@ -1102,6 +1106,7 @@
                                                                                                                 EOF
                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                 git checkout "$COMMIT" 2>&1
+                                                                                                                GIT_DIR="$FAILURE/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot failure "$REPOSITORY_ROOT"
                                                                                                                 GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$REPOSITORY_ROOT"
                                                                                                                 GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$REPOSITORY_ROOT"
                                                                                                                 GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$REPOSITORY_ROOT"
@@ -1176,6 +1181,7 @@
                                                                                                         } ;
                                                                                             in
                                                                                                 {
+                                                                                                    failure = fun config.personal.repository.failure.email config.personal.repository.failure.name config.personal.repository.failure.remote ;
                                                                                                     personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.remote ;
                                                                                                     resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.remote ;
                                                                                                     secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.remote ;
