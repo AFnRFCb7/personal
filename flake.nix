@@ -1941,6 +1941,7 @@
                                                                                                             create-mock-repository "$BUILD" visitor 0cd4c650d1051817e663a4a1a5e3133f029919991ab5fa85845d5c0ac1c09e2e0bb4ae65fc8e3c3735c123993ff75e6f5359572a344b6c060c844378a9788ef3
                                                                                                             HOME_MESSAGE_1="$( which home )" || exit 64
                                                                                                             HOME_MESSAGE_2="$( readlink "$HOME_MESSAGE_1" )" || exit 64
+                                                                                                            cat "$HOME_MESSAGE_1"
                                                                                                             echo "before execute test code $HOME_MESSAGE_2"
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
