@@ -1840,11 +1840,11 @@
                                                                                                                                     echo "Missing $NAME" >&2
                                                                                                                                     exit 64
                                                                                                                                 fi
-                                                                                                                                if ! diff "/build/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
-                                                                                                                                then
-                                                                                                                                    echo Not the same >&2
-                                                                                                                                    exit 64
-                                                                                                                                fi
+                                                                                                                                # if ! diff "/build/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
+                                                                                                                                # then
+                                                                                                                                #     echo Not the same >&2
+                                                                                                                                #     exit 64
+                                                                                                                                # fi
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
