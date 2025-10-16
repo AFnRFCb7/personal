@@ -537,7 +537,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            FAILURE="$( ${ resources.repository.personal } "WTF" )" || ${ failure "8af3601b" }
+                                                                                                            FAILURE="$( ${ resources.repository.personal } "WTF" )" || ${ failure "26a28eee" }
                                                                                                             ln --symbolic "$FAILURE" /links
                                                                                                             ln --symbolic "$FAILURE" /mount/failure
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
@@ -1940,7 +1940,7 @@
                                                                                                             echo before execute test code
                                                                                                             HOMEY="$( home )" || exit 64
                                                                                                             echo after execute test code
-                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" failue
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" failure
                                                                                                             verify-mock-repository "$BUILD" "$HOMEY" personal
                                                                                                             verify-mock-repository "$BUILD" "$HOMEY" private
                                                                                                             verify-mock-repository "$BUILD" "$HOMEY" resources
