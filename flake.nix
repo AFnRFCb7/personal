@@ -1899,6 +1899,7 @@
                                                                                                                                     echo Not the same >&2
                                                                                                                                     exit 64
                                                                                                                                 fi
+                                                                                                                                echo "tested $NAME"
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
