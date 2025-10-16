@@ -537,7 +537,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            FAILURE="$( ${ resources.repository.personal } "WTF" )" || ${ failure "26a28eee" }
+                                                                                                            FAILURE="$( ${ resources.repository.failure } )" || ${ failure "26a28eee" }
                                                                                                             ln --symbolic "$FAILURE" /links
                                                                                                             ln --symbolic "$FAILURE" /mount/failure
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure "8af3601b" }
