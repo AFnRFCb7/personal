@@ -600,15 +600,15 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                # if git ls-remote --exit-code origin "refs/heads/${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                # then
-                                                                                                                #     git fetch origin "${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                #     git checkout "origin/${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                # else
-                                                                                                                #     git checkout -b "${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                #     git push -u origin HEAD 2>&1
-                                                                                                                # fi
-                                                                                                                # git scratch
+                                                                                                                if git ls-remote --exit-code origin "refs/heads/${ config.personal.repository.failure.branch }" 2>&1
+                                                                                                                then
+                                                                                                                    git fetch origin "${ config.personal.repository.failure.branch }" 2>&1
+                                                                                                                    git checkout "origin/${ config.personal.repository.failure.branch }" 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b "${ config.personal.repository.failure.branch }" 2>&1
+                                                                                                                    git push -u origin HEAD 2>&1
+                                                                                                                fi
+                                                                                                                git scratch
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
