@@ -605,7 +605,7 @@
                                                                                                                     git checkout origin/${ config.personal.repository.failure.branch } 2>&1
                                                                                                                 else
                                                                                                                     git checkout -b ${ config.personal.repository.failure.branch } 2>&1
-                                                                                                                    git push origin HEAD
+                                                                                                                    git push origin HEAD 2>&1
                                                                                                                 fi
                                                                                                                 git scratch
                                                                                                             '' ;
