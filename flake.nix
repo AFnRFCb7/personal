@@ -1906,6 +1906,7 @@
                                                                                                             pkgs.age
                                                                                                             pkgs.coreutils
                                                                                                             pkgs.git
+                                                                                                            pkgs.which
                                                                                                         ] ;
                                                                                                     text =
                                                                                                         ''
