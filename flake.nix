@@ -319,6 +319,11 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        BRANCH="$( git rev-parse abbrev-ref HEAD )" || ${ failure.implementation "3c585c01" }
+                                                                                        if [[ -z "$BRANCH" ]]
+                                                                                        then
+                                                                                            git scratch
+                                                                                        fi
                                                                                         while ! git push origin HEAD
                                                                                         do
                                                                                             sleep 1s
@@ -567,15 +572,30 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            RESOURCES="$( ${ resources.repository.resources } )" || ${ failure.implementation "3f26b4aa" }
-                                                                                                            ln --symbolic "$RESOURCES" /links
-                                                                                                            ln --symbolic "$RESOURCES" /mount/resources
+                                                                                                            DOT_GNUPG="$( ${ resources.repository.dot-gnup } )" || ${ failure.implementation "e2ae42fe" }
+                                                                                                            ln --symbolic "$DOT_GNUPG" /links
+                                                                                                            ln --symbolic "$DOT_GNUPG" /mount/dot-gnupg
+                                                                                                            DOT_SSH="$( ${ resources.repository.dot-ssh } )" || ${ failure.implementation "7a5c58ee" }
+                                                                                                            ln --symbolic "DOT_SSH" /links
+                                                                                                            ln --symbolic "$DOT_SSH" /mount/dot-gnupg
+                                                                                                            FAILURE="$( ${ resources.repository.failure } )" || ${ failure.implementation "e23b5c7d" }
+                                                                                                            ln --symbolic "$FAILURE" /links
+                                                                                                            ln --symbolic "$FAILURE" /mount/failure
                                                                                                             PERSONAL="$( ${ resources.repository.personal } )" || ${ failure.implementation "8af3601b" }
                                                                                                             ln --symbolic "$PERSONAL" /links
                                                                                                             ln --symbolic "$PERSONAL" /mount/personal
                                                                                                             PRIVATE="$( ${ resources.repository.private } )" || ${ failure.implementation "35b067fd" }
                                                                                                             ln --symbolic "$PRIVATE" /links
                                                                                                             ln --symbolic "$PRIVATE" /mount/private
+                                                                                                            RESOURCE_LISTENER="$( ${ resources.repository.resource-listener } )" || ${ failure.implementation "0f29b150" }
+                                                                                                            ln --symbolic "$RESOURCE_LISTENER" /links
+                                                                                                            ln --symbolic "$RESOURCE_LISTENER" /mount/resource-listener
+                                                                                                            RESOURCES="$( ${ resources.repository.resources } )" || ${ failure.implementation "3f26b4aa" }
+                                                                                                            ln --symbolic "$RESOURCES" /links
+                                                                                                            ln --symbolic "$RESOURCES" /mount/resources
+                                                                                                            SECRET="$( ${ resources.repository.secret } )" || ${ failure.implementation "9aca5d4a" }
+                                                                                                            ln --symbolic "$SECRET" /links
+                                                                                                            ln --symbolic "$SECRET" /mount/secret
                                                                                                             SECRETS="$( ${ resources.repository.secrets } )" || ${ failure.implementation "04d6332b" }
                                                                                                             ln --symbolic "$SECRETS" /links
                                                                                                             ln --symbolic "$SECRETS" /mount/secrets
@@ -597,6 +617,129 @@
                                                                         } ;
                                                                 repository =
                                                                     {
+                                                                        dot-gnupg =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "alias.snapshot" = "!${ snapshot }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.dot-gnupg.email ;
+                                                                                            "user.name" = config.personal.repository.dot-gnupg.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.dot-gnupg.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                if git fetch origin ${ config.personal.repository.dot-gnupg.branch } 2>&1
+                                                                                                                then
+                                                                                                                    git checkout origin/${ config.personal.repository.dot-gnupg.branch } 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b ${ config.personal.repository.dot-gnupg.branch } 2>&1
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                fi
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        dot-ssh =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "alias.snapshot" = "!${ snapshot }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.dot-ssh.email ;
+                                                                                            "user.name" = config.personal.repository.dot-ssh.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.dot-ssh.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                if git fetch origin ${ config.personal.repository.dot-ssh.branch } 2>&1
+                                                                                                                then
+                                                                                                                    git checkout origin/${ config.personal.repository.dot-ssh.branch } 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b ${ config.personal.repository.dot-ssh.branch } 2>&1
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                fi
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        github-repository =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "alias.snapshot" = "!${ snapshot }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.github-repository.email ;
+                                                                                            "user.name" = config.personal.repository.github-repository.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.github-repository.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                if git fetch origin ${ config.personal.repository.github-repository.branch } 2>&1
+                                                                                                                then
+                                                                                                                    git checkout origin/${ config.personal.repository.github-repository.branch } 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b ${ config.personal.repository.github-repository.branch } 2>&1
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                fi
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
                                                                         personal =
                                                                             git
                                                                                 {
@@ -633,6 +776,47 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/setup" ;
                                                                                 } ;
+                                                                        resource-listener =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "alias.snapshot" = "!${ snapshot }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.resource-listener.email ;
+                                                                                            "user.name" = config.personal.repository.resource-listener.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.resource-listener.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                if git fetch origin ${ config.personal.repository.resource-listener.branch } 2>&1
+                                                                                                                then
+                                                                                                                    git checkout origin/${ config.personal.repository.resource-listener.branch } 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b ${ config.personal.repository.resource-listener.branch } 2>&1
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                fi
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
                                                                         resources =
                                                                             git
                                                                                 {
@@ -664,6 +848,47 @@
                                                                                                             ''
                                                                                                                 git fetch origin ${ config.personal.repository.resources.branch } 2>&1
                                                                                                                 git checkout origin/${ config.personal.repository.resources.branch } 2>&1
+                                                                                                                git scratch
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/setup" ;
+                                                                                } ;
+                                                                        secret =
+                                                                            git
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+                                                                                            "alias.milestone" = "!${ milestone }" ;
+                                                                                            "alias.scratch" = "!${ scratch }" ;
+                                                                                            "alias.snapshot" = "!${ snapshot }" ;
+                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
+                                                                                            "user.email" = config.personal.repository.secret.email ;
+                                                                                            "user.name" = config.personal.repository.secret.name ;
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+                                                                                            post-commit = post-commit "origin" ;
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.secret.remote ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "setup" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                if git fetch origin ${ config.personal.repository.secret.branch } 2>&1
+                                                                                                                then
+                                                                                                                    git checkout origin/${ config.personal.repository.secret.branch } 2>&1
+                                                                                                                else
+                                                                                                                    git checkout -b ${ config.personal.repository.secret.branch } 2>&1
+                                                                                                                    git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                fi
                                                                                                                 git scratch
                                                                                                             '' ;
                                                                                                     } ;
@@ -1703,6 +1928,38 @@
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/applications" ; type = lib.types.str ; } ;
                                                                             } ;
+                                                                        dot-gnupg =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/dot-gnupg.git" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        dot-ssh =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/dot-ssh.git" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        failure =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/failure.git" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        git-repository =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/git-repository.git" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
@@ -1726,6 +1983,14 @@
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
                                                                                 ssh-config = lib.mkOption { default = resources : resources.dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
                                                                             } ;
+                                                                        resource-listener =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resource-listener.git" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         resources =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
@@ -1733,6 +1998,14 @@
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resources.git" ; type = lib.types.str ; } ;
                                                                            } ;
+                                                                        secret =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/secret.git" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         secrets =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
@@ -1908,15 +2181,30 @@
                                                                                                         git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
                                                                                                         git -C "$BUILD/repository/secrets" commit -m "" --allow-empty-message
                                                                                                         echo "created secrets repository at $BUILD/repository/secrets"
-                                                                                                        PRIVATE_FILE=af96ff1062ec89ceee3384a4e3736b6b7bdbbd78e5ffcf356ee9f9012700baf1ad1ce7b48b25b0a5afc9eaca7e4c2db61d2e83cec49493b89486002ffc8f9302
-                                                                                                        PRIVATE_TOKEN=fbadd0b5f32d56b07db1fc5a17daaf574964a0dab54efc8b1932bf77a340af31cc44669859e06d880a3013fe70405058a89435f910b2b84c4bd378bd9cce1049
-                                                                                                        create-mock-repository "$BUILD" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                        DOT_GNUPG_FILE=3cb09a17943955b3385a8dee33235acfdc52cd795597a6978988b84a799117693266053272dff93728c2540ffbfc753491023fecb677766649dced6e26b84ae7
+                                                                                                        DOT_GNUPG_TOKEN=31a33ca735db38af4b969964f0f6dbb0265063de8c2b89aae5e2f9465f407c39bffdfd3e8632bb663c4b820ee56546d69cd36ff515d38c9c2c2c9cb1e918ef26
+                                                                                                        create-mock-repository "$BUILD" dot-gnupg "$DOT_GNUPG_FILE" "$DOT_GNUPG_TOKEN"
+                                                                                                        DOT_SSH_FILE=c0941a2bab61326d3ed72cc7e8aaa99a43da0c8a122e53545e577318b00af1bc7a4f625726b5a7cc74ea8f34477b65f901b0f30c9e68dcfc52321cfccf7dbe7c
+                                                                                                        DOT_SSH_TOKEN=adebd3b124e63792cc21f96a00a1370f37cb0860feca1216da2a64eef47a18d9c36a230d7f06a164ac9f4269fcae849aabc49d7f8bd8365279b307a8b3d6fb29
+                                                                                                        create-mock-repository "$BUILD" dot-ssh "$DOT_SSH_FILE" "$DOT_SSH_TOKEN"
+                                                                                                        FAILURE_FILE=481c52b4cf3361a2c23e130079c6e34406dc47be9117e2a3a1f0087130a2865b0f37900372bf40779f762af81dc39e49195ad5faeece2a448693bd71278bb71c
+                                                                                                        FAILURE_TOKEN=35d121d990500b957f960c9792cea5a8758fadcd8e0b8b48d53ea33039684c60e59e26741c9a571ec0bacf964debd5ca8f4ab7f4279bc6f22ffc381490b069ca
+                                                                                                        create-mock-repository "$BUILD" failure "$FAILURE_FILE" "$FAILURE_TOKEN"
                                                                                                         PERSONAL_FILE=570ab8317345522e606bec96139429ff4a18b356cde20604c9c95f799ba0d3a54ee9e06bf2c609b073c50c2d25e9889fb39d63f924d6d405064367d3397d1585
                                                                                                         PERSONAL_TOKEN=44a65d206aeb170db164ebe10f4ea2e481c3db8ecad7a1aca05bf843d7f85ed8863cb6b2575fde720d270785bce70f2c451c3b0c91eb637633b470b053e611fd
                                                                                                         create-mock-repository "$BUILD" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
+                                                                                                        PRIVATE_FILE=af96ff1062ec89ceee3384a4e3736b6b7bdbbd78e5ffcf356ee9f9012700baf1ad1ce7b48b25b0a5afc9eaca7e4c2db61d2e83cec49493b89486002ffc8f9302
+                                                                                                        PRIVATE_TOKEN=fbadd0b5f32d56b07db1fc5a17daaf574964a0dab54efc8b1932bf77a340af31cc44669859e06d880a3013fe70405058a89435f910b2b84c4bd378bd9cce1049
+                                                                                                        create-mock-repository "$BUILD" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                        RESOURCE_LISTENER_FILE=be1fe9b637f8a5d54f9ec7c1a74aa4b411d0c3d9613c760e175c23b08dd35ca6755827d305a4aec4e592e579e9d36f6ff349b44bdb231af83731cef89c30839e
+                                                                                                        RESOURCE_LISTENER_TOKEN=29f1e9b192eb1010db754ada64076d752b4317fc23af3b7535d33047b6b77bbf9804e1714a31d8f760ab7872263a2c871076a08d0e1e8c362e39aeff20df9568
+                                                                                                        create-mock-repository "$BUILD" resource-listener "$RESOURCE_LISTENER_FILE" "$RESOURCE_LISTENER_TOKEN"
                                                                                                         RESOURCES_FILE=1fc5bfc608d9cd345b7d4e3ee0ed073664cf0eda11412131a589fdf66aec961f7d522cc23cd4bf47929ac98bf07bbabe2222166fc4c1e07ecf8cd997c4ea1fe9
                                                                                                         RESOURCES_TOKEN=aeab6d01077166bd8b32ccf8359a425d0bb7b8de4d08166d59482ef77e9de5b1e12cb96bf6dc2de6276bbcae2fb55fd15a81cb1afb70263a4d5048ab22c4fdbe
                                                                                                         create-mock-repository "$BUILD" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
+                                                                                                        SECRET_FILE=c3f5813c626f379640a171dbbdd3dd3ba39e5ee0527cf1eee5f75003071e0c926f45b71f055c185f3c835573aa414384d9f1f7156f81a31d492ab10289421bb4
+                                                                                                        SECRET_TOKEN=09904cc33c6f53479f1fcde1ecc5fb30ddf9cf4978488b078b964f2a4c9bea3178dea717f54a0556435aeb9c4aef637f6ff78dd46adee7c8877f9a584c6fe375
+                                                                                                        create-mock-repository "$BUILD" secret "$SECRET_FILE" "$SECRET_TOKEN"
                                                                                                         SECRETS_FILE=a863e91ebc08029e473e18f56c2c6b0808a52201a176372c5f67ac87067117ad167dac5b53d9fe932deefbba5b5c3d1efda925f3809560006e746e85e25a90aa
                                                                                                         SECRETS_TOKEN=d4067dcf3f4bec779f0a155eddb4af5397569ac0aa2cf20a3b64ba906cb1d693eae221622467ffe560b86aae678a37af2f8644830930313451f4004902dc8425
                                                                                                         create-mock-repository "$BUILD" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
@@ -1926,9 +2214,14 @@
                                                                                                         echo before execute test code
                                                                                                         HOMEY="$( home )" || ${ failure.implementation "15e25c62" }
                                                                                                         echo after execute test code
-                                                                                                        verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                        verify-mock-repository "$HOMEY" dot-gnupg "$DOT_GNUPG_FILE" "$DOT_GNUPG_TOKEN"
+                                                                                                        verify-mock-repository "$HOMEY" dot-ssh "$DOT_SSH_FILE" "$DOT_SSH_TOKEN"
+                                                                                                        verify-mock-repository "$HOMEY" failure "$FAILURE_FILE" "$FAILURE_TOKEN"
                                                                                                         verify-mock-repository "$HOMEY" personal "$PERSONAL_FILE" "$PERSONAL_TOKEN"
+                                                                                                        verify-mock-repository "$HOMEY" private "$PRIVATE_FILE" "$PRIVATE_TOKEN"
+                                                                                                        verify-mock-repository "$HOMEY" resource-listener "$RESOURCE_LISTENER_FILE" "$RESOURCE_LISTENER_TOKEN"
                                                                                                         verify-mock-repository "$HOMEY" resources "$RESOURCES_FILE" "$RESOURCES_TOKEN"
+                                                                                                        verify-mock-repository "$HOMEY" secret "$SECRET_FILE" "$SECRET_TOKEN"
                                                                                                         verify-mock-repository "$HOMEY" secrets "$SECRETS_FILE" "$SECRETS_TOKEN"
                                                                                                         verify-mock-repository "$HOMEY" visitor "$VISITOR_FILE" "$VISITOR_TOKEN"
                                                                                                     '' ;
