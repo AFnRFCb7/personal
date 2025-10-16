@@ -600,7 +600,7 @@
                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                if git ls-remote --exit-code origin "refs/heads/${ config.personal.repository.failure.branch }" 2>&1
+                                                                                                                if git ls-remote --exit-code origin "refs/heads/${ config.personal.repository.failure.branch }"
                                                                                                                 then
                                                                                                                     git fetch origin "${ config.personal.repository.failure.branch }" 2>&1
                                                                                                                     git checkout "origin/${ config.personal.repository.failure.branch }" 2>&1
