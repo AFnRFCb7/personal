@@ -2069,7 +2069,6 @@
                                         {
                                             user = user ;
                                         } ;
-                                    # tests = tests ;
                                 } ;
             } ;
 }
