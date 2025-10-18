@@ -19,23 +19,28 @@
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             failure_ = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             resources_ =
-                                resources.lib
-                                    {
-                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                        coreutils = pkgs.coreutils ;
-                                        findutils = pkgs.findutils ;
-                                        failure = failure ;
-                                        flock = pkgs.flock ;
-                                        jq = pkgs.jq ;
-                                        makeBinPath = pkgs.lib.makeBinPath ;
-                                        makeWrapper = pkgs.makeWrapper ;
-                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                        ps = pkgs.ps ;
-                                        redis = pkgs.redis ;
-                                        visitor = visitor ;
-                                        writeShellApplication = pkgs.writeShellApplication ;
-                                        yq-go = pkgs.yq-go ;
-                                    } ;
+                                init : resources-directory : seed : transient :
+                                    resources.lib
+                                        {
+                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                            coreutils = pkgs.coreutils ;
+                                            findutils = pkgs.findutils ;
+                                            failure = failure ;
+                                            flock = pkgs.flock ;
+                                            init = init ;
+                                            jq = pkgs.jq ;
+                                            makeBinPath = pkgs.lib.makeBinPath ;
+                                            makeWrapper = pkgs.makeWrapper ;
+                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                            ps = pkgs.ps ;
+                                            redis = pkgs.redis ;
+                                            resources-directory = resources-directory ;
+                                            seed = seed ;
+                                            transient = transiet ;
+                                            visitor = visitor ;
+                                            writeShellApplication = pkgs.writeShellApplication ;
+                                            yq-go = pkgs.yq-go ;
+                                        } ;
                             resourcesX = resources_ ;
                             user =
                                 { config , lib , pkgs , ... } :
@@ -1304,6 +1309,7 @@
                                                                     lambda =
                                                                         path : value :
                                                                             let
+                                                                                factory = resourcesX { init = point.init ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = path ; targets = point.targets ; transient = point.transient ; } ;
                                                                                 point =
                                                                                     let
                                                                                         identity =
@@ -1323,7 +1329,7 @@
                                                                                                     transient = transient ;
                                                                                                 } ;
                                                                                         in identity ( value null ) ;
-                                                                                in resourcesX.implementation { init = point.init ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = path ; } ;
+                                                                                in factory.implementation ;
                                                                 }
                                                                 tree
                                                     ) ;
