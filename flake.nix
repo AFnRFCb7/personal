@@ -1302,7 +1302,6 @@
                                                                     lambda =
                                                                         path : value :
                                                                             let
-                                                                                resource-factory = resources_ ;
                                                                                 point =
                                                                                     let
                                                                                         identity =
@@ -1322,7 +1321,7 @@
                                                                                                     transient = transient ;
                                                                                                 } ;
                                                                                         in identity ( value null ) ;
-                                                                                in resource-factory.implementation { init = point.init ; seed = path ; } ;
+                                                                                in resources_.implementation { init = point.init ; seed = path ; } ;
                                                                 }
                                                                 tree
                                                     ) ;
