@@ -2033,7 +2033,6 @@
                                                                                             echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                             echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 ${ if has-standard-error then ">&2" else "> /scratch/null" }
                                                                                             touch /mount/${ if target-mismatch then "98236ab2df439c61422251ca03830facf0e9a1e06fecb2d267f8c4574cd8a05b12224b536ab5661adc9a0347fba244e1a3db425ec7044166ae861cc93e50bd49" else "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" }
-                                                                                            exit ${ if throws-error then "125" else "0" }
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/init" ;
@@ -2242,35 +2241,68 @@
                                                                        '' ;
                                                                } ;
                                                     }
-                                                    (
-                                                        test-resource
-                                                            "Happy Case"
-                                                            false
-                                                            false
-                                                            false
-                                                            false
-                                                            {
-                                                                arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
-                                                                expected-dependencies = [ ] ;
-                                                                expected-index = "0000000311691948" ;
-                                                                expected-originator-pid = 45 ;
-                                                                expected-provenance = "new" ;
-                                                                expected-standard-error = "" ;
-                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
-                                                                expected-status = 0 ;
-                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
-                                                                expected-transient = -1 ;
-                                                                resources-directory-fixture =
-                                                                   resources-directory :
-                                                                        ''
-                                                                            mkdir --parents ${ resources-directory }/sequential
-                                                                            echo 311691948 > ${ resources-directory }/sequential/sequential.counter
-                                                                        '' ;
-                                                                standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
-                                                                standard-output = "/build/resources/mounts/0000000311691948" ;
-                                                                status = 0 ;
-                                                           }
-                                                    )
+                                                    {
+                                                        name = "t3" ;
+                                                        value =
+                                                            resources.lib.factories.generic
+                                                                {
+                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                    coreutils = pkgs.coreutils ;
+                                                                    findutils = pkgs.findutils ;
+                                                                    error = 129 ;
+                                                                    flock = pkgs.flock ;
+                                                                    init =
+                                                                        self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
+                                                                                                    echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 > /scratch/699fec235fff472ba9988579f87279e9b14ef7f51860ea91e2b6a3abc911746db7ac1347945edd512dd619b0b76ed734abfbfcb41a643b8a27ebe43ac9b71270
+                                                                                                    touch /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    jq = pkgs.jq ;
+                                                                    makeBinPath = pkgs.lib.makeBinPath ;
+                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                    seed = name ;
+                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                    ps = pkgs.ps ;
+                                                                    redis = pkgs.redis ;
+                                                                    resources-directory = "/build/resources" ;
+                                                                    targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                    transient = false ;
+                                                                    visitor = visitor ;
+                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                    yq-go = pkgs.yq-go ;
+                                                                }
+                                                                {
+                                                                    arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                                    expected-dependencies = [ ] ;
+                                                                    expected-index = "0000000311691948" ;
+                                                                    expected-originator-pid = 45 ;
+                                                                    expected-provenance = "new" ;
+                                                                    expected-standard-error = "" ;
+                                                                    expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
+                                                                    expected-status = 0 ;
+                                                                    expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                    expected-transient = -1 ;
+                                                                    resources-directory-fixture =
+                                                                       resources-directory :
+                                                                            ''
+                                                                                mkdir --parents ${ resources-directory }/sequential
+                                                                                echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                            '' ;
+                                                                    standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                                    standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                                    status = 0 ;
+                                                               } ;
+                                                    }
                                                 ] ;
                                             in builtins.listToAttrs tests ;
                                     modules =
