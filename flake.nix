@@ -2217,7 +2217,7 @@
                                                                     resources_
                                                                         {
                                                                             init =
-                                                                                resources : self :
+                                                                                self :
                                                                                     let
                                                                                         application =
                                                                                             pkgs.writeShellApplication
