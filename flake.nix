@@ -35,6 +35,7 @@
                                         writeShellApplication = pkgs.writeShellApplication ;
                                         yq-go = pkgs.yq-go ;
                                     } ;
+                            resourcesX = resources_ ;
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
@@ -1321,7 +1322,7 @@
                                                                                                     transient = transient ;
                                                                                                 } ;
                                                                                         in identity ( value null ) ;
-                                                                                in builtins.trace ( builtins.concatStringsSep "," ( builtins.attrNames resources_ ) ) ( resources_.implementation { init = point.init ; seed = path ; } ) ;
+                                                                                in resourcesX.implementation { init = point.init ; seed = path ; } ;
                                                                 }
                                                                 tree
                                                     ) ;
