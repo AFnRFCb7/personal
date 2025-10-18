@@ -2029,9 +2029,9 @@
                                                         name = "t2" ;
                                                         value =
                                                             pkgs.nixosTest
-                                                               {
-                                                                   name = "home-test" ;
-                                                                   nodes.machine =
+                                                                {
+                                                                    name = "home-test" ;
+                                                                    nodes.machine =
                                                                        { pkgs, ... } :
                                                                           {
                                                                                imports = [ user ] ;
@@ -2207,9 +2207,8 @@
                                                                                             print("STDOUT:\n", stdout)
                                                                                             assert status == 0, "test-home failed"
                                                                                             '' ;
-         } ;
-#
-#
+                                                                } ;
+                                                    }
 #   name = "t3" ;
 #   value =
 #       let
