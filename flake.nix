@@ -18,7 +18,6 @@
                         let
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             failure_ = primary.failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            # failure_ = { implementation = ignore : "if true ; then exit 64 ; fi # " ; check = ignore : null ; } ;
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
@@ -203,7 +202,7 @@
                                                                                             {
                                                                                                 bool = path : value : if value then export path "yes" else "no" ;
                                                                                                 int = path : value : export path ( builtins.toString value ) ;
-                                                                                                lambda = path : value : let v = value resources_ ; in export path ( ''"$( ${ v.resource } )" || exit 64'' ) ;
+                                                                                                lambda = path : value : let v = value resources_ ; in export path ( ''"$( ${ v.resource } )" || ${ failure_.implementation "0ad9fc4b" }'' ) ;
                                                                                                 set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                 string = path : value : export path ''"${ value }"'' ;
                                                                                             }
@@ -300,7 +299,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            NOW="$( date +%s )" || exit 64
+                                                                                            NOW="$( date +%s )" || ${ failures_.implementation "5fb70dc5" }
                                                                                             date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
                                                                                         '' ;
                                                                                 } ;
@@ -349,7 +348,7 @@
                                                                                             TOKEN="$1"
                                                                                             ROOT="$2"
                                                                                             git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure_.implementation "cfd7e341" }
                                                                                             GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.branch" "$BRANCH"
                                                                                             COMMIT="$( git rev-parse HEAD )" || ${ failure_.implementation "0398c6ad" }
                                                                                             GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.commit" "$COMMIT"
@@ -404,7 +403,7 @@
                                                                                                                 name = "release" ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        exit 155
+                                                                                                                        ${ failure.implementation "91ed3469" }
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/release" ;
@@ -436,7 +435,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         echo "${ self }" > /mount/self
-                                                                                                                        exit 155
+                                                                                                                        ${ failure.implementation "0976d9b9" }
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/release" ;
@@ -780,8 +779,8 @@
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
-                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || exit 66
+                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure_.implementation "5d4c76b7" }
+                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || ${ failure_.implementation "830cb4be" }
                                                                                                                                         ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -807,11 +806,11 @@
                                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        FAILURE="$( ${ resources_.repository.failure } )" || exit 64
-                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
-                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
-                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
-                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
+                                                                                                                        FAILURE="$( ${ resources_.repository.failure } )" || ${ failure_.implementation "52448d49" }
+                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || ${ failure_.implementation "b10de190" }
+                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || ${ failure_.implementation "86519640" }
+                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || ${ failure_.implementation "311ea958" }
+                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || ${ failure_.implementation "35db601f" }
                                                                                                                         ln --symbolic "$PERSONAL" /links
                                                                                                                         ln --symbolic "$RESOURCES" /links
                                                                                                                         ln --symbolic "$SECRETS" /links
@@ -1144,10 +1143,10 @@
                                                                                                                                                             git reset --soft origin/main 2>&1
                                                                                                                                                             git commit --verbose 2>&1
                                                                                                                                                             git push origin HEAD
-                                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                                            TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || exit 64
+                                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || ${ failure_.implementation "859df69a" }
+                                                                                                                                                            TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || ${ failure_.implementation "96109ba9" }
                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                            URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || exit 64
+                                                                                                                                                            URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || ${ failure_.implementation "9aa5628f" }
                                                                                                                                                             gh pr merge --rebase --subject "Promotion Merge" "$URL"
                                                                                                                                                             gh auth logout
                                                                                                                                                         fi
@@ -1173,9 +1172,9 @@
                                                                                                                                             ''
                                                                                                                                                 SOURCE="$1"
                                                                                                                                                 TYPE="$2"
-                                                                                                                                                DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || exit 64
+                                                                                                                                                DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || ${ failure_.implementation "dc66e92a" }
                                                                                                                                                 git fetch origin "$DEPENDENT_BRANCH" 2>&1
-                                                                                                                                                DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || exit 64
+                                                                                                                                                DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || ${ failure_.implementation "bf01abd6" }
                                                                                                                                                 git checkout "$DEPENDENT_COMMIT" 2>&1
                                                                                                                                                 git fetch origin main 2>&1
                                                                                                                                             '' ;
@@ -1212,7 +1211,7 @@
                                                                                                                                                 git add -A
                                                                                                                                                 git commit --verbose 2>&1
                                                                                                                                                 git push origin HEAD 2>&1
-                                                                                                                                                SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || exit 64
+                                                                                                                                                SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || ${ failure_.implementation "01791013" }
                                                                                                                                                 git checkout main 2>&1
                                                                                                                                                 git rebase "$SQUASH_COMMIT" 2>&1
                                                                                                                                                 git push origin HEAD 2>&1
@@ -1564,7 +1563,7 @@
                                                                                         installPhase =
                                                                                             ''
                                                                                                 mkdir --parents $out/bin
-                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || exit 64" --add-flags "\$REPO"
+                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || ${ failure_.implementation "da23b468" }" --add-flags "\$REPO"
                                                                                             '' ;
                                                                                         name = "derivation" ;
                                                                                         nativeBuildInputs = [ pkgs.makeWrapper ] ;
@@ -1586,7 +1585,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || exit 64
+                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failure_.implementation "6b8bb4ad" }
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community .
                                                                                                 '' ;
@@ -1638,7 +1637,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || exit 64
+                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failure_.implementation "6a7807fb" }
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community
                                                                                                 '' ;
@@ -1894,12 +1893,10 @@
                                                                                                                         if [[ ! -d "$HOMEY" ]]
                                                                                                                         then
                                                                                                                             ${ failure_.implementation "13510afd" } Missing HOME
-                                                                                                                            exit 64
                                                                                                                         fi
                                                                                                                         if [[ ! -L "$HOMEY/$NAME" ]]
                                                                                                                         then
                                                                                                                             ${ failure_.implementation "863a3d5b" } "Missing $NAME"
-                                                                                                                            exit 64
                                                                                                                         fi
                                                                                                                         if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
                                                                                                                         then
@@ -2126,12 +2123,10 @@
                                                                                                                                 if [[ ! -d "$HOMEY" ]]
                                                                                                                                 then
                                                                                                                                     ${ failure_.implementation "13510afd" } Missing HOME
-                                                                                                                                    exit 64
                                                                                                                                 fi
                                                                                                                                 if [[ ! -L "$HOMEY/$NAME" ]]
                                                                                                                                 then
                                                                                                                                     ${ failure_.implementation "863a3d5b" } "Missing $NAME"
-                                                                                                                                    exit 64
                                                                                                                                 fi
                                                                                                                                 if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
                                                                                                                                 then
