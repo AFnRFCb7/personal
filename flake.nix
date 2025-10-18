@@ -2270,7 +2270,7 @@
                                                                     jq = pkgs.jq ;
                                                                     makeBinPath = pkgs.lib.makeBinPath ;
                                                                     makeWrapper = pkgs.makeWrapper ;
-                                                                    seed = name ;
+                                                                    seed = "35db01f43ce2dad99dcd6e01708f2f58ee1d10c25b6dbf98bc139bb29d884b4f885782a7c6d63509945f95db9c155b086d2d671c1853ce4c4ba8373ba64920a5" ;
                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                     ps = pkgs.ps ;
                                                                     redis = pkgs.redis ;
