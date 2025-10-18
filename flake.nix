@@ -299,7 +299,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            NOW="$( date +%s )" || ${ failures_.implementation "5fb70dc5" }
+                                                                                            NOW="$( date +%s )" || ${ failure_.implementation "5fb70dc5" }
                                                                                             date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
                                                                                         '' ;
                                                                                 } ;
