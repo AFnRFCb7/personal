@@ -31,7 +31,6 @@
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         ps = pkgs.ps ;
                                         redis = pkgs.redis ;
-                                        resources-directory = "/home/${ config.personal.name }/resources" ;
                                         targets = point.targets ;
                                         transient = point.transient ;
                                         visitor = visitor ;
