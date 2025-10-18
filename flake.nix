@@ -2044,6 +2044,7 @@
                                                     in
                                                         factory.check
                                                             {
+                                                                DEBUG = true ;
                                                                 arguments = [ "95770bf5b1acee914409e715847308a6617c4e25b332a3d5770db63de79bfec11d40ee6a38f12f2c05970211a787740be12fa2d7175224abc215171e8526c5b3" "24c4baec1ecb46f22235b32d3d098fc2fb5b780a5f334b3519ca309433cd2cbad9cf13e06053c0eab9201e26a6dcc77ff8bf6922ebe27abeb259b746181e68e2" ] ;
                                                                 expected-dependencies = [ ] ;
                                                                 expected-index = "0000000311691948" ;
