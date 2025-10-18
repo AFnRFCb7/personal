@@ -2032,181 +2032,181 @@
                                                                 {
                                                                     name = "home-test" ;
                                                                     nodes.machine =
-                                                                       { pkgs, ... } :
-                                                                          {
-                                                                               imports = [ user ] ;
-                                                                               environment.systemPackages =
-                                                                                   [
-                                                                                       (
+                                                                        { pkgs, ... } :
+                                                                            {
+                                                                                imports = [ user ] ;
+                                                                                environment.systemPackages =
+                                                                                    [
+                                                                                        (
                                                                                             pkgs.writeShellApplication
-                                                                                             {
-                                                                                                  name = "test-home" ;
-                                                                                                  runtimeInputs =
-                                                                                                      [
-                                                                                                          (
-                                                                                                              pkgs.writeShellApplication
-                                                                                                                  {
-                                                                                                                      name = "create-mock-repository" ;
-                                                                                                                      runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                      text =
-                                                                                                                          ''
-                                                                                                                              BUILD="$1"
-                                                                                                                              NAME="$2"
-                                                                                                                              TOKEN="$3"
-                                                                                                                              if [[ -e "$BUILD/repo/$NAME" ]]
-                                                                                                                              then
-                                                                                                                                  ${ failure_.implementation "bf9496b6" } "$BUILD/repo/$NAME already exists"
-                                                                                                                              fi
-                                                                                                                              mkdir --parents "$BUILD/repo/$NAME"
-                                                                                                                              cd "$BUILD/repo/$NAME"
-                                                                                                                              git init --bare
-                                                                                                                              if [[ -e "$BUILD/work/$NAME" ]]
-                                                                                                                              then
-                                                                                                                                  ${ failure_.implementation "05fce8e3" } "$BUILD/work/$NAME already exists"
-                                                                                                                              fi
-                                                                                                                              GIT_DIR="$BUILD/work/$NAME/git"
-                                                                                                                              export GIT_DIR
-                                                                                                                              mkdir --parents "$GIT_DIR"
-                                                                                                                              GIT_WORK_TREE="$BUILD/work/$NAME/work-tree"
-                                                                                                                              export GIT_WORK_TREE
-                                                                                                                              mkdir --parents "$GIT_WORK_TREE"
-                                                                                                                              git init
-                                                                                                                              git config user.email nina.nix@example.com
-                                                                                                                              git config user.name "Nina Nix"
-                                                                                                                              git remote add origin "$BUILD/repo/$NAME"
-                                                                                                                              git checkout -b branch/test
-                                                                                                                              touch "$GIT_WORK_TREE/$TOKEN"
-                                                                                                                              git add "$TOKEN"
-                                                                                                                              git commit -m "" --allow-empty-message
-                                                                                                                              git push origin branch/test
-                                                                                                                              echo "created $NAME repository at $BUILD/repository/$NAME"
-                                                                                                                          '' ;
-                                                                                                                  }
-                                                                                                          )
-                                                                                                          (
-                                                                                                              pkgs.writeShellApplication
-                                                                                                                  {
-                                                                                                                      name = "verify-mock-repository" ;
-                                                                                                                      runtimeInputs = [ pkgs.coreutils pkgs.diffutils ] ;
-                                                                                                                      text =
-                                                                                                                          ''
-                                                                                                                              BUILD="$1"
-                                                                                                                              HOMEY="$2"
-                                                                                                                              NAME="$3"
-                                                                                                                              if [[ ! -d "$HOMEY" ]]
-                                                                                                                              then
-                                                                                                                                  ${ failure_.implementation "13510afd" } Missing HOME
-                                                                                                                              fi
-                                                                                                                              if [[ ! -L "$HOMEY/$NAME" ]]
-                                                                                                                              then
-                                                                                                                                  ${ failure_.implementation "863a3d5b" } "Missing $NAME"
-                                                                                                                              fi
-                                                                                                                              if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
-                                                                                                                              then
-                                                                                                                                  ${ failure_.implementation "eb549b33" } Not the same
-                                                                                                                              fi
-                                                                                                                              echo "tested $NAME"
-                                                                                                                          '' ;
-                                                                                                                  }
-                                                                                                          )
-                                                                                                          pkgs.age
-                                                                                                          pkgs.coreutils
-                                                                                                          pkgs.git
-                                                                                                          pkgs.which
-                                                                                                      ] ;
-                                                                                                  text =
-                                                                                                      ''
-                                                                                                          echo "Starting test-home with $# arguments"
-                                                                                                          BUILD="$1"
-                                                                                                          echo Using "BUILD=$BUILD"
-                                                                                                          mkdir --parents "$BUILD"
-                                                                                                          age-keygen -y ${ self }/age.test.key 2>&1
-                                                                                                          age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
-                                                                                                          age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
-                                                                                                          echo computed public key
-                                                                                                          mkdir --parents "$BUILD/secrets/dot-ssh/mobile"
-                                                                                                          echo 1fc11953a79d521af9082d3966596b1443048a8d2bbe7c5c2071c205211627fea557812b0014e3f6f3143d94edb2d54dfb728ea3ec3b2d622e35e1b323558494 > "$BUILD/secrets/dot-ssh/mobile/identity.asc"
-                                                                                                          echo 1572ace6d3ec3303f01f43c474c40e55f0d707596043b1ce49f7f98711814920e956cbc57754ae93f5f26b0489c2ac467fc7d3f73fb71749d5e861a70aa6245b > "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
-                                                                                                          mkdir --parents "$BUILD/repository/secrets"
-                                                                                                          git -C "$BUILD/repository/secrets" init
-                                                                                                          git -C "$BUILD/repository/secrets" config user.email nina.nix@example.com
-                                                                                                          git -C "$BUILD/repository/secrets" config user.name "Nina Nix"
-                                                                                                          git -C "$BUILD/repository/secrets" checkout -b branch/test
-                                                                                                          mkdir --parents "$BUILD/repository/secrets/dot-ssh/mobile"
-                                                                                                          age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/identity.asc.age" "$BUILD/secrets/dot-ssh/mobile/identity.asc"
-                                                                                                          age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/unknown-hosts.asc.age" "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
-                                                                                                          git -C "$BUILD/repository/secrets" add dot-ssh/mobile/identity.asc.age
-                                                                                                          git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
-                                                                                                          git -C "$BUILD/repository/secrets" commit -m "" --allow-empty-message
-                                                                                                          echo "created secrets repository at $BUILD/repository/secrets"
-                                                                                                          create-mock-repository "$BUILD" failure f72362bddf315fe5959b74a5ce95d0fbb93155178c4f2e0c5c2dc4804be9fb3a3310b0a0f5621b2f737cdabecd84b5826fb1368888557f5b414a25f418e211bd
-                                                                                                          create-mock-repository "$BUILD" personal 1ffb60928ded3a21bbff490191b3e3c6c19182d242d68b40aec1aece20bcde205c48e09b7d002c1498ab37cf865e83acdee15ad81a64ef5579f5e8b35d446eae
-                                                                                                          create-mock-repository "$BUILD" private ad10b001d2d3d601bbba2c09c1df1c931098cec29d8f80901d5f21514477b1f8425c0a7d9df779da4376e911931bc83ffd48daee06d309573288e0200baf9038
-                                                                                                          create-mock-repository "$BUILD" resources 604966cdd13bc61481fd84915aac1639a409de6020b88a0ac0f95196cd29201beae8d4c30990325a799c8ee14c44d9f038bae7963e83c368e5c48f43cd8b5e90
-                                                                                                          create-mock-repository "$BUILD" secrets 386436e6b7328385c261d1ec574c023f88140e66507f698968014281f02d15b2eb17d0d7f434ce7f6b0298e23c47da4f78e32a8e1c0b54bb2902948d1be1c8bb
-                                                                                                          create-mock-repository "$BUILD" visitor 0cd4c650d1051817e663a4a1a5e3133f029919991ab5fa85845d5c0ac1c09e2e0bb4ae65fc8e3c3735c123993ff75e6f5359572a344b6c060c844378a9788ef3
-                                                                                                          echo before execute test code
-                                                                                                          HOMEY="$( home )" || ${ failure_.implementation "013a89e9" }
-                                                                                                          echo after execute test code
-                                                                                                          verify-mock-repository "$BUILD" "$HOMEY" failure
-                                                                                                          verify-mock-repository "$BUILD" "$HOMEY" personal
-                                                                                                          verify-mock-repository "$BUILD" "$HOMEY" private
-                                                                                                          verify-mock-repository "$BUILD" "$HOMEY" resources
-                                                                                                          verify-mock-repository "$BUILD" "$HOMEY" secrets
-                                                                                                          verify-mock-repository "$BUILD" "$HOMEY" visitor
-                                                                                                      '' ;
-                                                                                             }
-                                                                                            )
-                                                                                            ] ;
-                                                                                            personal =
+                                                                                                {
+                                                                                                    name = "test-home" ;
+                                                                                                    runtimeInputs =
+                                                                                                        [
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "create-mock-repository" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                BUILD="$1"
+                                                                                                                                NAME="$2"
+                                                                                                                                TOKEN="$3"
+                                                                                                                                if [[ -e "$BUILD/repo/$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    ${ failure_.implementation "bf9496b6" } "$BUILD/repo/$NAME already exists"
+                                                                                                                                fi
+                                                                                                                                mkdir --parents "$BUILD/repo/$NAME"
+                                                                                                                                cd "$BUILD/repo/$NAME"
+                                                                                                                                git init --bare
+                                                                                                                                if [[ -e "$BUILD/work/$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    ${ failure_.implementation "05fce8e3" } "$BUILD/work/$NAME already exists"
+                                                                                                                                fi
+                                                                                                                                GIT_DIR="$BUILD/work/$NAME/git"
+                                                                                                                                export GIT_DIR
+                                                                                                                                mkdir --parents "$GIT_DIR"
+                                                                                                                                GIT_WORK_TREE="$BUILD/work/$NAME/work-tree"
+                                                                                                                                export GIT_WORK_TREE
+                                                                                                                                mkdir --parents "$GIT_WORK_TREE"
+                                                                                                                                git init
+                                                                                                                                git config user.email nina.nix@example.com
+                                                                                                                                git config user.name "Nina Nix"
+                                                                                                                                git remote add origin "$BUILD/repo/$NAME"
+                                                                                                                                git checkout -b branch/test
+                                                                                                                                touch "$GIT_WORK_TREE/$TOKEN"
+                                                                                                                                git add "$TOKEN"
+                                                                                                                                git commit -m "" --allow-empty-message
+                                                                                                                                git push origin branch/test
+                                                                                                                                echo "created $NAME repository at $BUILD/repository/$NAME"
+                                                                                                                            '' ;
+                                                                                                                        }
+                                                                                                            )
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "verify-mock-repository" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.diffutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                BUILD="$1"
+                                                                                                                                HOMEY="$2"
+                                                                                                                                NAME="$3"
+                                                                                                                                if [[ ! -d "$HOMEY" ]]
+                                                                                                                                then
+                                                                                                                                    ${ failure_.implementation "13510afd" } Missing HOME
+                                                                                                                                fi
+                                                                                                                                if [[ ! -L "$HOMEY/$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    ${ failure_.implementation "863a3d5b" } "Missing $NAME"
+                                                                                                                                fi
+                                                                                                                                if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
+                                                                                                                                then
+                                                                                                                                    ${ failure_.implementation "eb549b33" } Not the same
+                                                                                                                                fi
+                                                                                                                                echo "tested $NAME"
+                                                                                                                                '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                            pkgs.age
+                                                                                                            pkgs.coreutils
+                                                                                                            pkgs.git
+                                                                                                            pkgs.which
+                                                                                                        ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo "Starting test-home with $# arguments"
+                                                                                                            BUILD="$1"
+                                                                                                            echo Using "BUILD=$BUILD"
+                                                                                                            mkdir --parents "$BUILD"
+                                                                                                            age-keygen -y ${ self }/age.test.key 2>&1
+                                                                                                            age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
+                                                                                                            age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
+                                                                                                            echo computed public key
+                                                                                                            mkdir --parents "$BUILD/secrets/dot-ssh/mobile"
+                                                                                                            echo 1fc11953a79d521af9082d3966596b1443048a8d2bbe7c5c2071c205211627fea557812b0014e3f6f3143d94edb2d54dfb728ea3ec3b2d622e35e1b323558494 > "$BUILD/secrets/dot-ssh/mobile/identity.asc"
+                                                                                                            echo 1572ace6d3ec3303f01f43c474c40e55f0d707596043b1ce49f7f98711814920e956cbc57754ae93f5f26b0489c2ac467fc7d3f73fb71749d5e861a70aa6245b > "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
+                                                                                                            mkdir --parents "$BUILD/repository/secrets"
+                                                                                                            git -C "$BUILD/repository/secrets" init
+                                                                                                            git -C "$BUILD/repository/secrets" config user.email nina.nix@example.com
+                                                                                                            git -C "$BUILD/repository/secrets" config user.name "Nina Nix"
+                                                                                                            git -C "$BUILD/repository/secrets" checkout -b branch/test
+                                                                                                            mkdir --parents "$BUILD/repository/secrets/dot-ssh/mobile"
+                                                                                                            age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/identity.asc.age" "$BUILD/secrets/dot-ssh/mobile/identity.asc"
+                                                                                                            age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/unknown-hosts.asc.age" "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
+                                                                                                            git -C "$BUILD/repository/secrets" add dot-ssh/mobile/identity.asc.age
+                                                                                                            git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
+                                                                                                            git -C "$BUILD/repository/secrets" commit -m "" --allow-empty-message
+                                                                                                            echo "created secrets repository at $BUILD/repository/secrets"
+                                                                                                            create-mock-repository "$BUILD" failure f72362bddf315fe5959b74a5ce95d0fbb93155178c4f2e0c5c2dc4804be9fb3a3310b0a0f5621b2f737cdabecd84b5826fb1368888557f5b414a25f418e211bd
+                                                                                                            create-mock-repository "$BUILD" personal 1ffb60928ded3a21bbff490191b3e3c6c19182d242d68b40aec1aece20bcde205c48e09b7d002c1498ab37cf865e83acdee15ad81a64ef5579f5e8b35d446eae
+                                                                                                            create-mock-repository "$BUILD" private ad10b001d2d3d601bbba2c09c1df1c931098cec29d8f80901d5f21514477b1f8425c0a7d9df779da4376e911931bc83ffd48daee06d309573288e0200baf9038
+                                                                                                            create-mock-repository "$BUILD" resources 604966cdd13bc61481fd84915aac1639a409de6020b88a0ac0f95196cd29201beae8d4c30990325a799c8ee14c44d9f038bae7963e83c368e5c48f43cd8b5e90
+                                                                                                            create-mock-repository "$BUILD" secrets 386436e6b7328385c261d1ec574c023f88140e66507f698968014281f02d15b2eb17d0d7f434ce7f6b0298e23c47da4f78e32a8e1c0b54bb2902948d1be1c8bb
+                                                                                                            create-mock-repository "$BUILD" visitor 0cd4c650d1051817e663a4a1a5e3133f029919991ab5fa85845d5c0ac1c09e2e0bb4ae65fc8e3c3735c123993ff75e6f5359572a344b6c060c844378a9788ef3
+                                                                                                            echo before execute test code
+                                                                                                            HOMEY="$( home )" || ${ failure_.implementation "013a89e9" }
+                                                                                                            echo after execute test code
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" failure
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" personal
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" private
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" resources
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" secrets
+                                                                                                            verify-mock-repository "$BUILD" "$HOMEY" visitor
+                                                                                                        '' ;
+                                                                                                }
+                                                                                        )
+                                                                                    ] ;
+                                                                                personal =
+                                                                                    {
+                                                                                        agenix = self + "/age.test.key" ;
+                                                                                        description = "Bob Wonderful" ;
+                                                                                        name = "bob" ;
+                                                                                        password = "password" ;
+                                                                                        repository =
                                                                                             {
-                                                                                            agenix = self + "/age.test.key" ;
-                                                                                            description = "Bob Wonderful" ;
-                                                                                            name = "bob" ;
-                                                                                            password = "password" ;
-                                                                                            repository =
-                                                                                            {
-                                                                                              failure =
-                                                                                                  {
-                                                                                                      branch = "branch/test" ;
-                                                                                                      remote = "/tmp/build/repo/failure" ;
-                                                                                                  } ;
-                                                                                              personal =
-                                                                                                  {
-                                                                                                      branch = "branch/test" ;
-                                                                                                      remote = "/tmp/build/repo/personal" ;
-                                                                                                  } ;
-                                                                                              private =
-                                                                                                  {
-                                                                                                      branch = "branch/test" ;
-                                                                                                      remote = "/tmp/build/repo/private" ;
-                                                                                                  } ;
-                                                                                              resources =
-                                                                                                  {
-                                                                                                      branch = "branch/test" ;
-                                                                                                      remote = "/tmp/build/repo/resources" ;
-                                                                                                  } ;
-                                                                                              secrets =
-                                                                                                  {
-                                                                                                      branch = "branch/test" ;
-                                                                                                      remote = "/tmp/build/repo/secrets" ;
-                                                                                                  } ;
-                                                                                              visitor =
-                                                                                                  {
-                                                                                                      branch = "branch/test" ;
-                                                                                                      remote = "/tmp/build/repo/visitor" ;
-                                                                                                  } ;
+                                                                                                failure =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/failure" ;
+                                                                                                    } ;
+                                                                                                personal =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/personal" ;
+                                                                                                    } ;
+                                                                                                private =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/private" ;
+                                                                                                    } ;
+                                                                                                resources =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/resources" ;
+                                                                                                    } ;
+                                                                                                secrets =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/secrets" ;
+                                                                                                    } ;
+                                                                                                visitor =
+                                                                                                    {
+                                                                                                        branch = "branch/test" ;
+                                                                                                        remote = "/tmp/build/repo/visitor" ;
+                                                                                                    } ;
                                                                                             } ;
-                                                                                            } ;
-                                                                                            } ;
-                                                                                            testScript =
-                                                                                            ''
-                                                                                            start_all()
-                                                                                            machine.wait_for_unit("multi-user.target")
-                                                                                            status, stdout = machine.execute("su - bob --command 'test-home /tmp/build'")
-                                                                                            print("STDOUT:\n", stdout)
-                                                                                            assert status == 0, "test-home failed"
-                                                                                            '' ;
+                                                                                    } ;
+                                                                            } ;
+                                                                        testScript =
+                                                                            ''
+                                                                                start_all()
+                                                                                machine.wait_for_unit("multi-user.target")
+                                                                                status, stdout = machine.execute("su - bob --command 'test-home /tmp/build'")
+                                                                                print("STDOUT:\n", stdout)
+                                                                                assert status == 0, "test-home failed"
+                                                                            '' ;
                                                                 } ;
                                                     }
 #   name = "t3" ;
