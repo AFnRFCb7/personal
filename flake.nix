@@ -24,6 +24,7 @@
                                         buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                         coreutils = pkgs.coreutils ;
                                         findutils = pkgs.findutils ;
+                                        failure = failure ;
                                         flock = pkgs.flock ;
                                         jq = pkgs.jq ;
                                         makeBinPath = pkgs.lib.makeBinPath ;
