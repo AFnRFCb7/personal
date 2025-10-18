@@ -23,6 +23,7 @@
                                     init ,
                                     resources-directory ,
                                     seed ,
+                                    targets ,
                                     transient
                                 } :
                                     resources.lib
@@ -41,6 +42,7 @@
                                             redis = pkgs.redis ;
                                             resources-directory = resources-directory ;
                                             seed = seed ;
+                                            targets = targets ;
                                             transient = transient ;
                                             visitor = visitor ;
                                             writeShellApplication = pkgs.writeShellApplication ;
