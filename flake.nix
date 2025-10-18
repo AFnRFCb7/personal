@@ -2217,7 +2217,7 @@
                                                                     resources_
                                                                         {
 
-                                                                        };
+                                                                        } ;
                                                                 in
                                                                     factory.check
                                                                         {
@@ -2241,8 +2241,7 @@
                                                                             standard-output = "/build/resources/mounts/0000000311691948" ;
                                                                             status = 0 ;
                                                                         } ;
-
-
+                                                    } ;
                                                 ] ;
                                             in builtins.listToAttrs tests ;
                                     modules =
