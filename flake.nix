@@ -31,8 +31,6 @@
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         ps = pkgs.ps ;
                                         redis = pkgs.redis ;
-                                        targets = point.targets ;
-                                        transient = point.transient ;
                                         visitor = visitor ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                         yq-go = pkgs.yq-go ;
