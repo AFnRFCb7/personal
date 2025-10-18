@@ -19,7 +19,12 @@
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             failure_ = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             resources_ =
-                                init : resources-directory : seed : transient :
+                                {
+                                    init ,
+                                    resources-directory ,
+                                    seed ,
+                                    transient
+                                } :
                                     resources.lib
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
