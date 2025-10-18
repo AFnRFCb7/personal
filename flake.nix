@@ -1321,7 +1321,7 @@
                                                                                                     transient = transient ;
                                                                                                 } ;
                                                                                         in identity ( value null ) ;
-                                                                                in resources_.implementation { init = point.init ; seed = path ; } ;
+                                                                                in builtins.trace ( builtins.concatStringsSep "," ( builtins.attrNames resources_ ) ) ( resources_.implementation { init = point.init ; seed = path ; } ) ;
                                                                 }
                                                                 tree
                                                     ) ;
