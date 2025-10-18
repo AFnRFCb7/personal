@@ -36,7 +36,7 @@
                                             redis = pkgs.redis ;
                                             resources-directory = resources-directory ;
                                             seed = seed ;
-                                            transient = transiet ;
+                                            transient = transient ;
                                             visitor = visitor ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
