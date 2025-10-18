@@ -1831,7 +1831,59 @@
                                     #         } ;
                                     tests =
                                         {
-                                            # wtf = pkgs.stdenv.mkDerivation { installPhase = ''exit 54'' ; name = "WTF" ; src = ./. ; } ;
+                                            wtf = pkgs.stdenv.mkDerivation { installPhase = ''exit 54'' ; name = "WTF" ; src = ./. ; } ;
+                                            resource-bad-wtf =
+                                                let
+                                                    factory =
+                                                        resources_
+                                                            {
+                                                                init =
+                                                                    self :
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "init" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                echo 34605ca64083100d5f5ed3240310469417c1e03c630b45785cb0debcc663659558c6b92a9f8ea95566752ed56817575e39a15b9489580d1beb95c73f1145cf75
+                                                                                                echo 19c5d236d134a17bc43c6c6054a0f6b27215ae5958e2920b95f9a6628a297d52adae3cf56f6d2bda9803537de5eff7b9289a5c5e88f4539365c86efe42bd2eb0 > /mount/70c563fb0b88da43ed36153d14a687d740952fae000ff2d5f9ecd248cf4ce1b7672501b87c74f35072567dc7ee9b76fb97fdd344792540601a0268e080f514cd
+                                                                                                echo 476f12e58ec335340a549acbec8af647247dded6d8ce0bd099d1efaf01ffd4e4e5d2bb23490709a5621bd415510102cb81cb4d522f4ee5549af67e7c48eb7fcf > /scratch/c0a6849f689a9fb872ab666fb3dfa3af24b674e5a7fa18e2410e4be2c6cc3a064b57e4d27a9476e32bede4ab20c7d1fef4001bb005471d4068a4d7973f42919d
+                                                                                                ${ failure.implementation "11e27ca6" }
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/init" ;
+                                                                resources-directory = "/build/resources" ;
+                                                                seed = "2b96ee3e5a833391bc075f01f00527d33dea253ba0ba8411aea0c6dd3f2af9b92bab155b048835aefa80aa8d4a1fb0d57c4bdfbb5ececde98d817e52d16489c0" ;
+                                                                targets = [ "6e14f5ccd9489b7e3dbaec77d41c7ca6f965fcfa953839a2664b2028498b49eacc9e2f4f5846c2a1dd11e9b4dcd91d36d42483e5f12937ac5fe533385cadb2bb" ] ;
+                                                                transient = false ;
+                                                            } ;
+                                                    wtf =
+                                                        factory.check
+                                                            {
+                                                                DEBUG = true ;
+                                                                arguments = [ "95770bf5b1acee914409e715847308a6617c4e25b332a3d5770db63de79bfec11d40ee6a38f12f2c05970211a787740be12fa2d7175224abc215171e8526c5b3" "24c4baec1ecb46f22235b32d3d098fc2fb5b780a5f334b3519ca309433cd2cbad9cf13e06053c0eab9201e26a6dcc77ff8bf6922ebe27abeb259b746181e68e2" ] ;
+                                                                expected-dependencies = [ ] ;
+                                                                expected-index = "0000000311691948" ;
+                                                                expected-originator-pid = 45 ;
+                                                                expected-provenance = "new" ;
+                                                                expected-standard-error = "" ;
+                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
+                                                                expected-status = 0 ;
+                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                expected-transient = -1 ;
+                                                                resources-directory-fixture =
+                                                                    resources-directory :
+                                                                        ''
+                                                                            mkdir --parents ${ resources-directory }/sequential
+                                                                            echo 399813150 > ${ resources-directory }/sequential/sequential.counter
+                                                                        '' ;
+                                                                standard-input = "0350c4ae74a553a0c0462b732b0d1d8439901f9535cf580b76e6d264922e6811db202f39349fe29454cc54ea966ed09225475d7776704b5cad02ff66d8350569" ;
+                                                                standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                                status = 0 ;
+                                                            } ;
+                                                    in builtins.trace "HI!  ${ builtins.typeOf wtf }" wtf ;
                                             failure = failure_.check { compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ; run-time-arguments = [ "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f" ] ; } ; } ;
                                             # { name = "t1" ; value = log-event-listener.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
                                             home =
@@ -2014,58 +2066,6 @@
                                                                     print("STDOUT:\n", stdout)
                                                                     assert status == 0, "test-home failed"
                                                                 '' ;
-                                            resource-bad-wtf =
-                                                let
-                                                    factory =
-                                                        resources_
-                                                            {
-                                                                init =
-                                                                    self :
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "init" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                echo 34605ca64083100d5f5ed3240310469417c1e03c630b45785cb0debcc663659558c6b92a9f8ea95566752ed56817575e39a15b9489580d1beb95c73f1145cf75
-                                                                                                echo 19c5d236d134a17bc43c6c6054a0f6b27215ae5958e2920b95f9a6628a297d52adae3cf56f6d2bda9803537de5eff7b9289a5c5e88f4539365c86efe42bd2eb0 > /mount/70c563fb0b88da43ed36153d14a687d740952fae000ff2d5f9ecd248cf4ce1b7672501b87c74f35072567dc7ee9b76fb97fdd344792540601a0268e080f514cd
-                                                                                                echo 476f12e58ec335340a549acbec8af647247dded6d8ce0bd099d1efaf01ffd4e4e5d2bb23490709a5621bd415510102cb81cb4d522f4ee5549af67e7c48eb7fcf > /scratch/c0a6849f689a9fb872ab666fb3dfa3af24b674e5a7fa18e2410e4be2c6cc3a064b57e4d27a9476e32bede4ab20c7d1fef4001bb005471d4068a4d7973f42919d
-                                                                                                ${ failure.implementation "11e27ca6" }
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/init" ;
-                                                                resources-directory = "/build/resources" ;
-                                                                seed = "2b96ee3e5a833391bc075f01f00527d33dea253ba0ba8411aea0c6dd3f2af9b92bab155b048835aefa80aa8d4a1fb0d57c4bdfbb5ececde98d817e52d16489c0" ;
-                                                                targets = [ "6e14f5ccd9489b7e3dbaec77d41c7ca6f965fcfa953839a2664b2028498b49eacc9e2f4f5846c2a1dd11e9b4dcd91d36d42483e5f12937ac5fe533385cadb2bb" ] ;
-                                                                transient = false ;
-                                                            } ;
-                                                    wtf =
-                                                        factory.check
-                                                            {
-                                                                DEBUG = true ;
-                                                                arguments = [ "95770bf5b1acee914409e715847308a6617c4e25b332a3d5770db63de79bfec11d40ee6a38f12f2c05970211a787740be12fa2d7175224abc215171e8526c5b3" "24c4baec1ecb46f22235b32d3d098fc2fb5b780a5f334b3519ca309433cd2cbad9cf13e06053c0eab9201e26a6dcc77ff8bf6922ebe27abeb259b746181e68e2" ] ;
-                                                                expected-dependencies = [ ] ;
-                                                                expected-index = "0000000311691948" ;
-                                                                expected-originator-pid = 45 ;
-                                                                expected-provenance = "new" ;
-                                                                expected-standard-error = "" ;
-                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
-                                                                expected-status = 0 ;
-                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
-                                                                expected-transient = -1 ;
-                                                                resources-directory-fixture =
-                                                                    resources-directory :
-                                                                        ''
-                                                                            mkdir --parents ${ resources-directory }/sequential
-                                                                            echo 399813150 > ${ resources-directory }/sequential/sequential.counter
-                                                                        '' ;
-                                                                standard-input = "0350c4ae74a553a0c0462b732b0d1d8439901f9535cf580b76e6d264922e6811db202f39349fe29454cc54ea966ed09225475d7776704b5cad02ff66d8350569" ;
-                                                                standard-output = "/build/resources/mounts/0000000311691948" ;
-                                                                status = 0 ;
-                                                            } ;
-                                                    in builtins.trace "HI!  ${ builtins.typeOf wtf }" wtf ;
                                             resource-bad =
                                                 let
                                                     factory =
