@@ -1323,7 +1323,7 @@
                                                                                                     transient = transient ;
                                                                                                 } ;
                                                                                         in identity ( value null ) ;
-                                                                                in resourcesX.implementation { init = point.init ; resources-directory = "/home/${ config.personal.user }/resources" ; seed = path ; } ;
+                                                                                in resourcesX.implementation { init = point.init ; resources-directory = "/home/${ config.personal.name }/resources" ; seed = path ; } ;
                                                                 }
                                                                 tree
                                                     ) ;
