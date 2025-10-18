@@ -2064,12 +2064,12 @@
                                                                 status = 0 ;
                                                             } ;
                                                     } ;
-                                    in builtins.listToAttrs tests ;
+                                    in tests ;
                                     modules =
                                         {
                                             user = user ;
                                         } ;
-                                    tests = tests ;
+                                    # tests = tests ;
                                 } ;
             } ;
 }
