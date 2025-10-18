@@ -2013,7 +2013,7 @@
                                                                     print("STDOUT:\n", stdout)
                                                                     assert status == 0, "test-home failed"
                                                                 '' ;
-                                            t3 =
+                                            resource-good =
                                                 let
                                                     factory =
                                                         resources_
