@@ -2107,7 +2107,7 @@
                                                             coreutils = pkgs.coreutils ;
                                                             expected = null ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = true ;
+                                                            success = false ;
                                                             value =
                                                                 {
                                                                     bool = true ;
@@ -2120,25 +2120,6 @@
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
-                                                            visitors =
-                                                                let
-                                                                    string =
-                                                                        path : value :
-                                                                            let
-                                                                                type = builtins.typeOf value ;
-                                                                                in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                                    in
-                                                                        {
-                                                                            bool = string ;
-                                                                            float = string ;
-                                                                            int = string ;
-                                                                            lambda = string ;
-                                                                            list = path : list : builtins.concatLists list ;
-                                                                            null = string ;
-                                                                            path = string ;
-                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                            string = string ;
-                                                                        } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
