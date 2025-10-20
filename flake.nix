@@ -2113,7 +2113,7 @@
                                                                     bool = true ;
                                                                     float = 1.0 ;
                                                                     int = 1 ;
-                                                                    lambda = i : i ;
+                                                                    # lambda = i : i ;
                                                                     list = [ 1 ] ;
                                                                     null = null ;
                                                                     path = ./. ;
