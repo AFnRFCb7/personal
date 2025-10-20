@@ -717,6 +717,13 @@
                                                                             type = "lambda" ;
                                                                             value = "null" ;
                                                                         } ;
+                                                                    list =
+                                                                        [
+                                                                            {
+                                                                                path = [ "list" 0 ] ;
+                                                                                type = "int" ; value = 0 ;
+                                                                            }
+                                                                        ] ;
                                                                     null =
                                                                         {
                                                                             path = [ "null" ] ;
@@ -727,8 +734,10 @@
                                                                         {
                                                                             path = [ "path" ] ;
                                                                             type = "path" ;
-                                                                            value = "null" ;
+                                                                            value = /nix/store/cqgxd6b29jdaj7f0n2c7kllyywclbn06-source ;
                                                                         } ;
+                                                                    set =
+                                                                        [ { path = [ "list" 0 ] ; type = "int" ; value = 0 ; } ] ;
                                                                     string =
                                                                         {
                                                                             path = [ "string" ] ;
