@@ -706,6 +706,21 @@
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
+                                                            visitors =
+                                                                let
+                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else builtins.toString value ; } ] ;
+                                                                    in
+                                                                        {
+                                                                            bool = string ;
+                                                                            float = string ;
+                                                                            int = string ;
+                                                                            lambda = string ;
+                                                                            list = path : list : builtins.concatLists list ;
+                                                                            null = null ;
+                                                                            path = string ;
+                                                                            set = string ;
+                                                                            string = string ;
+                                                                        } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
