@@ -18,7 +18,7 @@
                         let
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             failure_ = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            visitor_ = visitor.lib { } ;
+                            _visitor = visitor.lib { } ;
                             resources_ =
                                 {
                                     init ,
@@ -92,7 +92,7 @@
                                                             let
                                                                 seed = path : value : [ { path = path ; type = builtins.typeOf value ; value = if builtins.typeOf value == "lambda" then null else value ; } ] ;
                                                                 in
-                                                                    visitor_.implementation
+                                                                    _visitor.implementation
                                                                         {
                                                                             bool = seed ;
                                                                             float = seed ;
@@ -124,7 +124,7 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             attributes =
-                                                                                                                visitor_.implementation
+                                                                                                                _visitor.implementation
                                                                                                                     {
                                                                                                                         lambda = path : value : value resources_ ;
                                                                                                                         # path = path : value : value ;
@@ -217,7 +217,7 @@
                                                                                                 in
                                                                                                     [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) " " "$" ( bash-name ( builtins.elemAt path 0 ) ) "/" ( v.target ) ] ) ] ;
                                                                                     in
-                                                                                        visitor_.implementation
+                                                                                        _visitor.implementation
                                                                                             {
                                                                                                 bool = one ;
                                                                                                 int = one ;
@@ -230,7 +230,7 @@
                                                                                 let
                                                                                     export = path : value : [ "${ bash-name ( builtins.elemAt path 0 ) }=${ value }" ] ;
                                                                                     in
-                                                                                        visitor_.implementation
+                                                                                        _visitor.implementation
                                                                                             {
                                                                                                 bool = path : value : if value then export path "yes" else "no" ;
                                                                                                 int = path : value : export path ( builtins.toString value ) ;
@@ -243,7 +243,7 @@
                                                                                 let
                                                                                     mapper =
                                                                                         name : value :
-                                                                                            visitor_.implementation
+                                                                                            _visitor.implementation
                                                                                                 {
                                                                                                     bool = path : value : null;
                                                                                                     int = path : value : null ;
@@ -1312,7 +1312,7 @@
                                                                             } ;
                                                                     } ;
                                                         in
-                                                            visitor_.implementation
+                                                            _visitor.implementation
                                                                 {
                                                                     lambda =
                                                                         path : value :
@@ -2102,7 +2102,7 @@
                                                         status = 0 ;
                                                     } ;
                                                 visitor =
-                                                    visitor_.check
+                                                    _visitor.check
                                                         {
                                                             coreutils = pkgs.coreutils ;
                                                             expected = null ;
