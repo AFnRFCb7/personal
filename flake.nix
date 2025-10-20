@@ -18,7 +18,7 @@
                         let
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             failure_ = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            _visitor = visitor.lib { } { } ;
+                            _visitor = visitor.lib { } ;
                             resources_ =
                                 {
                                     init ,
