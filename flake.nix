@@ -16,7 +16,8 @@
                         visitor
                     } @primary :
                         let
-                            _failure_ = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
@@ -266,7 +267,7 @@
                                                                                         installPhase =
                                                                                             ''
                                                                                                 mkdir --parents $out/bin
-                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || ${ failure_.implementation "da23b468" }" --add-flags "\$REPO"
+                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || ${ _failure.implementation "da23b468" }" --add-flags "\$REPO"
                                                                                             '' ;
                                                                                         name = "derivation" ;
                                                                                         nativeBuildInputs = [ pkgs.makeWrapper ] ;
@@ -288,7 +289,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failure_.implementation "6b8bb4ad" }
+                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ _failure.implementation "6b8bb4ad" }
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community .
                                                                                                 '' ;
@@ -340,7 +341,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ failure_.implementation "6a7807fb" }
+                                                                                                    HOMEY="$( ${ resources_.home } )" || ${ _failure.implementation "6a7807fb" }
                                                                                                     cd "$HOMEY"
                                                                                                     idea-community
                                                                                                 '' ;
@@ -512,7 +513,7 @@
                         {
                             checks =
                                 {
-                                    # failure = failure_.check { compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ; expected-standard-error = "" ; run-time-arguments = [ "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f" ] ; } ; } ;
+                                    # failure = _failure.check { compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ; expected-standard-error = "" ; run-time-arguments = [ "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f" ] ; } ; } ;
                                     # { name = "t1" ; value = log-event-listener.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
                                     # home =
                                     #     pkgs.nixosTest
@@ -542,14 +543,14 @@
 #                                                                                                        TOKEN="$3"
 #                                                                                                        if [[ -e "$BUILD/repo/$NAME" ]]
 #                                                                                                        then
-#                                                                                                            ${ failure_.implementation "bf9496b6" } "$BUILD/repo/$NAME already exists"
+#                                                                                                            ${ _failure.implementation "bf9496b6" } "$BUILD/repo/$NAME already exists"
 #                                                                                                        fi
 #                                                                                                        mkdir --parents "$BUILD/repo/$NAME"
 #                                                                                                        cd "$BUILD/repo/$NAME"
 #                                                                                                        git init --bare
 #                                                                                                        if [[ -e "$BUILD/work/$NAME" ]]
 #                                                                                                        then
-#                                                                                                            ${ failure_.implementation "05fce8e3" } "$BUILD/work/$NAME already exists"
+#                                                                                                            ${ _failure.implementation "05fce8e3" } "$BUILD/work/$NAME already exists"
 #                                                                                                        fi
 #                                                                                                        GIT_DIR="$BUILD/work/$NAME/git"
 #                                                                                                        export GIT_DIR
@@ -582,15 +583,15 @@
 #                                                                                                        NAME="$3"
 #                                                                                                        if [[ ! -d "$HOMEY" ]]
 #                                                                                                        then
-#                                                                                                            ${ failure_.implementation "13510afd" } Missing HOME
+#                                                                                                            ${ _failure.implementation "13510afd" } Missing HOME
 #                                                                                                        fi
 #                                                                                                        if [[ ! -L "$HOMEY/$NAME" ]]
 #                                                                                                        then
-#                                                                                                            ${ failure_.implementation "863a3d5b" } "Missing $NAME"
+#                                                                                                            ${ _failure.implementation "863a3d5b" } "Missing $NAME"
 #                                                                                                        fi
 #                                                                                                        if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
 #                                                                                                        then
-#                                                                                                            ${ failure_.implementation "eb549b33" } Not the same
+#                                                                                                            ${ _failure.implementation "eb549b33" } Not the same
 #                                                                                                        fi
 #                                                                                                        echo "tested $NAME"
 #                                                                                                        '' ;
@@ -633,7 +634,7 @@
 #                                                                                    create-mock-repository "$BUILD" secrets 386436e6b7328385c261d1ec574c023f88140e66507f698968014281f02d15b2eb17d0d7f434ce7f6b0298e23c47da4f78e32a8e1c0b54bb2902948d1be1c8bb
 #                                                                                    create-mock-repository "$BUILD" visitor 0cd4c650d1051817e663a4a1a5e3133f029919991ab5fa85845d5c0ac1c09e2e0bb4ae65fc8e3c3735c123993ff75e6f5359572a344b6c060c844378a9788ef3
 #                                                                                    echo before execute test code
-#                                                                                    HOMEY="$( home )" || ${ failure_.implementation "013a89e9" }
+#                                                                                    HOMEY="$( home )" || ${ _failure.implementation "013a89e9" }
 #                                                                                    echo after execute test code
 #                                                                                    verify-mock-repository "$BUILD" "$HOMEY" failure
 #                                                                                    verify-mock-repository "$BUILD" "$HOMEY" personal
