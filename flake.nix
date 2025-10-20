@@ -716,7 +716,7 @@
                                                                             int = string ;
                                                                             lambda = string ;
                                                                             list = path : list : builtins.concatLists list ;
-                                                                            null = null ;
+                                                                            null = string ;
                                                                             path = string ;
                                                                             set = string ;
                                                                             string = string ;
