@@ -691,7 +691,52 @@
                                                     _visitor.check
                                                         {
                                                             coreutils = pkgs.coreutils ;
-                                                            expected = null ;
+                                                            expected =
+                                                                {
+                                                                    bool =
+                                                                        {
+                                                                            path = [ "bool" ] ;
+                                                                            type = "bool" ;
+                                                                            value = "1" ;
+                                                                        } ;
+                                                                    float =
+                                                                        {
+                                                                            path = [ "float" ] ;
+                                                                            type = "float" ;
+                                                                            value = "1.0" ;
+                                                                        } ;
+                                                                    int =
+                                                                        {
+                                                                            path = [ "int" ] ;
+                                                                            type = "int" ;
+                                                                            value = "1" ;
+                                                                        } ;
+                                                                    lambda =
+                                                                        {
+                                                                            path = [ "lambda" ] ;
+                                                                            type = "lambda" ;
+                                                                            value = "null" ;
+                                                                        } ;
+                                                                    null =
+                                                                        {
+                                                                            path = [ "null" ] ;
+                                                                            type = "null" ;
+                                                                            value = "null" ;
+                                                                        } ;
+                                                                    path =
+                                                                        {
+                                                                            path = [ "path" ] ;
+                                                                            type = "path" ;
+                                                                            value = "null" ;
+                                                                        } ;
+                                                                    string =
+                                                                        {
+                                                                            path = [ "string" ] ;
+                                                                            type = "string" ;
+                                                                            value = "1" ;
+                                                                        } ;
+
+                                                                } ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             success = true ;
                                                             value =
