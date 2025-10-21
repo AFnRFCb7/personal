@@ -695,56 +695,72 @@
                                                             expected =
                                                                 {
                                                                     bool =
-                                                                        {
-                                                                            path = [ "bool" ] ;
-                                                                            type = "bool" ;
-                                                                            value = "1" ;
-                                                                        } ;
+                                                                        [
+                                                                            {
+                                                                                path = [ "bool" ] ;
+                                                                                type = "bool" ;
+                                                                                value = "1" ;
+                                                                            }
+                                                                        ] ;
                                                                     float =
-                                                                        {
-                                                                            path = [ "float" ] ;
-                                                                            type = "float" ;
-                                                                            value = "1.0" ;
-                                                                        } ;
+                                                                        [
+                                                                            {
+                                                                                path = [ "float" ] ;
+                                                                                type = "float" ;
+                                                                                value = "1.0" ;
+                                                                            }
+                                                                        ] ;
                                                                     int =
-                                                                        {
-                                                                            path = [ "int" ] ;
-                                                                            type = "int" ;
-                                                                            value = "1" ;
-                                                                        } ;
+                                                                        [
+                                                                            {
+                                                                                path = [ "int" ] ;
+                                                                                type = "int" ;
+                                                                                value = "1" ;
+                                                                            }
+                                                                        ] ;
                                                                     lambda =
-                                                                        {
-                                                                            path = [ "lambda" ] ;
-                                                                            type = "lambda" ;
-                                                                            value = "null" ;
-                                                                        } ;
+                                                                        [
+                                                                            {
+                                                                                path = [ "lambda" ] ;
+                                                                                type = "lambda" ;
+                                                                                value = "null" ;
+                                                                            }
+                                                                        ] ;
                                                                     list =
                                                                         [
-                                                                            {
-                                                                                path = [ "list" 0 ] ;
-                                                                                type = "int" ; value = 0 ;
-                                                                            }
+                                                                            [
+                                                                                {
+                                                                                    path = [ "list" 0 ] ;
+                                                                                    type = "int" ; value = 0 ;
+                                                                                }
+                                                                            ]
                                                                         ] ;
                                                                     null =
-                                                                        {
-                                                                            path = [ "null" ] ;
-                                                                            type = "null" ;
-                                                                            value = "null" ;
-                                                                        } ;
-                                                                    set =
                                                                         [
                                                                             {
-                                                                                path = [ "set" "one" ] ;
-                                                                                type = "int" ;
-                                                                                value = "0" ;
+                                                                                path = [ "null" ] ;
+                                                                                type = "null" ;
+                                                                                value = "null" ;
                                                                             }
                                                                         ] ;
+                                                                    set =
+                                                                        [
+                                                                            [
+                                                                                {
+                                                                                    path = [ "set" "one" ] ;
+                                                                                    type = "int" ;
+                                                                                    value = "0" ;
+                                                                                }
+                                                                            ]
+                                                                        ] ;
                                                                     string =
-                                                                        {
-                                                                            path = [ "string" ] ;
-                                                                            type = "string" ;
-                                                                            value = "1" ;
-                                                                        } ;
+                                                                        [
+                                                                            {
+                                                                                path = [ "string" ] ;
+                                                                                type = "string" ;
+                                                                                value = "1" ;
+                                                                            }
+                                                                        ] ;
                                                                 } ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             success = true ;
