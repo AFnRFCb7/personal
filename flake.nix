@@ -699,7 +699,7 @@
                                                                             {
                                                                                 path = [ "bool" ] ;
                                                                                 type = "bool" ;
-                                                                                value = builtins.hashString "sha512" ( builtins.toString true ) ;
+                                                                                value = true ;
                                                                             }
                                                                         ] ;
                                                                     float =
@@ -707,7 +707,7 @@
                                                                             {
                                                                                 path = [ "float" ] ;
                                                                                 type = "float" ;
-                                                                                value = "1.0" ;
+                                                                                value = 1.0 ;
                                                                             }
                                                                         ] ;
                                                                     int =
@@ -715,7 +715,7 @@
                                                                             {
                                                                                 path = [ "int" ] ;
                                                                                 type = "int" ;
-                                                                                value = "1" ;
+                                                                                value = 1 ;
                                                                             }
                                                                         ] ;
                                                                     lambda =
@@ -723,7 +723,7 @@
                                                                             {
                                                                                 path = [ "lambda" ] ;
                                                                                 type = "lambda" ;
-                                                                                value = "null" ;
+                                                                                value = null ;
                                                                             }
                                                                         ] ;
                                                                     list =
@@ -731,7 +731,8 @@
                                                                             [
                                                                                 {
                                                                                     path = [ "list" 0 ] ;
-                                                                                    type = "int" ; value = 0 ;
+                                                                                    type = "int" ;
+                                                                                    value = 1 ;
                                                                                 }
                                                                             ]
                                                                         ] ;
@@ -740,7 +741,15 @@
                                                                             {
                                                                                 path = [ "null" ] ;
                                                                                 type = "null" ;
-                                                                                value = "null" ;
+                                                                                value = null ;
+                                                                            }
+                                                                        ] ;
+                                                                    path =
+                                                                        [
+                                                                            {
+                                                                                path = [ "path" ] ;
+                                                                                type = "path" ;
+                                                                                value = null ;
                                                                             }
                                                                         ] ;
                                                                     set =
@@ -749,7 +758,7 @@
                                                                                 {
                                                                                     path = [ "set" "one" ] ;
                                                                                     type = "int" ;
-                                                                                    value = "0" ;
+                                                                                    value = 1 ;
                                                                                 }
                                                                             ]
                                                                         ] ;
@@ -772,13 +781,13 @@
                                                                     lambda = i : i ;
                                                                     list = [ 1 ] ;
                                                                     null = null ;
-                                                                    path = ./age.test.key ;
+                                                                    path = ./. ;
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
                                                             visitors =
                                                                 let
-                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else builtins.hashString "sha512" ( builtins.toString value ) ; } ] ;
+                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else if type == "path" then null else value ; } ] ;
                                                                     in
                                                                         {
                                                                             bool = string ;
