@@ -756,7 +756,6 @@
                                                                     lambda = i : i ;
                                                                     list = [ 1 ] ;
                                                                     null = null ;
-                                                                    path = ./. ;
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
@@ -771,7 +770,6 @@
                                                                             lambda = string ;
                                                                             list = path : list : builtins.concatLists list ;
                                                                             null = string ;
-                                                                            path = string ;
                                                                             set = string ;
                                                                             string = string ;
                                                                         } ;
