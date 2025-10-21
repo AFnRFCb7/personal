@@ -795,7 +795,7 @@
                                                                             int = string ;
                                                                             lambda = string ;
                                                                             null = string ;
-                                                                            path = path : value : [ { path = path ; type = "path" ; value = builtins.hashString "sha512" ( builtins.toString value ) ; } ] ;
+                                                                            path = string
                                                                             string = string ;
                                                                         } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
