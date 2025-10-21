@@ -791,7 +791,7 @@
                                                                 } ;
                                                             visitors =
                                                                 let
-                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" else value ; } ] ;
+                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
                                                                     in
                                                                         {
                                                                             bool = string ;
