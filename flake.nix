@@ -782,13 +782,16 @@
                                                                     lambda = i : i ;
                                                                     list = [ 1 ] ;
                                                                     null = null ;
-                                                                    path = ./. ;
+                                                                    path =
+                                                                        let
+                                                                            constant = pkgs.writeText "constant" "7e01e5896a912a3f5c7b7dcf10677b6538b08d95f3ff01019ce1f80c3c4b6b1f6cdcea222f3ed1e630159ca787a5bd586b8715b38abb1974499a7e854e9dc19b" ;
+                                                                            in constant.outPath ;
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
                                                             visitors =
                                                                 let
-                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else if type == "path" then null else value ; } ] ;
+                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" else value ; } ] ;
                                                                     in
                                                                         {
                                                                             bool = string ;
