@@ -17,6 +17,36 @@
                     } @primary :
                         let
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            _resources =
+                                {
+                                    init ? null
+                                    resources-directory ,
+                                    seed ,
+                                    targets ,
+                                    transient
+                                } :
+                                    resources.lib
+                                        {
+                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                            coreutils = pkgs.coreutils ;
+                                            failure = failure ;
+                                            findutils = pkgs.findutils ;
+                                            flock = pkgs.flock ;
+                                            init = init ;
+                                            jq = pkgs.jq ;
+                                            makeBinPath = pkgs.makeBinPath ;
+                                            makeWrapper = pkgs.makeWrapper ;
+                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                            ps = pkgs.ps ;
+                                            redis = pkgs.redis ;
+                                            resources-directory = resources-directory ;
+                                            seed = seed ;
+                                            targets = targets ;
+                                            transient = transient ;
+                                            visitor = visitor ;
+                                            writeShellApplication = pkgs.writeShellApplication ;
+                                            yq-go = pkgs.yq-go ;
+                                        } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
