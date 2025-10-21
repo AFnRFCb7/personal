@@ -749,7 +749,7 @@
                                                                             {
                                                                                 path = [ "path" ] ;
                                                                                 type = "path" ;
-                                                                                value = null ;
+                                                                                value = ""/nix/store/8f1h3r0brqfnac3y40bdfa7bamlhnafg-constant"" ;
                                                                             }
                                                                         ] ;
                                                                     set =
