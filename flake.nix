@@ -778,17 +778,15 @@
                                                                 } ;
                                                             visitors =
                                                                 let
-                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else builtins.toString value ; } ] ;
+                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else builtins.hashString "sha512" ( builtins.toString value ) ; } ] ;
                                                                     in
                                                                         {
                                                                             bool = string ;
                                                                             float = string ;
                                                                             int = string ;
                                                                             lambda = string ;
-                                                                            list = path : list : builtins.concatLists list ;
                                                                             null = string ;
                                                                             path = path : value : [ { path = path ; type = "path" ; value = builtins.hashString "sha512" ( builtins.toString value ) ; } ] ;
-                                                                            set = string ;
                                                                             string = string ;
                                                                         } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
