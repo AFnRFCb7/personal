@@ -795,7 +795,7 @@
                                                                             int = string ;
                                                                             lambda = string ;
                                                                             null = string ;
-                                                                            path = string
+                                                                            path = string ;
                                                                             string = string ;
                                                                         } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
