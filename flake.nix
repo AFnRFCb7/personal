@@ -691,6 +691,7 @@
                                                     _visitor.check
                                                         {
                                                             coreutils = pkgs.coreutils ;
+                                                            diffutil = pkgs.diffutil ;
                                                             expected =
                                                                 {
                                                                     bool =
