@@ -749,7 +749,7 @@
                                                                             {
                                                                                 path = [ "path" ] ;
                                                                                 type = "path" ;
-                                                                                value = "/nix/store/8f1h3r0brqfnac3y40bdfa7bamlhnafg-constant" ;
+                                                                                value = ./. ;
                                                                             }
                                                                         ] ;
                                                                     set =
@@ -782,7 +782,7 @@
                                                                     lambda = i : i ;
                                                                     list = [ 1 ] ;
                                                                     null = null ;
-                                                                    path = builtins.storePath ( pkgs.writeText "constant" "7e01e5896a912a3f5c7b7dcf10677b6538b08d95f3ff01019ce1f80c3c4b6b1f6cdcea222f3ed1e630159ca787a5bd586b8715b38abb1974499a7e854e9dc19b" ) ;
+                                                                    path = ./. ;
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
