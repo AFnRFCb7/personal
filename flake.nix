@@ -771,7 +771,7 @@
                                                                             lambda = string ;
                                                                             list = path : list : builtins.concatLists list ;
                                                                             null = string ;
-                                                                            path = path : value : builtins.hashString "sha512" ( builtins.toString value ) ;
+                                                                            path = path : value : [ { path = path ; type = "path" ; value = builtins.hashString "sha512" ( builtins.toString value ) ; } ] ;
                                                                             set = string ;
                                                                             string = string ;
                                                                         } ;
