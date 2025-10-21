@@ -34,7 +34,7 @@
                                             flock = pkgs.flock ;
                                             init = init ;
                                             jq = pkgs.jq ;
-                                            makeBinPath = pkgs.makeBinPath ;
+                                            makeBinPath = pkgs.lib.makeBinPath ;
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             ps = pkgs.ps ;
