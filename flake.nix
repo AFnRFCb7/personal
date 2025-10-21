@@ -807,7 +807,7 @@
                                                         {
                                                             coreutils = pkgs.coreutils ;
                                                             diffutil = pkgs.diffutil ;
-                                                            mkDerivation = pkgs.mkDerivation ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             success = false ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
