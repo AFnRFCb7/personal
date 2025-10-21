@@ -410,6 +410,7 @@
                                         _failure.check
                                             {
                                                 compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ;
+                                                diffutil = pkgs.diffutil ;
                                                 expected-standard-error =
                                                     ''
                                                         compile-time-arguments:
