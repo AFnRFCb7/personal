@@ -687,7 +687,7 @@
 #                                                    standard-output = "/build/resources/mounts/0000000311691948" ;
 #                                                    status = 0 ;
 #                                                } ;
-                                                visitor =
+                                                visitor-happy =
                                                     _visitor.check
                                                         {
                                                             coreutils = pkgs.coreutils ;
@@ -802,7 +802,16 @@
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
-
+                                                visitor-sad =
+                                                    _visitor.check
+                                                        {
+                                                            coreutils = pkgs.coreutils ;
+                                                            diffutil = pkgs.diffutil ;
+                                                            mkDerivation = pkgs.mkDerivation ;
+                                                            success = false ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                            yq-go = pkgs.yq-go ;
+                                                        } ;
                                             } ;
                                     modules =
                                         {
