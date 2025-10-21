@@ -809,6 +809,8 @@
                                                             diffutil = pkgs.diffutil ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             success = false ;
+                                                            value = true ;
+                                                            visitors = { bool = path : value : true } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
