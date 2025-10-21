@@ -694,7 +694,7 @@
                                                 resource-happy =
                                                     let
                                                         factory =
-                                                            resources_
+                                                            _resources
                                                                 {
                                                                     init =
                                                                         self :
