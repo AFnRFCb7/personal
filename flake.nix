@@ -699,7 +699,7 @@
                                                                             {
                                                                                 path = [ "bool" ] ;
                                                                                 type = "bool" ;
-                                                                                value = "1" ;
+                                                                                value = builtins.hashString "sha512" ( builtins.toString true ) ;
                                                                             }
                                                                         ] ;
                                                                     float =
