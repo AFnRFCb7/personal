@@ -753,15 +753,16 @@
                                                                             }
                                                                         ] ;
                                                                     set =
-                                                                        [
-                                                                            [
-                                                                                {
-                                                                                    path = [ "set" "one" ] ;
-                                                                                    type = "int" ;
-                                                                                    value = 1 ;
-                                                                                }
-                                                                            ]
-                                                                        ] ;
+                                                                        {
+                                                                            one =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "one" ] ;
+                                                                                        type = "int" ;
+                                                                                        value = 1 ;
+                                                                                    }
+                                                                                ] ;
+                                                                        } ;
                                                                     string =
                                                                         [
                                                                             {
