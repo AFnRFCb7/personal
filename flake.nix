@@ -732,7 +732,13 @@
                                                                             value = "null" ;
                                                                         } ;
                                                                     set =
-                                                                        [ { path = [ "list" 0 ] ; type = "int" ; value = 0 ; } ] ;
+                                                                        [
+                                                                            {
+                                                                                path = [ "set" "one" ] ;
+                                                                                type = "int" ;
+                                                                                value = "0" ;
+                                                                            }
+                                                                        ] ;
                                                                     string =
                                                                         {
                                                                             path = [ "string" ] ;
