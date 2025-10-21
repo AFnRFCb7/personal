@@ -745,7 +745,6 @@
                                                                             type = "string" ;
                                                                             value = "1" ;
                                                                         } ;
-
                                                                 } ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             success = true ;
@@ -757,6 +756,7 @@
                                                                     lambda = i : i ;
                                                                     list = [ 1 ] ;
                                                                     null = null ;
+                                                                    path = ./age.test.key ;
                                                                     set = { one = 1 ; } ;
                                                                     string = "1" ;
                                                                 } ;
