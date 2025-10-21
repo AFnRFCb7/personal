@@ -417,9 +417,11 @@
                                                           path: []
                                                           type: string
                                                           value: 469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3
+                                                        has-standard-input: true
                                                         run-time-arguments:
                                                           - ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f
                                                           - b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b
+                                                        standard-input:  e357ae6c399d113bad640750d4ca1a11b26ce4310a45cfe66f1bb928afcf16350bacdedac12383217ca91197262f779d1667067c04792121251c36c72c7e2300
                                                     '' ;
                                                 run-time-arguments =
                                                     [
