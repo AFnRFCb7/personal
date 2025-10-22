@@ -712,7 +712,11 @@
                                                                                 in "${ application }/bin/init" ;
                                                                     resources-directory = "/build/resources" ;
                                                                     seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
-                                                                    targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                    targets =
+                                                                        [
+                                                                            "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                                            "self"
+                                                                        ] ;
                                                                     transient = false ;
                                                                 } ;
                                                         in
