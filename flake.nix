@@ -322,7 +322,8 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            echo ${ builtins.typeOf __resources.temporary-directory.implementation }
+                                                                                            echo ${ builtins.typeOf __resources.temporary-directory.implementation } # lambda
+                                                                                            echo ${ builtins.typeOf __resources.temporary-directory.implementation ( setup : setup ) }
                                                                                         '' ;
                                                                                 }
                                                                         )
