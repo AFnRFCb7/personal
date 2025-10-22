@@ -746,6 +746,66 @@
                                                                     standard-output = "/build/resources/mounts/0000000311691948" ;
                                                                     status = 0 ;
                                                                 } ;
+                                               resource-sad =
+                                                    let
+                                                        factory =
+                                                            _resources
+                                                                {
+                                                                    init =
+                                                                        self :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
+                                                                                                    echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
+                                                                                                    echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
+                                                                                                    echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
+                                                                                                    echo "${ self }" > /mount/self
+                                                                                                    exit 70
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    resources-directory = "/build/resources" ;
+                                                                    seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
+                                                                    targets =
+                                                                        [
+                                                                            "20828320279b5890d7dccda8c6572b676c7954280559beb66be87ab7d2aeb060dd65c81053766fda24c36ed1ab5db40af70a420e913e16501c3b965d2d99c7e6"
+                                                                            "self"
+                                                                        ] ;
+                                                                    transient = false ;
+                                                                } ;
+                                                        in
+                                                            factory.check
+                                                                {
+                                                                    arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                                    expected-dependencies = [ ] ;
+                                                                    expected-index = "0000000311691948" ;
+                                                                    expected-originator-pid = 45 ;
+                                                                    expected-provenance = "new" ;
+                                                                    expected-standard-error = "ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9" ;
+                                                                    expected-standard-output = "cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5" ;
+                                                                    expected-status = 70 ;
+                                                                    expected-targets =
+                                                                        [
+                                                                            "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                                            "self"
+                                                                        ] ;
+                                                                    expected-transient = -1 ;
+                                                                    resources-directory-fixture =
+                                                                        resources-directory :
+                                                                            ''
+                                                                                mkdir --parents ${ resources-directory }/sequential
+                                                                                echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                            '' ;
+                                                                    standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                                    standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                                    status = 64 ;
+                                                                } ;
                                                 visitor-happy =
                                                     _visitor.check
                                                         {
