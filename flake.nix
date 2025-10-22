@@ -316,6 +316,13 @@
                                                                 name = config.personal.name ;
                                                                 packages =
                                                                     [
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar" ;
+                                                                                    text = __resources.temporary-directory ( ) ;
+                                                                                }
+                                                                        )
                                                                     ] ;
                                                                 password = config.personal.password ;
                                                             } ;
