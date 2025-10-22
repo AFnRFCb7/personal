@@ -324,7 +324,7 @@
                                                                                         ''
                                                                                             echo ${ builtins.typeOf __resources.temporary-directory.implementation } # lambda
                                                                                             echo ${ builtins.typeOf ( __resources.temporary-directory.implementation ( { implementation , resources , self } : "" ) ) } # string
-                                                                                            echo '${ __resources.temporary-directory.implementation ( { implementation , resources , self } : "" ) }'
+                                                                                            echo '${ __resources.temporary-directory.implementation ( { implementation , resources , self } : "${ implementation }" ) }'
                                                                                         '' ;
                                                                                 }
                                                                         )
