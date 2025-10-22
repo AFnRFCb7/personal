@@ -52,7 +52,7 @@
                             __resources =
                                 {
                                     temporary-directory =
-                                        _resource
+                                        _resources
                                             {
                                                 init =
                                                     let
