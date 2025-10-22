@@ -730,7 +730,11 @@
                                                                     expected-standard-error = "" ;
                                                                     expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
                                                                     expected-status = 0 ;
-                                                                    expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
+                                                                    expected-targets =
+                                                                        [
+                                                                            "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                                            "self"
+                                                                        ] ;
                                                                     expected-transient = -1 ;
                                                                     resources-directory-fixture =
                                                                         resources-directory :
