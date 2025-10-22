@@ -322,7 +322,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            ${ __resources.temporary-directory ( script : script ).implementation }
+                                                                                            ${ __resources.temporary-directory.implementation ( script : script ) }
                                                                                         '' ;
                                                                                 }
                                                                         )
