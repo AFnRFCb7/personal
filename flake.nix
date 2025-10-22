@@ -320,7 +320,10 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "foobar" ;
-                                                                                    text = __resources.temporary-directory  ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            ${ __resources.temporary-directory ( script : script ) }
+                                                                                        '' ;
                                                                                 }
                                                                         )
                                                                     ] ;
