@@ -765,6 +765,7 @@
                                                                 } ;
                                                resource-sad =
                                                     let
+                                                        factories = { factory = factory ; } ;
                                                         factory =
                                                             _resources
                                                                 {
@@ -788,6 +789,7 @@
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
                                                                     resources-directory = "/build/resources" ;
+                                                                    resources = factories ;
                                                                     seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
                                                                     targets =
                                                                         [
