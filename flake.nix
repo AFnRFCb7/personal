@@ -322,7 +322,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-
+                                                                                            echo ${ builtins.typeOf __resources.temporary-directory.implementation }
                                                                                         '' ;
                                                                                 }
                                                                         )
