@@ -323,7 +323,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             echo ${ builtins.typeOf __resources.temporary-directory.implementation } # lambda
-                                                                                            echo ${ builtins.typeOf ( __resources.temporary-directory.implementation ( setup : setup ) ) }
+                                                                                            echo ${ builtins.typeOf ( __resources.temporary-directory.implementation null ) }
                                                                                         '' ;
                                                                                 }
                                                                         )
