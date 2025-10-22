@@ -105,7 +105,7 @@
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                            factories = null ;
+                                                            factories = __resources ;
                                                             seed = null ;
                                                             targets = [ "directory" ] ;
                                                             transient = false ;
@@ -322,7 +322,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            ${ __resources.temporary-directory.implementation ( script : script ) }
+
                                                                                         '' ;
                                                                                 }
                                                                         )
