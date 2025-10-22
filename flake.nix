@@ -105,7 +105,7 @@
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                            factories = __resources ;
+                                                            factories = null ;
                                                             seed = null ;
                                                             targets = [ "directory" ] ;
                                                             transient = false ;
