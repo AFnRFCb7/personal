@@ -21,6 +21,7 @@
                                 {
                                     init ? null ,
                                     resources-directory ,
+                                    resources ? null ,
                                     seed ,
                                     targets ,
                                     transient
@@ -40,6 +41,7 @@
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
                                             resources-directory = resources-directory ;
+                                            resources = resources ;
                                             seed = seed ;
                                             targets = targets ;
                                             transient = transient ;
