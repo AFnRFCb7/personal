@@ -434,6 +434,19 @@
                                             } ;
                     in
                         {
+                            apps =
+                                {
+                                    chromium =
+                                        {
+                                            type = "app" ;
+                                            program = "${ pkgs.chromium }/bin/chromium" ;
+                                        } ;
+                                    pass =
+                                        {
+                                            type = "app" ;
+                                            program = "${ pkgs.pass }/bin/pass" ;
+                                        } ;
+                                } ;
                             checks =
                                 {
                                     failure =
