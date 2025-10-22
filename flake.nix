@@ -810,7 +810,7 @@
                                                                               type: string
                                                                               value: 5b05da86
                                                                             run-time-arguments:
-                                                                              -
+                                                                              - ""
                                                                         '' ;
                                                                     standard-output = "" ;
                                                                     status = 64 ;
