@@ -104,7 +104,7 @@
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
-                                                            resources-directory = resources-directory ;
+                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
                                                             factories = __resources ;
                                                             seed = null ;
                                                             targets = [ "directory" ] ;
