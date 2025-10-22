@@ -49,6 +49,31 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
+                            __resources =
+                                {
+                                    temporary-directory =
+                                        _resource
+                                            {
+                                                init =
+                                                    let
+                                                        application =
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "init" ;
+                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                    text =
+                                                                        ''
+                                                                            mkdir --parents /mount/directory
+                                                                        '' ;
+                                                                } ;
+                                                        in "${ application }/bin/init" ;
+                                                resources-directory = resources-directory ;
+                                                factories = __resources ;
+                                                seed = null ;
+                                                targets = [ "directory" ] ;
+                                                transient = false ;
+                                            } ;
+                                } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
