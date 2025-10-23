@@ -836,7 +836,11 @@
                                                                   expected-originator-pid = 45 ;
                                                                   expected-provenance = "new" ;
                                                                   expected-standard-error = "ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9" ;
-                                                                  expected-standard-output = "cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5" ;
+                                                                  expected-standard-output =
+                                                                    ''
+                                                                        cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
+                                                                        self = /build/resources/mounts/0000000311691948
+                                                                   '';
                                                                   expected-status = 70 ;
                                                                   expected-targets =
                                                                       [
