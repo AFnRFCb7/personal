@@ -20,6 +20,7 @@
                             _resources =
                                 {
                                     init ? null ,
+                                    ___resources ,
                                     resources-directory ,
                                     seed ,
                                     targets ,
@@ -39,6 +40,7 @@
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
+                                            resources = ___resources ;
                                             resources-directory = resources-directory ;
                                             seed = seed ;
                                             targets = targets ;
@@ -798,7 +800,7 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
-                                                                    resources =
+                                                                    ___resources =
                                                                         {
                                                                             d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 =
                                                                                 let
