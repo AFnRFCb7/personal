@@ -20,8 +20,8 @@
                             _resources =
                                 {
                                     init ? null ,
-                                    resources_ready ,
                                     resources-directory ,
+                                    resources_ready ,
                                     seed ,
                                     targets ,
                                     transient
@@ -778,6 +778,7 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
+                                                                    resources-directory = "/build/resources" ;
                                                                     resources_ready =
                                                                         {
                                                                             d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 =
@@ -794,7 +795,6 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                                         } ;
-                                                                    resources-directory = "/build/resources" ;
                                                                     seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
                                                                     targets =
                                                                         [
@@ -859,6 +859,7 @@
                                                                                               '' ;
                                                                                       } ;
                                                                               in "${ application }/bin/init" ;
+                                                                    resources-directory = "/build/resources" ;
                                                                     resources_ready =
                                                                         {
                                                                             fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 =
@@ -875,7 +876,6 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
                                                                         } ;
-                                                                  resources-directory = "/build/resources" ;
                                                                   seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
                                                                   targets =
                                                                       [
