@@ -10,6 +10,7 @@
                         failure ,
                         nixpkgs ,
                         private ,
+                        resources ,
                         secrets ,
                         system ,
                         visitor
