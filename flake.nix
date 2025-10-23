@@ -90,7 +90,6 @@
                                                                                             '' ;
                                                                                     } ;
                                                                             in "${ application }/bin/init" ;
-                                                                ___resources = ___resources ;
                                                                 targets = [ "directory" ] ;
                                                                 transient = true ;
                                                             } ;
