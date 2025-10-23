@@ -791,6 +791,7 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                                         } ;
+                                                                    resources = ___resources ;
                                                                     resources-directory = "/build/resources" ;
                                                                     seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
                                                                     targets =
