@@ -20,7 +20,7 @@
                             _resources =
                                 {
                                     init ? null ,
-                                    ___resources ,
+                                    resources_ready ,
                                     resources-directory ,
                                     seed ,
                                     targets ,
@@ -40,7 +40,7 @@
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
-                                            resources = ___resources ;
+                                            resources = resources_ready ;
                                             resources-directory = resources-directory ;
                                             seed = seed ;
                                             targets = targets ;
@@ -54,7 +54,7 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        ___resources =
+                                        resources_ready =
                                             _visitor.implementation
                                                 {
                                                     lambda =
@@ -65,7 +65,7 @@
                                                                     _resources
                                                                         {
                                                                             init = point.init ;
-                                                                            ___resources = ___resources ;
+                                                                            resources_ready = resources_ready ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             seed = path ;
                                                                             targets = point.targets ;
@@ -338,7 +338,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ ___resources.directory ( setup : "${ setup }" ) }
+                                                                                            FOOBAR=${ resources_ready.directory ( setup : "${ setup }" ) }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
@@ -778,7 +778,7 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
-                                                                    ___resources =
+                                                                    resources_ready =
                                                                         {
                                                                             d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 =
                                                                                 let
@@ -859,7 +859,7 @@
                                                                                               '' ;
                                                                                       } ;
                                                                               in "${ application }/bin/init" ;
-                                                                    ___resources =
+                                                                    resources_ready =
                                                                         {
                                                                             fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 =
                                                                                 let
