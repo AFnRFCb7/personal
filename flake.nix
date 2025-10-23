@@ -338,6 +338,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             FOOBAR=${ ___resources.directory.implementation ( setup : "${ setup }" ) }
+                                                                                            echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
                                                                         )
