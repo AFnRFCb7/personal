@@ -65,6 +65,7 @@
                                                                     _resources
                                                                         {
                                                                             init = point.init ;
+                                                                            ___resources = ___resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             seed = path ;
                                                                             targets = point.targets ;
