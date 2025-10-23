@@ -777,7 +777,8 @@
                                                                     expected-standard-error = "" ;
                                                                     expected-standard-output =
                                                                         ''f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
-                                                                          self = /build/resources/mounts/0000000311691948'' ;
+                                                                          self = /build/resources/mounts/0000000311691948
+                                                                        '' ;
                                                                     expected-status = 0 ;
                                                                     expected-targets =
                                                                         [
@@ -838,7 +839,8 @@
                                                                   expected-standard-error = "ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9" ;
                                                                   expected-standard-output =
                                                                     ''cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
-                                                                      self = /build/resources/mounts/0000000311691948'';
+                                                                      self = /build/resources/mounts/0000000311691948
+                                                                    '';
                                                                   expected-status = 70 ;
                                                                   expected-targets =
                                                                       [
