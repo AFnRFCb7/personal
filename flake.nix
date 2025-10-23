@@ -337,7 +337,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            ${ ___resources.directory.implementation ( setup : "${ setup }" ) }
+                                                                                            FOOBAR=${ ___resources.directory.implementation ( setup : "${ setup }" ) }
                                                                                         '' ;
                                                                                 }
                                                                         )
