@@ -61,17 +61,16 @@
                                                         path : value :
                                                             let
                                                                 point = value null ;
-                                                                let
-                                                                    r =
-                                                                        _resources
-                                                                            {
-                                                                                init = point.init ;
-                                                                                ___resources = ___resources ;
-                                                                                resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                                seed = path ;
-                                                                                targets = point.targets ;
-                                                                                transient = point.transient ;
-                                                                            } ;
+                                                                r =
+                                                                    _resources
+                                                                        {
+                                                                            init = point.init ;
+                                                                            ___resources = ___resources ;
+                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                            seed = path ;
+                                                                            targets = point.targets ;
+                                                                            transient = point.transient ;
+                                                                        } ;
                                                                     in r.implementation ;
                                                 }
                                                 {
