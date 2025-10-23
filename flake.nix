@@ -799,7 +799,7 @@
                                                           _resources
                                                               {
                                                                   init =
-                                                                      self :
+                                                                      { resources , self } :
                                                                           let
                                                                               application =
                                                                                   pkgs.writeShellApplication
