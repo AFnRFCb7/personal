@@ -336,6 +336,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
+                                                                                            ${ resources.directory.implementation }
                                                                                         '' ;
                                                                                 }
                                                                         )
