@@ -54,6 +54,45 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        ___resources =
+                                            _visitor.implementation
+                                                {
+                                                    lambda =
+                                                        path : value :
+                                                            let
+                                                                point = value null ;
+                                                                in
+                                                                    _resources
+                                                                        {
+                                                                            init = point.init ;
+                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                            seed = path ;
+                                                                            targets = point.targets ;
+                                                                            transient = point.transient ;
+                                                                        } ;
+                                                }
+                                                {
+                                                    directory =
+                                                        ignore :
+                                                            {
+                                                                init =
+                                                                    { resources , self } :
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "init" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                mkdir /mount/directory
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/init" ;
+                                                                targets = [ "directory" ] ;
+                                                                transient = true ;
+                                                            } ;
+                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
