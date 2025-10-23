@@ -337,6 +337,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
+                                                                                            ${ ___resources.directory.implementation ( setup : "${ setup }" ) }
                                                                                         '' ;
                                                                                 }
                                                                         )
