@@ -61,16 +61,18 @@
                                                         path : value :
                                                             let
                                                                 point = value null ;
-                                                                in
-                                                                    _resources
-                                                                        {
-                                                                            init = point.init ;
-                                                                            ___resources = ___resources ;
-                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                            seed = path ;
-                                                                            targets = point.targets ;
-                                                                            transient = point.transient ;
-                                                                        } ;
+                                                                let
+                                                                    r =
+                                                                        _resources
+                                                                            {
+                                                                                init = point.init ;
+                                                                                ___resources = ___resources ;
+                                                                                resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                seed = path ;
+                                                                                targets = point.targets ;
+                                                                                transient = point.transient ;
+                                                                            } ;
+                                                                    in r.implementation ;
                                                 }
                                                 {
                                                     directory =
@@ -337,7 +339,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ ___resources.directory.implementation ( setup : "${ setup }" ) }
+                                                                                            FOOBAR=${ ___resources.directory ( setup : "${ setup }" ) }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
