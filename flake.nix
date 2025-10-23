@@ -765,7 +765,7 @@
                                                                             "self"
                                                                         ] ;
                                                                     transient = false ;
-                                                                } { resources = { factory = factory ; } ; self = "SELF" ; } ;
+                                                                } ;
                                                         in
                                                             factory.check
                                                                 {
