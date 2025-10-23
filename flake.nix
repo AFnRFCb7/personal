@@ -47,6 +47,46 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
+                            __resources =
+                                resources-directory :
+                                    _visitor.implementation
+                                        {
+                                            lambda =
+                                                path : value :
+                                                    let
+                                                        point = value null ;
+                                                        in
+                                                            _resources
+                                                                {
+                                                                    init = point.init ;
+                                                                    resources-directory = resources-directory ;
+                                                                    seed = path ;
+                                                                    targets = point.targets ;
+                                                                    transient = point.transient ;
+                                                                } ;
+                                        }
+                                        {
+                                            directory =
+                                                ignore :
+                                                    {
+                                                        init =
+                                                            { resources , self } :
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name  = "init" ;
+                                                                                runtimeInput = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        mkdir /mount/directory ;
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/init" ;
+                                                        targets = [ "directory" ] ;
+                                                        transient = false ;
+                                                    } ;
+                                        } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
