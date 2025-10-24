@@ -81,7 +81,7 @@
                                                             ephemeral-bin =
                                                                 ignore :
                                                                     let
-                                                                        bin = _ephemeral-bin { package = "nixpkgs#cowsay" ; target = "pass" ; } ;
+                                                                        bin = _ephemeral-bin { package = "nixpkgs#cowsay" ; target = "cowsay" ; } ;
                                                                         in bin.implementation ;
                                                             directory =
                                                                 ignore :
