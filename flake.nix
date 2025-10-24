@@ -42,7 +42,6 @@
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
-                                            resources = resources_ready ;
                                             resources-directory = resources-directory ;
                                             seed = seed ;
                                             targets = targets ;
