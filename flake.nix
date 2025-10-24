@@ -342,6 +342,8 @@
                                                                 name = config.personal.name ;
                                                                 packages =
                                                                     [
+                                                                        pkgs.redis
+                                                                        pkgs.yq-go
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
