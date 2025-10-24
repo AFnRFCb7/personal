@@ -8,6 +8,7 @@
                 lib =
                     {
                         ephemeral-bin ,
+                        ephemeral-bin ,
                         failure ,
                         nixpkgs ,
                         private ,
@@ -17,6 +18,8 @@
                         visitor
                     } @primary :
                         let
+                            _ephemeral-bin = { package , target } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; nix = pkgs.nix ; package = package ; target = target ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _ephemeral-bin = { package , target } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; nix = pkgs.nix ; package = package ; target = target ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resources =
                                 {
@@ -75,26 +78,30 @@
                                                                     in r.implementation ;
                                                 }
                                                 {
-                                                    directory =
-                                                        ignore :
-                                                            {
-                                                                init =
-                                                                    { resources , self } :
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "init" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                mkdir /mount/directory
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/init" ;
-                                                                targets = [ "directory" ] ;
-                                                                transient = true ;
-                                                            } ;
+                                                    foobar =
+                                                        {
+                                                            ephemeral-bin = ignore : _ephemeral-bin { package = pkgs.pass ; target = "pass" ; } ;
+                                                            directory =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { resources , self } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir /mount/directory
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "directory" ] ;
+                                                                        transient = true ;
+                                                                    } ;
+                                                        } ;
                                                 } ;
                                         password-less-wrap =
                                             derivation : target :
@@ -339,7 +346,8 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources_ready.directory ( setup : "${ setup }" ) }
+                                                                                            FOOBAR=${ resources_ready.foobar.directory ( setup : "${ setup }" ) }
+                                                                                            ln --symbolic ${ resources_ready.foobar.ephemeral-bin ( setup : "${ setup }" ) } "$FOOBAR/directory/binary"
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
