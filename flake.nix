@@ -344,6 +344,7 @@
                                                                     [
                                                                         pkgs.redis
                                                                         pkgs.yq-go
+                                                                        pkgs.jq
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
