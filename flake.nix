@@ -78,7 +78,11 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            ephemeral-bin = ignore : _ephemeral-bin { package = pkgs.pass ; target = "pass" ; } ;
+                                                            ephemeral-bin =
+                                                                ignore :
+                                                                    let
+                                                                        bin = _ephemeral-bin { package = pkgs.pass ; target = "pass" ; } ;
+                                                                        in bin.implementation ;
                                                             directory =
                                                                 ignore :
                                                                     {
