@@ -66,7 +66,7 @@
                                                                 r =
                                                                     _resources
                                                                         {
-                                                                            init = point.init ;
+                                                                            init = builtins.trace ( builtins.concatStringsSep "\n" ( builtins.attrNames point ) ) point.init ;
                                                                             resources_ready = resources_ready ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             seed = path ;
