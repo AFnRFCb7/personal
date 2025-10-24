@@ -352,7 +352,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jq ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            cat /tmp/message | jq "."
+                                                                                            jq "." < /tmp/message
                                                                                         '' ;
                                                                                 }
                                                                         )
