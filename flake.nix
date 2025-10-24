@@ -66,12 +66,12 @@
                                                                 r =
                                                                     _resources
                                                                         {
-                                                                            init = point.init ;
+                                                                            init = point.init or null;
                                                                             resources_ready = resources_ready ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             seed = path ;
-                                                                            targets = point.targets ;
-                                                                            transient = point.transient ;
+                                                                            targets = point.targets or [ ] ;
+                                                                            transient = point.transient or false ;
                                                                         } ;
                                                                     in r.implementation ;
                                                 }
