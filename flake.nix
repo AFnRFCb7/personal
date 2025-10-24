@@ -62,12 +62,11 @@
                                                     lambda =
                                                         path : value :
                                                             let
-                                                                point = value null ;
+                                                                point = value resources_ready ;
                                                                 r =
                                                                     _resources
                                                                         {
                                                                             init = point.init or null;
-                                                                            resources_ready = resources_ready ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             seed = path ;
                                                                             targets = point.targets or [ ] ;
@@ -79,27 +78,26 @@
                                                     foobar =
                                                         {
                                                             ephemeral-bin =
-                                                                ignore :
+                                                                resources :
                                                                     let
                                                                         bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
                                                             directory =
-                                                                ignore :
+                                                                resources :
                                                                     {
                                                                         init =
-                                                                            { resources , self } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        mkdir /mount/directory
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    mkdir /mount/directory
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
                                                                         targets = [ "directory" ] ;
                                                                         transient = true ;
                                                                     } ;
