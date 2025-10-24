@@ -81,7 +81,7 @@
                                                             ephemeral-bin =
                                                                 ignore :
                                                                     let
-                                                                        bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.user }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
+                                                                        bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
                                                             directory =
                                                                 ignore :
