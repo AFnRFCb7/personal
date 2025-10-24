@@ -19,7 +19,6 @@
                     } @primary :
                         let
                             _ephemeral-bin = { package , target } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; nix = pkgs.nix ; package = package ; target = target ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _ephemeral-bin = { package , target } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; nix = pkgs.nix ; package = package ; target = target ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resources =
                                 {
