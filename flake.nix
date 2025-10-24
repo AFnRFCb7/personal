@@ -348,6 +348,31 @@
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
+                                                                                    name = "foobar-read" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jq ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            cat /tmp/message | jq "."
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar-listen" ;
+                                                                                    runtimeInputs = [ pkgs.redis ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            redis-cli SUBSCRIBE resource | while read -r MESSAGE
+                                                                                            do
+                                                                                                echo "$MESSAGE" > /tmp/message
+                                                                                            done
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
