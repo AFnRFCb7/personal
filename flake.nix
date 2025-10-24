@@ -8,7 +8,6 @@
                 lib =
                     {
                         ephemeral-bin ,
-                        ephemeral-bin ,
                         failure ,
                         nixpkgs ,
                         private ,
