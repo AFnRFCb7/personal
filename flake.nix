@@ -349,7 +349,8 @@
                                                                                     text =
                                                                                         ''
                                                                                             FOOBAR=${ resources_ready.foobar.directory ( setup : "${ setup }" ) }
-                                                                                            ln --symbolic ${ resources_ready.foobar.ephemeral-bin ( setup : "${ setup }" ) } "$FOOBAR/directory/binary"
+                                                                                            BINARY=${ resources_ready.foobar.ephemeral-bin ( setup : "${ setup }" ) }
+                                                                                            ln --symbolic "$BINARY" "$FOOBAR/directory/binary"
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
