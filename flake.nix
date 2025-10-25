@@ -87,18 +87,19 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    mkdir /mount/directory
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/init" ;
+                                                                            { resources , self } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir /mount/directory
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
                                                                         targets = [ "directory" ] ;
                                                                         transient = true ;
                                                                     } ;
