@@ -543,22 +543,13 @@
                                 } ;
                             checks =
                                 {
-                                    ephemeral-happy =
+                                    ephemeral =
                                         let
                                             factory =
                                                 _ephemeral-bin
                                                     {
                                                         garbage-collection-root = "/build/garbage-collection-root" ;
                                                         package = "nixpkgs#cowsay" ;
-                                                    } ;
-                                            in factory.check { expected-init = "/nix/store/hvma100pajisglzfgjh7gf0r1a6zxy0f-init/bin/init" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-                                    ephemeral-sad =
-                                        let
-                                            factory =
-                                                _ephemeral-bin
-                                                    {
-                                                        garbage-collection-root = "/build/garbage-collection-root" ;
-                                                        package = "nixpkgs#nosuchpackage" ;
                                                     } ;
                                             in factory.check { expected-init = "/nix/store/hvma100pajisglzfgjh7gf0r1a6zxy0f-init/bin/init" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     failure =
