@@ -558,8 +558,8 @@
                                             factory =
                                                 _dot-gnupg
                                                     {
-                                                        ownertrust = ignore : ./check/dot-gnupg/ownertrust ;
-                                                        secret-keys = ignore : ./check/dot-gnupg/secret-keys ;
+                                                        ownertrust = ignore : ./check/dot-gnupg/ownertrust.asc ;
+                                                        secret-keys = ignore : ./check/dot-gnupg/secret-keys.asc ;
                                                     } ;
                                             in factory.check { expected = "/nix/store/fkivqdilzrwjmflcxx3h4ik40gsmy634-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     ephemeral =
