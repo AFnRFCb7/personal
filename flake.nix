@@ -566,7 +566,7 @@
                                                         garbage-collection-root = "/build/garbage-collection-root" ;
                                                         package = "nixpkgs#cowsay" ;
                                                     } ;
-                                            in factory.check { expected-init = "/nix/store/hvma100pajisglzfgjh7gf0r1a6zxy0f-init/bin/init" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                            in factory.check { expected-init = "/nix/store/i8fxl1a8p5ajnnyfl1f1hs49gpsq11x8-init/bin/init" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     failure =
                                         _failure.check
                                             {
