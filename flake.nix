@@ -546,7 +546,7 @@
                                     ephemeral-happy =
                                         let
                                             factory =
-                                                _ephemeral
+                                                _ephemeral-bin
                                                     {
                                                         garbage-collection-root = "/build/garbage-collection-root" ;
                                                         package = "nixpkgs#cowsay" ;
