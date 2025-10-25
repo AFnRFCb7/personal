@@ -80,6 +80,7 @@
                                                 {
                                                     foobar =
                                                         {
+                                                            dot-gnupg = ignore : dot-gnupg = _dot-gnupg { ownertrust = ./check/dot-gnupg/ownertrust.asc ; secret-keys = ./check/dot-gnupg/secret-keys.asc ; }
                                                             ephemeral-bin =
                                                                 ignore :
                                                                     let
@@ -99,6 +100,12 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         mkdir /mount/directory
+                                                                                                        DOT_GNUPG=${ resources.foobar.dot-gnupg }
+                                                                                                        ln --symbolic "$DOT_GNUPG" /links
+                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg
+                                                                                                        EPHEMERAL=${ resources.foobar.ephemeral-bin }
+                                                                                                        ln --symbolic "$EPHEMERAL" /links
+                                                                                                        ln --symbolic "$EPHEMERAL/derivation/bin/cowsay" /mount/cowsay
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -379,8 +386,6 @@
                                                                                     text =
                                                                                         ''
                                                                                             FOOBAR=${ resources_ready.foobar.directory ( setup : "${ setup }" ) }
-                                                                                            BINARY=${ resources_ready.foobar.ephemeral-bin ( setup : "${ setup }" ) }
-                                                                                            ln --symbolic "$BINARY" "$FOOBAR/directory/binary"
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
