@@ -543,6 +543,15 @@
                                 } ;
                             checks =
                                 {
+                                    ephemeral-happy =
+                                        let
+                                            factory =
+                                                _ephemeral
+                                                    {
+                                                        garbage-collection-root = "/build/garbage-collection-root" ;
+                                                        package = "nixpkgs#cowsay" ;
+                                                    } ;
+                                            in factory.check { expected = true ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     failure =
                                         _failure.check
                                             {
