@@ -553,7 +553,7 @@
                                                         ownertrust = ./check/dot-gnupg/ownertrust ;
                                                         secret-keys = ./check/dot-gnupg/secret-keys ;
                                                     } ;
-                                            in factory.check { expected = "" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                            in factory.check { expected = "/nix/store/fkivqdilzrwjmflcxx3h4ik40gsmy634-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     ephemeral =
                                         let
                                             factory =
