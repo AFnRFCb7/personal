@@ -90,7 +90,7 @@
                                                                 ignore :
                                                                     let
                                                                         x = _dot_ssh { } ;
-                                                                        in x.implementation { host-name = "mobile" ; host-name = "192.168.1.202" ; port = 8022 ; } ;
+                                                                        in x.implementation { host-name = "mobile" ; host = "192.168.1.202" ; port = 8022 ; } ;
                                                             ephemeral =
                                                                 ignore :
                                                                     let
