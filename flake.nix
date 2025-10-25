@@ -81,12 +81,12 @@
                                                     foobar =
                                                         {
                                                             dot-gnupg = ignore : _dot-gnupg { ownertrust = ./check/dot-gnupg/ownertrust.asc ; secret-keys = ./check/dot-gnupg/secret-keys.asc ; } ;
-                                                            ephemeral-bin =
+                                                            ephemeral =
                                                                 ignore :
                                                                     let
                                                                         bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
-                                                            directory =
+                                                            foobar =
                                                                 ignore :
                                                                     {
                                                                         init =
@@ -100,9 +100,9 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         mkdir /mount/directory
-                                                                                                        EPHEMERAL=${ resources.foobar.ephemeral-bin ( setup : setup ) }
+                                                                                                        EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
-                                                                                                        ln --symbolic "$EPHEMERAL/derivation/bin/cowsay" /mount/ephemeral
+                                                                                                        ln --symbolic "$EPHEMERAL/derivation" /mount/ephemeral
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -382,7 +382,7 @@
                                                                                     name = "foobar" ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources_ready.foobar.directory ( setup : "${ setup }" ) }
+                                                                                            FOOBAR=${ resources_ready.foobar.foobar ( setup : "${ setup }" ) }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
