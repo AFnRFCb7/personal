@@ -18,7 +18,7 @@
                         visitor
                     } @primary :
                         let
-                            _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = coreutils ; failure = _failure ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = writeShellApplication ; } ;
+                            _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = writeShellApplication ; } ;
                             _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resources =
@@ -550,6 +550,7 @@
                                             factory =
                                                 _dot-gnupg
                                                     {
+                                                        failure = _failure ;
                                                         ownertrust = ./check/dot-gnupg/ownertrust ;
                                                         secret-keys = ./check/dot-gnupg/secret-keys ;
                                                     } ;
