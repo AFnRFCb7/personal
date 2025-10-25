@@ -79,12 +79,12 @@
                                                     foobar =
                                                         {
                                                             ephemeral-bin =
-                                                                { resources , self } :
+                                                                ignore :
                                                                     let
                                                                         bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
                                                             directory =
-                                                                { resources , self } :
+                                                                ignore :
                                                                     {
                                                                         init =
                                                                             let
