@@ -42,6 +42,7 @@
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
+                                            resources = resources_ready ;
                                             resources-directory = resources-directory ;
                                             seed = seed ;
                                             targets = targets ;
@@ -77,12 +78,12 @@
                                                     foobar =
                                                         {
                                                             ephemeral-bin =
-                                                                resources :
+                                                                { resources , self } :
                                                                     let
                                                                         bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
                                                             directory =
-                                                                resources :
+                                                                { resources , self } :
                                                                     {
                                                                         init =
                                                                             let
