@@ -101,7 +101,7 @@
                                                                                                     ''
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_GNUPG" /links
-                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg"
+                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/derivation" /mount/ephemeral
