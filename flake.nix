@@ -62,11 +62,12 @@
                                                     lambda =
                                                         path : value :
                                                             let
-                                                                point = value resources_ready ;
+                                                                point = value null ;
                                                                 r =
                                                                     _resources
                                                                         {
                                                                             init = point.init or null;
+                                                                            resources_ready = resources_ready ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             seed = path ;
                                                                             targets = point.targets or [ ] ;
