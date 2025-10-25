@@ -8,6 +8,7 @@
                 lib =
                     {
                         dot-gnupg ,
+                        dot-ssh ,
                         ephemeral-bin ,
                         failure ,
                         nixpkgs ,
