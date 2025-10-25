@@ -19,6 +19,7 @@
                     } @primary :
                         let
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; visitor = _visitor ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resources =
@@ -85,6 +86,11 @@
                                                                     let
                                                                         x = _dot-gnupg { ownertrust = ignore : ./check/dot-gnupg/ownertrust.asc ; secret-keys =  ignore : ./check/dot-gnupg/secret-keys.asc ; } ;
                                                                         in x.implementation ;
+                                                            dot-ssh =
+                                                                ignore :
+                                                                    let
+                                                                        x = _dot_ssh { } ;
+                                                                        in x.implementation { host-name = "mobile" ; host-name = "192.168.1.202" ; port = 8022 ; } ;
                                                             ephemeral =
                                                                 ignore :
                                                                     let
@@ -106,13 +112,16 @@
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_GNUPG" /links
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
+                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
+                                                                                                        ln --symbolic "$DOT_SSH" /links
+                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/ephemeral" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "dot-gnupg" "ephemeral" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
@@ -562,6 +571,14 @@
                                                         secret-keys = ignore : ./check/dot-gnupg/secret-keys.asc ;
                                                     } ;
                                             in factory.check { expected = "/nix/store/2qpixfpxy95lf4h1d75r1bizj0jvazam-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                    dot-ssh =
+                                        let
+                                            factory =
+                                                _dot-ssh
+                                                    {
+
+                                                    } ;
+                                            in factory.check { configuration = { host = "mobile" ; host-name = "192.168.1.202" ; user = "git" ; port = 8022 ; } ; expected = "" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     ephemeral =
                                         let
                                             factory =
