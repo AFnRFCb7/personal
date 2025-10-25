@@ -80,7 +80,11 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            dot-gnupg = ignore : _dot-gnupg { ownertrust = ignore : ./check/dot-gnupg/ownertrust.asc ; secret-keys =  ignore : ./check/dot-gnupg/secret-keys.asc ; } ;
+                                                            dot-gnupg =
+                                                                ignore :
+                                                                    let
+                                                                        x = _dot-gnupg { ownertrust = ignore : ./check/dot-gnupg/ownertrust.asc ; secret-keys =  ignore : ./check/dot-gnupg/secret-keys.asc ; } ;
+                                                                        in x.implementation ;
                                                             ephemeral =
                                                                 ignore :
                                                                     let
