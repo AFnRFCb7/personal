@@ -80,7 +80,7 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            dot-gnupg = ignore : _dot-gnupg { ownertrust = ./check/dot-gnupg/ownertrust.asc ; secret-keys = ./check/dot-gnupg/secret-keys.asc ; } ;
+                                                            dot-gnupg = ignore : _dot-gnupg { ownertrust = ignore : ./check/dot-gnupg/ownertrust.asc ; secret-keys =  ignore : ./check/dot-gnupg/secret-keys.asc ; } ;
                                                             ephemeral =
                                                                 ignore :
                                                                     let
@@ -99,13 +99,16 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
+                                                                                                        ln --symbolic "$DOT_GNUPG" /links
+                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount/dot-gnupg"
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/derivation" /mount/ephemeral
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "ephemeral" ] ;
+                                                                        targets = [ "dot-gnupg" "ephemeral" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
