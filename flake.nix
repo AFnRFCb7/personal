@@ -99,7 +99,6 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        mkdir /mount/directory
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/derivation" /mount/ephemeral
