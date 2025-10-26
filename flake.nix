@@ -80,11 +80,14 @@
                                                                     chmod 0700 "$GNUPGHOME"
                                                                     cat >"$GNUPGHOME/key.conf" <<EOF
                                                                     %no-protection
-                                                                    Key-Type: default
-                                                                    Subkey-Type: default
+                                                                    Key-Type: RSA
+                                                                    Key-Length: 2048
+                                                                    Subkey-Type: RSA
+                                                                    Subkey-Length: 2048
                                                                     Name-Real: Nina Nix
                                                                     Name-Email: nina.nix@example.com
                                                                     Expire-Date: 0
+                                                                    EOF
                                                                     EOF
                                                                     gpg --batch --gen-key "$GNUPGHOME/key.conf"
                                                                     mkdir --parents "$OUT/gnupg/dot-gnupg"
