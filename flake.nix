@@ -620,7 +620,7 @@
                                                         ownertrust = ignore : "${ fixture }/gnupg/dot-gnupg/ownertrust.asc" ;
                                                         secret-keys = ignore : "${ fixture }/gnupg/dot-gnupg/secret-keys.asc" ;
                                                     } ;
-                                            in factory.check { expected = "/nix/store/jxkis8386sck6hqf9l64bqbvsm97w5gh-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                            in factory.check { expected = "/nix/store/2qv4mgvzn0c0b1dgxh05h6agcgniq6d9-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     dot-ssh =
                                         let
                                             factory =
