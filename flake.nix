@@ -89,7 +89,7 @@
                                                             dot-gnupg =
                                                                 ignore :
                                                                     let
-                                                                        x = _dot-gnupg { ownertrust = ignore : ./check/dot-gnupg/ownertrust.asc ; secret-keys =  ignore : ./check/dot-gnupg/secret-keys.asc ; } ;
+                                                                        x = _dot-gnupg { ownertrust = ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys =  ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
                                                                         in x.implementation ;
                                                             dot-ssh =
                                                                 ignore :
