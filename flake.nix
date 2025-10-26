@@ -69,13 +69,14 @@
                                                     pkgs.writeShellApplication
                                                         {
                                                             name = "execute-fixture" ;
-                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg ] ;
+                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg ( failure "f3d9ae50" ) ] ;
                                                             text =
                                                                 ''
                                                                     OUT="$1"
                                                                     mkdir --parents "$OUT/age"
                                                                     age-keygen --output "$OUT/age/identity"
-                                                                    export GNUPGHOME="$( mktemp --directory )"
+                                                                    GNUPGHOME="$( mktemp --directory )" || failure mktemp
+                                                                    export GNUPGHOME
                                                                     chmod 0700 "$GNUPGHOME"
                                                                     cat >"$GNUPGHOME/key.conf" <<EOF
                                                                     %no-protection
