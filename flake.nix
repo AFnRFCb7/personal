@@ -91,8 +91,8 @@
                                                                     EOF
                                                                     gpg --batch --gen-key "$GNUPGHOME/key.conf"
                                                                     mkdir --parents "$OUT/gnupg/dot-gnupg"
-                                                                    gpg --export-ownertrust --armor > "$OUT/gnupg/dot-gnupg/ownertrust.asc"
-                                                                    gpg --export-secret-keys --armor > "$OUT/gnupg/dot-gnupg/secret-keys.asc"
+                                                                    gpg --homedir "$GNUPGHOME" --export-ownertrust --armor > "$OUT/gnupg/dot-gnupg/ownertrust.asc"
+                                                                    gpg --homedir "$GNUPHOME" --export-secret-keys --armor > "$OUT/gnupg/dot-gnupg/secret-keys.asc"
                                                                     rm --recursive --force "$GNUPGHOME"
                                                                 '' ;
                                                         }
