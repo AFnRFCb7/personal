@@ -56,7 +56,7 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
-                            _secret = { } : secret.lib { age = pkgs.age ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _secret = { } : secret.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _visitor = visitor.lib { } ;
                             fixture =
                                 pkgs.stdenv.mkDerivation
