@@ -572,14 +572,13 @@
                                                         secret-keys = ignore : ./check/dot-gnupg/secret-keys.asc ;
                                                     } ;
                                             in factory.check { expected = "/nix/store/2qpixfpxy95lf4h1d75r1bizj0jvazam-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-                                    # dot-ssh =
-                                    #     let
-                                    #         factory =
-                                    #             _dot-ssh
-                                    #                 {
-                                    #
-                                    #                 } ;
-                                    #         in factory.check { configuration = { host = "mobile" ; } ; expected = "/nix/store/m7ski4x12pifc3s6mjfbjkc5gah0v157-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                    dot-ssh =
+                                        let
+                                            factory =
+                                                _dot-ssh
+                                                    {
+                                                    } ;
+                                            in factory.check { configuration = { host = "mobile" ; } ; expected = "/nix/store/m7ski4x12pifc3s6mjfbjkc5gah0v157-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     ephemeral =
                                         let
                                             factory =
