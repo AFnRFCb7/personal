@@ -123,16 +123,19 @@
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/ephemeral" /mount
+                                                                                                        SECRET=${ resources.foobar.secret ( setup : setup ) }
+                                                                                                        ln --symbolic "$SECRET" /links
+                                                                                                        ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             secret =
                                                                 ignore :
                                                                     let
-                                                                        x = _secret { encrypted = ignore : "${ fixture }/age/encrypted/known-hosts" ; identity = "${ fixture }/age/identity/private" ; } ;
+                                                                        x = _secret { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts" ; identity = "${ _fixture.implementation }/age/identity/private" ; } ;
                                                                         in x.implementation ;
                                                         } ;
                                                 } ;
@@ -1018,6 +1021,14 @@
                                                                   standard-output = "" ;
                                                                   status = 64 ;
                                                               } ;
+                                                secret =
+                                                    _secret.check
+                                                        {
+                                                            expected = "${ fixture }/age/decrypted/known-hosts" ;
+                                                            identity = "${ fixture }/age/identity/private" ;
+                                                            failure = _failure ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                        } ;
                                                 visitor-happy =
                                                     _visitor.check
                                                         {
