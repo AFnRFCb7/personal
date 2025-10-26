@@ -11,6 +11,7 @@
                         dot-ssh ,
                         ephemeral-bin ,
                         failure ,
+                        fixture ,
                         nixpkgs ,
                         private ,
                         resources ,
