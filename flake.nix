@@ -14,6 +14,7 @@
                         nixpkgs ,
                         private ,
                         resources ,
+                        secret ,
                         secrets ,
                         system ,
                         visitor
@@ -55,7 +56,45 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
+                            _secret = { } : secret.lib { age = pkgs.age ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _visitor = visitor.lib { } ;
+                            fixture =
+                                pkgs.stdenv.mkDerivation
+                                    {
+                                        installPhase = ''execute-fixture "$out"'' ;
+                                        name = "fixture" ;
+                                        nativeBuildInputs =
+                                            [
+                                                (
+                                                    pkgs.writeShellApplication
+                                                        {
+                                                            name = "execute-fixture" ;
+                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg ] ;
+                                                            text =
+                                                                ''
+                                                                    OUT="$1"
+                                                                    mkdir --parents "$OUT/age"
+                                                                    age-keygen --output "$OUT/age/identity"
+                                                                    export GNUPGHOME="$OUT/gnupg/gnupghome"
+                                                                    mkdir --parents "$GNUPGHOME"
+                                                                    cat >"$GNUPGHOME/key.conf" <<'EOF'
+                                                                    %no-protection
+                                                                    Key-Type: default
+                                                                    Subkey-Type: default
+                                                                    Name-Real: Nina Nix
+                                                                    Name-Email: nina.nix@example.com
+                                                                    Expire-Date: 0
+                                                                    EOF
+                                                                    gpg --batch --gen-key "$GNUPGHOME/key.conf"
+                                                                    mkdir --parents "$OUT/gnupg/dot-gnupg
+                                                                    gpg --export-ownertrust --armor > "$OUT/gnupg/dot-gnupg/ownertrust.asc
+                                                                    gpg --export-secret-keys --armor > "$OUT/gnupg/dot-gnupg/secret-keys.asc
+                                                                '' ;
+                                                        }
+                                                )
+                                            ] ;
+                                        src = ./. ;
+                                    } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
@@ -97,6 +136,11 @@
                                                                     let
                                                                         bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
+                                                            known-hosts =
+                                                                ignore :
+                                                                    let
+                                                                        x = _secret { encrypted = ignore : ./check/secret/encrypted.asc ; identity = ./check/secret/key ; } ;
+                                                                        in x.implementation ;
                                                             foobar =
                                                                 ignore :
                                                                     {
