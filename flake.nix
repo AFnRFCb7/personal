@@ -20,7 +20,7 @@
                     } @primary :
                         let
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; visitor = _visitor ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resources =
