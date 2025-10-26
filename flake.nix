@@ -578,7 +578,7 @@
                                                 _dot-ssh
                                                     {
                                                     } ;
-                                            in factory.check { configuration = { host = "mobile" ; } ; expected = "/nix/store/m7ski4x12pifc3s6mjfbjkc5gah0v157-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                            in factory.check { configuration = { host = "mobile" ; } ; expected = "/nix/store/spw2lwmlvbvvlpi5x69rjy61ndzdag2j-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     ephemeral =
                                         let
                                             factory =
