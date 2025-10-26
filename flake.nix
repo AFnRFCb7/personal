@@ -132,7 +132,7 @@
                                                             secret =
                                                                 ignore :
                                                                     let
-                                                                        x = _secret { encrypted = ignore : ${ fixture }/encrypted.asc ; identity = ./check/secret/key ; } ;
+                                                                        x = _secret { encrypted = ignore : "${ fixture }/age/encrypted/known-hosts" ; identity = "${ fixture }/age/identity/private" ; } ;
                                                                         in x.implementation ;
                                                         } ;
                                                 } ;
