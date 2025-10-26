@@ -88,7 +88,6 @@
                                                                     Name-Email: nina.nix@example.com
                                                                     Expire-Date: 0
                                                                     EOF
-                                                                    EOF
                                                                     gpg --batch --gen-key "$GNUPGHOME/key.conf"
                                                                     mkdir --parents "$OUT/gnupg/dot-gnupg"
                                                                     gpg --export-ownertrust --armor > "$OUT/gnupg/dot-gnupg/ownertrust.asc"
