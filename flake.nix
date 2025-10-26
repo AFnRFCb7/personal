@@ -579,7 +579,7 @@
                                                     {
 
                                                     } ;
-                                            in factory.check { configuration = { host = "mobile" ; host-name = "192.168.1.202" ; user = "git" ; port = 8022 ; } ; expected = "/nix/store/f8gbfdzda9hpj35zgn6q8aalnaqa9lik-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                            in factory.check { configuration = { host = "mobile" ; host-name = "192.168.1.202" ; user = "git" ; port = 8022 ; } ; expected = "/nix/store/m7ski4x12pifc3s6mjfbjkc5gah0v157-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                     ephemeral =
                                         let
                                             factory =
