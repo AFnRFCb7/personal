@@ -75,8 +75,7 @@
                                                                     OUT="$1"
                                                                     mkdir --parents "$OUT/age"
                                                                     age-keygen --output "$OUT/age/identity"
-                                                                    export GNUPGHOME="$OUT/gnupg/gnupghome"
-                                                                    mkdir --parents "$GNUPGHOME"
+                                                                    export GNUPGHOME="$( mktemp --directory )"
                                                                     chmod 0700 "$GNUPGHOME"
                                                                     cat >"$GNUPGHOME/key.conf" <<EOF
                                                                     %no-protection
