@@ -25,7 +25,7 @@
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; gnupg = pkgs.gnupg ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure ; gnupg = pkgs.gnupg ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _resources =
                                 {
                                     init ? null ,
@@ -101,11 +101,6 @@
                                                                     let
                                                                         bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
                                                                         in bin.implementation ;
-                                                            known-hosts =
-                                                                ignore :
-                                                                    let
-                                                                        x = _secret { encrypted = ignore : ./check/secret/encrypted.asc ; identity = ./check/secret/key ; } ;
-                                                                        in x.implementation ;
                                                             foobar =
                                                                 ignore :
                                                                     {
@@ -134,6 +129,11 @@
                                                                         targets = [ "dot-gnupg" "dot-ssh" "ephemeral" ] ;
                                                                         transient = true ;
                                                                     } ;
+                                                            secret =
+                                                                ignore :
+                                                                    let
+                                                                        x = _secret { encrypted = ignore : ${ fixture }/encrypted.asc ; identity = ./check/secret/key ; } ;
+                                                                        in x.implementation ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
