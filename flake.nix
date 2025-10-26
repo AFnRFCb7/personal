@@ -91,7 +91,7 @@
                                                                 ignore :
                                                                     let
                                                                         x = _dot-ssh { } ;
-                                                                        in x.implementation { host-name = "mobile" ; port = 8022 ; } ;
+                                                                        in x.implementation { host-name = "mobile" ; port = 8022 ; strict-host-key-checking = true ; } ;
                                                             ephemeral =
                                                                 ignore :
                                                                     let
