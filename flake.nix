@@ -77,7 +77,7 @@
                                                                     age-keygen --output "$OUT/age/identity"
                                                                     export GNUPGHOME="$OUT/gnupg/gnupghome"
                                                                     mkdir --parents "$GNUPGHOME"
-                                                                    cat >"$GNUPGHOME/key.conf" <<'EOF'
+                                                                    cat >"$GNUPGHOME/key.conf" <<EOF
                                                                     %no-protection
                                                                     Key-Type: default
                                                                     Subkey-Type: default
@@ -86,7 +86,7 @@
                                                                     Expire-Date: 0
                                                                     EOF
                                                                     gpg --batch --gen-key "$GNUPGHOME/key.conf"
-                                                                    mkdir --parents "$OUT/gnupg/dot-gnupg
+                                                                    mkdir --parents "$OUT/gnupg/dot-gnupg"
                                                                     gpg --export-ownertrust --armor > "$OUT/gnupg/dot-gnupg/ownertrust.asc"
                                                                     gpg --export-secret-keys --armor > "$OUT/gnupg/dot-gnupg/secret-keys.asc"
                                                                 '' ;
