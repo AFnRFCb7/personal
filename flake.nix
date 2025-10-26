@@ -69,7 +69,7 @@
                                                     pkgs.writeShellApplication
                                                         {
                                                             name = "execute-fixture" ;
-                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg ( failure "f3d9ae50" ) ] ;
+                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg ( _failure.implementation "f3d9ae50" ) ] ;
                                                             text =
                                                                 ''
                                                                     OUT="$1"
