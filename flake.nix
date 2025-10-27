@@ -1028,7 +1028,7 @@
                                                         in
                                                             x.check
                                                                 {
-                                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts" ;
+                                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
                                                                     expected = "/nix/store/7h6cgrfpkbbnjl199h6y9s7l7qw2lrzi-init/bin/init" ;
                                                                     identity = ignore : "${ fixture }/age/identity/private" ;
                                                                     failure = _failure ;
