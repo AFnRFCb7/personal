@@ -1022,13 +1022,17 @@
                                                                   status = 64 ;
                                                               } ;
                                                 secret =
-                                                    _secret.check
-                                                        {
-                                                            expected = "${ fixture }/age/decrypted/known-hosts" ;
-                                                            identity = "${ fixture }/age/identity/private" ;
-                                                            failure = _failure ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        } ;
+                                                    let
+                                                        x =
+                                                            _secret { } ;
+                                                        in
+                                                            x.check
+                                                                {
+                                                                    expected = "${ fixture }/age/decrypted/known-hosts" ;
+                                                                    identity = "${ fixture }/age/identity/private" ;
+                                                                    failure = _failure ;
+                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                } ;
                                                 visitor-happy =
                                                     _visitor.check
                                                         {
