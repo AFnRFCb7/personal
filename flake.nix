@@ -606,7 +606,7 @@
                                                                 identity-file = { resources , self } :
                                                                     {
                                                                         directory = ignore : resources.directory ;
-                                                                        file = file ;
+                                                                        file = resources.file ;
                                                                     } ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
