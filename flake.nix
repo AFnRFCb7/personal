@@ -1028,6 +1028,7 @@
                                                         in
                                                             x.check
                                                                 {
+                                                                    encrypted = "${ fixture }/age/encrypted/known-hosts" ;
                                                                     expected = "${ fixture }/age/decrypted/known-hosts" ;
                                                                     identity = "${ fixture }/age/identity/private" ;
                                                                     failure = _failure ;
