@@ -95,7 +95,7 @@
                                                                 ignore :
                                                                     let
                                                                         x = _dot-ssh { } ;
-                                                                        in x.implementation { host-name = "mobile" ; port = 8022 ; strict-host-key-checking = true ; } ;
+                                                                        in x.implementation { host-name = "mobile" ; port = 8022 ; strict-host-key-checking = true ; identity-file = resources.foobar.secret ( setup : setup ) ; } ;
                                                             ephemeral =
                                                                 ignore :
                                                                     let
