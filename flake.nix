@@ -1028,9 +1028,9 @@
                                                         in
                                                             x.check
                                                                 {
-                                                                    encrypted = "${ fixture }/age/encrypted/known-hosts" ;
+                                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts" ;
                                                                     expected = "${ fixture }/age/decrypted/known-hosts" ;
-                                                                    identity = "${ fixture }/age/identity/private" ;
+                                                                    identity = ignore : "${ fixture }/age/identity/private" ;
                                                                     failure = _failure ;
                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                 } ;
