@@ -610,7 +610,7 @@
                                                                     } ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
-                                                                use-strict-host-keys-checking = true ;
+                                                                strict-host-keys-checking = true ;
                                                             } ;
                                                         expected = "/nix/store/spw2lwmlvbvvlpi5x69rjy61ndzdag2j-init/bin/init" ;
                                                         failure = _failure ;
