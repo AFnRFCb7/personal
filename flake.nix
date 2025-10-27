@@ -612,7 +612,7 @@
                                                                 user = "git" ;
                                                                 strict-host-key-checking = true ;
                                                             } ;
-                                                        expected = "/nix/store/dwx89mz7z4ylfsimi5wdmndhjmd4abmw-init/bin/init" ;
+                                                        expected = "/nix/store/2d6fncqjzi3sd291pj6dl7lxnzg4zr61-init/bin/init" ;
                                                         failure = _failure ;
                                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                                         resources =
