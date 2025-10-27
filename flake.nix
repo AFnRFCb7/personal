@@ -135,8 +135,8 @@
                                                             secret =
                                                                 ignore :
                                                                     let
-                                                                        x = _secret { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts" ; identity = "${ _fixture.implementation }/age/identity/private" ; } ;
-                                                                        in x.implementation ;
+                                                                        x = _secret { } ;
+                                                                        in x.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts" ; identity = "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
