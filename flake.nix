@@ -605,7 +605,7 @@
                                                                 host = "mobile" ;
                                                                 identity-file = { resources , self } :
                                                                     {
-                                                                        directory = ignore : resources.directory ;
+                                                                        directory = resources.directory ;
                                                                         file = resources.file ;
                                                                     } ;
                                                                 port = 8022 ;
