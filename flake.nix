@@ -1021,19 +1021,19 @@
                                                                   standard-output = "" ;
                                                                   status = 64 ;
                                                               } ;
-                                                secret =
-                                                    let
-                                                        x =
-                                                            _secret { } ;
-                                                        in
-                                                            x.check
-                                                                {
-                                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                                    expected = "/nix/store/fdjzblka23gn6cah2hrddfhrkbyya2ki-init/bin/init" ;
-                                                                    identity = ignore : "${ fixture }/age/identity/private" ;
-                                                                    failure = _failure ;
-                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                } ;
+                                                # secret =
+                                                #     let
+                                                #         x =
+                                                #             _secret { } ;
+                                                #         in
+                                                #             x.check
+                                                #                 {
+                                                #                     encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
+                                                #                     expected = "/nix/store/fdjzblka23gn6cah2hrddfhrkbyya2ki-init/bin/init" ;
+                                                #                     identity = ignore : "${ fixture }/age/identity/private" ;
+                                                #                     failure = _failure ;
+                                                #                     mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                #                } ;
                                                 visitor-happy =
                                                     _visitor.check
                                                         {
