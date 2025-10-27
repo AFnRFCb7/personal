@@ -101,7 +101,7 @@
                                                                                     host-name = "mobile" ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    identity-file = { resources , self } : resources.foobar.secret ( setup : setup ) ;
+                                                                                    identity-file = { resources , self } : { directory = resources.foobar.secret ( setup : setup ) ; file = directory : "${ directory }/secret" ; } ;
                                                                                 } ;
                                                             ephemeral =
                                                                 ignore :
