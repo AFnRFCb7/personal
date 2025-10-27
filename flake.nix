@@ -123,10 +123,9 @@
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/ephemeral" /mount
-                                                                                                        echo '${ resources.foobar.secret ( setup : setup ) }' > /mount/secret
-                                                                                                        # SECRET=${ resources.foobar.secret ( setup : setup ) }
-                                                                                                        # ln --symbolic "$SECRET" /links
-                                                                                                        # ln --symbolic "$SECRET/secret" /mount
+                                                                                                        SECRET=${ resources.foobar.secret ( setup : setup ) }
+                                                                                                        ln --symbolic "$SECRET" /links
+                                                                                                        ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
