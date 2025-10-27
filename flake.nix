@@ -1029,7 +1029,7 @@
                                                             x.check
                                                                 {
                                                                     encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                                    expected = "/nix/store/rzhws1d3r6jpv5q4qxa2a88k6pp3hpvz-init/bin/init" ;
+                                                                    expected = "/nix/store/fdjzblka23gn6cah2hrddfhrkbyya2ki-init/bin/init" ;
                                                                     identity = ignore : "${ fixture }/age/identity/private" ;
                                                                     failure = _failure ;
                                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
