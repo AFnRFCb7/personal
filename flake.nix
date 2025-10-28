@@ -98,10 +98,13 @@
                                                                         in
                                                                             x.implementation
                                                                                 {
-                                                                                    host-name = "mobile" ;
-                                                                                    port = 8022 ;
-                                                                                    strict-host-key-checking = true ;
-                                                                                    identity-file = { resources , self } : { directory = resources.foobar.secret ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    mobile2 =
+                                                                                        {
+                                                                                            host = "192.168.1.202" ;
+                                                                                            port = 8022 ;
+                                                                                            strict-host-key-checking = true ;
+                                                                                            identity-file = { resources , self } : { directory = resources.foobar.secret ( setup : setup ) ; file = "secret" ; } ;
+                                                                                        } ;
                                                                                 } ;
                                                             ephemeral =
                                                                 ignore :
