@@ -602,15 +602,18 @@
                                                     {
                                                         configuration =
                                                             {
-                                                                host = "mobile" ;
-                                                                identity-file = { resources , self } :
+                                                                mobile =
                                                                     {
-                                                                        directory = resources.directory ;
-                                                                        file = resources.file ;
+                                                                        host = "mobile" ;
+                                                                        identity-file = { resources , self } :
+                                                                            {
+                                                                                directory = resources.directory ;
+                                                                                file = resources.file ;
+                                                                            } ;
+                                                                        port = 8022 ;
+                                                                        user = "git" ;
+                                                                        strict-host-key-checking = true ;
                                                                     } ;
-                                                                port = 8022 ;
-                                                                user = "git" ;
-                                                                strict-host-key-checking = true ;
                                                             } ;
                                                         expected = "/nix/store/2d6fncqjzi3sd291pj6dl7lxnzg4zr61-init/bin/init" ;
                                                         failure = _failure ;
