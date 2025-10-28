@@ -98,7 +98,13 @@
                                                                         in
                                                                             x.implementation
                                                                                 {
-                                                                                    mobile2 =
+                                                                                    github =
+                                                                                        {
+                                                                                            host = "github.com" ;
+                                                                                            strict-host-key-checking = true ;
+                                                                                            identity-file = { resources , self } : { directory = resources.foobar.secret ( setup : setup ) ; file = "secret" ; } ;
+                                                                                        } ;
+                                                                                    mobile =
                                                                                         {
                                                                                             host = "192.168.1.202" ;
                                                                                             port = 8022 ;
