@@ -618,7 +618,7 @@
                                                                         strict-host-key-checking = true ;
                                                                     } ;
                                                             } ;
-                                                        expected = "/nix/store/2d6fncqjzi3sd291pj6dl7lxnzg4zr61-init/bin/init" ;
+                                                        expected = "/nix/store/15p7dxprk3klrac4p9kcydh0gfbbf2d0-init/bin/init" ;
                                                         failure = _failure ;
                                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                                         resources =
