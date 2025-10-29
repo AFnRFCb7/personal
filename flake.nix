@@ -613,7 +613,7 @@
                                                             {
                                                                 mobile-1 =
                                                                     {
-                                                                        host = "mobile" ;
+                                                                        host = "192.168.1.202" ;
                                                                         identity-file = { resources , self } :
                                                                             {
                                                                                 directory = resources.directory ;
