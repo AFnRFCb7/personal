@@ -133,9 +133,9 @@
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_GNUPG" /links
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
-                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
-                                                                                                        ln --symbolic "$DOT_SSH" /links
-                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
+                                                                                                        # DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
+                                                                                                        # ln --symbolic "$DOT_SSH" /links
+                                                                                                        # ln --symbolic "$DOT_SSH/dot-ssh" /mount
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/ephemeral" /mount
@@ -145,7 +145,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "ephemeral" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             secret =
