@@ -102,14 +102,12 @@
                                                                                         {
                                                                                             host = "github.com" ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            identity-file = { resources , self } : { directory = resources.foobar.secret ( setup : setup ) ; file = "secret" ; } ;
                                                                                         } ;
-                                                                                    mobile-2 =
+                                                                                    mobile =
                                                                                         {
                                                                                             host = "192.168.1.202" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            identity-file = { resources , self } : { directory = resources.foobar.secret ( setup : setup ) ; file = "secret" ; } ;
                                                                                         } ;
                                                                                 } ;
                                                             ephemeral =
@@ -133,9 +131,9 @@
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_GNUPG" /links
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
-                                                                                                        # DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
-                                                                                                        # ln --symbolic "$DOT_SSH" /links
-                                                                                                        # ln --symbolic "$DOT_SSH/dot-ssh" /mount
+                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
+                                                                                                        ln --symbolic "$DOT_SSH" /links
+                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/ephemeral" /mount
@@ -145,7 +143,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "dot-gnupg" "ephemeral" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             secret =
