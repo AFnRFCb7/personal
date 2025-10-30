@@ -100,14 +100,14 @@
                                                                                 {
                                                                                     github =
                                                                                         {
-                                                                                            host = "github.com" ;
                                                                                             strict-host-key-checking = true ;
+                                                                                            host = "github.com" ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
+                                                                                            strict-host-key-checking = true ;
                                                                                             host = "192.168.1.202" ;
                                                                                             port = 8022 ;
-                                                                                            strict-host-key-checking = true ;
                                                                                         } ;
                                                                                 } ;
                                                             ephemeral =
@@ -609,8 +609,9 @@
                                                     {
                                                         configuration =
                                                             {
-                                                                mobile-1 =
+                                                                a-mobile =
                                                                     {
+                                                                        strict-host-key-checking = true ;
                                                                         host = "192.168.1.202" ;
                                                                         identity-file = { resources , self } :
                                                                             {
@@ -619,7 +620,18 @@
                                                                             } ;
                                                                         port = 8022 ;
                                                                         user = "git" ;
+                                                                    } ;
+                                                                b-mobile =
+                                                                    {
                                                                         strict-host-key-checking = true ;
+                                                                        host = "192.168.1.202" ;
+                                                                        identity-file = { resources , self } :
+                                                                            {
+                                                                                directory = resources.directory ;
+                                                                                file = resources.file ;
+                                                                            } ;
+                                                                        port = 8022 ;
+                                                                        user = "git" ;
                                                                     } ;
                                                             } ;
                                                         expected = "/nix/store/b9vvngc85qph1ixz6nr8890sm5zwc7b1-init/bin/init" ;
