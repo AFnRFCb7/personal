@@ -684,7 +684,7 @@
                                         _git-repository.check
                                             {
                                                 expected = null ;
-                                                failure = _failure ;
+                                                failure = _failure.implementation ;
                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
                                             } ;
                                     # { name = "t1" ; value = log-event-listener.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
