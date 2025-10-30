@@ -151,7 +151,7 @@
                                                                         targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
-                                                            git-repository = _git-repository.implementation { } ;
+                                                            git-repository = ignore : _git-repository.implementation { } ;
                                                             secret =
                                                                 ignore :
                                                                     let
