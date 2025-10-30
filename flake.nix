@@ -7,6 +7,7 @@
             {
                 lib =
                     {
+                        bin ,
                         dot-gnupg ,
                         dot-ssh ,
                         ephemeral-bin ,
@@ -22,6 +23,7 @@
                         visitor
                     } @primary :
                         let
+                            _bin = { } : bin.lib { coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
@@ -88,6 +90,7 @@
                                                 {
                                                     foobar =
                                                         {
+                                                            bin = ignore :_bin.implementation { name = "bin" ; text = "" ; } ;
                                                             dot-gnupg =
                                                                 ignore :
                                                                     let
@@ -595,6 +598,14 @@
                                 } ;
                             checks =
                                 {
+                                    bin =
+                                        _bin.check
+                                            {
+                                                expected = "WRONG" ;
+                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                name = "bin" ;
+                                                text = "" ;
+                                            } ;
                                     dot-gnupg =
                                         let
                                             factory =
