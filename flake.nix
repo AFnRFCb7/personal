@@ -640,7 +640,7 @@
                                                                         user = "git" ;
                                                                     } ;
                                                             } ;
-                                                        expected = "/nix/store/b9vvngc85qph1ixz6nr8890sm5zwc7b1-init/bin/init" ;
+                                                        expected = "/nix/store/ygkmvyd5d4snw0i7k1j7iycjcyyl25ai-init/bin/init" ;
                                                         failure = _failure ;
                                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                                         resources =
