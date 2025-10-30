@@ -12,6 +12,7 @@
                         ephemeral-bin ,
                         failure ,
                         fixture ,
+                        git-repository ,
                         nixpkgs ,
                         private ,
                         resources ,
@@ -26,6 +27,7 @@
                             _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _resources =
                                 {
                                     init ? null ,
@@ -137,15 +139,19 @@
                                                                                                         EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
                                                                                                         ln --symbolic "$EPHEMERAL" /links
                                                                                                         ln --symbolic "$EPHEMERAL/ephemeral" /mount
+                                                                                                        GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
+                                                                                                        ln --symbolic "$GIT_REPOSITORY" /links
+                                                                                                        ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         ln --symbolic "$SECRET" /links
                                                                                                         ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
+                                                            git-repository = _git-repository.implementation { } ;
                                                             secret =
                                                                 ignore :
                                                                     let
@@ -609,7 +615,7 @@
                                                     {
                                                         configuration =
                                                             {
-                                                                a-mobile =
+                                                                b-mobile =
                                                                     {
                                                                         strict-host-key-checking = true ;
                                                                         host = "192.168.1.202" ;
@@ -621,7 +627,7 @@
                                                                         port = 8022 ;
                                                                         user = "git" ;
                                                                     } ;
-                                                                b-mobile =
+                                                                a-mobile =
                                                                     {
                                                                         strict-host-key-checking = true ;
                                                                         host = "192.168.1.202" ;
@@ -673,6 +679,12 @@
                                                         "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f"
                                                         "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
                                                     ] ;
+                                            } ;
+                                    git-repository =
+                                        _git-repository.check
+                                            {
+                                                expected = null ;
+                                                failure = _failure ;
                                             } ;
                                     # { name = "t1" ; value = log-event-listener.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
                                     # home =
