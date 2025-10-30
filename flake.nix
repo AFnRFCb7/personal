@@ -683,7 +683,7 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = null ;
+                                                expected = "/nix/store/cj3knxnrqrdfblygd7fba0jj670kw5v1-init/bin/init" ;
                                                 failure = _failure.implementation ;
                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
                                             } ;
