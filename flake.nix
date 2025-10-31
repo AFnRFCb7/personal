@@ -10,7 +10,7 @@
                         bin ,
                         dot-gnupg ,
                         dot-ssh ,
-                        ephemeral-bin ,
+                        ephemeral ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -26,7 +26,7 @@
                             _bin = { } : bin.lib { coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _ephemeral-bin = { garbage-collection-root , package } : ephemeral-bin.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; package = package ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _ephemeral = { } : ephemeral.lib { coreutils = pkgs.coreutils ; failure = _failure ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
@@ -88,6 +88,14 @@
                                                                     in r.implementation ;
                                                 }
                                                 {
+                                                    ephemeral =
+                                                        {
+                                                            chromium =
+                                                                ignore :
+                                                                    let
+                                                                        instance = _ephemeral { } ;
+                                                                        in instance.implementation { package = "nixpkgs#chromium" ; } ;
+                                                        } ;
                                                     foobar =
                                                         {
                                                             bin =
@@ -122,8 +130,8 @@
                                                             ephemeral =
                                                                 ignore :
                                                                     let
-                                                                        bin = _ephemeral-bin { garbage-collection-root = "/home/${ config.personal.name }/.nix-gcroots" ; package = "nixpkgs#cowsay" ; } ;
-                                                                        in bin.implementation ;
+                                                                        instance = _ephemeral { } ;
+                                                                        in instance.implementation { package = "nixpkgs#cowsay" ; } ;
                                                             foobar =
                                                                 ignore :
                                                                     {
@@ -674,13 +682,8 @@
                                                     } ;
                                     ephemeral =
                                         let
-                                            factory =
-                                                _ephemeral-bin
-                                                    {
-                                                        garbage-collection-root = "/build/garbage-collection-root" ;
-                                                        package = "nixpkgs#cowsay" ;
-                                                    } ;
-                                            in factory.check { expected-init = "/nix/store/i8fxl1a8p5ajnnyfl1f1hs49gpsq11x8-init/bin/init" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                            factory = _ephemeral { } ;
+                                            in factory.check { expected-init = "/nix/store/i8fxl1a8p5ajnnyfl1f1hs49gpsq11x8-init/bin/init" ; mkDerivation = pkgs.stdenv.mkDerivation ; package = "nixpkgs#cowsay" ; } ;
                                     failure =
                                         _failure.check
                                             {
