@@ -602,6 +602,7 @@
                                         _bin.check
                                             {
                                                 expected = "WRONG" ;
+                                                failure = _failure.implementation ;
                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
                                                 name = "bin" ;
                                                 text = "" ;
