@@ -16,7 +16,7 @@
                         git-repository ,
                         nixpkgs ,
                         private ,
-                        resources ,
+                        resource ,
                         secret ,
                         secrets ,
                         system ,
@@ -30,7 +30,7 @@
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _resources =
+                            _resource =
                                 {
                                     init ? null ,
                                     resources-directory ,
@@ -76,7 +76,7 @@
                                                             let
                                                                 point = value null ;
                                                                 r =
-                                                                    _resources
+                                                                    _resource
                                                                         {
                                                                             init = point.init or null;
                                                                             resources_ready = resources_ready ;
@@ -956,7 +956,7 @@
                                                 resource-happy =
                                                     let
                                                         factory =
-                                                            _resources
+                                                            _resource
                                                                 {
                                                                     init =
                                                                         { resources , self } :
@@ -1035,7 +1035,7 @@
                                                 resource-sad =
                                                     let
                                                         factory =
-                                                          _resources
+                                                          _resource
                                                               {
                                                                   init =
                                                                       { resources , self } :
