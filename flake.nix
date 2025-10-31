@@ -26,7 +26,7 @@
                             _bin = { } : bin.lib { coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _ephemeral = { } : ephemeral.lib { coreutils = pkgs.coreutils ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _ephemeral = { garbage-collection-root } : ephemeral.lib { coreutils = pkgs.coreutils ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
@@ -93,7 +93,7 @@
                                                             chromium =
                                                                 ignore :
                                                                     let
-                                                                        instance = _ephemeral { } ;
+                                                                        instance = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
                                                                         in instance.implementation { package = "nixpkgs#chromium" ; } ;
                                                         } ;
                                                     foobar =
@@ -130,7 +130,7 @@
                                                             ephemeral =
                                                                 ignore :
                                                                     let
-                                                                        instance = _ephemeral { } ;
+                                                                        instance = _ephemeral { garbage-collection-root = "/build/garbage-collection-root" ; } ;
                                                                         in instance.implementation { package = "nixpkgs#cowsay" ; } ;
                                                             foobar =
                                                                 ignore :
