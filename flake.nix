@@ -683,7 +683,7 @@
                                     ephemeral =
                                         let
                                             factory = _ephemeral { garbage-collection-root = "/build/nix-gc-root" ; } ;
-                                            in factory.check { expected = "/nix/store/i8fxl1a8p5ajnnyfl1f1hs49gpsq11x8-init/bin/init" ; failure = _failure.implementation "22da5a24" ; mkDerivation = pkgs.stdenv.mkDerivation ; package = "nixpkgs#cowsay" ; } ;
+                                            in factory.check { expected = "/nix/store/cx3ks8w60cyb6syjasl0mq5a2zppsk0i-init/bin/init" ; failure = _failure.implementation "22da5a24" ; mkDerivation = pkgs.stdenv.mkDerivation ; package = "nixpkgs#cowsay" ; } ;
                                     failure =
                                         _failure.check
                                             {
