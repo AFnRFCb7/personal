@@ -608,7 +608,7 @@
                                             in
                                                 unit.check
                                                     {
-                                                        expected = "WRONG" ;
+                                                        expected = "/nix/store/51mcksl23sdf7ink1rnvng4jm9jad7zc-init/bin/init" ;
                                                         failure = _failure.implementation ;
                                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                                         name = "bin" ;
