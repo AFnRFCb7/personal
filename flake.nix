@@ -137,6 +137,9 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        BIN=${ resources.foobar.bin ( setup : setup ) }
+                                                                                                        ln --symbolic "$BIN" /links
+                                                                                                        ln --symbolic "$BIN/bin" /mount
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_GNUPG" /links
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
@@ -155,7 +158,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "ephemeral" "git-repository" "secret" ] ;
+                                                                        targets = [ "bin" "dot-gnupg" "dot-ssh" "ephemeral" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { } ;
