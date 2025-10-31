@@ -90,7 +90,11 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            bin = ignore :_bin.implementation { name = "bin" ; text = "" ; } ;
+                                                            bin =
+                                                                ignore :
+                                                                    let
+                                                                        unit = _bin { } ;
+                                                                        in unit.implementation { name = "bin" ; text = "" ; } ;
                                                             dot-gnupg =
                                                                 ignore :
                                                                     let
@@ -599,14 +603,17 @@
                             checks =
                                 {
                                     bin =
-                                        _bin.check
-                                            {
-                                                expected = "WRONG" ;
-                                                failure = _failure.implementation ;
-                                                mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                name = "bin" ;
-                                                text = "" ;
-                                            } ;
+                                        let
+                                            unit = _bin { } ;
+                                            in
+                                                unit.check
+                                                    {
+                                                        expected = "WRONG" ;
+                                                        failure = _failure.implementation ;
+                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                        name = "bin" ;
+                                                        text = "" ;
+                                                    } ;
                                     dot-gnupg =
                                         let
                                             factory =
