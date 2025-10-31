@@ -130,7 +130,7 @@
                                                             ephemeral =
                                                                 ignore :
                                                                     let
-                                                                        instance = _ephemeral { garbage-collection-root = "/home/${ config.personal.user }/.nix-gc-root" ; } ;
+                                                                        instance = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
                                                                         in instance.implementation { package = "nixpkgs#cowsay" ; } ;
                                                             foobar =
                                                                 ignore :
