@@ -682,7 +682,7 @@
                                                     } ;
                                     ephemeral =
                                         let
-                                            factory = _ephemeral { } ;
+                                            factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
                                             in factory.check { expected = "/nix/store/i8fxl1a8p5ajnnyfl1f1hs49gpsq11x8-init/bin/init" ; failure = _failure.implementation "22da5a24" ; mkDerivation = pkgs.stdenv.mkDerivation ; package = "nixpkgs#cowsay" ; } ;
                                     failure =
                                         _failure.check
