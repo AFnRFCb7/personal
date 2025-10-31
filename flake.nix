@@ -93,8 +93,18 @@
                                                             chromium =
                                                                 ignore :
                                                                     let
-                                                                        instance = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
-                                                                        in instance.implementation { package = "nixpkgs#chromium" ; } ;
+                                                                        factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
+                                                                        in factory.implementation { package = "nixpkgs#chromium" ; } ;
+                                                            git =
+                                                                ignore :
+                                                                    let
+                                                                        factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
+                                                                        in factory.implementation { package = "nixpkgs#git" ; } ;
+                                                            pass =
+                                                                ignore :
+                                                                    let
+                                                                        factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
+                                                                        in factory.implementation { package = "nixpkgs#pass" ; } ;
                                                         } ;
                                                     foobar =
                                                         {
