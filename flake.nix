@@ -39,7 +39,7 @@
                                     targets ,
                                     transient
                                 } :
-                                    resources.lib
+                                    resource.lib
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                             coreutils = pkgs.coreutils ;
