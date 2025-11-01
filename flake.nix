@@ -32,7 +32,6 @@
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _resource =
                                 {
-                                    init ? null ,
                                     resources-directory ,
                                     resources ,
                                     seed ,
@@ -46,7 +45,6 @@
                                             failure = failure ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
-                                            init = init ;
                                             jq = pkgs.jq ;
                                             makeBinPath = pkgs.lib.makeBinPath ;
                                             makeWrapper = pkgs.makeWrapper ;
