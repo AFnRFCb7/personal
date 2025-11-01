@@ -735,12 +735,6 @@
                                                                                 } ;
                                                                         in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                             } ;
-                                                        seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
-                                                        targets =
-                                                            [
-                                                                "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
-                                                            ] ;
-                                                        transient = false ;
                                                     } ;
                                             in
                                                 factory.check
@@ -788,9 +782,15 @@
                                                                     mkdir --parents ${ resources-directory }/sequential
                                                                     echo 311691948 > ${ resources-directory }/sequential/sequential.counter
                                                                 '' ;
+                                                        seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
                                                         standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
                                                         standard-output = "/build/resources/mounts/0000000311691948" ;
                                                         status = 0 ;
+                                                        targets =
+                                                            [
+                                                                "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                            ] ;
+                                                        transient = false ;
                                                     } ;
                                         resource-sad =
                                             let
