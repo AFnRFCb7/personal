@@ -33,10 +33,7 @@
                             _resource =
                                 {
                                     resources-directory ,
-                                    resources ,
-                                    seed ,
-                                    targets ,
-                                    transient
+                                    resources
                                 } :
                                     resource.lib
                                         {
