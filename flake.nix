@@ -887,7 +887,7 @@
                                                     x.check
                                                         {
                                                             encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                            expected = "/nix/store/lhfyrmgkb7d2s9kkvlzidkll609wllf7-init/bin/init" ;
+                                                            expected = "/nix/store/gciqcwms4g5z2imjafmpgd203adss1sw-init/bin/init" ;
                                                             identity = ignore : "${ fixture }/age/identity/private" ;
                                                             failure = _failure ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
