@@ -28,7 +28,7 @@
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _ephemeral = { garbage-collection-root } : ephemeral.lib { coreutils = pkgs.coreutils ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _resource =
                                 {
@@ -39,7 +39,7 @@
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                             coreutils = pkgs.coreutils ;
-                                            failure = failure ;
+                                            failure = _failure.implementation "e521b62c" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
                                             jq = pkgs.jq ;
