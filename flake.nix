@@ -411,7 +411,7 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "foobar" ;
-                                                                                    runtimeInputs = [ ( failure "06581175" ) ] ;
+                                                                                    runtimeInputs = [ ( _failure "06581175" ) ] ;
                                                                                     text =
                                                                                         ''
                                                                                             FOOBAR=${ resources.foobar.foobar ( setup : "${ setup }" ) }
