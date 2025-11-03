@@ -697,7 +697,17 @@
                                                         expected-standard-error = "" ;
                                                         expected-standard-output =
                                                             ''
-                                                                f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
+                                                                 _________________________________________
+                                                                / f83f1836809a4c2148e7c4d4b3dc543d2d36808 \
+                                                                | 5d786a49366fd8b36cd730d93502da258b69d16 |
+                                                                | 94f2a437efa86666cf44a72e2c574a452044062 |
+                                                                \ 1e8dc2a9fc8                             /
+                                                                 -----------------------------------------
+                                                                        \   ^__^
+                                                                         \  (oo)\_______
+                                                                            (__)\       )\/\
+                                                                                ||----w |
+                                                                                ||     ||
                                                                 resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
                                                                 self = /build/resources/mounts/0000000311691948
                                                             '' ;
