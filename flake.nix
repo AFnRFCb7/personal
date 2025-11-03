@@ -31,7 +31,8 @@
                             _resource =
                                 {
                                     resources-directory ,
-                                    resources
+                                    resources ,
+                                    store-garbage-collection-root
                                 } :
                                     resource.lib
                                         {
@@ -48,6 +49,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
+                                            store-garbage-collection-root = store-garbage-collection-root ;
                                             stores =
                                                 {
                                                     cowsay = "nixpkgs#cowsay" ;
@@ -74,6 +76,7 @@
                                                                         {
                                                                             resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                            store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
                                                                     in r.implementation { init = point.init or null ; seed = path ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
                                                 }
@@ -709,6 +712,7 @@
                                                                                 } ;
                                                                         in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                             } ;
+                                                        store-garbage-collection-root = "/build/gc-roots" ;
                                                     } ;
                                             in
                                                 factory.check
@@ -790,6 +794,7 @@
                                                                                } ;
                                                                        in "${ application }/bin/5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
                                                            } ;
+                                                       store-garbage-collection-root = "/build/gc-roots" ;
                                                    } ;
                                          in
                                              factory.check
