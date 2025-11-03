@@ -7,7 +7,6 @@
             {
                 lib =
                     {
-                        bin ,
                         dot-gnupg ,
                         dot-ssh ,
                         failure ,
@@ -22,7 +21,6 @@
                         visitor
                     } @primary :
                         let
-                            _bin = { } : bin.lib { coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
@@ -84,11 +82,6 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            bin =
-                                                                ignore :
-                                                                    let
-                                                                        unit = _bin { } ;
-                                                                        in unit.implementation { name = "bin" ; text = "" ; } ;
                                                             dot-gnupg =
                                                                 ignore :
                                                                     let
@@ -126,9 +119,6 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        BIN=${ resources.foobar.bin ( setup : setup ) }
-                                                                                                        ln --symbolic "$BIN" /links
-                                                                                                        ln --symbolic "$BIN/bin" /mount
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_GNUPG" /links
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
@@ -146,7 +136,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "bin" "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { } ;
@@ -593,18 +583,6 @@
                                 } ;
                             checks =
                                 {
-                                    bin =
-                                        let
-                                            unit = _bin { } ;
-                                            in
-                                                unit.check
-                                                    {
-                                                        expected = "/nix/store/51mcksl23sdf7ink1rnvng4jm9jad7zc-init/bin/init" ;
-                                                        failure = _failure.implementation ;
-                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        name = "bin" ;
-                                                        text = "" ;
-                                                    } ;
                                     dot-gnupg =
                                         let
                                             factory =
