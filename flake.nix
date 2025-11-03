@@ -690,7 +690,7 @@
                                                         arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                         diffutils = pkgs.diffutils ;
                                                         expected-resource-dependencies = [ "0000000311691948" ] ;
-                                                        expected-store-dependencies = [ ] ;
+                                                        expected-store-dependencies = [ "0000000311691948" ] ;
                                                         expected-index = "0000000311691948" ;
                                                         expected-originator-pid = 45 ;
                                                         expected-provenance = "new" ;
@@ -734,7 +734,6 @@
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
                                                                                         root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
                                                                                         root-store ${ pkgs.cowsay }
-                                                                                        root-store ${ pkgs.libuuid }
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
