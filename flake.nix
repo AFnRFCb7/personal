@@ -45,6 +45,7 @@
                                             makeBinPath = pkgs.lib.makeBinPath ;
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
+                                            nix = pkgs.nix ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
