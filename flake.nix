@@ -779,7 +779,7 @@
                                                            ''
                                                                cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
                                                                resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
-                                                               self = /build/resources/mounts/0000000311691948
+                                                               self = /build/resources/mounts/0000000437766789
                                                            '' ;
                                                      expected-status = 70 ;
                                                      expected-targets =
