@@ -106,7 +106,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { resources , self , stores } :
+                                                                            { resources , self } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -707,7 +707,7 @@
                                                                 ] ;
                                                             expected-transient = -1 ;
                                                         init =
-                                                            { resources , self , stores } :
+                                                            { resources , self } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -787,7 +787,7 @@
                                                          ] ;
                                                      expected-transient = -1 ;
                                                      init =
-                                                         { resources , self , stores } :
+                                                         { resources , self } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
