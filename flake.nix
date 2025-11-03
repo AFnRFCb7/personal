@@ -789,9 +789,19 @@
                                                      expected-standard-error = "ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9" ;
                                                      expected-standard-output =
                                                            ''
-                                                               cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
-                                                               resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
-                                                               self = /build/resources/mounts/0000000437766789
+                                                                 _________________________________________
+                                                                / cfb1a86984144d2e4c03594b4299585aa6ec2f5 \
+                                                                | 03a7b39b1385a5338c9fc314fd87bd904d01188 |
+                                                                | b301b3cf641c4158b28852778515eba52ad7e4b |
+                                                                \ 148f216d1d5                             /
+                                                                 -----------------------------------------
+                                                                        \   ^__^
+                                                                         \  (oo)\_______
+                                                                            (__)\       )\/\
+                                                                                ||----w |
+                                                                                ||     ||
+                                                                resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
+                                                                self = /build/resources/mounts/0000000437766789
                                                            '' ;
                                                      expected-status = 70 ;
                                                      expected-targets =
