@@ -10,7 +10,6 @@
                         bin ,
                         dot-gnupg ,
                         dot-ssh ,
-                        ephemeral ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -26,7 +25,6 @@
                             _bin = { } : bin.lib { coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _ephemeral = { garbage-collection-root } : ephemeral.lib { coreutils = pkgs.coreutils ; garbage-collection-root = garbage-collection-root ; nix = pkgs.nix ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
@@ -50,6 +48,10 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
+                                            stores =
+                                                {
+                                                    cowsay = "nixpkgs#cowsay" ;
+                                                } ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
@@ -76,24 +78,6 @@
                                                                     in r.implementation { init = point.init or null ; seed = path ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
                                                 }
                                                 {
-                                                    ephemeral =
-                                                        {
-                                                            chromium =
-                                                                ignore :
-                                                                    let
-                                                                        factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
-                                                                        in factory.implementation { package = "nixpkgs#chromium" ; } ;
-                                                            git =
-                                                                ignore :
-                                                                    let
-                                                                        factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
-                                                                        in factory.implementation { package = "nixpkgs#git" ; } ;
-                                                            pass =
-                                                                ignore :
-                                                                    let
-                                                                        factory = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
-                                                                        in factory.implementation { package = "nixpkgs#pass" ; } ;
-                                                        } ;
                                                     foobar =
                                                         {
                                                             bin =
@@ -125,16 +109,11 @@
                                                                                             port = 8022 ;
                                                                                         } ;
                                                                                 } ;
-                                                            ephemeral =
-                                                                ignore :
-                                                                    let
-                                                                        instance = _ephemeral { garbage-collection-root = "/home/${ config.personal.name }/.nix-gc-root" ; } ;
-                                                                        in instance.implementation { package = "nixpkgs#cowsay" ; } ;
                                                             foobar =
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { resources , self } :
+                                                                            { resources , self , stores } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -161,6 +140,8 @@
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         ln --symbolic "$SECRET" /links
                                                                                                         ln --symbolic "$SECRET/secret" /mount
+                                                                                                        ${ stores.cowsay }/bin/cowsay Hello World
+                                                                                                        root store ${ stores.cowsay }
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -678,10 +659,6 @@
                                                             } ;
                                                         self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
                                                     } ;
-                                    ephemeral =
-                                        let
-                                            factory = _ephemeral { garbage-collection-root = "/build/nix-gc-root" ; } ;
-                                            in factory.check { expected = "/nix/store/cx3ks8w60cyb6syjasl0mq5a2zppsk0i-init/bin/init" ; failure = _failure.implementation "22da5a24" ; mkDerivation = pkgs.stdenv.mkDerivation ; package = "nixpkgs#cowsay" ; } ;
                                     failure =
                                         _failure.check
                                             {
@@ -732,6 +709,10 @@
                                                                                 } ;
                                                                         in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                             } ;
+                                                        stores =
+                                                            {
+                                                                cowsay = "nixpkgs#cowsay" ;
+                                                            } ;
                                                     } ;
                                             in
                                                 factory.check
@@ -756,7 +737,7 @@
                                                                 ] ;
                                                             expected-transient = -1 ;
                                                         init =
-                                                            { resources , self } :
+                                                            { resources , self , stores } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -770,6 +751,8 @@
                                                                                         echo "self = ${ self }"
                                                                                         echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
+                                                                                        ${ stores.cowsay }/bin/cowsay Hello World
+                                                                                        root store ${ stores.cowsay }
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
@@ -811,6 +794,10 @@
                                                                                } ;
                                                                        in "${ application }/bin/5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
                                                            } ;
+                                                        stores =
+                                                            {
+                                                                cowsay = "nixpkgs#cowsay" ;
+                                                            } ;
                                                    } ;
                                          in
                                              factory.check
@@ -835,7 +822,7 @@
                                                          ] ;
                                                      expected-transient = -1 ;
                                                      init =
-                                                         { resources , self } :
+                                                         { resources , self , stores } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
@@ -850,6 +837,8 @@
                                                                                      echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
                                                                                      echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
                                                                                      echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
+                                                                                     ${ stores.cowsay }/bin/cowsay Hello World
+                                                                                     root store ${ stores.cowsay }
                                                                                      exit 70
                                                                                  '' ;
                                                                          } ;
