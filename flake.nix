@@ -806,10 +806,10 @@
                                                                      pkgs.writeShellApplication
                                                                          {
                                                                              name = "init" ;
-                                                                             runtimeInputs = [ pkgs.coreutils ] ;
+                                                                             runtimeInputs = [ pkgs.coreutils pkgs.cowsay ] ;
                                                                              text =
                                                                                  ''
-                                                                                     echo cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
+                                                                                     cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
                                                                                      ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
                                                                                      echo "self = ${ self }"
                                                                                      echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
