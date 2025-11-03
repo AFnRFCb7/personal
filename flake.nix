@@ -112,11 +112,12 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         root-resource "$DOT_GNUPG"
+                                                                                                        root-store ${ pkgs.gnupg }
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         root-resource "$DOT_SSH"
