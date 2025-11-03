@@ -734,7 +734,7 @@
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
                                                                                         root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
                                                                                         root-store ${ pkgs.cowsay }
-                                                                                        root-store ${ pkgs.emacs }
+                                                                                        root-store ${ pkgs.libuuid }
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
