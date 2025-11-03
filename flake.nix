@@ -134,9 +134,6 @@
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         ln --symbolic "$DOT_SSH" /links
                                                                                                         ln --symbolic "$DOT_SSH/dot-ssh" /mount
-                                                                                                        EPHEMERAL=${ resources.foobar.ephemeral ( setup : setup ) }
-                                                                                                        ln --symbolic "$EPHEMERAL" /links
-                                                                                                        ln --symbolic "$EPHEMERAL/ephemeral" /mount
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         ln --symbolic "$GIT_REPOSITORY" /links
                                                                                                         ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
@@ -148,7 +145,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "bin" "dot-gnupg" "dot-ssh" "ephemeral" "git-repository" "secret" ] ;
+                                                                        targets = [ "bin" "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { } ;
