@@ -724,7 +724,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "init" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.cowsay ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay ] ;
                                                                                 text =
                                                                                     ''
                                                                                         cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
