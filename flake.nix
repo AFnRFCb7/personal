@@ -193,6 +193,10 @@
                                                                                                 {
                                                                                                     post-commit = post-commit ;
                                                                                                 } ;
+                                                                                            remotes =
+                                                                                                {
+                                                                                                    origin = config.personal.repository.private.remote ;
+                                                                                                } ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
