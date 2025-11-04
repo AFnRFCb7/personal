@@ -36,7 +36,7 @@
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                             coreutils = pkgs.coreutils ;
-                                            failure = _failure.implementation "e521b62c" ;
+                                            failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
                                             jq = pkgs.jq ;
