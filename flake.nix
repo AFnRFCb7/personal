@@ -21,7 +21,7 @@
                         visitor
                     } @primary :
                         let
-                            _dot-gnupg = { ownertrust , secret-keys } : dot-gnupg.lib { coreutils = pkgs.coreutils ; ownertrust = ownertrust ; secret-keys = secret-keys ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _dot-gnupg = dot-gnupg.lib ;
                             _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
@@ -78,11 +78,7 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            dot-gnupg =
-                                                                ignore :
-                                                                    let
-                                                                        x = _dot-gnupg { ownertrust = ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys =  ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
-                                                                        in x.implementation ;
+                                                            dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust = ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys =  ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
                                                             dot-ssh =
                                                                 ignore :
                                                                     let
@@ -580,15 +576,7 @@
                                 } ;
                             checks =
                                 {
-                                    dot-gnupg =
-                                        let
-                                            factory =
-                                                _dot-gnupg
-                                                    {
-                                                        ownertrust = ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                        secret-keys = ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
-                                                    } ;
-                                            in factory.check { expected = "/nix/store/sfdi7n5k18zanfvx12cvk5bxmx3vmk42-init/bin/init" ; failure = _failure ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/sfdi7n5k18zanfvx12cvk5bxmx3vmk42-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust = ownertrust ; pkgs = pkgs ; secret-keys = secret-keys ; } ;
                                     dot-ssh =
                                         let
                                             factory =
