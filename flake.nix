@@ -576,7 +576,7 @@
                                 } ;
                             checks =
                                 {
-                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/sfdi7n5k18zanfvx12cvk5bxmx3vmk42-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust = ignore : "${ fixtures }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys = ignore : "${ fixtures }/gnupg/secret-keys.asc" ; } ;
+                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/sfdi7n5k18zanfvx12cvk5bxmx3vmk42-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust = ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys = ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
                                     dot-ssh =
                                         let
                                             factory =
