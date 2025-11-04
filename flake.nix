@@ -25,7 +25,7 @@
                             _dot-ssh = dot-ssh.lib { visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _git-repository = git-repository.lib { } ;
                             _resource =
                                 {
                                     resources-directory ,
@@ -160,6 +160,14 @@
                                                                                     user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
+                                                            repository =
+                                                                {
+                                                                    studio =
+                                                                        _git-repository
+                                                                            {
+
+                                                                            } ;
+                                                                } ;
                                                             secrets =
                                                                 {
                                                                     dot-ssh =
@@ -685,7 +693,7 @@
                                             {
                                                 expected = "/nix/store/03w4067gsrjal5bbcy8lnw23b73jk6ig-init/bin/init" ;
                                                 failure = _failure.implementation ;
-                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                pkgs = pkgs ;
                                             } ;
                                     resource-happy =
                                         let
