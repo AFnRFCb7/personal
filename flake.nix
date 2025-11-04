@@ -426,6 +426,17 @@
                                                                 name = config.personal.name ;
                                                                 packages =
                                                                     [
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "studio" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            ${ resources.production.repository.studio }
+                                                                                        '' ;
+                                                                                }
+                                                                        )
                                                                         pkgs.redis
                                                                         pkgs.yq-go
                                                                         pkgs.jq
