@@ -143,13 +143,6 @@
                                                         } ;
                                                     production =
                                                         {
-                                                            secrets =
-                                                                let
-                                                                    instance = _secret { } ;
-                                                                    in
-                                                                        {
-                                                                            ownertrust = instance { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                        } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
