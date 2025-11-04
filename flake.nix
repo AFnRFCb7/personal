@@ -78,7 +78,7 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust = ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys =  ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
+                                                            dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
                                                             dot-ssh =
                                                                 ignore :
                                                                     let
