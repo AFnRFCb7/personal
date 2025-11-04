@@ -161,18 +161,40 @@
                                                                                 } ;
                                                                         } ;
                                                             repository =
-                                                                {
-                                                                    studio =
-                                                                        ignore :
-                                                                            _git-repository.implementation
-                                                                                {
-                                                                                    configs =
+                                                                let
+                                                                    post-commit =
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "post-commit" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                while ! git push origin HEAD
+                                                                                                do
+                                                                                                    sleep 1s
+                                                                                                done
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/post-commit" ;
+                                                                    in
+                                                                        {
+                                                                            studio =
+                                                                                ignore :
+                                                                                    _git-repository.implementation
                                                                                         {
-                                                                                            "user.email" = config.personal.repository.private.email ;
-                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                            configs =
+                                                                                                {
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                            hooks =
+                                                                                                {
+                                                                                                    post-commit = post-commit ;
+                                                                                                } ;
                                                                                         } ;
-                                                                                } ;
-                                                                } ;
+                                                                        } ;
                                                             secrets =
                                                                 {
                                                                     dot-ssh =
