@@ -179,19 +179,18 @@
                                                                                     } ;
                                                                             in "${ application }/bin/post-commit" ;
                                                                     ssh =
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "ssh" ;
-                                                                                        runtimeInputs = [ pkgs.openssh ];
-                                                                                        text =
-                                                                                            ''
-                                                                                                DOT_SSH=${ _resources.production.dot-ssh }
-                                                                                                ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/ssh" ;
+                                                                        { pkgs , resources , self } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "ssh" ;
+                                                                                            runtimeInputs = [ pkgs.openssh ];
+                                                                                            text =
+                                                                                                ''
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
                                                                             studio =
@@ -200,7 +199,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "core.sshCommand" = ssh ;
+                                                                                                    "core.sshCommand" = { pkgs , resources , self } : ssh ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
