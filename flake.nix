@@ -137,6 +137,11 @@
                                                             git-repository = ignore : _git-repository.implementation { } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
+                                                    production =
+                                                        {
+                                                            ownertrust = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                            secret-keys = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                        } ;
                                                 } ;
                                         password-less-wrap =
                                             derivation : target :
