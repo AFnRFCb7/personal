@@ -433,7 +433,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            ${ resources.production.repository.studio }
+                                                                                            ${ resources.production.repository.studio ( setup : setup ) }
                                                                                         '' ;
                                                                                 }
                                                                         )
