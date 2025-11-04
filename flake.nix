@@ -749,7 +749,6 @@
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
-                                                        pkgs = pkgs ;
                                                         resources-directory-fixture =
                                                             resources-directory :
                                                                 ''
