@@ -163,7 +163,7 @@
                                                             repository =
                                                                 {
                                                                     studio =
-                                                                        _git-repository
+                                                                        _git-repository.implementation
                                                                             {
 
                                                                             } ;
