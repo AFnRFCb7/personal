@@ -53,7 +53,7 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
-                            _secret = { } : secret.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _secret = secret.lib ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
@@ -135,11 +135,7 @@
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { } ;
-                                                            secret =
-                                                                ignore :
-                                                                    let
-                                                                        x = _secret { } ;
-                                                                        in x.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
+                                                            secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
@@ -860,18 +856,14 @@
                                                  } ;
                                         secret =
                                             let
-                                                x =
-                                                    _secret { } ;
-                                                in
-                                                    x.check
-                                                        {
-                                                            encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                            expected = "/nix/store/gciqcwms4g5z2imjafmpgd203adss1sw-init/bin/init" ;
-                                                            identity = ignore : "${ fixture }/age/identity/private" ;
-                                                            failure = _failure ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            pkgs = pkgs ;
-                                                       } ;
+                                                _secret.check
+                                                    {
+                                                        encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
+                                                        expected = "/nix/store/gciqcwms4g5z2imjafmpgd203adss1sw-init/bin/init" ;
+                                                        identity = ignore : "${ fixture }/age/identity/private" ;
+                                                        failure = _failure ;
+                                                        pkgs = pkgs ;
+                                                   } ;
                                                 visitor-happy =
                                                     _visitor.check
                                                         {
