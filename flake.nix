@@ -609,7 +609,7 @@
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/ygkmvyd5d4snw0i7k1j7iycjcyyl25ai-init/bin/init" ;
-                                                failure = _failure.implementation ;
+                                                failure = _failure.implementation "8bc0fd4b" ;
                                                 pkgs = pkgs ;
                                                 resources =
                                                     {
