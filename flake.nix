@@ -53,7 +53,7 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
-                            _secret = { } : secret.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _secret = { } : secret.lib { } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
@@ -140,6 +140,16 @@
                                                                     let
                                                                         x = _secret { } ;
                                                                         in x.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
+                                                        } ;
+                                                    production =
+                                                        {
+                                                            secrets =
+                                                                let
+                                                                    instance = _secret { } ;
+                                                                    in
+                                                                        {
+                                                                            ownertrust = instance { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                        } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
