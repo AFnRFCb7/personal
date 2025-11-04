@@ -692,7 +692,7 @@
                                         _git-repository.check
                                             {
                                                 expected = "/nix/store/03w4067gsrjal5bbcy8lnw23b73jk6ig-init/bin/init" ;
-                                                failure = _failure.implementation ;
+                                                failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                             } ;
                                     resource-happy =
