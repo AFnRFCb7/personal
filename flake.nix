@@ -630,27 +630,27 @@
                                                             } ;
                                                         self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
                                                     } ;
-#                                   failure =
-#                                       _failure.check
-#                                           {
-#                                               compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ;
-#                                               diffutil = pkgs.diffutil ;
-#                                               expected-standard-error =
-#                                                   ''
-#                                                       compile-time-arguments:
-#                                                         path: []
-#                                                         type: string
-#                                                         value: 469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3
-#                                                       run-time-arguments:
-#                                                         - ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f
-#                                                         - b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b
-#                                                    '' ;
-#                                               run-time-arguments =
-#                                                   [
-#                                                       "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f"
-#                                                       "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
-#                                                   ] ;
-#                                           } ;
+                                   failure =
+                                       _failure.check
+                                           {
+                                               compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ;
+                                               diffutil = pkgs.diffutil ;
+                                               expected-standard-error =
+                                                   ''
+                                                       compile-time-arguments:
+                                                         path: []
+                                                         type: string
+                                                         value: 469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3
+                                                       run-time-arguments:
+                                                         - ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f
+                                                         - b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b
+                                                    '' ;
+                                               run-time-arguments =
+                                                   [
+                                                       "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f"
+                                                       "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
+                                                   ] ;
+                                           } ;
                                     git-repository =
                                         _git-repository.check
                                             {
