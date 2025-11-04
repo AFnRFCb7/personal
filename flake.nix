@@ -166,7 +166,11 @@
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
-
+                                                                                    configs =
+                                                                                        {
+                                                                                            "user.email" = config.personal.repository.private.email ;
+                                                                                            "user.name" = config.personal.repository.private.name ;
+                                                                                        } ;
                                                                                 } ;
                                                                 } ;
                                                             secrets =
@@ -430,10 +434,11 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "studio" ;
-                                                                                    runtimeInputs = [ ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            ${ resources.production.repository.studio ( setup : setup ) }
+                                                                                            STUDIO=${ resources.production.repository.studio ( setup : setup ) }
+                                                                                            echo "$STUDIO"
                                                                                         '' ;
                                                                                 }
                                                                         )
