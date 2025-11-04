@@ -22,7 +22,7 @@
                     } @primary :
                         let
                             _dot-gnupg = dot-gnupg.lib ;
-                            _dot-ssh = { } : dot-ssh.lib { coreutils = pkgs.coreutils ; gettext = pkgs.gettext ; visitor = _visitor.implementation ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _dot-ssh = dot-ssh.lib { visitor = visitor ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { coreutils = pkgs.coreutils ; git = pkgs.git ; writeShellApplication = pkgs.writeShellApplication ; } ;
@@ -82,9 +82,8 @@
                                                             dot-ssh =
                                                                 ignore :
                                                                     let
-                                                                        x = _dot-ssh { } ;
-                                                                        in
-                                                                            x.implementation
+                                                                        x =
+                                                                            _dot-ssh.implementation
                                                                                 {
                                                                                     github =
                                                                                         {
@@ -582,51 +581,45 @@
                                 {
                                     dot-gnupg = _dot-gnupg.check { expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
                                     dot-ssh =
-                                        let
-                                            factory =
-                                                _dot-ssh
+                                        _dot-ssh.check
+                                            {
+                                                configuration =
                                                     {
+                                                        b-mobile =
+                                                            {
+                                                                strict-host-key-checking = true ;
+                                                                host = "192.168.1.202" ;
+                                                                identity-file = { resources , self } :
+                                                                    {
+                                                                        directory = resources.directory ;
+                                                                        file = resources.file ;
+                                                                    } ;
+                                                                port = 8022 ;
+                                                                user = "git" ;
+                                                            } ;
+                                                        a-mobile =
+                                                            {
+                                                                strict-host-key-checking = true ;
+                                                                host = "192.168.1.202" ;
+                                                                identity-file = { resources , self } :
+                                                                    {
+                                                                        directory = resources.directory ;
+                                                                        file = resources.file ;
+                                                                    } ;
+                                                                port = 8022 ;
+                                                                user = "git" ;
+                                                            } ;
                                                     } ;
-                                            in
-                                                factory.check
+                                                expected = "/nix/store/ygkmvyd5d4snw0i7k1j7iycjcyyl25ai-init/bin/init" ;
+                                                failure = _failure.implementation ;
+                                                pkgs = pkgs ;
+                                                resources =
                                                     {
-                                                        configuration =
-                                                            {
-                                                                b-mobile =
-                                                                    {
-                                                                        strict-host-key-checking = true ;
-                                                                        host = "192.168.1.202" ;
-                                                                        identity-file = { resources , self } :
-                                                                            {
-                                                                                directory = resources.directory ;
-                                                                                file = resources.file ;
-                                                                            } ;
-                                                                        port = 8022 ;
-                                                                        user = "git" ;
-                                                                    } ;
-                                                                a-mobile =
-                                                                    {
-                                                                        strict-host-key-checking = true ;
-                                                                        host = "192.168.1.202" ;
-                                                                        identity-file = { resources , self } :
-                                                                            {
-                                                                                directory = resources.directory ;
-                                                                                file = resources.file ;
-                                                                            } ;
-                                                                        port = 8022 ;
-                                                                        user = "git" ;
-                                                                    } ;
-                                                            } ;
-                                                        expected = "/nix/store/ygkmvyd5d4snw0i7k1j7iycjcyyl25ai-init/bin/init" ;
-                                                        failure = _failure ;
-                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        resources =
-                                                            {
-                                                                directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
-                                                                file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
-                                                            } ;
-                                                        self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
+                                                        directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
+                                                        file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
                                                     } ;
+                                                self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
+                                            } ;
                                    failure =
                                        _failure.check
                                            {
