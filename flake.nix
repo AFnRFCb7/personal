@@ -53,7 +53,7 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
-                            _secret = secret.lib ;
+                            _secret = secret.lib { } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
