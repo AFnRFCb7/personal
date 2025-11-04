@@ -81,22 +81,20 @@
                                                             dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
                                                             dot-ssh =
                                                                 ignore :
-                                                                    let
-                                                                        x =
-                                                                            _dot-ssh.implementation
+                                                                    _dot-ssh.implementation
+                                                                        {
+                                                                            github =
                                                                                 {
-                                                                                    github =
-                                                                                        {
-                                                                                            strict-host-key-checking = true ;
-                                                                                            host = "github.com" ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            strict-host-key-checking = true ;
-                                                                                            host = "192.168.1.202" ;
-                                                                                            port = 8022 ;
-                                                                                        } ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    host = "github.com" ;
                                                                                 } ;
+                                                                            mobile =
+                                                                                {
+                                                                                    strict-host-key-checking = true ;
+                                                                                    host = "192.168.1.202" ;
+                                                                                    port = 8022 ;
+                                                                                } ;
+                                                                        } ;
                                                             foobar =
                                                                 ignore :
                                                                     {
