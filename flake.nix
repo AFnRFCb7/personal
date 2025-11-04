@@ -132,9 +132,43 @@
                                                         } ;
                                                     production =
                                                         {
-                                                            dot-gnupg = ignore : _dot-gnupg.implementation { } { ownertrust-fun = { pkgs , resources , self } : resources.production.secrets.ownertrust ; secret-keys-fun = { pkgs , resources , self } : resources.production.secrets.secret-keys ; } ;
+                                                            dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust-fun = { pkgs , resources , self } : resources.production.secrets.ownertrust ; secret-keys-fun = { pkgs , resources , self } : resources.production.secrets.secret-keys ; } ;
+                                                            dot-ssh =
+                                                                ignore :
+                                                                    _dot-ssh.implementation
+                                                                        {
+                                                                            github =
+                                                                                {
+                                                                                    identity-file = { pkgs , resources , self } : resources.production.secrets.dot-ssh.identity-file ;
+                                                                                    host-name = "github.com" ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user = "git" ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : resources.production.secrets.dot-ssh.user-known-hosts-file ;
+                                                                                } ;
+                                                                            mobile =
+                                                                                {
+                                                                                    host = "192.168.1.202" ;
+                                                                                    identity-file = { pkgs , resources , self } : resources.production.secrets.ssh.mobile.identity-file ;
+                                                                                    port = 8022 ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ;
+                                                                                } ;
+                                                                        } ;
                                                             secrets =
                                                                 {
+                                                                    dot-ssh =
+                                                                        {
+                                                                            github =
+                                                                                {
+                                                                                    identity-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                } ;
+                                                                            mobile =
+                                                                                {
+                                                                                    identity-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                } ;
+                                                                        } ;
                                                                     ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                     secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                 } ;
