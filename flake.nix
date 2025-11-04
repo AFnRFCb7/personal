@@ -599,11 +599,12 @@
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host = "192.168.1.202" ;
-                                                                identity-file = { resources , self } :
-                                                                    {
-                                                                        directory = resources.directory ;
-                                                                        file = resources.file ;
-                                                                    } ;
+                                                                identity-file =
+                                                                    { pkgs , resources , self } :
+                                                                        {
+                                                                            directory = resources.directory ;
+                                                                            file = resources.file ;
+                                                                        } ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
