@@ -881,6 +881,7 @@
                                                             identity = ignore : "${ fixture }/age/identity/private" ;
                                                             failure = _failure ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                            pkgs = pkgs ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                        } ;
                                                 visitor-happy =
