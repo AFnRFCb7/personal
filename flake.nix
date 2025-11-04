@@ -135,8 +135,12 @@
                                                         } ;
                                                     production =
                                                         {
-                                                            ownertrust = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
-                                                            secret-keys = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                            dot-gnupg = ignore : _dot-gnupg.implementation { } { ownertrust-fun = { pkgs , resources , self } : resources.production.secrets.ownertrust ; secret-keys-fun = { pkgs , resources , self } : resources.production.secrets.secret-keys ; } ;
+                                                            secrets =
+                                                                {
+                                                                    ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                    secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
@@ -576,7 +580,7 @@
                                 } ;
                             checks =
                                 {
-                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust = ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys = ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
+                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
                                     dot-ssh =
                                         let
                                             factory =
