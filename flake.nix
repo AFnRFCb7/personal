@@ -163,10 +163,11 @@
                                                             repository =
                                                                 {
                                                                     studio =
-                                                                        _git-repository.implementation
-                                                                            {
+                                                                        ignore :
+                                                                            _git-repository.implementation
+                                                                                {
 
-                                                                            } ;
+                                                                                } ;
                                                                 } ;
                                                             secrets =
                                                                 {
