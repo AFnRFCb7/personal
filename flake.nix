@@ -187,7 +187,7 @@
                                                                                         runtimeInputs = [ pkgs.openssh ];
                                                                                         text =
                                                                                             ''
-                                                                                                DOT_SSH=${ resources.production.dot-ssh }
+                                                                                                DOT_SSH=${ _resources.production.dot-ssh }
                                                                                                 ssh -F "$DOT_SSH/dot-ssh" "$@"
                                                                                             '' ;
                                                                                     } ;
