@@ -178,6 +178,19 @@
                                                                                             '' ;
                                                                                     } ;
                                                                             in "${ application }/bin/post-commit" ;
+                                                                    ssh =
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "ssh" ;
+                                                                                        runtimeInputs = [ pkgs.openssh ];
+                                                                                        text =
+                                                                                            ''
+                                                                                                ssh -F "$DOT_SSH" $@
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
                                                                             studio =
@@ -186,6 +199,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "core.sshCommand" = ssh ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
@@ -197,6 +211,18 @@
                                                                                                 {
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
+                                                                                            setup =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/init" ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
