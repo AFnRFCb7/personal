@@ -188,6 +188,8 @@
                                                                                             runtimeInputs = [ pkgs.openssh ];
                                                                                             text =
                                                                                                 ''
+                                                                                                    DOT_SSH=${ resources.production.dot-ssh }
+                                                                                                    exec ssh -F "$DOT_SSH/dot-ssh" "$@"
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
@@ -199,6 +201,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "core.sshCommand" = ssh ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
