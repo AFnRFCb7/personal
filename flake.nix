@@ -221,7 +221,7 @@
                                                                                                                     ''
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "${ application }/init" ;
+                                                                                                    in "${ application }/bin/init" ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
