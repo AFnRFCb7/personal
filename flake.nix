@@ -199,7 +199,6 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "core.sshCommand" = ssh ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
