@@ -145,16 +145,16 @@
                                                                         {
                                                                             github =
                                                                                 {
-                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.identity-file ; file = "secret" ; } ;
+                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ; file = "secret" ; } ;
                                                                                     host-name = "github.com" ;
                                                                                     strict-host-key-checking = true ;
                                                                                     user = "git" ;
-                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.user-known-hosts-file ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.github.dot-ssh.user-known-hosts-file ; file = "secret" ; } ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host = "192.168.1.202" ;
-                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.ssh.mobile.identity-file ; file = "secret" ; } ;
+                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
                                                                                     user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ; file = "secret" ; } ;
