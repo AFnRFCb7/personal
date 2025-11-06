@@ -190,7 +190,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-                                                                                                    export DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) null }
+                                                                                                    export DOT_SSH=${ builtins.typoeOf ( resources.production.dot-ssh ( setup : setup ) ) }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
