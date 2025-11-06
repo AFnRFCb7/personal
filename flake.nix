@@ -190,7 +190,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-                                                                                                    export RESOURCE=${ builtins.typeOf resources.production }
+                                                                                                    export RESOURCE=${ builtins.typeOf resources.production.dot-ssh }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
