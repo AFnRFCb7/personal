@@ -188,6 +188,8 @@
                                                                                             runtimeInputs = [ pkgs.openssh ];
                                                                                             text =
                                                                                                 ''
+                                                                                                    export PKGS=${ pkgs.chromium }
+                                                                                                    export SELF=${ self }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
