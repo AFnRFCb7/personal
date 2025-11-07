@@ -1090,6 +1090,21 @@
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
+                                                string-happy -
+                                                    _string.check
+                                                        {
+                                                            coreutils = pkgs.coreutils ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                            success = true ;
+                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                            value = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                            values =
+                                                                {
+                                                                    alpha = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                                } ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                        } ;
                                                 visitor-sad =
                                                     _visitor.check
                                                         {
