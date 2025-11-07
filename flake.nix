@@ -17,6 +17,7 @@
                         resource ,
                         secret ,
                         secrets ,
+                        string ,
                         system ,
                         visitor
                     } @primary :
@@ -54,6 +55,7 @@
                                             yq-go = pkgs.yq-go ;
                                         } ;
                             _secret = secret.lib { } ;
+                            _string = string.lib { visitor = _visitor.implementation ; }
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
