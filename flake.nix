@@ -50,7 +50,7 @@
                                             resources = resources ;
                                             resources-directory = resources-directory ;
                                             store-garbage-collection-root = store-garbage-collection-root ;
-                                            string = string ;
+                                            string = _string.implementation ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
