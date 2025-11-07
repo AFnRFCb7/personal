@@ -1090,7 +1090,7 @@
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
-                                                string-happy -
+                                                string-happy =
                                                     _string.check
                                                         {
                                                             coreutils = pkgs.coreutils ;
