@@ -152,7 +152,7 @@
                                                                                     identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup = setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             repository =
