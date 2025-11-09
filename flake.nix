@@ -191,10 +191,13 @@
                                                                                             runtimeInputs = [ pkgs.openssh ];
                                                                                             text =
                                                                                                 ''
-                                                                                                    export PKGS=${ pkgs.chromium }
-                                                                                                    export SELF=${ self }
-                                                                                                    RESOURCES=${ resources.production.dot-ssh ( self : self ) }
-                                                                                                    export RESOURCES
+                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
+                                                                                                    if [[ -t 0 ]]
+                                                                                                    then
+                                                                                                        ssh -F "$DOT_SSH" "$@"
+                                                                                                    else
+                                                                                                        cat | ssh -F "$DOT_SSH" "$@"
+                                                                                                    fi
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
