@@ -193,7 +193,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-                                                                                                    export RESOURCES=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                    export RESOURCES=${ resources.production.dot-ssh ( setup : setup ) null }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
