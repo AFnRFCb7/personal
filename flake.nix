@@ -238,13 +238,13 @@
                                                                         {
                                                                             github =
                                                                                 {
-                                                                                    identity-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                    identity-file = ignore : _secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : _secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
-                                                                                    identity-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                    identity-file = ignore : _secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : _secret { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                                 } ;
                                                                         } ;
                                                                     ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
