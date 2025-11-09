@@ -495,7 +495,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources.production.repository.studio ( setup : setup ) }
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : setup ) }
                                                                                             echo "$STUDIO"
                                                                                         '' ;
                                                                                 }
