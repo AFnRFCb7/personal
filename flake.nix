@@ -193,7 +193,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-
+                                                                                                    export RESOURCES=${ resources__.foobar.foobar ( self : self ) }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
