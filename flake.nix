@@ -191,7 +191,9 @@
                                                                                             runtimeInputs = [ pkgs.openssh ];
                                                                                             text =
                                                                                                 ''
-                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( self : "echo | ${ self }" ) }
+                                                                                                    echo a
+                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
+                                                                                                    echo b
                                                                                                     if [[ -t 0 ]]
                                                                                                     then
                                                                                                         ssh -F "$DOT_SSH/dot-ssh" "$@"
