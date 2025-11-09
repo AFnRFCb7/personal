@@ -89,12 +89,12 @@
                                                                             github =
                                                                                 {
                                                                                     strict-host-key-checking = true ;
-                                                                                    host = "github.com" ;
+                                                                                    host-name = "github.com" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     strict-host-key-checking = true ;
-                                                                                    host = "192.168.1.202" ;
+                                                                                    host-name = "192.168.1.202" ;
                                                                                     port = 8022 ;
                                                                                 } ;
                                                                         } ;
@@ -148,7 +148,7 @@
                                                                         {
                                                                             github =
                                                                                 {
-                                                                                    host = "github.com" ;
+                                                                                    host-name = "github.com" ;
                                                                                     identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
                                                                                     user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
@@ -156,7 +156,7 @@
                                                                                 } ;
                                                                             mobile =
                                                                                 {
-                                                                                    host = "192.168.1.202" ;
+                                                                                    host-name = "192.168.1.202" ;
                                                                                     identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
