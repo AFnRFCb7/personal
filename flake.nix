@@ -715,7 +715,7 @@
                                                         b-mobile =
                                                             {
                                                                 strict-host-key-checking = true ;
-                                                                host-name = "192.168.1.202" ;
+                                                                host-name = "192.168.1.192" ;
                                                                 identity-file = { pkgs , resources , self } :
                                                                     {
                                                                         directory = resources.directory ;
