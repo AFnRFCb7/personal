@@ -62,7 +62,7 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        resources =
+                                        resources__ =
                                             _visitor.implementation
                                                 {
                                                     lambda =
@@ -192,8 +192,8 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
-                                                                                                    export SELF=${ self }
-                                                                                                    export RESOURCES=${ resources.production.dot-ssh ( setup : setup ) null }
+                                                                                                    expo_resource =rt SELF=${ self }
+                                                                                                    export RESOURCES=${ resources__.production.dot-ssh ( setup : setup ) }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
