@@ -192,7 +192,7 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
-                                                                                                    expo_resource =rt SELF=${ self }
+                                                                                                    export SELF=${ self }
                                                                                                     export RESOURCES=${ resources__.production.dot-ssh ( setup : setup ) }
                                                                                                 '' ;
                                                                                         } ;
