@@ -193,7 +193,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-                                                                                                    RESOURCES=${ resources.production.secrets.mobile.identity-file ( self : self ) }
+                                                                                                    RESOURCES=${ resources.production.secrets.dot-ssh.mobile.identity-file ( self : self ) }
                                                                                                     export RESOURCES
                                                                                                 '' ;
                                                                                         } ;
