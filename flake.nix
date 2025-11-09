@@ -193,7 +193,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-                                                                                                    export RESOURCES=${ builtins.toString ( resources__.production.dot-ssh ( setup : setup ) ) }
+                                                                                                    export RESOURCES=${ resources__.production.dot-ssh ( setup : setup ) }
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
