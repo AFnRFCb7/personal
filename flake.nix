@@ -209,7 +209,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "core.sshCommand" = ssh ;
+                                                                                                    "core.sshCommand" = { pkgs , resources , self } : "${ pkgs.openssh }/bin/ssh -F ${ resources.production.dot-ssh ( setup : setup ) }" ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
