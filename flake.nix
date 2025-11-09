@@ -146,6 +146,14 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
+                                                                            github =
+                                                                                {
+                                                                                    host = "github.com" ;
+                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user = "git" ;
+                                                                                } ;
                                                                             mobile =
                                                                                 {
                                                                                     host = "192.168.1.202" ;
