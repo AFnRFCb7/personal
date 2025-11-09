@@ -193,7 +193,7 @@
                                                                                                 ''
                                                                                                     export PKGS=${ pkgs.chromium }
                                                                                                     export SELF=${ self }
-                                                                                                    RESOURCES=${ resources__.foobar.foobar ( self : self ) }
+                                                                                                    RESOURCES=${ resources.production.secrets.mobile.identity-file ( self : self ) }
                                                                                                     export RESOURCES
                                                                                                 '' ;
                                                                                         } ;
