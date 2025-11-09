@@ -72,7 +72,7 @@
                                                                 r =
                                                                     _resource
                                                                         {
-                                                                            resources = resources ;
+                                                                            resources = resources__ ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
