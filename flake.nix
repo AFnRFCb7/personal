@@ -504,6 +504,7 @@
                                                                                         '' ;
                                                                                 }
                                                                         )
+                                                                        pkgs.git
                                                                         pkgs.chromium
                                                                         pkgs.redis
                                                                         pkgs.yq-go
