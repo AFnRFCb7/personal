@@ -711,7 +711,7 @@
                                                         b-mobile =
                                                             {
                                                                 strict-host-key-checking = true ;
-                                                                host = "192.168.1.202" ;
+                                                                host-name = "192.168.1.202" ;
                                                                 identity-file = { pkgs , resources , self } :
                                                                     {
                                                                         directory = resources.directory ;
@@ -723,7 +723,7 @@
                                                         a-mobile =
                                                             {
                                                                 strict-host-key-checking = true ;
-                                                                host = "192.168.1.202" ;
+                                                                host-name = "192.168.1.202" ;
                                                                 identity-file =
                                                                     { pkgs , resources , self } :
                                                                         {
