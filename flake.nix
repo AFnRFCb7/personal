@@ -192,12 +192,12 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
-                                                                                                    if [[ -t 0 ]]
-                                                                                                    then
+                                                                                                    # if [[ -t 0 ]]
+                                                                                                    # then
                                                                                                         ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                    else
-                                                                                                        cat | ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                    fi
+                                                                                                    # else
+                                                                                                    #     cat | ssh -F "$DOT_SSH/dot-ssh" "$@"
+                                                                                                    # fi
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
