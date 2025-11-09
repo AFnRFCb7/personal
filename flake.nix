@@ -94,7 +94,7 @@
                                                                             mobile =
                                                                                 {
                                                                                     strict-host-key-checking = true ;
-                                                                                    host-name = "192.168.1.202" ;
+                                                                                    host-name = "192.168.1.192" ;
                                                                                     port = 8022 ;
                                                                                 } ;
                                                                         } ;
