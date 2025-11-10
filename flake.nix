@@ -235,16 +235,20 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                pkgs.runCommand
-                                                                                                    "setup"
-                                                                                                    {
-                                                                                                        nativeBuildInputs = [ pkgs.git pkgs.openssh ] ;
-                                                                                                        sandboxPaths = [ "/mount/git-repository" ] ;
-                                                                                                    }
-                                                                                                    ''
-                                                                                                        # cd /mount/git-repository
-                                                                                                        git fetch origin main
-                                                                                                    '' ;
+                                                                                                { pkgs , resources , self } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            cd ${ self }
+                                                                                                                            git fetch origin main
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
