@@ -290,7 +290,7 @@
                                                                                                                                     INDEX_1="$( dirname "$TOP_LEVEL" )" || failure 857287f4
                                                                                                                                     INDEX="$( basename "$INDEX_1" )" || failure 3f3cc8b5
                                                                                                                                     export INDEX
-                                                                                                                                    if ! git --"$TOP_LEVEL" diff --quiet || git -C "$TOP_LEVEL" diff --cached --quiet
+                                                                                                                                    if ! git -C "$TOP_LEVEL" diff --quiet || git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
                                                                                                                                         git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
                                                                                                                                     fi
