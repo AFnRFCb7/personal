@@ -237,38 +237,9 @@
                                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            case "$1" in
-                                                                                                                                --branch)
-                                                                                                                                    BRANCH="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --commit)
-                                                                                                                                    COMMIT="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --input)
-                                                                                                                                    INPUT="$2"
-                                                                                                                                    REMOTE="$3"
-                                                                                                                                    BRANCH="$4"
-                                                                                                                                    COMMIT="$5"
-                                                                                                                                    export INPUT
-                                                                                                                                    export REMOTE
-                                                                                                                                    export BRANCH
-                                                                                                                                    export COMMIT
-                                                                                                                                    shift 5
-                                                                                                                                    ;;
-                                                                                                                                *)
-                                                                                                                                    failure 4b1a19d6
-                                                                                                                                    ;;
-                                                                                                                            esac
-                                                                                                                        done
-                                                                                                                        git fetch origin "$BRANCH"
-                                                                                                                        git checkout "$COMMIT"
+                                                                                                                        git fetch origin main 2>&1
+                                                                                                                        git checkout origin/main 2>&1
                                                                                                                     '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                             studio =
                                                                                 ignore :
@@ -307,7 +278,7 @@
                                                                                                                                     fi
                                                                                                                                     BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
-                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''setup --branch "$BRANCH" --commit "$COMMIT"'' ) }
+                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT"'' ) }
                                                                                                                                     echo "$RESOURCE"
                                                                                                                                     # OVERRIDE_INPUT_ARGS=()
                                                                                                                                     # find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
