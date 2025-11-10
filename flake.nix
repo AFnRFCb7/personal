@@ -268,6 +268,7 @@
                                                                                                                                     shift 2
                                                                                                                                     break
                                                                                                                                     ;;
+                                                                                                                                --input)
                                                                                                                                 *)
                                                                                                                                     failure 6e18cb53
                                                                                                                                     break
@@ -374,6 +375,7 @@
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch &&
                                                                                                                             mkdir --parents inputs
+                                                                                                                            git add inputs
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
