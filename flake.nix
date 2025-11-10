@@ -253,8 +253,6 @@
                                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        BRANCH="main"
-                                                                                                                        COMMIT="origin/main"
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
