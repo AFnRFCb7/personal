@@ -308,7 +308,7 @@
                                                                                                                                     # done
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "!${ application }/bin/snaphsot" ;
+                                                                                                                in "!${ application }/bin/snapshot" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
