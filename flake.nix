@@ -218,7 +218,7 @@
                                                                                                                             runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ssh -F "$DOT_SSH" "$@"
+                                                                                                                                    ssh -F "$DOT_SSH/dot-ssh" "$@"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/ssh" ;
@@ -243,6 +243,8 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup )
+                                                                                                                            export DOT_SSH
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init" ;
