@@ -341,18 +341,18 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github:AFnRFCb7/secret inputs/secret 2>&1
                                                                                                                                 fi
-                                                                                                                                # if [[ ! -d inputs/secrets ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch main github:AFnRFCb7/secrets inputs/secrets 2>&1
-                                                                                                                                # fi
-                                                                                                                                # if [[ ! -d inputs/string ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch main github:AFnRFCb7/string inputs/string 2>&1
-                                                                                                                                # fi
-                                                                                                                                # if [[ ! -d inputs/visitor ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch main github:AFnRFCb7/visitor inputs/visitor 2>&1
-                                                                                                                                # fi
+                                                                                                                                if [[ ! -d inputs/secrets ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/string ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/string inputs/string 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/visitor ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/visitor inputs/visitor 2>&1
+                                                                                                                                fi
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME" &&
