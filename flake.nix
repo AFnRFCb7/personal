@@ -208,6 +208,20 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.dot-ssh" = { pkgs , resources , self } :
+                                                                                                        let
+                                                                                                            dot-ssh =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "dot-ssh" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( setup : setup )
+                                                                                                                                echo "$DOT_SSH"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "!${ application }/bin/dot-ssh" ;
                                                                                                     "core.sshCommand" = ssh ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
