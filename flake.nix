@@ -224,6 +224,22 @@
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/ssh" ;
                                                                                                 } ;
+                                                                                            hooks =
+                                                                                                {
+                                                                                                    pre-commit =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "pre-commit" ;
+                                                                                                                        runtimeInputs = [ ( _failure.implementation "70006125" ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                failure be1e88e9 "This is a read-only git repository"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                                in "${ application }/bin/pre-commit" ;
+                                                                                                } ;
                                                                                             remotes =
                                                                                                 {
                                                                                                     origin = config.personal.repository.private.remote ;
@@ -291,17 +307,29 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "snapshot" ;
-                                                                                                                            runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
+                                                                                                                                    INPUTS=()
+                                                                                                                                    find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | while read INPUT
+                                                                                                                                    do
+                                                                                                                                        if ! git -C "$INPUT diff --quiet || ! git -C "$INPUT" diff --cached --quiet
+                                                                                                                                        then
+                                                                                                                                            git -C "$INPUT" commit -am "" --allow-empty-message
+                                                                                                                                        fi
+                                                                                                                                        NAME="$( basename "$INPUT" )" || failure d6990665
+                                                                                                                                        REMOTE="$( git -C "INPUT" remote get-url origin
+                                                                                                                                        COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
+                                                                                                                                        INPUTS+=( input "$INPUT" "$REMOTE" "$COMMIT" )
+                                                                                                                                    done
                                                                                                                                     if ! git -C "$TOP_LEVEL" diff --quiet || ! git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
                                                                                                                                         git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
                                                                                                                                     fi
                                                                                                                                     BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
-                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT"'' ) }
+                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"'' ) }
                                                                                                                                     echo "$RESOURCE/git-repository"
                                                                                                                                 '' ;
                                                                                                                         } ;
