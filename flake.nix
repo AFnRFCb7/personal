@@ -243,7 +243,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        git fetch origin main
+                                                                                                                        git fetch origin main 2>&1
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/init" ;
