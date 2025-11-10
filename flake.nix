@@ -372,7 +372,8 @@
                                                                                                                         ''
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
-                                                                                                                            git scratch
+                                                                                                                            git scratch &&
+                                                                                                                            mkdir --parents inputs
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
