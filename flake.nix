@@ -211,7 +211,7 @@
                                                                                                     "alias.dot-ssh" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
-                                                                                                                dot-ssh =
+                                                                                                                application =
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "dot-ssh" ;
