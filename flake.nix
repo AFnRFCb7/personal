@@ -243,7 +243,9 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        git fetch origin main 2> DEBUG || true
+                                                                                                                        echo a > DEBUG
+                                                                                                                        find /mount >> DEBUG
+                                                                                                                        git fetch origin main 2>> DEBUG || true
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/setup" ;
