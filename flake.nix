@@ -235,6 +235,12 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
+                                                                                                pkgs.runCommand
+                                                                                                    "setup"
+                                                                                                    {
+                                                                                                        src = /mount/git-repository ;
+                                                                                                        nativeBuildInputs = [ pkgs.git ] ;
+                                                                                                    }
                                                                                                     ''
                                                                                                         git fetch origin main 2> DEBUG || true
                                                                                                     '' ;
