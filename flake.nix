@@ -240,6 +240,8 @@
                                                                                                                         git fetch origin main 2>&1
                                                                                                                         git checkout origin/main 2>&1
                                                                                                                     '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                             studio =
                                                                                 ignore :
@@ -280,18 +282,6 @@
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
                                                                                                                                     RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT"'' ) }
                                                                                                                                     echo "$RESOURCE"
-                                                                                                                                    # OVERRIDE_INPUT_ARGS=()
-                                                                                                                                    # find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                    # do
-                                                                                                                                    #     if ! git -C "$INPUT" diff --quiet || git -C "$INPUT" diff --cached --quiet
-                                                                                                                                    #     then
-                                                                                                                                    #         git -C "$INPUT" commit -am "" --allow-empty-message
-                                                                                                                                    #     fi
-                                                                                                                                    #     REMOTE="$( git remote get-url origin )" || failure f605e64a
-                                                                                                                                    #     COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 24eb358d
-                                                                                                                                    #     REMOTE_URL="git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "REMOTE/:/\/" "}" ] }?rev=$COMMIT"
-                                                                                                                                    #     OVERRIDE_INPUT_ARGS+=( --override-input "$INPUT" "$REMOTE_URL" ))
-                                                                                                                                    # done
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/snapshot" ;
