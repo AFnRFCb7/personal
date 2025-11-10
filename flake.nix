@@ -317,6 +317,14 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
                                                                                                                                 fi
+                                                                                                                                if [[ ! -d inputs/failure ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/failure inputs/failure 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/fixture ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/fixture inputs/fixture 2>&1
+                                                                                                                                fi
 
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
