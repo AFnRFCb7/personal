@@ -244,7 +244,7 @@
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            cd ${ self }
+                                                                                                                            cd "${ self }"
                                                                                                                             git fetch origin main
                                                                                                                         '' ;
                                                                                                                 } ;
