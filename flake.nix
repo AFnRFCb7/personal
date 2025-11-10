@@ -311,7 +311,7 @@
                                                                                                                                 mkdir --parents inputs
                                                                                                                                 if [[ ! -d inputs/dot-gnupg ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/dot-gnupg inputs/dot-gnupg
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
                                                                                                                                 fi
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
