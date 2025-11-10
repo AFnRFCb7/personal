@@ -312,7 +312,7 @@
                                                                                                                                 ''
                                                                                                                                     TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
                                                                                                                                     INPUTS=()
-                                                                                                                                    find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                    while IFS= read -r INPUT
                                                                                                                                     do
                                                                                                                                         if ! git -C "$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
                                                                                                                                         then
@@ -322,7 +322,7 @@
                                                                                                                                         REMOTE="$( git -C "INPUT" remote get-url origin )" || failure b8d2e519
                                                                                                                                         COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
                                                                                                                                         INPUTS+=( input "$NAME" "$REMOTE" "$COMMIT" )
-                                                                                                                                    done
+                                                                                                                                    done < <( find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d )
                                                                                                                                     if ! git -C "$TOP_LEVEL" diff --quiet || ! git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
                                                                                                                                         git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
