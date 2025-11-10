@@ -286,7 +286,7 @@
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 0a36ac2f
-                                                                                                                                git checkout -b "scratch/$UUID"
+                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
