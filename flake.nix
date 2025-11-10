@@ -325,6 +325,18 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github:AFnRFCb7/fixture inputs/fixture 2>&1
                                                                                                                                 fi
+                                                                                                                                if [[ ! -d inputs/git-repository ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/git-repository inputs/git-repository 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/personal ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/personal inputs/personal 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/resource ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/resource inputs/resource 2>&1
+                                                                                                                                fi
 
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
