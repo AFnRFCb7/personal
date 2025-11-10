@@ -243,6 +243,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        git remote -v
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/setup" ;
