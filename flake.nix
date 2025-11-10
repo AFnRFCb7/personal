@@ -236,23 +236,24 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "init" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                        export DOT_SSH
-                                                                                                                        root resource "$DOT_SSH"
-                                                                                                                        cat > /mount/git-repository <<EOF
-                                                                                                                        export DOT-SSH="$DOT_SSH"
-                                                                                                                        EOF
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/init" ;
+                                                                                                { pkgs , resources , self } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "init" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            export DOT_SSH
+                                                                                                                            root resource "$DOT_SSH"
+                                                                                                                            cat > /mount/git-repository <<EOF
+                                                                                                                            export DOT-SSH="$DOT_SSH"
+                                                                                                                            EOF
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/init" ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
