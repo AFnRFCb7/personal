@@ -235,19 +235,11 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                extraSandboxPaths = [ "/mount" ] ;
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        git fetch origin main >&1 || true
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                        in "${ application }/bin/setup" ;
+                                                                                                pkgs.runCommand
+                                                                                                    "setup"
+                                                                                                    ''
+                                                                                                        git fetch origin main 2>&1
+                                                                                                    '' ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
