@@ -321,6 +321,7 @@
                                                                                                                                 done
                                                                                                                             '' ;
                                                                                                                     } ;
+                                                                                                                in "${ application }/bin/inherit" ;
                                                                                                     "alias.scratch" =
                                                                                                         let
                                                                                                             application =
