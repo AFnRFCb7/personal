@@ -280,29 +280,30 @@
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
                                                                                                                 application =
-                                                                                                                    {
-                                                                                                                        name = "snapshot" ;
-                                                                                                                        runtimeInputs = [ pkgs.findutils pkgs.git ( failure.implementation "0eb2ec6d" ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
-                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure 508b2be6
-                                                                                                                                RESOURCE=${ resources.production.snapshot ( setup : "setup --branch $BRANCH --commit $COMMIT" ) }
-                                                                                                                                echo "$RESOURCE"
-                                                                                                                                # OVERRIDE_INPUT_ARGS=()
-                                                                                                                                # find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                # do
-                                                                                                                                #     if ! git -C "$INPUT" diff --quiet || git -C "$INPUT" diff --cached --quiet
-                                                                                                                                #     then
-                                                                                                                                #         git -C "$INPUT" commit -am "" --allow-empty-message
-                                                                                                                                #     fi
-                                                                                                                                #     REMOTE="$( git remote get-url origin )" || failure f605e64a
-                                                                                                                                #     COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 24eb358d
-                                                                                                                                #     REMOTE_URL="git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "REMOTE/:/\/" "}" ] }?rev=$COMMIT"
-                                                                                                                                #     OVERRIDE_INPUT_ARGS+=( --override-input "$INPUT" "$REMOTE_URL" ))
-                                                                                                                                # done
-                                                                                                                            '' ;
-                                                                                                                    } ;
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "snapshot" ;
+                                                                                                                            runtimeInputs = [ pkgs.findutils pkgs.git ( failure.implementation "0eb2ec6d" ) ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
+                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure 508b2be6
+                                                                                                                                    RESOURCE=${ resources.production.snapshot ( setup : "setup --branch $BRANCH --commit $COMMIT" ) }
+                                                                                                                                    echo "$RESOURCE"
+                                                                                                                                    # OVERRIDE_INPUT_ARGS=()
+                                                                                                                                    # find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                    # do
+                                                                                                                                    #     if ! git -C "$INPUT" diff --quiet || git -C "$INPUT" diff --cached --quiet
+                                                                                                                                    #     then
+                                                                                                                                    #         git -C "$INPUT" commit -am "" --allow-empty-message
+                                                                                                                                    #     fi
+                                                                                                                                    #     REMOTE="$( git remote get-url origin )" || failure f605e64a
+                                                                                                                                    #     COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 24eb358d
+                                                                                                                                    #     REMOTE_URL="git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "REMOTE/:/\/" "}" ] }?rev=$COMMIT"
+                                                                                                                                    #     OVERRIDE_INPUT_ARGS+=( --override-input "$INPUT" "$REMOTE_URL" ))
+                                                                                                                                    # done
+                                                                                                                                '' ;
+                                                                                                                        } ;
                                                                                                                 in "${ application }/bin/snaphsot" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { pkgs , resources , self } :
