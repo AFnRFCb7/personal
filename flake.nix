@@ -283,7 +283,7 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "snapshot" ;
-                                                                                                                            runtimeInputs = [ pkgs.findutils pkgs.git ( failure.implementation "0eb2ec6d" ) ] ;
+                                                                                                                            runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
