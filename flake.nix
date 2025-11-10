@@ -235,20 +235,17 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                { pkgs , resources , self } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            cat > /mount/git-repository/.envrc <<EOF
-                                                                                                                            export DOT_SSH=wtf
-                                                                                                                            EOF
-                                                                                                                        '' ;
-                                                                                                                } ;
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        git fetch origin main
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                         in "${ application }/bin/init" ;
                                                                                         } ;
                                                                         } ;
