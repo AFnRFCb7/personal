@@ -237,8 +237,29 @@
                                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        git fetch origin main 2>&1
-                                                                                                                        git checkout origin/main 2>&1
+                                                                                                                        BRANCH="main"
+                                                                                                                        COMMIT="origin/main"
+                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                        do
+                                                                                                                            case "$1" in
+                                                                                                                                --branch)
+                                                                                                                                    BRANCH="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    break
+                                                                                                                                    ;;
+                                                                                                                                --commit)
+                                                                                                                                    COMMIT="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    break
+                                                                                                                                    ;;
+                                                                                                                                *)
+                                                                                                                                    failure 6e18cb53
+                                                                                                                                    break
+                                                                                                                                    ;;
+                                                                                                                            esac
+                                                                                                                        done
+                                                                                                                        git fetch origin "$BRANCH" 2>&1
+                                                                                                                        git checkout "$COMMIT" 2>&1
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/setup" ;
@@ -281,7 +302,7 @@
                                                                                                                                     BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
                                                                                                                                     RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT"'' ) }
-                                                                                                                                    echo "$RESOURCE"
+                                                                                                                                    echo "$RESOURCE/git-repository"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/snapshot" ;
