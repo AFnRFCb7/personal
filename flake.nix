@@ -286,12 +286,13 @@
                                                                                                                             runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    if ! git -C "${ self }" diff --quiet || git -C "${ self }" diff --cached --quiet
+                                                                                                                                    TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
+                                                                                                                                    if ! git --"$TOP_LEVEL" diff --quiet || git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
-                                                                                                                                        git -C "${ self }" commit -am "" --allow-empty-message
+                                                                                                                                        git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
                                                                                                                                     fi
-                                                                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
-                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure 508b2be6
+                                                                                                                                    BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
+                                                                                                                                    COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
                                                                                                                                     RESOURCE=${ resources.production.repository.snapshot ( setup : ''setup --branch "$BRANCH" --commit "$COMMIT"'' ) }
                                                                                                                                     echo "$RESOURCE"
                                                                                                                                     # OVERRIDE_INPUT_ARGS=()
