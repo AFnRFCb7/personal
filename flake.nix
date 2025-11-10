@@ -319,7 +319,7 @@
                                                                                                                                             git -C "$INPUT" commit -am "" --allow-empty-message
                                                                                                                                         fi
                                                                                                                                         NAME="$( basename "$INPUT" )" || failure d6990665
-                                                                                                                                        REMOTE="$( git -C "INPUT" remote get-url origin )" || failure
+                                                                                                                                        REMOTE="$( git -C "INPUT" remote get-url origin )" || failure b8d2e519
                                                                                                                                         COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
                                                                                                                                         INPUTS+=( input "$INPUT" "$REMOTE" "$COMMIT" )
                                                                                                                                     done
