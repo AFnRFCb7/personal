@@ -269,7 +269,7 @@
                                                                                                                                     BRANCH="$3"
                                                                                                                                     COMMIT="$4"
                                                                                                                                     git -C "inputs/$NAME" fetch origin "$BRANCH"
-                                                                                                                                    git -C "input/$NAME" checkout "$COMMIT"
+                                                                                                                                    git -C "inputs/$NAME" checkout "$COMMIT"
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 *)
