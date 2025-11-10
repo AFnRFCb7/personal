@@ -276,6 +276,19 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.scratch" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "scratch" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "185363fa " ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 0a36ac2f
+                                                                                                                                git checkout -b "scratch/$UUID"
+                                                                                                                            '' ;
+                                                                                                                    }
                                                                                                     "alias.snapshot" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
@@ -347,6 +360,7 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             git fetch origin main 2>&1
+                                                                                                                            git scratch
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
