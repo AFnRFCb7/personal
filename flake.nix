@@ -237,6 +237,7 @@
                                                                                             setup =
                                                                                                 pkgs.runCommand
                                                                                                     "setup"
+                                                                                                    { }
                                                                                                     ''
                                                                                                         git fetch origin main 2>&1
                                                                                                     '' ;
