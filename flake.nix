@@ -239,14 +239,13 @@
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "init" ;
+                                                                                                                name = "setup" ;
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        git fetch origin main 2>&1
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                        in "${ application }/bin/init" ;
+                                                                                                        in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
