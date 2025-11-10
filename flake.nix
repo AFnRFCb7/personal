@@ -286,7 +286,7 @@
                                                                                                                             runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    if ! git -C "${ self }" diff --quiet || git -C ${ self } diff --cached --quiet
+                                                                                                                                    if ! git -C "${ self }" diff --quiet || git -C "${ self }" diff --cached --quiet
                                                                                                                                     then
                                                                                                                                         git -C "${ self }" commit -am "" --allow-empty-message
                                                                                                                                     fi
