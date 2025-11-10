@@ -239,7 +239,7 @@
                                                                                                     "setup"
                                                                                                     {
                                                                                                         nativeBuildInputs = [ pkgs.git pkgs.openssh ] ;
-                                                                                                        sandboxPaths = [ "/mount/git-repository/.git" ] ;
+                                                                                                        sandboxPaths = [ "/mount/git-repository" ] ;
                                                                                                     }
                                                                                                     ''
                                                                                                         cd /mount/git-repository
