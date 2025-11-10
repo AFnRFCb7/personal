@@ -146,7 +146,7 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
-                                                                            "github.com" =
+                                                                            github =
                                                                                 {
                                                                                     host-name = "github.com" ;
                                                                                     identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
@@ -295,6 +295,32 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.inherit" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "inherit" ;
+                                                                                                                        runtimeInputs = [ findutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                USER_NAME="$( git config --get user.name )" || failure "b0a3ba6f"
+                                                                                                                                USER_EMAIL="$( git config --get user.email )" || failure "cc7c46fb"
+                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure "99619549"
+                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                mkdir --parents inputs
+                                                                                                                                if [[ ! -d inputs/dot-gnupg ]]
+                                                                                                                                then
+                                                                                                                                    submodule add --branch main github:AFnRFCb7/dot-gnupg inputs/dot-gnupg
+                                                                                                                                fi
+                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                do
+                                                                                                                                    git config user.name "$USER_NAME" &&
+                                                                                                                                    git config user.email "$USER_EMAIL" &&
+                                                                                                                                    git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                done
+                                                                                                                            '' ;
+                                                                                                                    } ;
                                                                                                     "alias.scratch" =
                                                                                                         let
                                                                                                             application =
@@ -376,14 +402,13 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch &&
-                                                                                                                            mkdir --parents inputs
-                                                                                                                            git add inputs
+                                                                                                                            git inherit
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
