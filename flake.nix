@@ -269,6 +269,14 @@
                                                                                                                                     break
                                                                                                                                     ;;
                                                                                                                                 --input)
+                                                                                                                                    NAME="$2"
+                                                                                                                                    BRANCH="$3"
+                                                                                                                                    COMMIT="$4"
+                                                                                                                                    git -C "inputs/$NAME" fetch origin "$BRANCH"
+                                                                                                                                    git -C "input/$NAME" checkout "$COMMIT"
+                                                                                                                                    shift 4
+                                                                                                                                    break
+                                                                                                                                    ;;
                                                                                                                                 *)
                                                                                                                                     failure 6e18cb53
                                                                                                                                     break
@@ -320,7 +328,7 @@
                                                                                                                                             git -C "$INPUT" commit -am "" --allow-empty-message
                                                                                                                                         fi
                                                                                                                                         NAME="$( basename "$INPUT" )" || failure d6990665
-                                                                                                                                        REMOTE="$( git -C "INPUT" remote get-url origin )" || failure b8d2e519
+                                                                                                                                        BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
                                                                                                                                         COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
                                                                                                                                         INPUTS+=( input "$NAME" "$REMOTE" "$COMMIT" )
                                                                                                                                     done < <( find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d )
