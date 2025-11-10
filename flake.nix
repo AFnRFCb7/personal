@@ -215,10 +215,10 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "ssh" ;
-                                                                                                                            runtimeInputs = [ pkgs.ssh ] ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ${ pkgs.openssh }/bin/ssh -F "$DOT_SSH" "$@"
+                                                                                                                                    ssh -F "$DOT_SSH" "$@"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/ssh" ;
