@@ -246,7 +246,7 @@
                                                                                                                         ''
                                                                                                                             echo "cd ${ self }/git-repository" > DEBUG
                                                                                                                             cd "${ self }/git-repository"
-                                                                                                                            git fetch origin main
+                                                                                                                            git fetch origin main 2>&1
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
