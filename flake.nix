@@ -243,7 +243,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        git config --get core.sshCommand > DEBUG
+                                                                                                                        git fetch origin main >&1 || true
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/setup" ;
