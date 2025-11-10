@@ -288,7 +288,8 @@
                                                                                                                                 UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 0a36ac2f
                                                                                                                                 git checkout -b "scratch/$UUID"
                                                                                                                             '' ;
-                                                                                                                    }
+                                                                                                                    } ;
+                                                                                                            in "!${ application }/bin/scratch" ;
                                                                                                     "alias.snapshot" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
