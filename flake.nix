@@ -235,9 +235,16 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                ''
-                                                                                                    git config --get core.sshCommand > DEBUG
-                                                                                                '' ;
+                                                                                                pkgs.runCommand
+                                                                                                    "setup"
+                                                                                                    {
+                                                                                                        nativeBuildInputs = [ pkgs.git pkgs.openssh ] ;
+                                                                                                        sandboxPaths = [ "/mount" ] ;
+                                                                                                    }
+                                                                                                    ''
+                                                                                                        cd /mount/git-repository
+                                                                                                        git fetch origin main
+                                                                                                    '' ;
                                                                                         } ;
                                                                         } ;
                                                             secrets =
