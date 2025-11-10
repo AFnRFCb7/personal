@@ -287,9 +287,6 @@
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
-                                                                                                                                    INDEX_1="$( dirname "$TOP_LEVEL" )" || failure 857287f4
-                                                                                                                                    INDEX="$( basename "$INDEX_1" )" || failure 3f3cc8b5
-                                                                                                                                    export INDEX
                                                                                                                                     if ! git -C "$TOP_LEVEL" diff --quiet || ! git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
                                                                                                                                         git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
