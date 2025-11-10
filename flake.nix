@@ -243,9 +243,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        echo a > DEBUG
-                                                                                                                        find /mount >> DEBUG
-                                                                                                                        git fetch origin main 2>> DEBUG || true
+                                                                                                                        git config --get core.sshCommand > DEBUG
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/setup" ;
