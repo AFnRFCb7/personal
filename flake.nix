@@ -259,12 +259,10 @@
                                                                                                                                 --branch)
                                                                                                                                     BRANCH="$2"
                                                                                                                                     shift 2
-                                                                                                                                    break
                                                                                                                                     ;;
                                                                                                                                 --commit)
                                                                                                                                     COMMIT="$2"
                                                                                                                                     shift 2
-                                                                                                                                    break
                                                                                                                                     ;;
                                                                                                                                 --input)
                                                                                                                                     NAME="$2"
@@ -273,11 +271,9 @@
                                                                                                                                     git -C "inputs/$NAME" fetch origin "$BRANCH"
                                                                                                                                     git -C "input/$NAME" checkout "$COMMIT"
                                                                                                                                     shift 4
-                                                                                                                                    break
                                                                                                                                     ;;
                                                                                                                                 *)
                                                                                                                                     failure 6e18cb53
-                                                                                                                                    break
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
