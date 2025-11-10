@@ -243,7 +243,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        git remote -v
+                                                                                                                        git fetch origin main 2> DEBUG || true
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                         in "${ application }/bin/setup" ;
