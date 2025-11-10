@@ -243,6 +243,7 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        cd /mount/git-repository
                                                                                                                         git fetch origin main >&1 || true
                                                                                                                     '' ;
                                                                                                             } ;
