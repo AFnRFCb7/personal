@@ -287,7 +287,7 @@
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     TOP_LEVEL_DIRECTORY="$( git rev-parse --show-toplevel )" || failure 6a4becc8
-                                                                                                                                    TOP_LEVEL="$( basename "$TOP_LEVEL_DIRECTORY )" || failure 857287f4
+                                                                                                                                    TOP_LEVEL="$( basename "$TOP_LEVEL_DIRECTORY" )" || failure 857287f4
                                                                                                                                     if ! git --"$TOP_LEVEL" diff --quiet || git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
                                                                                                                                         git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
