@@ -236,7 +236,7 @@
                                                                                                 } ;
                                                                                             setup =
                                                                                                     ''
-                                                                                                        git fetch origin main 2>&1
+                                                                                                        git fetch origin main 2> DEBUG || true
                                                                                                     '' ;
                                                                                         } ;
                                                                         } ;
