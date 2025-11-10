@@ -337,6 +337,10 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github:AFnRFCb7/resource inputs/resource 2>&1
                                                                                                                                 fi
+                                                                                                                                if [[ ! -d inputs/secret ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch main github:AFnRFCb7/secret inputs/secret 2>&1
+                                                                                                                                fi
 
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
