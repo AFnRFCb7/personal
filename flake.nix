@@ -146,7 +146,7 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
-                                                                            github =
+                                                                            "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
                                                                                     identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
