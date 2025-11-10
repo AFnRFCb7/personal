@@ -235,11 +235,6 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                pkgs.runCommand
-                                                                                                    "setup"
-                                                                                                    {
-                                                                                                        nativeBuildInputs = [ pkgs.git ] ;
-                                                                                                    }
                                                                                                     ''
                                                                                                         git fetch origin main 2>&1
                                                                                                     '' ;
