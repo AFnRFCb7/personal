@@ -202,6 +202,74 @@
                                                                                 in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
+                                                                            snapshot =
+                                                                                ignore :
+                                                                                    _git-repository.implementation
+                                                                                        {
+                                                                                            configs =
+                                                                                                {
+                                                                                                    "core.sshCommand" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "ssh" ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                                    ssh -F "$DOT_SSH/dot-ssh" "$@"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/ssh" ;
+                                                                                                } ;
+                                                                                            remotes =
+                                                                                                {
+                                                                                                    origin = config.personal.repository.private.remote ;
+                                                                                                } ;
+                                                                                            setup =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "setup" ;
+                                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                        do
+                                                                                                                            case "$1" in
+                                                                                                                                --branch)
+                                                                                                                                    BRANCH="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --commit)
+                                                                                                                                    COMMIT="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --input)
+                                                                                                                                    INPUT="$2"
+                                                                                                                                    REMOTE="$3"
+                                                                                                                                    BRANCH="$4"
+                                                                                                                                    COMMIT="$5"
+                                                                                                                                    export INPUT
+                                                                                                                                    export REMOTE
+                                                                                                                                    export BRANCH
+                                                                                                                                    export COMMIT
+                                                                                                                                    shift 5
+                                                                                                                                    ;;
+                                                                                                                                *)
+                                                                                                                                    failure 4b1a19d6
+                                                                                                                                    ;;
+                                                                                                                            esac
+                                                                                                                        done
+                                                                                                                        git fetch origin "$BRANCH"
+                                                                                                                        git checkout "$COMMIT"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/setup" ;
+                                                                                        } ;
                                                                             studio =
                                                                                 ignore :
                                                                                     _git-repository.implementation
@@ -214,18 +282,25 @@
                                                                                                                 application =
                                                                                                                     {
                                                                                                                         name = "snapshot" ;
-                                                                                                                        runtimeInputs = [ pkgs.findutils pkgs.git ] ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils pkgs.git ( failure.implementation "0eb2ec6d" ) ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read INPUT
-                                                                                                                                do
-                                                                                                                                    if ! git -C "$INPUT" diff --quiet || git -C "$INPUT" diff --cached --quiet
-                                                                                                                                    then
-                                                                                                                                        git -C "$INPUT" commit -am "" --allow-empty-message
-                                                                                                                                    fi
-                                                                                                                                    COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 24eb358d
-                                                                                                                                    echo "--override-input $INPUT ${ builtins.toJSON inputs } rev=$COMMIT"
-                                                                                                                                done
+                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
+                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure 508b2be6
+                                                                                                                                RESOURCE=${ resources.production.snapshot ( setup : "setup --branch $BRANCH --commit $COMMIT" ) }
+                                                                                                                                echo "$RESOURCE"
+                                                                                                                                # OVERRIDE_INPUT_ARGS=()
+                                                                                                                                # find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                # do
+                                                                                                                                #     if ! git -C "$INPUT" diff --quiet || git -C "$INPUT" diff --cached --quiet
+                                                                                                                                #     then
+                                                                                                                                #         git -C "$INPUT" commit -am "" --allow-empty-message
+                                                                                                                                #     fi
+                                                                                                                                #     REMOTE="$( git remote get-url origin )" || failure f605e64a
+                                                                                                                                #     COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 24eb358d
+                                                                                                                                #     REMOTE_URL="git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "REMOTE/:/\/" "}" ] }?rev=$COMMIT"
+                                                                                                                                #     OVERRIDE_INPUT_ARGS+=( --override-input "$INPUT" "$REMOTE_URL" ))
+                                                                                                                                # done
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                                 in "${ application }/bin/snaphsot" ;
