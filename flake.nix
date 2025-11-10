@@ -315,9 +315,9 @@
                                                                                                                                 fi
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
-                                                                                                                                    git config user.name "$USER_NAME" &&
-                                                                                                                                    git config user.email "$USER_EMAIL" &&
-                                                                                                                                    git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME" &&
+                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL" &&
+                                                                                                                                    git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                 done
                                                                                                                             '' ;
                                                                                                                     } ;
