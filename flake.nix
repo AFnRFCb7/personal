@@ -255,6 +255,7 @@
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
+                                                                                                                            failure "959f4042"
                                                                                                                             case "$1" in
                                                                                                                                 --branch)
                                                                                                                                     BRANCH="$2"
