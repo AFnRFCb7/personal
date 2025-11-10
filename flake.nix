@@ -243,8 +243,9 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                            export DOT_SSH
+                                                                                                                            cat > /mount/git-repository/.envrc <<EOF
+                                                                                                                            export DOT_SSH=wtf
+                                                                                                                            EOF
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init" ;
