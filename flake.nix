@@ -208,6 +208,27 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.snapshot" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    {
+                                                                                                                        name = "snapshot" ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils pkgs.git ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                find "${ self }/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read INPUT
+                                                                                                                                do
+                                                                                                                                    if ! git -C "$INPUT" diff --quiet || git -C "$INPUT" diff --cached --quiet
+                                                                                                                                    then
+                                                                                                                                        git -C "$INPUT" commit -am "" --allow-empty-message
+                                                                                                                                    fi
+                                                                                                                                    COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 24eb358d
+                                                                                                                                    echo "--override-input $INPUT ${ builtins.toJSON inputs } rev=$COMMIT"
+                                                                                                                                done
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                                in "${ application }/bin/snaphsot" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
