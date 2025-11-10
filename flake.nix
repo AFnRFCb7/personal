@@ -242,7 +242,7 @@
                                                                                                         sandboxPaths = [ "/mount/git-repository" ] ;
                                                                                                     }
                                                                                                     ''
-                                                                                                        cd /mount/git-repository
+                                                                                                        # cd /mount/git-repository
                                                                                                         git fetch origin main
                                                                                                     '' ;
                                                                                         } ;
