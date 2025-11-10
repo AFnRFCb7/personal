@@ -247,6 +247,7 @@
                                                                                                                             then
                                                                                                                                 true
                                                                                                                             fi
+                                                                                                                            export DOT_SSH
                                                                                                                             cat > /mount/git-repository/.envrc <<EOF
                                                                                                                             export DOT_SSH=wtf
                                                                                                                             EOF
