@@ -208,22 +208,20 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "alias.dot-ssh" =
+                                                                                                    "core.sshCommand" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
-                                                                                                                            name = "dot-ssh" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                            name = "ssh" ;
+                                                                                                                            runtimeInputs = [ pkgs.ssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                                    echo "$DOT_SSH/dot-ssh "
+                                                                                                                                    ${ pkgs.openssh }/bin/ssh -F "$DOT_SSH" "$@"
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "!${ application }/bin/dot-ssh" ;
-                                                                                                    "core.sshCommand" = ssh ;
+                                                                                                                in "${ application }/bin/ssh" ;
                                                                                                     "user.email" = config.personal.repository.private.email ;
                                                                                                     "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
@@ -245,12 +243,6 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                            export DOT_SSH
-                                                                                                                            root resource "$DOT_SSH"
-                                                                                                                            cat > /mount/git-repository <<EOF
-                                                                                                                            export DOT-SSH="$DOT_SSH"
-                                                                                                                            EOF
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init" ;
