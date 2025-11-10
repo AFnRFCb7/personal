@@ -244,8 +244,9 @@
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            echo "cd ${ self }" > DEBUG
-                                                                                                                            cd "${ self }"
+                                                                                                                            echo "cd ${ self }/git-repository" > DEBUG
+                                                                                                                            cd "${ self }/git-repository"
+                                                                                                                            git fetch origin main
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
