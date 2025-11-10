@@ -239,6 +239,7 @@
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
+                                                                                                                extraSandboxPaths = [ "/mount" ] ;
                                                                                                                 name = "setup" ;
                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                 text =
