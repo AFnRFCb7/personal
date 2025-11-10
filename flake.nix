@@ -301,7 +301,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "inherit" ;
-                                                                                                                        runtimeInputs = [ findutils ] ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 USER_NAME="$( git config --get user.name )" || failure "b0a3ba6f"
