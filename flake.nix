@@ -265,11 +265,11 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --input)
-                                                                                                                                    NAME="$2"
-                                                                                                                                    BRANCH="$3"
-                                                                                                                                    COMMIT="$4"
-                                                                                                                                    git -C "inputs/$NAME" fetch origin "$BRANCH"
-                                                                                                                                    git -C "inputs/$NAME" checkout "$COMMIT"
+                                                                                                                                    INPUT_NAME="$2"
+                                                                                                                                    INPUT_BRANCH="$3"
+                                                                                                                                    INPUT_COMMIT="$4"
+                                                                                                                                    git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                    git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 *)
@@ -277,8 +277,13 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-                                                                                                                        git fetch origin "$BRANCH" 2>&1
-                                                                                                                        git checkout "$COMMIT" 2>&1
+                                                                                                                        if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]]
+                                                                                                                        then
+                                                                                                                            git fetch origin "$BRANCH" 2>&1
+                                                                                                                            git checkout "$COMMIT" 2>&1
+                                                                                                                        else
+                                                                                                                            failure 1da13d01
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/setup" ;
