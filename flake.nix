@@ -243,7 +243,6 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            echo '${ resources.production.dot-ssh ( setup : setup ) }' /mount/git-repository/DEBUG
                                                                                                                             cat > /mount/git-repository/.envrc <<EOF
                                                                                                                             export DOT_SSH=wtf
                                                                                                                             EOF
