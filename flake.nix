@@ -243,11 +243,7 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            if DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) } 2> /mount/git-repository/DEBUG
-                                                                                                                            then
-                                                                                                                                true
-                                                                                                                            fi
-                                                                                                                            export DOT_SSH
+                                                                                                                            echo '${ resources.production.dot-ssh ( setup : setup ) }' /mount/git-repository/DEBUG
                                                                                                                             cat > /mount/git-repository/.envrc <<EOF
                                                                                                                             export DOT_SSH=wtf
                                                                                                                             EOF
