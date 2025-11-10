@@ -312,9 +312,9 @@
                                                                                                                                 ''
                                                                                                                                     TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
                                                                                                                                     INPUTS=()
-                                                                                                                                    find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | while read INPUT
+                                                                                                                                    find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                     do
-                                                                                                                                        if ! git -C "$INPUT diff --quiet || ! git -C "$INPUT" diff --cached --quiet
+                                                                                                                                        if ! git -C "$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
                                                                                                                                         then
                                                                                                                                             git -C "$INPUT" commit -am "" --allow-empty-message
                                                                                                                                         fi
