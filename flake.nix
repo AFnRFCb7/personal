@@ -255,7 +255,7 @@
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
                                                                                                                 application =
-                                                                                                                    writeShellApplication
+                                                                                                                    pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "check" ;
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
