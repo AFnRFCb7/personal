@@ -268,8 +268,8 @@
                                                                                                                                     INPUT_NAME="$2"
                                                                                                                                     INPUT_BRANCH="$3"
                                                                                                                                     INPUT_COMMIT="$4"
-                                                                                                                                    git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
-                                                                                                                                    git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
+                                                                                                                                    echo git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                    echo git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 *)
