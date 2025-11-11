@@ -377,7 +377,7 @@
                                                                                                                                     git -C "$INPUT" config user.email "$USER_EMAIL"
                                                                                                                                     git -C "$INPUT" config alias.scratch "$SCRATCH"
                                                                                                                                     git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                    # git -C "$INPUT" scratch
+                                                                                                                                    git -C "$INPUT" scratch
                                                                                                                                 done
                                                                                                                             '' ;
                                                                                                                     } ;
@@ -414,6 +414,7 @@
                                                                                                                                         then
                                                                                                                                             git -C "$INPUT" commit -am "" --allow-empty-message
                                                                                                                                         fi
+                                                                                                                                        git -C "$INPUT" push origin HEAD
                                                                                                                                         NAME="$( basename "$INPUT" )" || failure d6990665
                                                                                                                                         BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
                                                                                                                                         COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
@@ -423,6 +424,7 @@
                                                                                                                                     then
                                                                                                                                         git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
                                                                                                                                     fi
+                                                                                                                                    git -C "$TOP_LEVEL" push origin HEAD
                                                                                                                                     BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
                                                                                                                                     RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
