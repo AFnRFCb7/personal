@@ -253,7 +253,6 @@
                                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        failure b4547900 "$#"
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             failure 959f4042 "$#"
