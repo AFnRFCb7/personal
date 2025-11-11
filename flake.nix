@@ -261,7 +261,7 @@
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
                                                                                                                             local CMD=( "$@" )
-                                                                                                                            COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
+                                                                                                                            COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] } 2>&1" )" )
                                                                                                                         }
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
@@ -281,7 +281,7 @@
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
-                                                                                                                                    true append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                    append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
                                                                                                                                     shift 4
                                                                                                                                     ;;
