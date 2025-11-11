@@ -178,9 +178,19 @@
                                                                                                         runtimeInputs = [ ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                FLAKE="$1"
-                                                                                                                OVERRIDES="$2"
-                                                                                                                if nix flake check "$FLAKE" "$OVERRIDES" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                DIRECTORY="$1"
+                                                                                                                FILE="$2"
+                                                                                                                root store "$DIRECTORY"
+                                                                                                                INPUTS=()
+                                                                                                                while IFS= read -r INPUT
+                                                                                                                do
+                                                                                                                    NAME="$( basename "$INPUT" )" || failure d6990665
+                                                                                                                    REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
+                                                                                                                    BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
+                                                                                                                    COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
+                                                                                                                    INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                done < <( find "$DIRECTORY/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                if nix flake check "$FILE" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 then
                                                                                                                     echo "$?" > /mount/status
                                                                                                                 else
