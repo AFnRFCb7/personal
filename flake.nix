@@ -377,7 +377,7 @@
                                                                                                                                     git -C "$INPUT" config user.email "$USER_EMAIL"
                                                                                                                                     git -C "$INPUT" config alias.scratch "$SCRATCH"
                                                                                                                                     git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                    git -C "$INPUT" scratch
+                                                                                                                                    # git -C "$INPUT" scratch
                                                                                                                                 done
                                                                                                                             '' ;
                                                                                                                     } ;
