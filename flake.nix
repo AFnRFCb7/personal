@@ -182,9 +182,9 @@
                                                                                                                 OVERRIDES="$2"
                                                                                                                 if nix flake check "$FLAKE" "$OVERRIDES" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 then
-                                                                                                                    echo "$STATUS" > /mount/status
+                                                                                                                    echo "$?" > /mount/status
                                                                                                                 else
-                                                                                                                    echo "$STATUS" > /mount/status
+                                                                                                                    echo "$?" > /mount/status
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
