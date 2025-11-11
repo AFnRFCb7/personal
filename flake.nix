@@ -261,7 +261,7 @@
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
                                                                                                                             local CMD=( "$@" )
-                                                                                                                            COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] } )" )
+                                                                                                                            COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
                                                                                                                         }
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
