@@ -345,47 +345,47 @@
                                                                                                                                 mkdir --parents inputs
                                                                                                                                 if [[ ! -d inputs/dot-gnupg ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/dot-ssh ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/failure ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/failure inputs/failure 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/failure inputs/failure 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/fixture ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/fixture inputs/fixture 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/fixture inputs/fixture 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/git-repository ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/git-repository inputs/git-repository 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/personal ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/personal inputs/personal 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/personal inputs/personal 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/resource ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/resource inputs/resource 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/resource inputs/resource 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/secret ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/secret inputs/secret 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/secret inputs/secret 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/secrets ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/string ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/string inputs/string 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/string inputs/string 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/visitor ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github:AFnRFCb7/visitor inputs/visitor 2>&1
+                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/visitor inputs/visitor 2>&1
                                                                                                                                 fi
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
