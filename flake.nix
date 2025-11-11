@@ -260,11 +260,7 @@
                                                                                                                         SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
-                                                                                                                            local CMD
-                                                                                                                            CMD=$( "$@" )
-                                                                                                                            local SERIALIZED
-                                                                                                                            printf -v SERIALIZED '%q ' "${ builtins.concatStringsSep "" [ "$" "{" "CMD" "}" ] }"
-                                                                                                                            COMMANDS+=( "$SERIALIZED" )
+                                                                                                                            COMMAND+=( "$@" )
                                                                                                                         }
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
