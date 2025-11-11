@@ -321,7 +321,7 @@
                                                                                                                                 IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
                                                                                                                             done
-                                                                                                                            git config nix.overrides "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUT" "}" ] }"
+                                                                                                                            git config nix.overrides "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS" "}" ] }"
                                                                                                                         else
                                                                                                                             failure 1da13d01
                                                                                                                         fi
