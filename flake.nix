@@ -290,74 +290,75 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
-                                                                                                                        USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
-                                                                                                                        GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
-                                                                                                                        export GIT_SSH_COMMAND
-                                                                                                                        SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
-                                                                                                                        COMMANDS=()
-                                                                                                                        OVERRIDE_INPUTS=()
-                                                                                                                        append() {
-                                                                                                                            local CMD=( "$@" )
-                                                                                                                            COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
-                                                                                                                        }
-                                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            case "$1" in
-                                                                                                                                --branch)
-                                                                                                                                    BRANCH="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --commit)
-                                                                                                                                    COMMIT="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --input)
-                                                                                                                                    INPUT_NAME="$2"
-                                                                                                                                    INPUT_REMOTE="3"
-                                                                                                                                    INPUT_BRANCH="$4"
-                                                                                                                                    INPUT_COMMIT="$5"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
-                                                                                                                                    OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                                    shift 5
-                                                                                                                                    ;;
-                                                                                                                                *)
-                                                                                                                                    failure 6e18cb53 "$1"
-                                                                                                                                    ;;
-                                                                                                                            esac
-                                                                                                                        done
-                                                                                                                        if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]]
-                                                                                                                        then
-                                                                                                                            git fetch origin "$BRANCH" 2>&1
-                                                                                                                            git checkout "$COMMIT" 2>&1
-                                                                                                                            git submodule init 2>&1
-                                                                                                                            git submodule update --recursive 2>&1
-                                                                                                                            for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
+                                                                                                { pkgs , resources , self } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
+                                                                                                                            USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
+                                                                                                                            GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
+                                                                                                                            export GIT_SSH_COMMAND
+                                                                                                                            SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
+                                                                                                                            COMMANDS=()
+                                                                                                                            OVERRIDE_INPUTS=()
+                                                                                                                            append() {
+                                                                                                                                local CMD=( "$@" )
+                                                                                                                                COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
+                                                                                                                            }
+                                                                                                                            while [[ "$#" -gt 0 ]]
                                                                                                                             do
-                                                                                                                                IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
-                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
+                                                                                                                                case "$1" in
+                                                                                                                                    --branch)
+                                                                                                                                        BRANCH="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    --commit)
+                                                                                                                                        COMMIT="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    --input)
+                                                                                                                                        INPUT_NAME="$2"
+                                                                                                                                        INPUT_REMOTE="3"
+                                                                                                                                        INPUT_BRANCH="$4"
+                                                                                                                                        INPUT_COMMIT="$5"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
+                                                                                                                                        OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                                        shift 5
+                                                                                                                                        ;;
+                                                                                                                                    *)
+                                                                                                                                        failure 6e18cb53 "$1"
+                                                                                                                                        ;;
+                                                                                                                                esac
                                                                                                                             done
-                                                                                                                            CHECK=${ resources.production.nix.check ( setup : ''${ setup } ${ self } "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"'' ) }
-                                                                                                                            git config nix.check "$CHECK"
-                                                                                                                        else
-                                                                                                                            failure 1da13d01
-                                                                                                                        fi
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
+                                                                                                                            if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]]
+                                                                                                                            then
+                                                                                                                                git fetch origin "$BRANCH" 2>&1
+                                                                                                                                git checkout "$COMMIT" 2>&1
+                                                                                                                                git submodule init 2>&1
+                                                                                                                                git submodule update --recursive 2>&1
+                                                                                                                                for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
+                                                                                                                                do
+                                                                                                                                    IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
+                                                                                                                                    "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
+                                                                                                                                done
+                                                                                                                                CHECK=${ resources.production.nix.check ( setup : ''${ setup } ${ self } "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"'' ) }
+                                                                                                                                git config nix.check "$CHECK"
+                                                                                                                            else
+                                                                                                                                failure 1da13d01
+                                                                                                                            fi
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                             studio =
                                                                                 ignore :
