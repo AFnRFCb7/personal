@@ -271,7 +271,8 @@
                                                                                                                     ''
                                                                                                                         USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
                                                                                                                         USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
-                                                                                                                        SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
+                                                                                                                        GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
+                                                                                                                        export GIT_SSH_COMMAND
                                                                                                                         SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
@@ -294,7 +295,7 @@
                                                                                                                                     INPUT_BRANCH="$3"
                                                                                                                                     INPUT_COMMIT="$4"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
+                                                                                                                                    append git -C "inputs/$INPUT_NAME" config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
@@ -310,6 +311,8 @@
                                                                                                                         then
                                                                                                                             git fetch origin "$BRANCH" 2>&1
                                                                                                                             git checkout "$COMMIT" 2>&1
+                                                                                                                            git submodule init
+                                                                                                                            git submodule update --recursive
                                                                                                                             for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                             do
                                                                                                                                 IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
@@ -340,8 +343,8 @@
                                                                                                                                 USER_NAME="$( git config --get user.name )" || failure "b0a3ba6f"
                                                                                                                                 USER_EMAIL="$( git config --get user.email )" || failure "cc7c46fb"
                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure "99619549"
-                                                                                                                                SCRATCH="$( git config --get alias.scratch )" || failure "7c276c3a"
                                                                                                                                 export GIT_SSH_COMMAND
+                                                                                                                                SCRATCH="$( git config --get alias.scratch )" || failure "7c276c3a"
                                                                                                                                 mkdir --parents inputs
                                                                                                                                 if [[ ! -d inputs/dot-gnupg ]]
                                                                                                                                 then
