@@ -293,10 +293,10 @@
                                                                                                                                     INPUT_NAME="$2"
                                                                                                                                     INPUT_BRANCH="$3"
                                                                                                                                     INPUT_COMMIT="$4"
-                                                                                                                                    append git -C "input/$INPUT_NAME" config alias.scratch "$SCRATCH"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
+                                                                                                                                    true append git -C "input/$INPUT_NAME" config alias.scratch "$SCRATCH"
+                                                                                                                                    true append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
+                                                                                                                                    true append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
+                                                                                                                                    true append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
                                                                                                                                     shift 4
@@ -443,8 +443,8 @@
                                                                                                                                     git -C "$TOP_LEVEL" push origin HEAD 2>&1
                                                                                                                                     BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
-                                                                                                                                    # RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
-                                                                                                                                    # echo "$RESOURCE/git-repository"
+                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
+                                                                                                                                    echo "$RESOURCE/git-repository"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/snapshot" ;
