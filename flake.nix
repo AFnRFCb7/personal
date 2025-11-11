@@ -324,6 +324,7 @@
                                                                                                                                 USER_NAME="$( git config --get user.name )" || failure "b0a3ba6f"
                                                                                                                                 USER_EMAIL="$( git config --get user.email )" || failure "cc7c46fb"
                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure "99619549"
+                                                                                                                                SCRATCH="$( git config --get alias.scratch )" || failure "7c276c3a"
                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                 mkdir --parents inputs
                                                                                                                                 if [[ ! -d inputs/dot-gnupg ]]
@@ -372,9 +373,11 @@
                                                                                                                                 fi
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
-                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME" &&
-                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL" &&
+                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME"
+                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
                                                                                                                                     git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                    git -C "$INPUT" scratch
                                                                                                                                 done
                                                                                                                             '' ;
                                                                                                                     } ;
