@@ -497,7 +497,7 @@
                                                                 {
                                                                     dot-ssh =
                                                                         {
-                                                                            github =
+                                                                            "github.com" =
                                                                                 {
                                                                                     identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                                     user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
