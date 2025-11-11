@@ -471,7 +471,7 @@
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch
-                                                                                                                            # git inherit
+                                                                                                                            git inherit
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
