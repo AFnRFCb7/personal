@@ -281,7 +281,7 @@
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                    true append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
                                                                                                                                     shift 4
                                                                                                                                     ;;
@@ -297,7 +297,7 @@
                                                                                                                             for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                             do
                                                                                                                                 IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
-                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }"
+                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
                                                                                                                             done
                                                                                                                         else
                                                                                                                             failure 1da13d01
