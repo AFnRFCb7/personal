@@ -311,8 +311,8 @@
                                                                                                                         then
                                                                                                                             git fetch origin "$BRANCH" 2>&1
                                                                                                                             git checkout "$COMMIT" 2>&1
-                                                                                                                            git submodule init
-                                                                                                                            git submodule update --recursive
+                                                                                                                            git submodule init 2>&1
+                                                                                                                            git submodule update --recursive 2>&1
                                                                                                                             for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                             do
                                                                                                                                 IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
