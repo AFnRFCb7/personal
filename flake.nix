@@ -281,8 +281,8 @@
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
-                                                                                                                                    append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
-                                                                                                                                    echo append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
+                                                                                                                                    true append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                    true append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 *)
