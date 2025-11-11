@@ -351,7 +351,7 @@
                                                                                                                                     IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
                                                                                                                                     "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
                                                                                                                                 done
-                                                                                                                                CHECK=${ resources.production.nix.check ( setup : ''${ setup } ${ self } "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"'' ) }
+                                                                                                                                CHECK=${ resources.production.nix.check ( setup : ''${ setup } "${ self }" "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"'' ) }
                                                                                                                                 git config nix.check "$CHECK"
                                                                                                                             else
                                                                                                                                 failure 1da13d01
