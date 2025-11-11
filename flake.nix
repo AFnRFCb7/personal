@@ -470,7 +470,7 @@
                                                                                                                         ''
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
-                                                                                                                            # git scratch
+                                                                                                                            git scratch
                                                                                                                             # git inherit
                                                                                                                         '' ;
                                                                                                                 } ;
