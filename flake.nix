@@ -223,6 +223,8 @@
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/ssh" ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
                                                                                             hooks =
                                                                                                 {
