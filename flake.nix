@@ -302,7 +302,7 @@
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
-                                                                                                                                    OVERRIDE_INPUT+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                                    OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                                     shift 5
                                                                                                                                     ;;
                                                                                                                                 *)
