@@ -271,9 +271,9 @@
                                                                                                                                     INPUT_NAME="$2"
                                                                                                                                     INPUT_BRANCH="$3"
                                                                                                                                     INPUT_COMMIT="$4"
-                                                                                                                                    COMMANDS=+( "git -C "\inputs/$INPUT_NAME\" config user.email \"$USER_EMAIL\"" )
-                                                                                                                                    COMMANDS=+( "git -C "\inputs/$INPUT_NAME\" config user.name \"$USER_NAME\"" )
-                                                                                                                                    COMMANDS=+( "git -C "\inputs/$INPUT_NAME\" config core.sshCommand \"$SSH_COMMAND\"" )
+                                                                                                                                    COMMANDS+=( "git -C "\inputs/$INPUT_NAME\" config user.email \"$USER_EMAIL\"" )
+                                                                                                                                    COMMANDS+=( "git -C "\inputs/$INPUT_NAME\" config user.name \"$USER_NAME\"" )
+                                                                                                                                    COMMANDS+=( "git -C "\inputs/$INPUT_NAME\" config core.sshCommand \"$SSH_COMMAND\"" )
                                                                                                                                     COMMANDS+=( "git -C \"inputs/$INPUT_NAME\" fetch origin \"$INPUT_BRANCH\"" )
                                                                                                                                     COMMANDS+=( "git -C \"inputs/$INPUT_NAME\" checkout \"$INPUT_COMMIT\"" )
                                                                                                                                     shift 4
