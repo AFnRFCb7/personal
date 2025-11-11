@@ -294,7 +294,7 @@
                                                                                                                                     INPUT_BRANCH="$3"
                                                                                                                                     INPUT_COMMIT="$4"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
-                                                                                                                                    true append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
+                                                                                                                                    append git -C "inputs/$INPUT_NAME" config core.sshCommand "$SSH_COMMAND"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     true append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
