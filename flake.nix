@@ -470,8 +470,8 @@
                                                                                                                         ''
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
-                                                                                                                            git scratch
-                                                                                                                            git inherit
+                                                                                                                            # git scratch
+                                                                                                                            # git inherit
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
