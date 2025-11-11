@@ -293,11 +293,10 @@
                                                                                                                         then
                                                                                                                             git fetch origin "$BRANCH" 2>&1
                                                                                                                             git checkout "$COMMIT" 2>&1
-                                                                                                                            # for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
-                                                                                                                            # do
-                                                                                                                            #     read -r -a CMD <<<"$SERIALIZED"
-                                                                                                                            #     "${ builtins.concatStringsSep "" [ "$" "{" "CMD[0]" "}" ] }"
-                                                                                                                            # done
+                                                                                                                            for COMMAND in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
+                                                                                                                            do
+                                                                                                                                eval "$COMMAND"
+                                                                                                                            done
                                                                                                                         else
                                                                                                                             failure 1da13d01
                                                                                                                         fi
