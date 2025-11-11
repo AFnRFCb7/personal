@@ -251,6 +251,21 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.check" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "check" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    CHECK=${ resources.production.nix.check ( setup : ''${ setup } "${ self }"'' ) }
+                                                                                                                                    echo "$CHECK"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/check" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
@@ -351,8 +366,6 @@
                                                                                                                                     IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
                                                                                                                                     "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
                                                                                                                                 done
-                                                                                                                                CHECK=${ resources.production.nix.check ( setup : ''${ setup } "${ self }/git-repository" "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"'' ) }
-                                                                                                                                git config nix.check "$CHECK"
                                                                                                                             else
                                                                                                                                 failure 1da13d01
                                                                                                                             fi
