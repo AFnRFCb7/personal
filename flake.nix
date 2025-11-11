@@ -258,7 +258,8 @@
                                                                                                                         SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
-                                                                                                                            local CMD=$( "$@" )
+                                                                                                                            local CMD
+                                                                                                                            CMD=$( "$@" )
                                                                                                                             local SERIALIZED
                                                                                                                             printf -v SERIALIZED '%q ' "${ builtins.concatStringsSep "" [ "$" "{" "CMD" "}" ] }"
                                                                                                                             COMMANDS+=( "$SERIALIZED" )
