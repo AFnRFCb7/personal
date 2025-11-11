@@ -260,7 +260,8 @@
                                                                                                                         SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
-                                                                                                                            COMMANDS+=( "$@" )
+                                                                                                                            local CMD=( "$@" )
+                                                                                                                            COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] } )" )
                                                                                                                         }
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
@@ -293,9 +294,10 @@
                                                                                                                         then
                                                                                                                             git fetch origin "$BRANCH" 2>&1
                                                                                                                             git checkout "$COMMIT" 2>&1
-                                                                                                                            for COMMAND in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
+                                                                                                                            for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                             do
-                                                                                                                                eval "$COMMAND"
+                                                                                                                                IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
+                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }"
                                                                                                                             done
                                                                                                                         else
                                                                                                                             failure 1da13d01
