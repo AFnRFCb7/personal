@@ -275,6 +275,7 @@
                                                                                                                         export GIT_SSH_COMMAND
                                                                                                                         SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
                                                                                                                         COMMANDS=()
+                                                                                                                        OVERRIDE_INPUTS=()
                                                                                                                         append() {
                                                                                                                             local CMD=( "$@" )
                                                                                                                             COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
@@ -292,15 +293,17 @@
                                                                                                                                     ;;
                                                                                                                                 --input)
                                                                                                                                     INPUT_NAME="$2"
-                                                                                                                                    INPUT_BRANCH="$3"
-                                                                                                                                    INPUT_COMMIT="$4"
+                                                                                                                                    INPUT_REMOTE="3"
+                                                                                                                                    INPUT_BRANCH="$4"
+                                                                                                                                    INPUT_COMMIT="$5"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
                                                                                                                                     append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
-                                                                                                                                    shift 4
+                                                                                                                                    OVERRIDE_INPUT+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                                    shift 5
                                                                                                                                     ;;
                                                                                                                                 *)
                                                                                                                                     failure 6e18cb53 "$1"
@@ -318,6 +321,7 @@
                                                                                                                                 IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
                                                                                                                             done
+                                                                                                                            git config nix.overrides "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUT" "}" ] }"
                                                                                                                         else
                                                                                                                             failure 1da13d01
                                                                                                                         fi
@@ -435,6 +439,7 @@
                                                                                                                                         fi
                                                                                                                                         git -C "$INPUT" push origin HEAD 2>&1
                                                                                                                                         NAME="$( basename "$INPUT" )" || failure d6990665
+                                                                                                                                        REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
                                                                                                                                         BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
                                                                                                                                         COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
                                                                                                                                         INPUTS+=( "--input" "$NAME" "$BRANCH" "$COMMIT" )
