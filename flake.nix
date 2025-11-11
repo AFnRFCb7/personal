@@ -253,6 +253,9 @@
                                                                                                                 runtimeInputs = [ pkgs.git ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
+                                                                                                                        USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
+                                                                                                                        SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
@@ -268,8 +271,11 @@
                                                                                                                                     INPUT_NAME="$2"
                                                                                                                                     INPUT_BRANCH="$3"
                                                                                                                                     INPUT_COMMIT="$4"
-                                                                                                                                    echo git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
-                                                                                                                                    echo git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
+                                                                                                                                    COMMANDS=+( "git -C "\inputs/$INPUT_NAME\" config user.email \"$USER_EMAIL\"" )
+                                                                                                                                    COMMANDS=+( "git -C "\inputs/$INPUT_NAME\" config user.name \"$USER_NAME\"" )
+                                                                                                                                    COMMANDS=+( "git -C "\inputs/$INPUT_NAME\" config core.sshCommand \"$SSH_COMMAND\"" )
+                                                                                                                                    COMMANDS+=( "git -C \"inputs/$INPUT_NAME\" fetch origin \"$INPUT_BRANCH\"" )
+                                                                                                                                    COMMANDS+=( "git -C \"inputs/$INPUT_NAME\" checkout \"$INPUT_COMMIT\"" )
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 *)
@@ -281,6 +287,7 @@
                                                                                                                         then
                                                                                                                             git fetch origin "$BRANCH" 2>&1
                                                                                                                             git checkout "$COMMIT" 2>&1
+                                                                                                                            "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                         else
                                                                                                                             failure 1da13d01
                                                                                                                         fi
