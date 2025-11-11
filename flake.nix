@@ -260,7 +260,7 @@
                                                                                                                         SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                         COMMANDS=()
                                                                                                                         append() {
-                                                                                                                            COMMAND+=( "$@" )
+                                                                                                                            COMMANDS+=( "$@" )
                                                                                                                         }
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
