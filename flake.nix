@@ -163,6 +163,35 @@
                                                                                     user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
+                                                            nix =
+                                                                {
+                                                                    check =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                FLAKE="$1"
+                                                                                                                OVERRIDES="$2"
+                                                                                                                if nix flake check "$FLAKE" "$OVERRIDES" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                then
+                                                                                                                    echo "$STATUS" > /mount/status
+                                                                                                                else
+                                                                                                                    echo "$STATUS" > /mount/status
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ ] ;
+                                                                            } ;
+                                                                } ;
                                                             repository =
                                                                 let
                                                                     post-commit =
@@ -321,7 +350,8 @@
                                                                                                                                 IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
                                                                                                                             done
-                                                                                                                            git config nix.overrides "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"
+                                                                                                                            CHECK=${ resources.production.nix.check ( setup : ''${ setup } ${ self } "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }"'' ) }
+                                                                                                                            git config nix.check "$CHECK"
                                                                                                                         else
                                                                                                                             failure 1da13d01
                                                                                                                         fi
