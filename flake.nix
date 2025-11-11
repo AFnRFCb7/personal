@@ -442,7 +442,7 @@
                                                                                                                                         REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
                                                                                                                                         BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
                                                                                                                                         COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
-                                                                                                                                        INPUTS+=( "--input" "$NAME" "$BRANCH" "$COMMIT" )
+                                                                                                                                        INPUTS+=( "--input" "$NAME" "$REMOTE" "$BRANCH" "$COMMIT" )
                                                                                                                                     done < <( find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                                     if ! git -C "$TOP_LEVEL" diff --quiet || ! git -C "$TOP_LEVEL" diff --cached --quiet
                                                                                                                                     then
