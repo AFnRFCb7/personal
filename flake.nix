@@ -175,7 +175,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( password-less-wrap { derivation = pkgs.nixos-rebuild ; target = "nixos-rebuild" ; } ) ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 in
@@ -207,7 +207,7 @@
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        ${ nixos-rebuild }/bin/nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/test
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
@@ -233,7 +233,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 start =
@@ -293,7 +293,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "6554d957" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "6554d957" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 start =
@@ -359,7 +359,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "218458ec" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix ( _failure.implementation "218458ec" ) ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 DIRECTORY="$1"
