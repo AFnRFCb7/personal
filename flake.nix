@@ -322,8 +322,8 @@
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure "4af6f905"
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" ) || failure "6ee2312e"
+                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure 4af6f905
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
                                                                                                                                     BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
                                                                                                                                     echo "$BUILD_VM"
                                                                                                                                 '' ;
@@ -339,8 +339,8 @@
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure "4084df8a"
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" ) || failure "b3b73c3c"
+                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure 4084df8a
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure b3b73c3c
                                                                                                                                     CHECK=${ resources.production.nix.check ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
                                                                                                                                     echo "$CHECK"
                                                                                                                                 '' ;
