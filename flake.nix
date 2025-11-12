@@ -175,7 +175,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( password-less-wrap { derivation = pkgs.nixos-rebuild ; target = "nixos-rebuild" ; } ) ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 in
