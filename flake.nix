@@ -1064,7 +1064,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             STUDIO=${ resources__.production.repository.studio ( setup : setup ) }
-                                                                                            cd "$STUDIO"
+                                                                                            cd "$STUDIO/git-repository"
                                                                                             idea-community .
                                                                                         '' ;
                                                                                 }
