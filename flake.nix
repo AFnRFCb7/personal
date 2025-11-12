@@ -217,6 +217,60 @@
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
                                                                             } ;
+                                                                    build =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        DIRECTORY="$1"
+                                                                                                                        FILE="$2"
+                                                                                                                        root-store "$DIRECTORY"
+                                                                                                                        INPUTS=()
+                                                                                                                        while IFS= read -r INPUT
+                                                                                                                        do
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
+                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
+                                                                                                                        cat > /mount/command <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild build --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        cat > /mount/switch <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild switch --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/switch
+                                                                                                                        cat > /mount/test <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild test --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/test
+                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        then
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        else
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        fi
+                                                                                                                        mkdir /mount/shared
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "switch" "test" ] ;
+                                                                            } ;
                                                                     build-vm =
                                                                         ignore :
                                                                             {
@@ -438,6 +492,23 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.build" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "build" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
+                                                                                                                                    BUILD=${ resources.production.nix.build ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$BUILD"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/build" ;
                                                                                                     "alias.build-vm" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
@@ -454,7 +525,7 @@
                                                                                                                                     echo "$BUILD_VM"
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "!${ application }/bin/check" ;
+                                                                                                                in "!${ application }/bin/build" ;
                                                                                                     "alias.build-vm-with-bootloader" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
@@ -471,7 +542,7 @@
                                                                                                                                     echo "$BUILD_VM_WITH_BOOTLOADER"
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "!${ application }/bin/check" ;
+                                                                                                                in "!${ application }/bin/build-vm-with-bootloader" ;
                                                                                                     "alias.check" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
