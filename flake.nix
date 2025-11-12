@@ -394,7 +394,7 @@
                                                                                                                                     FILE="$( git rev-parse --show-toplevel )" || failure a612c90b
                                                                                                                                     DIRECTORY="$( dirname "$FILE" )" || failure 5183bdb8
                                                                                                                                     BUILD_VM_WITH_BOOTLOADER=${ resources.production.nix.build-vm-with-bootloader ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
-                                                                                                                                    echo "$BUILD_VM"
+                                                                                                                                    echo "$BUILD_VM_WITH_BOOTLOADER"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/check" ;
