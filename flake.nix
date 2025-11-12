@@ -165,6 +165,58 @@
                                                                         } ;
                                                             nix =
                                                                 {
+                                                                    build =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                start =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "start" ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            export SHARED_DIR="${ self }/shared"
+                                                                                                                                            "${ self }/result/bin/run-nixos-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/start" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        DIRECTORY="$1"
+                                                                                                                        FILE="$2"
+                                                                                                                        root-store "$DIRECTORY"
+                                                                                                                        INPUTS=()
+                                                                                                                        while IFS= read -r INPUT
+                                                                                                                        do
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure ca043af2
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
+                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        if nixos-rebuild build --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        then
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        else
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        fi
+                                                                                                                        ln --symbolic ${ start } /mount/start
+                                                                                                                        mkdir /mount/shared
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
+                                                                            } ;
                                                                     build-vm =
                                                                         ignore :
                                                                             {
@@ -291,7 +343,9 @@
                                                                                                                     INPUT_NAME="$( basename "$INPUT" )" || failure ca043af2
                                                                                                                     INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
                                                                                                                     INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
-                                                                                                                    INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                    INPUTS+=( "--override-input" )
+                                                                                                                    INPUTS+=( "$INPUT_NAME" )
+                                                                                                                    INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                 done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                 if nix flake check "$FILE" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 then
