@@ -213,6 +213,7 @@
                                                                                                                             echo "$?" > /mount/status
                                                                                                                         else
                                                                                                                             echo "$?" > /mount/status
+                                                                                                                            touch /mount/result
                                                                                                                         fi
                                                                                                                         mkdir /mount/shared
                                                                                                                     '' ;
@@ -271,6 +272,7 @@
                                                                                                                             echo "$?" > /mount/status
                                                                                                                         else
                                                                                                                             echo "$?" > /mount/status
+                                                                                                                            touch /mount/result
                                                                                                                         fi
                                                                                                                         ln --symbolic ${ start } /mount/start
                                                                                                                         mkdir /mount/shared
@@ -332,6 +334,7 @@
                                                                                                                             echo "$?" > /mount/status
                                                                                                                         else
                                                                                                                             echo "$?" > /mount/status
+                                                                                                                            touch /mount/result
                                                                                                                         fi
                                                                                                                         ln --symbolic ${ start } /mount/start
                                                                                                                         mkdir /mount/shared
