@@ -195,7 +195,7 @@
                                                                                                                     ''
                                                                                                                         DIRECTORY="$1"
                                                                                                                         FILE="$2"
-                                                                                                                        root store "$DIRECTORY"
+                                                                                                                        root-store "$DIRECTORY"
                                                                                                                         INPUTS=()
                                                                                                                         while IFS= read -r INPUT
                                                                                                                         do
@@ -247,7 +247,7 @@
                                                                                                                     ''
                                                                                                                         DIRECTORY="$1"
                                                                                                                         FILE="$2"
-                                                                                                                        root store "$DIRECTORY"
+                                                                                                                        root-store "$DIRECTORY"
                                                                                                                         INPUTS=()
                                                                                                                         while IFS= read -r INPUT
                                                                                                                         do
@@ -284,7 +284,7 @@
                                                                                                             ''
                                                                                                                 DIRECTORY="$1"
                                                                                                                 FILE="$2"
-                                                                                                                root store "$DIRECTORY"
+                                                                                                                root-store "$DIRECTORY"
                                                                                                                 INPUTS=()
                                                                                                                 while IFS= read -r INPUT
                                                                                                                 do
