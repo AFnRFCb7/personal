@@ -206,12 +206,12 @@
                                                                                                                         gh auth login --with-token < "$TOKEN_FILE/secret"
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                         do
-                                                                                                                            if ! git -C "$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
+                                                                                                                            if ! git -C "\$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
                                                                                                                             then
-                                                                                                                                BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
-                                                                                                                                LAST_COMMIT_MESSAGE="$( git -C "$INPUT" log -1 -pretty=%B )" || failure dec8cece
-                                                                                                                                URL="$( gh -C "$INPUT" pr create --base main --head "$BRANCH" --title "$LAST_COMMIT_MESSAGE" --body-file <( echo "$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
-                                                                                                                                gh -C "$INPUT" pr merge "$URL" --squash
+                                                                                                                                BRANCH="\$( git -C "\$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
+                                                                                                                                LAST_COMMIT_MESSAGE="\$( git -C "\$INPUT" log -1 -pretty=%B )" || failure dec8cece
+                                                                                                                                URL="\$( gh -C "\$INPUT" pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
+                                                                                                                                gh -C "\$INPUT" pr merge "\$URL" --squash
                                                                                                                             fi
                                                                                                                         done
                                                                                                                         gh auth logout
