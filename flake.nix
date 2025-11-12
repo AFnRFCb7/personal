@@ -837,7 +837,7 @@
                                                                         } ;
                                                                     ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                     secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
-                                                                    token = ignore : secret { encrypte = ignore : "${ secrets }/github-token.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                    token = ignore : secret { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                 } ;
                                                         } ;
                                                 } ;
