@@ -347,7 +347,11 @@
                                                                                                                     INPUTS+=( "$INPUT_NAME" )
                                                                                                                     INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                 done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                if nix flake check "$FILE" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                cat > /mount/command <<EOF
+                                                                                                                nix flake check "$FILE" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                EOF
+                                                                                                                chmod 0500 /mount/command
+                                                                                                                if /mount/command > /mount/standard-output 2> /mount/standard-error
                                                                                                                 then
                                                                                                                     echo "$?" > /mount/status
                                                                                                                 else
@@ -356,7 +360,7 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "standard-error" "standard-output" "status" ] ;
+                                                                                targets = [ "command" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
                                                             repository =
