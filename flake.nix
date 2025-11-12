@@ -279,7 +279,7 @@
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
                                                                             } ;
                                                                     build-vm-with-bootloader =
                                                                         ignore :
@@ -338,10 +338,14 @@
                                                                                                                         fi
                                                                                                                         ln --symbolic ${ start } /mount/start
                                                                                                                         mkdir /mount/shared
+                                                                                                                        if [ ! -e /mount/result ]
+                                                                                                                        then
+                                                                                                                            touch /mount/result
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
                                                                             } ;
                                                                     check =
                                                                         ignore :
