@@ -260,6 +260,7 @@
                                                                                                                         cat > /mount/command <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
                                                                                                                         nixos-rebuild build-vm --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        EOF
                                                                                                                         chmod 0500 /mount/command
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
                                                                                                                         then
