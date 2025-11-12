@@ -210,6 +210,7 @@
                                                                                                                         else
                                                                                                                             echo "$?" > /mount/status
                                                                                                                         fi
+                                                                                                                        ln --symbolic ${ start } /mount/start
                                                                                                                         mkdir /mount/shared
                                                                                                                     '' ;
                                                                                                     } ;
@@ -311,6 +312,23 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.build-vm" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "build-vm" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure "4af6f905"
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" ) || failure "6ee2312e"
+                                                                                                                                    BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$BUILD_VM"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/check" ;
                                                                                                     "alias.check" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
@@ -321,11 +339,13 @@
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    CHECK=${ resources.production.nix.check ( setup : ''${ setup } "${ self }" "${ self }/git-repository"'' ) }
+                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure "4084df8a"
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" ) || failure "b3b73c3c"
+                                                                                                                                    CHECK=${ resources.production.nix.check ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
                                                                                                                                     echo "$CHECK"
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "${ application }/bin/check" ;
+                                                                                                                in "!${ application }/bin/check" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
