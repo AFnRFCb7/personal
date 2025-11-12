@@ -689,7 +689,7 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github.com:AFnRFCb7/fixture inputs/fixture 2>&1
                                                                                                                                 fi
-                                                                                                                                if [[ ! -d studio inputs/git-repository ]]
+                                                                                                                                if [[ ! -d inputs/git-repository ]]
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
                                                                                                                                 fi
