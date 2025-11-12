@@ -207,7 +207,7 @@
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        ${ nixos-rebuild }/bin/nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/test
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
