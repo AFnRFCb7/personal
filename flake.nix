@@ -473,7 +473,7 @@
                                                                                                                                     echo "$BUILD_VM"
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "!${ application }/bin/build" ;
+                                                                                                                in "!${ application }/bin/build-vm" ;
                                                                                                     "alias.build-vm-with-bootloader" =
                                                                                                         { pkgs , resources , self } :
                                                                                                             let
