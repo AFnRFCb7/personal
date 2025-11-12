@@ -206,7 +206,7 @@
                                                                                                                         gh auth login --with-token < "$TOKEN_FILE"
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                         do
-                                                                                                                            if ! git -C "$INPUT" diff --quiet || ! diff -C "$INPUT" diff --cached --quiet
+                                                                                                                            if ! git -C "$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="$( git -C "$INPUT" log -1 -pretty=%B )" || failure dec8cece
@@ -216,13 +216,17 @@
                                                                                                                         done
                                                                                                                         gh auth logout
                                                                                                                         git -C "$FILE" fetch origin main
-                                                                                                                        git -C "$FILE" scratch
-                                                                                                                        git -C "$FILE" reset --soft origin/main
-                                                                                                                        git -C "$FILE" commit -a --verbose
-                                                                                                                        COMMIT="$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
-                                                                                                                        git -C "$FILE" push origin "$COMMIT"
-                                                                                                                        git -C "$FILE" checkout main
-                                                                                                                        git -C "$FILE" rebase origin "$COMMIT"
+                                                                                                                        if ! git -C "$FILE" diff --quiet || ! git diff -C "$FILE" --cached --quiet
+                                                                                                                        then
+                                                                                                                            git -C "$FILE" scratch
+                                                                                                                            git -C "$FILE" reset --soft origin/main
+                                                                                                                            git -C "$FILE" commit -a --verbose
+                                                                                                                            COMMIT="$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
+                                                                                                                            git -C "$FILE" push origin "$COMMIT"
+                                                                                                                            git -C "$FILE" checkout main
+                                                                                                                            git -C "$FILE" rebase origin "$COMMIT"
+                                                                                                                            git -C "$FILE" push origin main
+                                                                                                                        fi
                                                                                                                         sudo nixos-rebuild switch --flake "$FILE#user"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/switch
