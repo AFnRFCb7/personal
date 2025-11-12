@@ -175,7 +175,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 start =
@@ -227,7 +227,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 start =
@@ -279,7 +279,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 DIRECTORY="$1"
