@@ -217,6 +217,58 @@
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
                                                                             } ;
+                                                                    build-vm-with-bootloader =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                start =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "start" ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            export SHARED_DIR="${ self }/shared"
+                                                                                                                                            "${ self }/result/bin/run-nixos-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/start" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        DIRECTORY="$1"
+                                                                                                                        FILE="$2"
+                                                                                                                        root store "$DIRECTORY"
+                                                                                                                        INPUTS=()
+                                                                                                                        while IFS= read -r INPUT
+                                                                                                                        do
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 62be64a5
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 9f7de0ca
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure a4b1ee39
+                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                        done < <( find "$DIRECTORY/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        if nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        then
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        else
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        fi
+                                                                                                                        ln --symbolic ${ start } /mount/start
+                                                                                                                        mkdir /mount/shared
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
+                                                                            } ;
                                                                     check =
                                                                         ignore :
                                                                             {
@@ -322,9 +374,26 @@
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure 4af6f905
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
                                                                                                                                     DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
                                                                                                                                     BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$BUILD_VM"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/check" ;
+                                                                                                    "alias.build-vm-with-bootloader" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "build-vm" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure a612c90b
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 5183bdb8
+                                                                                                                                    BUILD_VM_WITH_BOOTLOADER=${ resources.production.nix.build-vm-with-bootloader ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
                                                                                                                                     echo "$BUILD_VM"
                                                                                                                                 '' ;
                                                                                                                         } ;
@@ -339,7 +408,7 @@
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    FILE="$( git rev-parse show-toplevel )" || failure 4084df8a
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4084df8a
                                                                                                                                     DIRECTORY="$( dirname "$FILE" )" || failure b3b73c3c
                                                                                                                                     CHECK=${ resources.production.nix.check ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
                                                                                                                                     echo "$CHECK"
