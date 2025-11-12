@@ -175,7 +175,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 in
@@ -202,12 +202,12 @@
                                                                                                                         chmod 0500 /mount/command
                                                                                                                         cat > /mount/switch <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild switch --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        sudo nixos-rebuild switch --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        sudo nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/test
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
