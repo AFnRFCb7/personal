@@ -218,14 +218,14 @@
                                                                                                                         git -C "$FILE" fetch origin main
                                                                                                                         if ! git -C "$FILE" diff --quiet || ! git diff -C "$FILE" --cached --quiet
                                                                                                                         then
-                                                                                                                            git -C "$FILE" scratch
-                                                                                                                            git -C "$FILE" reset --soft origin/main
-                                                                                                                            git -C "$FILE" commit -a --verbose
-                                                                                                                            COMMIT="$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
-                                                                                                                            git -C "$FILE" push origin "$COMMIT"
-                                                                                                                            git -C "$FILE" checkout main
-                                                                                                                            git -C "$FILE" rebase origin "$COMMIT"
-                                                                                                                            git -C "$FILE" push origin main
+                                                                                                                            git -C "\$FILE" scratch
+                                                                                                                            git -C "\$FILE" reset --soft origin/main
+                                                                                                                            git -C "\$FILE" commit -a --verbose
+                                                                                                                            COMMIT="\$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
+                                                                                                                            git -C "\$FILE" push origin "\$COMMIT"
+                                                                                                                            git -C "\$FILE" checkout main
+                                                                                                                            git -C "\$FILE" rebase origin "\$COMMIT"
+                                                                                                                            git -C "\$FILE" push origin main
                                                                                                                         fi
                                                                                                                         sudo nixos-rebuild switch --flake "$FILE#user"
                                                                                                                         EOF
@@ -689,7 +689,7 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github.com:AFnRFCb7/fixture inputs/fixture 2>&1
                                                                                                                                 fi
-                                                                                                                                if [[ ! -d inputs/git-repository ]]
+                                                                                                                                if [[ ! -dstudio inputs/git-repository ]]
                                                                                                                                 then
                                                                                                                                     git submodule add --branch main github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
                                                                                                                                 fi
@@ -1089,8 +1089,8 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 2dabdd33" ) }
-                                                                                            idea-community "$STUDIO/git-repository"
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } d996dcab" ) }
+                                                                                            idea-community "$STUDIO"
                                                                                         '' ;
                                                                                 }
                                                                         )
