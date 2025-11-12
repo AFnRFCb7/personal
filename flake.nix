@@ -192,12 +192,12 @@
                                                                                                                             INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
                                                                                                                             INPUTS+=( "--override-input" )
                                                                                                                             INPUTS+=( "$INPUT_NAME" )
-                                                                                                                            INPUTS+=("git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                         done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
                                                                                                                         cat > /mount/command <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild build --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        nixos-rebuild build --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/command
                                                                                                                         cat > /mount/switch <<EOF
