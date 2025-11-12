@@ -182,7 +182,6 @@
                                                                                                                     ''
                                                                                                                         DIRECTORY="$1"
                                                                                                                         FILE="$2"
-                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                         cd /mount
                                                                                                                         root-store "$DIRECTORY"
                                                                                                                         INPUTS=()
@@ -200,7 +199,8 @@
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
                                                                                                                         nixos-rebuild build --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
-                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        chmod 0500 /mount/command                                                                                                                                                                                                                                                TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                         cat > /mount/switch <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
                                                                                                                         gh auth login --with-token < "$TOKEN_FILE"
@@ -1089,7 +1089,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 8f359606" ) }
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } b031708c" ) }
                                                                                             cd "$STUDIO/git-repository"
                                                                                             idea-community .
                                                                                         '' ;
