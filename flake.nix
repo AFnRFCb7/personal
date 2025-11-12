@@ -325,8 +325,8 @@
                                                                                                                         done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure c1173d09
                                                                                                                         cat > /mount/command <<EOF
-                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/command
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
@@ -340,7 +340,7 @@
                                                                                                                         mkdir /mount/shared
                                                                                                                         if [ ! -e /mount/result ]
                                                                                                                         then
-                                                                                                                            touch /mount/result
+                                                                                                                            date > /mount/result
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                     } ;
