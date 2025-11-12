@@ -175,7 +175,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 in
@@ -202,7 +202,28 @@
                                                                                                                         chmod 0500 /mount/command
                                                                                                                         cat > /mount/switch <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        sudo nixos-rebuild switch --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                        gh auth login --with-token < "$TOKEN_FILE"
+                                                                                                                        find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+                                                                                                                        do
+                                                                                                                            if ! git -C "$INPUT" diff --quiet || ! diff -C "$INPUT" diff --cached --quiet
+                                                                                                                            then
+                                                                                                                                BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
+                                                                                                                                LAST_COMMIT_MESSAGE="$( git -C "$INPUT" log -1 -pretty=%B )" || failure dec8cece
+                                                                                                                                URL="$( gh -C "$INPUT" pr create --base main --head "$BRANCH" --title "$LAST_COMMIT_MESSAGE" --body-file <( echo "$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
+                                                                                                                                gh -C "$INPUT" pr merge "$URL" --squash
+                                                                                                                            fi
+                                                                                                                        done
+                                                                                                                        gh auth logout
+                                                                                                                        git -C "$FILE" fetch origin main
+                                                                                                                        git -C "$FILE" scratch
+                                                                                                                        git -C "$FILE" reset --soft origin/main
+                                                                                                                        git -C "$FILE" commit -a --verbose
+                                                                                                                        COMMIT="$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
+                                                                                                                        git -C "$FILE" push origin "$COMMIT"
+                                                                                                                        git -C "$FILE" checkout main
+                                                                                                                        git -C "$FILE" rebase origin "$COMMIT"
+                                                                                                                        sudo nixos-rebuild switch --flake "$FILE#user"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
@@ -816,6 +837,7 @@
                                                                         } ;
                                                                     ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                     secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                    token = ignore : secret { encrypte = ignore : "${ secrets }/github-token.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                 } ;
                                                         } ;
                                                 } ;
