@@ -1089,9 +1089,8 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 6ef664d4" ) }
-                                                                                            cd "$STUDIO/git-repository"
-                                                                                            idea-community .
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 76e1ad17" ) }
+                                                                                            idea-community "$STUDIO/git-repository"
                                                                                         '' ;
                                                                                 }
                                                                         )
