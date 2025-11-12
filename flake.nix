@@ -306,9 +306,15 @@
                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure 62be64a5
                                                                                                                             INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 9f7de0ca
                                                                                                                             INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure a4b1ee39
-                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                            INPUTS+=( "--override-input" )
+                                                                                                                            INPUTS+=( "$INPUT_NAME" )
+                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                         done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        if nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        cat > /mount/command <<EOF
+                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
                                                                                                                         then
                                                                                                                             echo "$?" > /mount/status
                                                                                                                         else
@@ -319,7 +325,7 @@
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
                                                                             } ;
                                                                     check =
                                                                         ignore :
@@ -348,7 +354,7 @@
                                                                                                                     INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                 done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                 cat > /mount/command <<EOF
-                                                                                                                nix flake check "$FILE" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                nix flake check "$FILE" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                 EOF
                                                                                                                 chmod 0500 /mount/command
                                                                                                                 if /mount/command > /mount/standard-output 2> /mount/standard-error
