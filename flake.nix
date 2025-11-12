@@ -203,7 +203,7 @@
                                                                                                                             INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
                                                                                                                             INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
                                                                                                                             INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         if nixos-rebuild build-vm --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
                                                                                                                         then
                                                                                                                             echo "$?" > /mount/status
@@ -255,7 +255,7 @@
                                                                                                                             INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 9f7de0ca
                                                                                                                             INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure a4b1ee39
                                                                                                                             INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         if nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
                                                                                                                         then
                                                                                                                             echo "$?" > /mount/status
@@ -292,7 +292,7 @@
                                                                                                                     INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
                                                                                                                     INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
                                                                                                                     INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                done < <( find "$DIRECTORY/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                 if nix flake check "$FILE" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
                                                                                                                 then
                                                                                                                     echo "$?" > /mount/status
