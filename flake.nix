@@ -227,7 +227,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 start =
@@ -251,12 +251,17 @@
                                                                                                                         INPUTS=()
                                                                                                                         while IFS= read -r INPUT
                                                                                                                         do
-                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure ca043af2
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
                                                                                                                             INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                         done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        if nixos-rebuild build-vm --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }" > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
+                                                                                                                        cat > /mount/command <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild build-vm --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
                                                                                                                         then
                                                                                                                             echo "$?" > /mount/status
                                                                                                                         else
@@ -267,7 +272,7 @@
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "start" ] ;
                                                                             } ;
                                                                     build-vm-with-bootloader =
                                                                         ignore :
@@ -279,7 +284,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "6554d957" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 start =
@@ -304,14 +309,16 @@
                                                                                                                         while IFS= read -r INPUT
                                                                                                                         do
                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure 62be64a5
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 9f7de0ca
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure a4b1ee39
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 7b24bffe
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 1ba4a40c
                                                                                                                             INPUTS+=( "--override-input" )
                                                                                                                             INPUTS+=( "$INPUT_NAME" )
                                                                                                                             INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                         done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure c1173d09
                                                                                                                         cat > /mount/command <<EOF
                                                                                                                         nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }"
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/command
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
