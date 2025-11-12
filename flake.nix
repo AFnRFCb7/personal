@@ -227,12 +227,12 @@
                                                                                                                             git -C "\$FILE" rebase origin "\$COMMIT"
                                                                                                                             git -C "\$FILE" push origin main
                                                                                                                         fi
-                                                                                                                        sudo nixos-rebuild switch --flake "$FILE#user"
+                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        sudo nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/test
                                                                                                                         if /mount/command > /mount/standard-output 2> /mount/standard-error
