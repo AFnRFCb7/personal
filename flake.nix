@@ -337,7 +337,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "218458ec" ) ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 DIRECTORY="$1"
@@ -353,7 +353,9 @@
                                                                                                                     INPUTS+=( "$INPUT_NAME" )
                                                                                                                     INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                 done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure 9d73c5ec
                                                                                                                 cat > /mount/command <<EOF
+                                                                                                                export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
                                                                                                                 nix flake check "$FILE" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
                                                                                                                 EOF
                                                                                                                 chmod 0500 /mount/command
