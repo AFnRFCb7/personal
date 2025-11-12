@@ -1060,11 +1060,12 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "studio" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
                                                                                             STUDIO=${ resources__.production.repository.studio ( setup : setup ) }
-                                                                                            echo "$STUDIO"
+                                                                                            cd "$STUDIO"
+                                                                                            idea-community .
                                                                                         '' ;
                                                                                 }
                                                                         )
