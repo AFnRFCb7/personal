@@ -182,6 +182,7 @@
                                                                                                                     ''
                                                                                                                         DIRECTORY="$1"
                                                                                                                         FILE="$2"
+                                                                                                                        cd /mount
                                                                                                                         root-store "$DIRECTORY"
                                                                                                                         INPUTS=()
                                                                                                                         while IFS= read -r INPUT
@@ -249,6 +250,7 @@
                                                                                                                     ''
                                                                                                                         DIRECTORY="$1"
                                                                                                                         FILE="$2"
+                                                                                                                        cd /mount
                                                                                                                         root-store "$DIRECTORY"
                                                                                                                         INPUTS=()
                                                                                                                         while IFS= read -r INPUT
@@ -307,6 +309,7 @@
                                                                                                                     ''
                                                                                                                         DIRECTORY="$1"
                                                                                                                         FILE="$2"
+                                                                                                                        cd /mount
                                                                                                                         root-store "$DIRECTORY"
                                                                                                                         INPUTS=()
                                                                                                                         while IFS= read -r INPUT
@@ -480,7 +483,7 @@
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
-                                                                                                                            name = "build-vm" ;
+                                                                                                                            name = "build-vm-with-bootloader" ;
                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
                                                                                                                             text =
                                                                                                                                 ''
