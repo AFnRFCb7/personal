@@ -190,7 +190,9 @@
                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
                                                                                                                             INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
                                                                                                                             INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
-                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                            INPUTS+=( "--override-input" )
+                                                                                                                            INPUTS+=( "$INPUT_NAME" )
+                                                                                                                            INPUTS+=("git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                         done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
                                                                                                                         cat > /mount/command <<EOF
