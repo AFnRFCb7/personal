@@ -718,8 +718,8 @@
                                                                                                                                     git submodule add --branch submodules/10c57e23120e45d5af754934243d3bd50c4d7a2bb8ce3581323d4 github.com:AFnRFCb7/visitor inputs/visitor 2>&1
                                                                                                                                 fi
                                                                                                                                 git add .gitmodules
-                                                                                                                                # git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                # git push origin HEAD
+                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                git push origin HEAD
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME"
@@ -1093,7 +1093,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 22f8ee04" ) }
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 91f61dbf" ) }
                                                                                             idea-community "$STUDIO/git-repository"
                                                                                         '' ;
                                                                                 }
