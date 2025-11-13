@@ -719,7 +719,7 @@
                                                                                                                                 fi
                                                                                                                                 git add .gitmodules
                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                git push origin HEAD
+                                                                                                                                git push origin HEAD 2>&1
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME"
