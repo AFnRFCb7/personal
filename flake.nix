@@ -675,52 +675,56 @@
                                                                                                                                 mkdir --parents inputs
                                                                                                                                 if [[ ! -d inputs/dot-gnupg ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
+                                                                                                                                    git submodule add --branch submodules/9dbfd2d15c48d454c62cc0496f4834ae0252976be1519d85656fb github.com:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/dot-ssh ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
+                                                                                                                                    git submodule add --branch submodules/52b11d85efc7a21d375fd0d5098a34cfd5181e6a78f35cf422e9d github.com:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/failure ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/failure inputs/failure 2>&1
+                                                                                                                                    git submodule add --branch submodules/890e3c5ea2c888b4cf9a88e596582d489b3d007ce7255fd873540 github.com:AFnRFCb7/failure inputs/failure 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/fixture ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/fixture inputs/fixture 2>&1
+                                                                                                                                    git submodule add --branch submodules/42489785564458bb4f544d872bca6fcbb9f60a67cc8d911bf0666 github.com:AFnRFCb7/fixture inputs/fixture 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/git-repository ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
+                                                                                                                                    git submodule add --branch submodules/a54526fe0456c67a62b985bf2dd791fea9ef0a8837d6f36726840 github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/personal ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/personal inputs/personal 2>&1
+                                                                                                                                    git submodule add --branch submodules/8862d6b14bbbf0bf2f9fe16622a6c119f489e71088bb271767aaa github.com:AFnRFCb7/personal inputs/personal 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/resource ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/resource inputs/resource 2>&1
+                                                                                                                                    git submodule add --branch submodules/b5c9d9c7a6a8e073a36b878c79d90014ee5c7b8b55e3bfadc08e7 github.com:AFnRFCb7/resource inputs/resource 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/secret ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/secret inputs/secret 2>&1
+                                                                                                                                    git submodule add --branch submodules/e462517fa0f57fef49dd5505ec1bf20fc5632195cb72732983d5a inputs/secret 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/secrets ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
+                                                                                                                                    git submodule add --branch submodules/ca29db94562095bbb5b9854119e289763d3720f7e647e8dc8fb12 github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/string ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/string inputs/string 2>&1
+                                                                                                                                    git submodule add --branch submodules/752fa5f771ae7b8d9f736d9037d8f6c9274f326cd2be294c44602 github.com:AFnRFCb7/string inputs/string 2>&1
                                                                                                                                 fi
                                                                                                                                 if [[ ! -d inputs/visitor ]]
                                                                                                                                 then
-                                                                                                                                    git submodule add --branch main github.com:AFnRFCb7/visitor inputs/visitor 2>&1
+                                                                                                                                    git submodule add --branch submodules/10c57e23120e45d5af754934243d3bd50c4d7a2bb8ce3581323d4 github.com:AFnRFCb7/visitor inputs/visitor 2>&1
                                                                                                                                 fi
+                                                                                                                                git add .gitmodules
+                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                git push origin HEAD
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME"
                                                                                                                                     git -C "$INPUT" config user.email "$USER_EMAIL"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
                                                                                                                                     git -C "$INPUT" config alias.scratch "$SCRATCH"
                                                                                                                                     git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                     git -C "$INPUT" scratch
@@ -1089,7 +1093,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 343d509d" ) }
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 44a53578" ) }
                                                                                             idea-community "$STUDIO/git-repository"
                                                                                         '' ;
                                                                                 }
