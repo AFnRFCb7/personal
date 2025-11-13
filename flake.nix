@@ -473,7 +473,7 @@
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 TOKEN="$1"
-                                                                                                                                RECIPIENT="$( age-keygen --identity ${ conf.personal.agenix } )" || failure 53cf8277
+                                                                                                                                RECIPIENT="$( age-keygen --identity ${ config.personal.agenix } )" || failure 53cf8277
                                                                                                                                 echo -n "$TOKEN" | age --encrypt --recipient "$RECIPIENT" --output "inputs/secrets/github-token.asc.age"
                                                                                                                             '' ;
                                                                                                                     } ;
