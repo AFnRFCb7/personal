@@ -705,18 +705,18 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch submodules/e462517fa0f57fef49dd5505ec1bf20fc5632195cb72732983d5a github.com:AFnRFCb7/secret inputs/secret 2>&1
                                                                                                                                 fi
-                                                                                                                                # if [[ ! -d inputs/secrets ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch submodules/ca29db94562095bbb5b9854119e289763d3720f7e647e8dc8fb12 github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
-                                                                                                                                # fi
-                                                                                                                                # if [[ ! -d inputs/string ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch submodules/752fa5f771ae7b8d9f736d9037d8f6c9274f326cd2be294c44602 github.com:AFnRFCb7/string inputs/string 2>&1
-                                                                                                                                # fi
-                                                                                                                                # if [[ ! -d inputs/visitor ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch submodules/10c57e23120e45d5af754934243d3bd50c4d7a2bb8ce3581323d4 github.com:AFnRFCb7/visitor inputs/visitor 2>&1
-                                                                                                                                # fi
+                                                                                                                                if [[ ! -d inputs/secrets ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/ca29db94562095bbb5b9854119e289763d3720f7e647e8dc8fb12 github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/string ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/752fa5f771ae7b8d9f736d9037d8f6c9274f326cd2be294c44602 github.com:AFnRFCb7/string inputs/string 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/visitor ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/10c57e23120e45d5af754934243d3bd50c4d7a2bb8ce3581323d4 github.com:AFnRFCb7/visitor inputs/visitor 2>&1
+                                                                                                                                fi
                                                                                                                                 # git add .gitmodules
                                                                                                                                 # git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                 # git push origin HEAD
@@ -1093,7 +1093,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 8463a6b3" ) }
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } 9c1059bd" ) }
                                                                                             idea-community "$STUDIO/git-repository"
                                                                                         '' ;
                                                                                 }
