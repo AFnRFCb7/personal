@@ -701,10 +701,10 @@
                                                                                                                                 then
                                                                                                                                     git submodule add --branch submodules/b5c9d9c7a6a8e073a36b878c79d90014ee5c7b8b55e3bfadc08e7 github.com:AFnRFCb7/resource inputs/resource 2>&1
                                                                                                                                 fi
-                                                                                                                                # if [[ ! -d inputs/secret ]]
-                                                                                                                                # then
-                                                                                                                                #     git submodule add --branch submodules/e462517fa0f57fef49dd5505ec1bf20fc5632195cb72732983d5a inputs/secret 2>&1
-                                                                                                                                # fi
+                                                                                                                                if [[ ! -d inputs/secret ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/e462517fa0f57fef49dd5505ec1bf20fc5632195cb72732983d5a github.com:AFnRFCb7/secret inputs/secret 2>&1
+                                                                                                                                fi
                                                                                                                                 # if [[ ! -d inputs/secrets ]]
                                                                                                                                 # then
                                                                                                                                 #     git submodule add --branch submodules/ca29db94562095bbb5b9854119e289763d3720f7e647e8dc8fb12 github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
