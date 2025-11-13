@@ -463,6 +463,21 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.secret" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "secret" ;
+                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "919121ca" ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                TOKEN="$1"
+                                                                                                                                RECIPIENT="$( age-keygen --identity ${ conf.personal.agenix } )" || failure 53cf8277
+                                                                                                                                echo -n "$TOKEN" | age --encrypt --recipient "$RECIPIENT" --output "inputs/secrets/github-token.asc.age"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/secret" ;
                                                                                                     "alias.scratch" =
                                                                                                         let
                                                                                                             application =
@@ -1086,6 +1101,7 @@
                                                                 name = config.personal.name ;
                                                                 packages =
                                                                     [
+                                                                        pkgs.gh
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
