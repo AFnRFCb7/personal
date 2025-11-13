@@ -210,8 +210,9 @@
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git -C "\$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git -C "\$INPUT" log -1 -pretty=%B )" || failure dec8cece
-                                                                                                                                URL="\$( gh -C "\$INPUT" pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
-                                                                                                                                gh -C "\$INPUT" pr merge "\$URL" --squash
+                                                                                                                                cd "\$INPUT"
+                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
+                                                                                                                                gh pr merge "\$URL" --squash
                                                                                                                             fi
                                                                                                                         done
                                                                                                                         gh auth logout
