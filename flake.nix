@@ -7,21 +7,865 @@
             {
                 lib =
                     {
+                        dot-gnupg ,
+                        dot-ssh ,
                         failure ,
+                        fixture ,
+                        git-repository ,
                         nixpkgs ,
                         private ,
-                        resources ,
+                        resource ,
+                        secret ,
                         secrets ,
+                        string ,
                         system ,
                         visitor
                     } @primary :
                         let
+                            _dot-gnupg = dot-gnupg.lib { } ;
+                            _dot-ssh = dot-ssh.lib { visitor = _visitor.implementation ; } ;
+                            _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _git-repository = git-repository.lib { visitor = _visitor.implementation ; } ;
+                            _resource =
+                                {
+                                    resources-directory ,
+                                    resources ,
+                                    store-garbage-collection-root
+                                } :
+                                    resource.lib
+                                        {
+                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                            coreutils = pkgs.coreutils ;
+                                            failure = _failure.implementation "f135add3" ;
+                                            findutils = pkgs.findutils ;
+                                            flock = pkgs.flock ;
+                                            jq = pkgs.jq ;
+                                            makeBinPath = pkgs.lib.makeBinPath ;
+                                            makeWrapper = pkgs.makeWrapper ;
+                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                            nix = pkgs.nix ;
+                                            ps = pkgs.ps ;
+                                            redis = pkgs.redis ;
+                                            resources = resources ;
+                                            resources-directory = resources-directory ;
+                                            store-garbage-collection-root = store-garbage-collection-root ;
+                                            string = _string.implementation ;
+                                            visitor = _visitor.implementation ;
+                                            writeShellApplication = pkgs.writeShellApplication ;
+                                            yq-go = pkgs.yq-go ;
+                                        } ;
+                            _secret = secret.lib { } ;
+                            _string = string.lib { visitor = _visitor.implementation ; } ;
+                            _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-                            # failure_ = primary.failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            failure_ = { implementation = ignore : "if true ; then exit 64 ; fi # " ; check = ignore : null ; } ;
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        resources__ =
+                                            _visitor.implementation
+                                                {
+                                                    lambda =
+                                                        path : value :
+                                                            let
+                                                                point = value null ;
+                                                                r =
+                                                                    _resource
+                                                                        {
+                                                                            resources = resources__ ;
+                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                            store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                        } ;
+                                                                    in r.implementation { init = point.init or null ; seed = path ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
+                                                }
+                                                {
+                                                    foobar =
+                                                        {
+                                                            dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
+                                                            dot-ssh =
+                                                                ignore :
+                                                                    _dot-ssh.implementation
+                                                                        {
+                                                                            github =
+                                                                                {
+                                                                                    strict-host-key-checking = true ;
+                                                                                    host-name = "github.com" ;
+                                                                                } ;
+                                                                            mobile =
+                                                                                {
+                                                                                    strict-host-key-checking = true ;
+                                                                                    host-name = "192.168.1.192" ;
+                                                                                    port = 8022 ;
+                                                                                } ;
+                                                                        } ;
+                                                            foobar =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pkgs , resources , self } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
+                                                                                                        root-resource "$DOT_GNUPG"
+                                                                                                        root-store ${ pkgs.gnupg }
+                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
+                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
+                                                                                                        root-resource "$DOT_SSH"
+                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
+                                                                                                        GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
+                                                                                                        root-resource "$GIT_REPOSITORY"
+                                                                                                        ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
+                                                                                                        SECRET=${ resources.foobar.secret ( setup : setup ) }
+                                                                                                        root-resource "$SECRET"
+                                                                                                        ln --symbolic "$SECRET/secret" /mount
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
+                                                                        transient = true ;
+                                                                    } ;
+                                                            git-repository = ignore : _git-repository.implementation { } ;
+                                                            secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
+                                                        } ;
+                                                    production =
+                                                        {
+                                                            dot-gnupg =
+                                                                ignore :
+                                                                    _dot-gnupg.implementation
+                                                                        {
+                                                                            ownertrust-fun = { pkgs , resources , self } : resources.production.secrets.ownertrust ;
+                                                                            secret-keys-fun = { pkgs , resources , self } : resources.production.secrets.secret-keys ;
+                                                                        } ;
+                                                            dot-ssh =
+                                                                ignore :
+                                                                    _dot-ssh.implementation
+                                                                        {
+                                                                            "github.com" =
+                                                                                {
+                                                                                    host-name = "github.com" ;
+                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user = "git" ;
+                                                                                } ;
+                                                                            mobile =
+                                                                                {
+                                                                                    host-name = "192.168.1.192" ;
+                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    port = 8022 ;
+                                                                                    strict-host-key-checking = true ;
+                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                } ;
+                                                                        } ;
+                                                            nix =
+                                                                {
+                                                                    build =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        DIRECTORY="$1"
+                                                                                                                        FILE="$2"
+                                                                                                                        cd /mount
+                                                                                                                        root-store "$DIRECTORY"
+                                                                                                                        INPUTS=()
+                                                                                                                        while IFS= read -r INPUT
+                                                                                                                        do
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
+                                                                                                                            INPUTS+=( "--override-input" )
+                                                                                                                            INPUTS+=( "$INPUT_NAME" )
+                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
+                                                                                                                        cat > /mount/command <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild build --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                        cat > /mount/switch <<EOF
+                                                                                                                        set -euo pipefail
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        gh auth login --with-token < "$TOKEN_FILE/secret"
+                                                                                                                        find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+                                                                                                                        do
+                                                                                                                            if ! git -C "\$INPUT" diff --quiet || ! git -C "\$INPUT" diff --cached --quiet
+                                                                                                                            then
+                                                                                                                                BRANCH="\$( git -C "\$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
+                                                                                                                                LAST_COMMIT_MESSAGE="\$( git -C "\$INPUT" log -1 -pretty=%B )" || failure dec8cece
+                                                                                                                                cd "\$INPUT"
+                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
+                                                                                                                                gh pr merge "\$URL" --squash
+                                                                                                                            fi
+                                                                                                                        done
+                                                                                                                        gh auth logout
+                                                                                                                        git -C "$FILE" fetch origin main
+                                                                                                                        if ! git -C "$FILE" diff --quiet || ! git diff -C "$FILE" --cached --quiet
+                                                                                                                        then
+                                                                                                                            git -C "$FILE" scratch
+                                                                                                                            git -C "$FILE" reset --soft origin/main
+                                                                                                                            git -C "$FILE" commit -a --verbose
+                                                                                                                            COMMIT="\$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
+                                                                                                                            git -C "$FILE" push origin "\$COMMIT"
+                                                                                                                            git -C "$FILE" checkout main
+                                                                                                                            git -C "$FILE" rebase origin "\$COMMIT"
+                                                                                                                            git -C "$FILE" push origin main
+                                                                                                                        fi
+                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/switch
+                                                                                                                        cat > /mount/test <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/test
+                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        then
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        else
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                            touch /mount/result
+                                                                                                                        fi
+                                                                                                                        mkdir /mount/shared
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "switch" "test" ] ;
+                                                                            } ;
+                                                                    build-vm =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                start =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "start" ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            export SHARED_DIR="${ self }/shared"
+                                                                                                                                            "${ self }/result/bin/run-nixos-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/start" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        DIRECTORY="$1"
+                                                                                                                        FILE="$2"
+                                                                                                                        cd /mount
+                                                                                                                        root-store "$DIRECTORY"
+                                                                                                                        INPUTS=()
+                                                                                                                        while IFS= read -r INPUT
+                                                                                                                        do
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
+                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
+                                                                                                                        cat > /mount/command <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild build-vm --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        then
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        else
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                            touch /mount/result
+                                                                                                                        fi
+                                                                                                                        ln --symbolic ${ start } /mount/start
+                                                                                                                        mkdir /mount/shared
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
+                                                                            } ;
+                                                                    build-vm-with-bootloader =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "6554d957" ) ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                start =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "start" ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            export SHARED_DIR="${ self }/shared"
+                                                                                                                                            "${ self }/result/bin/run-nixos-vm"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/start" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        DIRECTORY="$1"
+                                                                                                                        FILE="$2"
+                                                                                                                        cd /mount
+                                                                                                                        root-store "$DIRECTORY"
+                                                                                                                        INPUTS=()
+                                                                                                                        while IFS= read -r INPUT
+                                                                                                                        do
+                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 62be64a5
+                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 7b24bffe
+                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 1ba4a40c
+                                                                                                                            INPUTS+=( "--override-input" )
+                                                                                                                            INPUTS+=( "$INPUT_NAME" )
+                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure c1173d09
+                                                                                                                        cat > /mount/command <<EOF
+                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                        EOF
+                                                                                                                        chmod 0500 /mount/command
+                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
+                                                                                                                        then
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                        else
+                                                                                                                            echo "$?" > /mount/status
+                                                                                                                            touch /mount/result
+                                                                                                                        fi
+                                                                                                                        ln --symbolic ${ start } /mount/start
+                                                                                                                        mkdir /mount/shared
+                                                                                                                        if [ ! -e /mount/result ]
+                                                                                                                        then
+                                                                                                                            date > /mount/result
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
+                                                                            } ;
+                                                                    check =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pkgs , resources , self } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix ( _failure.implementation "218458ec" ) ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                DIRECTORY="$1"
+                                                                                                                FILE="$2"
+                                                                                                                root-store "$DIRECTORY"
+                                                                                                                INPUTS=()
+                                                                                                                while IFS= read -r INPUT
+                                                                                                                do
+                                                                                                                    INPUT_NAME="$( basename "$INPUT" )" || failure ca043af2
+                                                                                                                    INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
+                                                                                                                    INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
+                                                                                                                    INPUTS+=( "--override-input" )
+                                                                                                                    INPUTS+=( "$INPUT_NAME" )
+                                                                                                                    INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure 9d73c5ec
+                                                                                                                cat > /mount/command <<EOF
+                                                                                                                export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
+                                                                                                                nix flake check "$FILE" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
+                                                                                                                EOF
+                                                                                                                chmod 0500 /mount/command
+                                                                                                                if /mount/command > /mount/standard-output 2> /mount/standard-error
+                                                                                                                then
+                                                                                                                    echo "$?" > /mount/status
+                                                                                                                else
+                                                                                                                    echo "$?" > /mount/status
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "command" "standard-error" "standard-output" "status" ] ;
+                                                                            } ;
+                                                                } ;
+                                                            repository =
+                                                                let
+                                                                    post-commit =
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "post-commit" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                while ! git push origin HEAD
+                                                                                                do
+                                                                                                    sleep 1s
+                                                                                                done
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/post-commit" ;
+                                                                    ssh =
+                                                                        { pkgs , resources , self } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "ssh" ;
+                                                                                            runtimeInputs = [ pkgs.openssh ];
+                                                                                            text =
+                                                                                                ''
+                                                                                                    if [[ -t 0 ]]
+                                                                                                    then
+                                                                                                        ssh -F "$DOT_SSH/dot-ssh" "$@"
+                                                                                                    else
+                                                                                                        cat | ssh -F "$DOT_SSH/dot-ssh" "$@"
+                                                                                                    fi
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/ssh" ;
+                                                                    in
+                                                                        {
+                                                                            snapshot =
+                                                                                ignore :
+                                                                                    _git-repository.implementation
+                                                                                        {
+                                                                                            configs =
+                                                                                                {
+                                                                                                    "alias.secret" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "secret" ;
+                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "919121ca" ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                TOKEN="$1"
+                                                                                                                                RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 53cf8277
+                                                                                                                                echo -n "$TOKEN" | age --encrypt --recipient "$RECIPIENT" --output "inputs/secrets/github-token.asc.age"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/secret" ;
+                                                                                                    "alias.scratch" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "scratch" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "185363fa " ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 1e8f4371
+                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.build" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "build" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
+                                                                                                                                    BUILD=${ resources.production.nix.build ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$BUILD"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/build" ;
+                                                                                                    "alias.build-vm" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "build-vm" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
+                                                                                                                                    BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$BUILD_VM"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/build-vm" ;
+                                                                                                    "alias.build-vm-with-bootloader" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "build-vm-with-bootloader" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure a612c90b
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 5183bdb8
+                                                                                                                                    BUILD_VM_WITH_BOOTLOADER=${ resources.production.nix.build-vm-with-bootloader ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$BUILD_VM_WITH_BOOTLOADER"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/build-vm-with-bootloader" ;
+                                                                                                    "alias.check" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "check" ;
+                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4084df8a
+                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure b3b73c3c
+                                                                                                                                    CHECK=${ resources.production.nix.check ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
+                                                                                                                                    echo "$CHECK"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/check" ;
+                                                                                                    "core.sshCommand" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "ssh" ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                                    ssh -F "$DOT_SSH/dot-ssh" "$@"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/ssh" ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                            hooks =
+                                                                                                {
+                                                                                                    pre-commit =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "pre-commit" ;
+                                                                                                                        runtimeInputs = [ ( _failure.implementation "70006125" ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                failure be1e88e9 "This is a read-only git repository"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                                in "${ application }/bin/pre-commit" ;
+                                                                                                } ;
+                                                                                            remotes =
+                                                                                                {
+                                                                                                    origin = config.personal.repository.private.remote ;
+                                                                                                } ;
+                                                                                            setup =
+                                                                                                { pkgs , resources , self } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
+                                                                                                                            USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
+                                                                                                                            GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
+                                                                                                                            export GIT_SSH_COMMAND
+                                                                                                                            SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
+                                                                                                                            COMMANDS=()
+                                                                                                                            OVERRIDE_INPUTS=()
+                                                                                                                            append() {
+                                                                                                                                local CMD=( "$@" )
+                                                                                                                                COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
+                                                                                                                            }
+                                                                                                                            while [[ "$#" -gt 0 ]]
+                                                                                                                            do
+                                                                                                                                case "$1" in
+                                                                                                                                    --branch)
+                                                                                                                                        BRANCH="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    --commit)
+                                                                                                                                        COMMIT="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    --input)
+                                                                                                                                        INPUT_NAME="$2"
+                                                                                                                                        INPUT_REMOTE="3"
+                                                                                                                                        INPUT_BRANCH="$4"
+                                                                                                                                        INPUT_COMMIT="$5"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
+                                                                                                                                        append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
+                                                                                                                                        OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                                        shift 5
+                                                                                                                                        ;;
+                                                                                                                                    *)
+                                                                                                                                        failure 6e18cb53 "$1"
+                                                                                                                                        ;;
+                                                                                                                                esac
+                                                                                                                            done
+                                                                                                                            if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]]
+                                                                                                                            then
+                                                                                                                                git fetch origin "$BRANCH" 2>&1
+                                                                                                                                git checkout "$COMMIT" 2>&1
+                                                                                                                                git submodule init 2>&1
+                                                                                                                                git submodule update --recursive 2>&1
+                                                                                                                                for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
+                                                                                                                                do
+                                                                                                                                    IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
+                                                                                                                                    "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
+                                                                                                                                done
+                                                                                                                            else
+                                                                                                                                failure 1da13d01
+                                                                                                                            fi
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
+                                                                                        } ;
+                                                                            studio =
+                                                                                ignore :
+                                                                                    _git-repository.implementation
+                                                                                        {
+                                                                                            configs =
+                                                                                                {
+                                                                                                    "alias.inherit" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "inherit" ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                USER_NAME="$( git config --get user.name )" || failure "b0a3ba6f"
+                                                                                                                                USER_EMAIL="$( git config --get user.email )" || failure "cc7c46fb"
+                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure "99619549"
+                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                SCRATCH="$( git config --get alias.scratch )" || failure "7c276c3a"
+                                                                                                                                mkdir --parents inputs
+                                                                                                                                if [[ ! -d inputs/dot-gnupg ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/9dbfd2d15c48d454c62cc0496f4834ae0252976be1519d85656fb github.com:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/dot-ssh ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/52b11d85efc7a21d375fd0d5098a34cfd5181e6a78f35cf422e9d github.com:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/failure ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/890e3c5ea2c888b4cf9a88e596582d489b3d007ce7255fd873540 github.com:AFnRFCb7/failure inputs/failure 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/fixture ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/42489785564458bb4f544d872bca6fcbb9f60a67cc8d911bf0666 github.com:AFnRFCb7/fixture inputs/fixture 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/git-repository ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/a54526fe0456c67a62b985bf2dd791fea9ef0a8837d6f36726840 github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/personal ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/8862d6b14bbbf0bf2f9fe16622a6c119f489e71088bb271767aaa github.com:AFnRFCb7/personal inputs/personal 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/resource ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/b5c9d9c7a6a8e073a36b878c79d90014ee5c7b8b55e3bfadc08e7 github.com:AFnRFCb7/resource inputs/resource 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/secret ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/e462517fa0f57fef49dd5505ec1bf20fc5632195cb72732983d5a github.com:AFnRFCb7/secret inputs/secret 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/secrets ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/ca29db94562095bbb5b9854119e289763d3720f7e647e8dc8fb12 github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/string ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/752fa5f771ae7b8d9f736d9037d8f6c9274f326cd2be294c44602 github.com:AFnRFCb7/string inputs/string 2>&1
+                                                                                                                                fi
+                                                                                                                                if [[ ! -d inputs/visitor ]]
+                                                                                                                                then
+                                                                                                                                    git submodule add --branch submodules/10c57e23120e45d5af754934243d3bd50c4d7a2bb8ce3581323d4 github.com:AFnRFCb7/visitor inputs/visitor 2>&1
+                                                                                                                                fi
+                                                                                                                                git add .gitmodules
+                                                                                                                                git commit -am "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                                git push origin HEAD 2>&1
+                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                do
+                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME"
+                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
+                                                                                                                                    git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                    git -C "$INPUT" scratch
+                                                                                                                                done
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                                in "!${ application }/bin/inherit" ;
+                                                                                                    "alias.scratch" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "scratch" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "185363fa " ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 0a36ac2f
+                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.snapshot" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "snapshot" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
+                                                                                                                                    INPUTS=()
+                                                                                                                                    while IFS= read -r INPUT
+                                                                                                                                    do
+                                                                                                                                        if ! git -C "$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
+                                                                                                                                        then
+                                                                                                                                            git -C "$INPUT" commit -am "" --allow-empty-message
+                                                                                                                                        fi
+                                                                                                                                        git -C "$INPUT" push origin HEAD 2>&1
+                                                                                                                                        NAME="$( basename "$INPUT" )" || failure d6990665
+                                                                                                                                        REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
+                                                                                                                                        BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
+                                                                                                                                        COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
+                                                                                                                                        INPUTS+=( "--input" "$NAME" "$REMOTE" "$BRANCH" "$COMMIT" )
+                                                                                                                                    done < <( find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                                    if ! git -C "$TOP_LEVEL" diff --quiet || ! git -C "$TOP_LEVEL" diff --cached --quiet
+                                                                                                                                    then
+                                                                                                                                        git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
+                                                                                                                                    fi
+                                                                                                                                    git -C "$TOP_LEVEL" push origin HEAD 2>&1
+                                                                                                                                    BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
+                                                                                                                                    COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
+                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
+                                                                                                                                    echo "$RESOURCE/git-repository"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "!${ application }/bin/snapshot" ;
+                                                                                                    "core.sshCommand" =
+                                                                                                        { pkgs , resources , self } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "ssh" ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                                    ssh -F "$DOT_SSH/dot-ssh" "$@"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/ssh" ;
+                                                                                                    "user.email" = config.personal.repository.private.email ;
+                                                                                                    "user.name" = config.personal.repository.private.name ;
+                                                                                                } ;
+                                                                                            hooks =
+                                                                                                {
+                                                                                                    post-commit = post-commit ;
+                                                                                                } ;
+                                                                                            remotes =
+                                                                                                {
+                                                                                                    origin = config.personal.repository.private.remote ;
+                                                                                                } ;
+                                                                                            setup =
+                                                                                                { pkgs , resources , self } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            git fetch origin main 2>&1
+                                                                                                                            git checkout origin/main 2>&1
+                                                                                                                            git scratch
+                                                                                                                            git inherit
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
+                                                                                        } ;
+                                                                        } ;
+                                                            secrets =
+                                                                {
+                                                                    dot-ssh =
+                                                                        {
+                                                                            github =
+                                                                                {
+                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                } ;
+                                                                            mobile =
+                                                                                {
+                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                } ;
+                                                                        } ;
+                                                                    ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                    secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                    token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                } ;
+                                                        } ;
+                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
@@ -54,1304 +898,6 @@
                                                                 fi
                                                             '' ;
                                                     } ;
-                                        resources_ =
-                                                (
-                                                    let
-                                                        seed =
-                                                            let
-                                                                seed = path : value : [ { path = path ; type = builtins.typeOf value ; value = if builtins.typeOf value == "lambda" then null else value ; } ] ;
-                                                                in
-                                                                    visitor.lib.implementation
-                                                                        {
-                                                                            bool = seed ;
-                                                                            float = seed ;
-                                                                            int = seed ;
-                                                                            lambda = seed ;
-                                                                            list = seed ;
-                                                                            null = seed ;
-                                                                            path = seed ;
-                                                                            set = seed ;
-                                                                            string = seed ;
-                                                                        }
-                                                                        primary ;
-                                                        tree =
-                                                            let
-                                                                dot-gnupg =
-                                                                    {
-                                                                        secret-keys ,
-                                                                        ownertrust
-                                                                    } @primary : ignore :
-                                                                        {
-                                                                            init =
-                                                                                resources : self :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
-                                                                                                    text =
-                                                                                                        let
-                                                                                                            attributes =
-                                                                                                                visitor.lib.implementation
-                                                                                                                    {
-                                                                                                                        lambda = path : value : value resources_ ;
-                                                                                                                        # path = path : value : value ;
-                                                                                                                        set = path : set : set ;
-                                                                                                                    }
-                                                                                                                    primary ;
-                                                                                                            in
-                                                                                                                ''
-                                                                                                                    GNUPGHOME=/mount/dot-gnupg
-                                                                                                                    export GNUPGHOME
-                                                                                                                    mkdir --parents "$GNUPGHOME"
-                                                                                                                    chmod 0700 "$GNUPGHOME"
-                                                                                                                    SECRET_KEYS="$( ${ attributes.secret-keys.resource } )" || ${ failure_.implementation "1107ddcd" }
-                                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/secret" 2>&1
-                                                                                                                    OWNERTRUST="$( ${ attributes.ownertrust.resource } )" || ${ failure_.implementation "1471b338" }
-                                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/${ attributes.ownertrust.target }" 2>&1
-                                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
-                                                                                                                '' ;
-                                                                                                } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                            targets = [ "dot-gnupg" ] ;
-                                                                        } ;
-                                                                dot-ssh =
-                                                                    {
-                                                                        address-family ? null ,
-                                                                        batch-mode ? null ,
-                                                                        bind-address ? null ,
-                                                                        canonical-domains ? null ,
-                                                                        canonicalize-fallback-local ? null ,
-                                                                        canonicalize-hostname ? null ,
-                                                                        check-host-ip ? null ,
-                                                                        challenge-response-authentication ? null ,
-                                                                        ciphers ? null ,
-                                                                        compression ? null ,
-                                                                        connect-timeout ? null ,
-                                                                        control-master ? null ,
-                                                                        control-path ? null ,
-                                                                        forward-agent ? null ,
-                                                                        gateway-ports ? null ,
-                                                                        gssapi-authentication ? null ,
-                                                                        gssapi-delegate-credentials ? null ,
-                                                                        gssapi-key-exchange ? null ,
-                                                                        gssapi-renewal-forces-rekey ? null ,
-                                                                        gssapi-trust-dns ? null ,
-                                                                        host ? null ,
-                                                                        hostkey-alias ? null ,
-                                                                        host-name ? null ,
-                                                                        identities-only ? null ,
-                                                                        identity-agent ? null ,
-                                                                        identity-file ? null ,
-                                                                        ignore-unknown ? null ,
-                                                                        ip-qos ? null ,
-                                                                        kbd-interactive-authentication ? null ,
-                                                                        kbd-interactive-devices ? null ,
-                                                                        kex-algorithms ? null ,
-                                                                        local-forward ? null ,
-                                                                        log-level ? null ,
-                                                                        match ? null ,
-                                                                        no-host-authentication-for-localhost ? null ,
-                                                                        password-authentication ? null ,
-                                                                        permit-local-command ? null ,
-                                                                        permit-remote-open ? null ,
-                                                                        pkcs11-provider ? null ,
-                                                                        port ? null ,
-                                                                        preferred-authentications ? null ,
-                                                                        protocol ? null ,
-                                                                        proxy-command ? null ,
-                                                                        proxy-jump ? null ,
-                                                                        proxy-use-fdpass ? null ,
-                                                                        pubkey-accepted-key-types ? null ,
-                                                                        pubkey-authentication ? null ,
-                                                                        rekey-limit ? null ,
-                                                                        remote-forward ? null ,
-                                                                        server-alive-count-max ? null ,
-                                                                        server-alive-interval ? null ,
-                                                                        sessiontype ? null ,
-                                                                        strict-host-key-checking ? null ,
-                                                                        user ? null ,
-                                                                        user-known-hosts-file ? null
-                                                                    } @primary : ignore :
-                                                                        let
-                                                                            bash-name = name : builtins.replaceStrings [ "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" "-" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" "_" ] name ;
-                                                                            cats =
-                                                                                let
-                                                                                    one = path : value : [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) "=" ''"'' "$" ( bash-name ( builtins.elemAt path 0 ) ) ''"'' ] ) ] ;
-                                                                                    two =
-                                                                                        path : value :
-                                                                                            let
-                                                                                                v = value resources_ ;
-                                                                                                in
-                                                                                                    [ ( builtins.concatStringsSep "" [ ( config-name ( builtins.elemAt path 0 ) ) " " "$" ( bash-name ( builtins.elemAt path 0 ) ) "/" ( v.target ) ] ) ] ;
-                                                                                    in
-                                                                                        visitor.lib.implementation
-                                                                                            {
-                                                                                                bool = one ;
-                                                                                                int = one ;
-                                                                                                lambda = two ;
-                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                                string = one ;
-                                                                                            }
-                                                                                            primary ;
-                                                                            exports =
-                                                                                let
-                                                                                    export = path : value : [ "${ bash-name ( builtins.elemAt path 0 ) }=${ value }" ] ;
-                                                                                    in
-                                                                                        visitor.lib.implementation
-                                                                                            {
-                                                                                                bool = path : value : if value then export path "yes" else "no" ;
-                                                                                                int = path : value : export path ( builtins.toString value ) ;
-                                                                                                lambda = path : value : let v = value resources_ ; in export path ( ''"$( ${ v.resource } )" || exit 64'' ) ;
-                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                                string = path : value : export path ''"${ value }"'' ;
-                                                                                            }
-                                                                                            primary ;
-                                                                            links =
-                                                                                let
-                                                                                    mapper =
-                                                                                        name : value :
-                                                                                            visitor.lib.implementation
-                                                                                                {
-                                                                                                    bool = path : value : null;
-                                                                                                    int = path : value : null ;
-                                                                                                    lambda = path : value : "ln --symbolic ${ builtins.concatStringsSep "" [ "$" ( bash-name name ) ] } /links" ;
-                                                                                                    string = path : value : null ;
-                                                                                                }
-                                                                                                primary ;
-                                                                                    in builtins.filter ( link : builtins.typeOf link == "string" ) ( builtins.attrValues ( builtins.mapAttrs mapper primary ) ) ;
-                                                                            config-name = name : builtins.replaceStrings [ "-" ] [ "" ] name ;
-                                                                            in
-                                                                                {
-                                                                                    init =
-                                                                                        resources : self :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "application" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    ${ builtins.concatStringsSep "\n" exports }
-                                                                                                                    ${ builtins.concatStringsSep "\n" links }
-                                                                                                                    cat > /mount/config <<EOF
-                                                                                                                    ${ builtins.concatStringsSep "\n" cats }
-                                                                                                                    EOF
-                                                                                                                    chmod 0400 /mount/config
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/application" ;
-                                                                                    targets =
-                                                                                        [
-                                                                                            "config"
-                                                                                        ] ;
-                                                                                    transient = false ;
-                                                                                } ;
-                                                                git =
-                                                                    {
-                                                                        configs ? { } ,
-                                                                        hooks ? { } ,
-                                                                        remotes ? { } ,
-                                                                        setup ? null ,
-                                                                        release ? null
-                                                                    } : ignore :
-                                                                        {
-                                                                            init =
-                                                                                resources : self :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "application" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            export REPOSITORY_ROOT=/mount
-                                                                                                            export GIT_DIR=/mount/git
-                                                                                                            export GIT_WORK_TREE=/mount/work-tree
-                                                                                                            mkdir --parents "$GIT_DIR"
-                                                                                                            mkdir --parents "$GIT_WORK_TREE"
-                                                                                                            cat > /mount/.envrc <<EOF
-                                                                                                            export REPOSITORY_ROOT=${ self }
-                                                                                                            export GIT_DIR=${ self }/git
-                                                                                                            export GIT_WORK_TREE=${ self }/work-tree
-                                                                                                            EOF
-                                                                                                            cd /mount
-                                                                                                            git init 2>&1
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config "${ name }" "${ value }"'' ) configs ) ) }
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''ln --symbolic "${ value }" "$GIT_DIR/hooks/${ name }"'' ) hooks ) ) }
-                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git remote add "${ name }" "${ value }"'' ) remotes ) ) }
-                                                                                                            ${ if builtins.typeOf setup == "string" then ''if read -t 0 ; then cat | exec ${ setup } "$@" ; else exec ${ setup } "$@" ; fi'' else "#" }
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                            in "${ application }/bin/application" ;
-                                                                            release = release ;
-                                                                            targets = [ ".envrc" "git" "work-tree" ] ;
-                                                                            transient = false ;
-                                                                        } ;
-                                                                milestone =
-                                                                    let
-                                                                        application =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "milestone" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            NOW="$( date +%s )" || exit 64
-                                                                                            date --date @$(( ( NOW / ${ builtins.toString config.personal.milestone.epoch } ) * ${ builtins.toString config.personal.milestone.epoch } )) "+${ config.personal.milestone.format }"
-                                                                                        '' ;
-                                                                                } ;
-                                                                            in "${ application }/bin/milestone" ;
-                                                                post-commit =
-                                                                    remote :
-                                                                        let
-                                                                            post-commit =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "post-commit" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                while ! git push origin HEAD
-                                                                                                do
-                                                                                                    sleep 1s
-                                                                                                done
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ post-commit }/bin/post-commit" ;
-                                                                scratch =
-                                                                    let
-                                                                        scratch =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "scratch" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            SCRATCH="$( uuidgen | sha512sum | cut --bytes -128 )" || ${ failure_.implementation "b6b48eba" }
-                                                                                            BRANCH="$( echo "scratch/$SCRATCH" | cut --bytes -100 )" || ${ failure_.implementation "e0a2dd72" }
-                                                                                            git checkout -b "$BRANCH" 2>&1
-                                                                                        '' ;
-                                                                                } ;
-                                                                            in "${ scratch }/bin/scratch" ;
-                                                                snapshot =
-                                                                    let
-                                                                        application =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "snapshot" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            TOKEN="$1"
-                                                                                            ROOT="$2"
-                                                                                            git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                            GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.branch" "$BRANCH"
-                                                                                            COMMIT="$( git rev-parse HEAD )" || ${ failure_.implementation "0398c6ad" }
-                                                                                            GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git config "dependencies.$TOKEN.commit" "$COMMIT"
-                                                                                            sed --regexp-extended -i "s#(^.*${ builtins.concatStringsSep "" [ "$" "{" "TOKEN" "}" ] }[.]url.*\?ref=)(.*)(\".*\$)#\1$COMMIT\3#" "$ROOT/work-tree/flake.nix"
-                                                                                        '' ;
-                                                                                } ;
-                                                                    in "${ application }/bin/snapshot" ;
-                                                                ssh-command =
-                                                                    dot-ssh :
-                                                                        let
-                                                                            ssh-command =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "ssh-command" ;
-                                                                                        runtimeInputs = [ pkgs.openssh ] ;
-                                                                                        text =
-                                                                                            let
-                                                                                                point = dot-ssh resources_ ;
-                                                                                                in
-                                                                                                    ''
-                                                                                                        DOT_SSH="$( echo | ${ point.resource } )" || ${ failure_.implementation "85b3c393" }
-                                                                                                        exec ssh -F "$DOT_SSH/${ point.target }" "$@"
-                                                                                                    '' ;
-                                                                                    } ;
-                                                                            in "${ ssh-command }/bin/ssh-command" ;
-                                                                in
-                                                                    {
-                                                                        debug =
-                                                                            {
-                                                                                alpha =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            echo "ALPHA" > /mount/self
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            release =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "release" ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        exit 155
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/release" ;
-                                                                                            targets = [ "self" ] ;
-                                                                                        } ;
-                                                                                beta =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            echo "BETA" > /mount/self
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            release =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "release" ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        echo "${ self }" > /mount/self
-                                                                                                                        exit 155
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/release" ;
-                                                                                            targets = [ "self" ] ;
-                                                                                        } ;
-                                                                            } ;
-                                                                        control-paths =
-                                                                            {
-                                                                                mobile =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            mkdir --parents /mount/control-path
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            targets = [ "control-path" ] ;
-                                                                                        } ;
-                                                                            } ;
-                                                                        dot-gnupg =
-                                                                            dot-gnupg
-                                                                                {
-                                                                                    secret-keys = resources : { resource = resources.secrets."secret-keys.asc.age" ; target = "secret" ; } ;
-                                                                                    ownertrust = resources : { resource = resources.secrets."ownertrust.asc.age" ; target = "secret" ; } ;
-                                                                                } ;
-                                                                        dot-password-store =
-                                                                            git
-                                                                                {
-                                                                                    configs =
-                                                                                        {
-                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                            "user.name" = config.personal.pass.description ;
-                                                                                            "user.email" = config.personal.pass.email ;
-                                                                                        } ;
-                                                                                    hooks =
-                                                                                        {
-                                                                                            post-commit = post-commit "origin" ;
-                                                                                        } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            origin = config.personal.pass.remote ;
-                                                                                        } ;
-                                                                                    setup =
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "setup" ;
-                                                                                                        runtimeInputs = [ pkgs.git ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                # git fetch origin ${ config.personal.pass.branch }
-                                                                                                                # git checkout ${ config.personal.pass.branch }
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                                in "${ application }/bin/setup" ;
-                                                                                } ;
-                                                                        dot-ssh =
-                                                                            {
-                                                                                github =
-                                                                                    dot-ssh
-                                                                                        {
-                                                                                            host = "github.com" ;
-                                                                                            host-name = "github.com" ;
-                                                                                            identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
-                                                                                            strict-host-key-checking = true ;
-                                                                                            user = "git" ;
-                                                                                            user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ; target = "secret" ; } ;
-                                                                                        } ;
-                                                                                mobile =
-                                                                                    dot-ssh
-                                                                                        {
-                                                                                            host = "mobile" ;
-                                                                                            host-name = "192.168.1.202" ;
-                                                                                            identity-file = resources : { resource = resources.secrets.dot-ssh.boot."identity.asc.age" ; target = "secret" ; } ;
-                                                                                            port = 8022 ;
-                                                                                            strict-host-key-checking = true ;
-                                                                                            user = "git" ;
-                                                                                            user-known-hosts-file = resources : { resource = resources.secrets.dot-ssh.boot."known-hosts.asc.age" ; target = "secret" ; } ;
-                                                                                        } ;
-                                                                            } ;
-                                                                        home =
-                                                                            ignore :
-                                                                                {
-                                                                                    init =
-                                                                                        resources : self :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "application" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    FAILURE="$( ${ resources.repository.failure } )" || ${ failure_.implementation "26a28eee" }
-                                                                                                                    ln --symbolic "$FAILURE" /links
-                                                                                                                    ln --symbolic "$FAILURE" /mount/failure
-                                                                                                                    PERSONAL="$( ${ resources.repository.personal } )" || ${ failure_.implementation "8af3601b" }
-                                                                                                                    ln --symbolic "$PERSONAL" /links
-                                                                                                                    ln --symbolic "$PERSONAL" /mount/personal
-                                                                                                                    RESOURCES="$( ${ resources.repository.resources } )" || ${ failure_.implementation "3f26b4aa" }
-                                                                                                                    ln --symbolic "$RESOURCES" /links
-                                                                                                                    ln --symbolic "$RESOURCES" /mount/resources
-                                                                                                                    PRIVATE="$( ${ resources.repository.private } )" || ${ failure_.implementation "35b067fd" }
-                                                                                                                    ln --symbolic "$PRIVATE" /links
-                                                                                                                    ln --symbolic "$PRIVATE" /mount/private
-                                                                                                                    SECRETS="$( ${ resources.repository.secrets } )" || ${ failure_.implementation "04d6332b" }
-                                                                                                                    ln --symbolic "$SECRETS" /links
-                                                                                                                    ln --symbolic "$SECRETS" /mount/secrets
-                                                                                                                    VISITOR="$( ${ resources.repository.visitor } )" || ${ failure_.implementation "04d6332b" }
-                                                                                                                    ln --symbolic "$VISITOR" /links
-                                                                                                                    ln --symbolic "$VISITOR" /mount/visitor
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/application" ;
-                                                                                    targets =
-                                                                                        [
-                                                                                            "failure"
-                                                                                            "personal"
-                                                                                            "private"
-                                                                                            "secrets"
-                                                                                            "resources"
-                                                                                            "visitor"
-                                                                                        ] ;
-                                                                                    transient = false ;
-                                                                                } ;
-                                                                        repository =
-                                                                            {
-                                                                                failure =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                    "alias.snapshot" = "!${ snapshot }" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                    "user.email" = config.personal.repository.failure.email ;
-                                                                                                    "user.name" = config.personal.repository.failure.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit "origin" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.failure.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        if git ls-remote --exit-code origin "refs/heads/${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                        then
-                                                                                                                            git fetch origin "${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                            git checkout "origin/${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                        else
-                                                                                                                            git checkout -b "${ config.personal.repository.failure.branch }" 2>&1
-                                                                                                                            git commit -am "" --allow-empty --allow-empty-message 2>&1
-                                                                                                                            git push -u origin HEAD 2>&1
-                                                                                                                        fi
-                                                                                                                        git scratch
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                                personal =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                    "alias.snapshot" = "!${ snapshot }" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                    "user.email" = config.personal.repository.personal.email ;
-                                                                                                    "user.name" = config.personal.repository.personal.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit "origin" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.personal.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        git fetch origin ${ config.personal.repository.personal.branch } 2>&1
-                                                                                                                        git checkout origin/${ config.personal.repository.personal.branch } 2>&1
-                                                                                                                        git scratch
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                                resources =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                    "alias.snapshot" = "!${ snapshot }" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                    "user.email" = config.personal.repository.resources.email ;
-                                                                                                    "user.name" = config.personal.repository.resources.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit "origin" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.resources.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        git fetch origin ${ config.personal.repository.resources.branch } 2>&1
-                                                                                                                        git checkout origin/${ config.personal.repository.resources.branch } 2>&1
-                                                                                                                        git scratch
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                                secrets =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                    "alias.snapshot" = "!${ snapshot }" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                    "user.email" = config.personal.repository.secrets.email ;
-                                                                                                    "user.name" = config.personal.repository.secrets.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit "origin" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.secrets.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        git fetch origin ${ config.personal.repository.secrets.branch } 2>&1
-                                                                                                                        git checkout origin/${ config.personal.repository.secrets.branch } 2>&1
-                                                                                                                        git scratch
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                                visitor =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.milestone" = "!${ milestone }" ;
-                                                                                                    "alias.scratch" = "!${ scratch }" ;
-                                                                                                    "alias.snapshot" = "!${ snapshot }" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                    "user.email" = config.personal.repository.visitor.email ;
-                                                                                                    "user.name" = config.personal.repository.visitor.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit "origin" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.visitor.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        git fetch origin ${ config.personal.repository.visitor.branch } 2>&1
-                                                                                                                        git checkout origin/${ config.personal.repository.visitor.branch } 2>&1
-                                                                                                                        git scratch
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                                private =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                let
-                                                                                                    in
-                                                                                                        {
-                                                                                                            "alias.milestone" = "!${ milestone }" ;
-                                                                                                            "alias.scratch" = "!${ scratch }" ;
-                                                                                                            "alias.snapshot" =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "snapshot" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message > /dev/null 2>&1
-                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 65
-                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || exit 66
-                                                                                                                                        ${ resources_.promotion.root } "$BRANCH" "$COMMIT"
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                        in "!${ application }/bin/snapshot" ;
-                                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                                            "user.email" = config.personal.repository.private.email ;
-                                                                                                            "user.name" = config.personal.repository.private.name ;
-                                                                                                        } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit "origin" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.private.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        FAILURE="$( ${ resources_.repository.failure } )" || exit 64
-                                                                                                                        PERSONAL="$( ${ resources_.repository.personal } )" || exit 64
-                                                                                                                        RESOURCES="$( ${ resources_.repository.resources } )" || exit 64
-                                                                                                                        SECRETS="$( ${ resources_.repository.secrets } )" || exit 64
-                                                                                                                        VISITOR="$( ${ resources_.repository.visitor } )" || exit 64
-                                                                                                                        ln --symbolic "$PERSONAL" /links
-                                                                                                                        ln --symbolic "$RESOURCES" /links
-                                                                                                                        ln --symbolic "$SECRETS" /links
-                                                                                                                        ln --symbolic "$VISITOR" /links
-                                                                                                                        cat >> /mount/.envrc <<EOF
-                                                                                                                        export FAILURE="$FAILURE"
-                                                                                                                        export PERSONAL="$PERSONAL"
-                                                                                                                        export RESOURCES="$RESOURCES"
-                                                                                                                        export SECRETS="$SECRETS"
-                                                                                                                        export VISITOR="$VISITOR"
-                                                                                                                        EOF
-                                                                                                                        git fetch origin ${ config.personal.repository.private.branch } 2>&1
-                                                                                                                        git checkout origin/${ config.personal.repository.private.branch } 2>&1
-                                                                                                                        git scratch
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                            } ;
-                                                                        promotion =
-                                                                            {
-                                                                                build =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
-                                                                                                                    text =
-                                                                                                                        let
-                                                                                                                            switch =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "switch" ;
-                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        FAILURE="$( ${ resources_.promotion.squash.dependents.failure } "$SOURCE" failure )" || ${ failure_.implementation "77797fd3" }
-                                                                                                                                                        GIT_DIR="$FAILURE/git" GIT_WORK_TREE="$FAILURE/work-tree" git squash-and-merge
-                                                                                                                                                        PERSONAL="$( ${ resources_.promotion.squash.dependents.personal } "$SOURCE" personal )" || ${ failure_.implementation "8e436578" }
-                                                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git squash-and-merge
-                                                                                                                                                        RESOURCES="$( ${ resources_.promotion.squash.dependents.resources } "$SOURCE" resources )" || ${ failure_.implementation "596326df" }
-                                                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git squash-and-merge
-                                                                                                                                                        SECRETS="$( ${ resources_.promotion.squash.dependents.secrets } "$SOURCE" secrets )" || ${ failure_.implementation "0548947e" }
-                                                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git squash-and-merge
-                                                                                                                                                        VISITOR="$( ${ resources_.promotion.squash.dependents.visitor } "$SOURCE" visitor )" || ${ failure_.implementation "5f680063" }
-                                                                                                                                                        GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git squash-and-merge
-                                                                                                                                                        ROOT="$( ${ resources_.promotion.squash.root } "$BRANCH" "$COMMIT" )" || ${ failure_.implementation "334f09ea" }
-                                                                                                                                                        nix flake update --flake "$ROOT/work-tree" personal resources secrets visitor
-                                                                                                                                                        nixos-rebuild switch --flake "$ROOT/work-tree#user"
-                                                                                                                                                        GIT_DIR="$ROOT/git" GIT_WORK_TREE="$ROOT/work-tree" git squash-and-merge
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/switch" ;
-                                                                                                                            test =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "test" ;
-                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        nixos-rebuild test --flake "$SOURCE/work-tree#user"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/test" ;
-                                                                                                                            in
-                                                                                                                                ''
-                                                                                                                                    SOURCE="$1"
-                                                                                                                                    BRANCH="$2"
-                                                                                                                                    COMMIT="$3"
-                                                                                                                                    ln --symbolic "$SOURCE" /links
-                                                                                                                                    CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure_.implementation "9767b8fa" }
-                                                                                                                                    ln --symbolic "$CHECK" /links
-                                                                                                                                    CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure_.implementation "e80f0ccf" }
-                                                                                                                                    cd /mount
-                                                                                                                                    cat > /mount/.envrc <<EOF
-                                                                                                                                    export SOURCE="$SOURCE"
-                                                                                                                                    export BRANCH="$BRANCH"
-                                                                                                                                    export COMMIT="$COMMIT"
-                                                                                                                                    export CHECK_STATUS="$CHECK_STATUS"
-                                                                                                                                    EOF
-                                                                                                                                    if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                                    then
-                                                                                                                                        echo "$?" > /mount/status
-                                                                                                                                    else
-                                                                                                                                        echo "$?" > /mount/status
-                                                                                                                                        touch /mount/standard-output
-                                                                                                                                        touch /mount/standard-error
-                                                                                                                                    fi
-                                                                                                                                    ln --symbolic ${ switch } /mount
-                                                                                                                                    ln --symbolic ${ test } /mount
-                                                                                                                                '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            targets = [ ".envrc" "result" "standard-error" "standard-output" "status" "switch" "test" ] ;
-                                                                                        } ;
-                                                                                build-vm =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            SOURCE="$1"
-                                                                                                                            ln --symbolic "$SOURCE" /links
-                                                                                                                            CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure_.implementation "9d52c6ca" }
-                                                                                                                            ln --symbolic "$CHECK" /links
-                                                                                                                            CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure_.implementation "a6c0086f" }
-                                                                                                                            cd /mount
-                                                                                                                            mkdir --parents /mount/shared
-                                                                                                                            cat > /mount/.envrc <<EOF
-                                                                                                                            export SHARED_DIR=${ self }/shared
-                                                                                                                            export CHECK_STATUS="$CHECK_STATUS"
-                                                                                                                            EOF
-                                                                                                                            if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            then
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            else
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                                touch /mount/standard-output
-                                                                                                                                touch /mount/standard-error
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
-                                                                                        } ;
-                                                                                build-vm-with-bootloader =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            SOURCE="$1"
-                                                                                                                            ln --symbolic "$SOURCE" /links
-                                                                                                                            CHECK="$( ${ resources.promotion.check } "$SOURCE" )" || ${ failure_.implementation "4f0b67b3" }
-                                                                                                                            ln --symbolic "$CHECK" /links
-                                                                                                                            CHECK_STATUS="$( < "$CHECK/status" )" || ${ failure_.implementation "683f774e" }
-                                                                                                                            cd /mount
-                                                                                                                            mkdir --parents /mount/shared
-                                                                                                                            cat > /mount/.envrc <<EOF
-                                                                                                                            export SHARED_DIR=${ self }/shared
-                                                                                                                            export CHECK_STATUS="$CHECK_STATUS"
-                                                                                                                            EOF
-                                                                                                                            if [[ "$CHECK_STATUS" == 0 ]] && nixos-rebuild build-vm-with-bootloader --flake "$SOURCE/work-tree#user" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            then
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            else
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                                touch /mount/standard-output
-                                                                                                                                touch /mount/standard-error
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            targets = [ ".envrc" "result" "shared" "standard-error" "standard-output" "status" ] ;
-                                                                                        } ;
-                                                                                check =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                resources : self :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            SOURCE="$1"
-                                                                                                                            ln --symbolic "$SOURCE" /links
-                                                                                                                            if nix flake check "$SOURCE/work-tree" > /mount/standard-output 2> /mount/standard-error
-                                                                                                                            then
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            else
-                                                                                                                                echo "$?" > /mount/status
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            targets = [ "standard-error" "standard-output" "status" ] ;
-                                                                                        } ;
-                                                                                root =
-                                                                                    git
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.build" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "build" ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                ${ resources_.promotion.build } "$REPOSITORY_ROOT" "$BRANCH" "$COMMIT"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/build" ;
-                                                                                                    "alias.build-vm" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "build-vm" ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                ${ resources_.promotion.build-vm } "$REPOSITORY_ROOT"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/build-vm" ;
-                                                                                                    "alias.build-vm-with-bootloader" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "build-vm-with-bootloader" ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                ${ resources_.promotion.build-vm-with-bootloader } "$REPOSITORY_ROOT"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/build-vm-with-bootloader" ;
-                                                                                                    "alias.check" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "check" ;
-                                                                                                                        runtimeInputs  = [ pkgs.coreutils pkgs.nix ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                ${ resources_.promotion.check } "$REPOSITORY_ROOT"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/check" ;
-                                                                                                    "alias.collect-garbage" =
-                                                                                                        let
-                                                                                                           application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "collect-garbage" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.nix pkgs.time ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                df -h
-                                                                                                                                time nix-collect-garbage 2> /dev/null
-                                                                                                                                df -h
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/collect-garbage" ;
-                                                                                                    "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    origin = config.personal.repository.private.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "setup" ;
-                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        BRANCH="$1"
-                                                                                                                        COMMIT="$2"
-                                                                                                                        cat >> /mount/.envrc <<EOF
-                                                                                                                        export SOURCE="$REPOSITORY_ROOT"
-                                                                                                                        export BRANCH="$BRANCH"
-                                                                                                                        export COMMIT="$COMMIT"
-                                                                                                                        EOF
-                                                                                                                        git fetch origin "$BRANCH" 2>&1
-                                                                                                                        git checkout "$COMMIT" 2>&1
-                                                                                                                        GIT_DIR="$FAILURE/git" GIT_WORK_TREE="$FAILURE/work-tree" git snapshot failure "$REPOSITORY_ROOT"
-                                                                                                                        GIT_DIR="$PERSONAL/git" GIT_WORK_TREE="$PERSONAL/work-tree" git snapshot personal "$REPOSITORY_ROOT"
-                                                                                                                        GIT_DIR="$RESOURCES/git" GIT_WORK_TREE="$RESOURCES/work-tree" git snapshot resources "$REPOSITORY_ROOT"
-                                                                                                                        GIT_DIR="$SECRETS/git" GIT_WORK_TREE="$SECRETS/work-tree" git snapshot secrets "$REPOSITORY_ROOT"
-                                                                                                                        GIT_DIR="$VISITOR/git" GIT_WORK_TREE="$VISITOR/work-tree" git snapshot visitor "$REPOSITORY_ROOT"
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/setup" ;
-                                                                                        } ;
-                                                                                    squash =
-                                                                                        {
-                                                                                            dependents =
-                                                                                                let
-                                                                                                    fun =
-                                                                                                        email : name : origin :
-                                                                                                            git
-                                                                                                                {
-                                                                                                                    configs =
-                                                                                                                        {
-                                                                                                                            "alias.scratch" = "!${ scratch }" ;
-                                                                                                                            "alias.squash-and-merge" =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "squash-and-merge" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        if ! git diff --exit-code origin/main
-                                                                                                                                                        then
-                                                                                                                                                            git scratch
-                                                                                                                                                            git reset --soft origin/main 2>&1
-                                                                                                                                                            git commit --verbose 2>&1
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                            SQUASH_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                                            TOKEN="$( ${ resources_.secrets."github-token.asc.age" } )" || exit 64
-                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                            URL="$( gh pr create --base main --head "$SQUASH_BRANCH" --title "Promotion" --body "Automated Promotion Merge" )" || exit 64
-                                                                                                                                                            gh pr merge --rebase --subject "Promotion Merge" "$URL"
-                                                                                                                                                            gh auth logout
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "!${ application }/bin/squash-and-merge" ;
-                                                                                                                            "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.github ; target = "config" ; } ) ;
-                                                                                                                            "user.email" = email ;
-                                                                                                                            "user.name" = name ;
-                                                                                                                        } ;
-                                                                                                                    remotes =
-                                                                                                                        {
-                                                                                                                            origin = origin ;
-                                                                                                                        } ;
-                                                                                                                    setup =
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "setup" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                SOURCE="$1"
-                                                                                                                                                TYPE="$2"
-                                                                                                                                                DEPENDENT_BRANCH="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.branch" )" || exit 64
-                                                                                                                                                git fetch origin "$DEPENDENT_BRANCH" 2>&1
-                                                                                                                                                DEPENDENT_COMMIT="$( GIT_DIR="$SOURCE/git" GIT_WORK_TREE="$SOURCE/work-tree" git config --get "dependencies.$TYPE.commit" )" || exit 64
-                                                                                                                                                git checkout "$DEPENDENT_COMMIT" 2>&1
-                                                                                                                                                git fetch origin main 2>&1
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                            in "${ application }/bin/setup" ;
-                                                                                                                } ;
-                                                                                                    in
-                                                                                                        {
-                                                                                                            failure = fun config.personal.repository.failure.email config.personal.repository.failure.name config.personal.repository.failure.remote ;
-                                                                                                            personal = fun config.personal.repository.personal.email config.personal.repository.personal.name config.personal.repository.personal.remote ;
-                                                                                                            resources = fun config.personal.repository.resources.email config.personal.repository.resources.name config.personal.repository.resources.remote ;
-                                                                                                            secrets = fun config.personal.repository.secrets.email config.personal.repository.secrets.name config.personal.repository.secrets.remote ;
-                                                                                                            visitor = fun config.personal.repository.visitor.email config.personal.repository.visitor.name config.personal.repository.visitor.remote ;
-                                                                                                        } ;
-                                                                                            root =
-                                                                                                git
-                                                                                                    {
-                                                                                                        configs =
-                                                                                                            {
-                                                                                                                "alias.scratch" = "!${ scratch }" ;
-                                                                                                                "alias.squash-and-merge" =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "squash-and-merge" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            if ! git diff --exit-code origin/main
-                                                                                                                                            then
-                                                                                                                                                git scratch
-                                                                                                                                                git reset --soft origin/main 2>&1
-                                                                                                                                                git add -A
-                                                                                                                                                git commit --verbose 2>&1
-                                                                                                                                                git push origin HEAD 2>&1
-                                                                                                                                                SQUASH_COMMIT="$( git rev-parse --abbrev-ref HEAD )" || exit 64
-                                                                                                                                                git checkout main 2>&1
-                                                                                                                                                git rebase "$SQUASH_COMMIT" 2>&1
-                                                                                                                                                git push origin HEAD 2>&1
-                                                                                                                                            fi
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                                    in "!${ application }/bin/squash-and-merge" ;
-
-                                                                                                                "core.sshCommand" = ssh-command ( resources : { resource = resources.dot-ssh.mobile ; target = "config" ; } ) ;
-                                                                                                                "user.email" = config.personal.repository.private.email ;
-                                                                                                                "user.name" = config.personal.repository.private.name ;
-                                                                                                            } ;
-                                                                                                    remotes =
-                                                                                                        {
-                                                                                                            origin = config.personal.repository.private.remote ;
-                                                                                                        } ;
-                                                                                                    setup =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "setup" ;
-                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                git fetch origin "$BRANCH" 2>&1
-                                                                                                                                git checkout "$COMMIT" 2>&1
-                                                                                                                                git fetch origin main 2>&1
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/setup" ;
-                                                                                                } ;
-                                                                                        } ;
-                                                                            } ;
-                                                                        secrets =
-                                                                            let
-                                                                                mapper =
-                                                                                    path : name : value :
-                                                                                    if value == "regular" then
-                                                                                        ignore :
-                                                                                            {
-                                                                                                init =
-                                                                                                    resources : self :
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "secret" ;
-                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/secret ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
-                                                                                                                                chmod 0400 /mount/secret
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/secret" ;
-                                                                                                targets = [ "secret" ] ;
-                                                                                            }
-                                                                                       else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
-                                                                                       else builtins.throw "We can not handle ${ value }." ;
-                                                                                in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
-                                                                        temporary-directory =
-                                                                            {
-                                                                                init = resources : self : "" ;
-                                                                                targets = [ ] ;
-                                                                            } ;
-                                                                    } ;
-                                                        in
-                                                            visitor.lib.implementation
-                                                                {
-                                                                    lambda =
-                                                                        path : value :
-                                                                            let
-                                                                                resource-factory =
-                                                                                    resources.lib.factories.generic
-                                                                                        {
-                                                                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                                            coreutils = pkgs.coreutils ;
-                                                                                            findutils = pkgs.findutils ;
-                                                                                            flock = pkgs.flock ;
-                                                                                            init = point.init ;
-                                                                                            jq = pkgs.jq ;
-                                                                                            makeBinPath = pkgs.lib.makeBinPath ;
-                                                                                            makeWrapper = pkgs.makeWrapper ;
-                                                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                                            ps = pkgs.ps ;
-                                                                                            redis = pkgs.redis ;
-                                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                                            seed = { path = path ; seed = seed ; } ;
-                                                                                            targets = point.targets ;
-                                                                                            transient = point.transient ;
-                                                                                            visitor = visitor ;
-                                                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                                                            yq-go = pkgs.yq-go ;
-                                                                                        } ;
-                                                                                point =
-                                                                                    let
-                                                                                        identity =
-                                                                                            {
-                                                                                                init ? null ,
-                                                                                                release ? null ,
-                                                                                                targets ? [ ] ,
-                                                                                                transient ? false
-                                                                                            } :
-                                                                                                {
-                                                                                                    init =
-                                                                                                        if builtins.typeOf init == "lambda" then
-                                                                                                            init resources_
-                                                                                                        else init ;
-                                                                                                    release = release ;
-                                                                                                    targets = targets ;
-                                                                                                    transient = transient ;
-                                                                                                } ;
-                                                                                        in identity ( value null ) ;
-                                                                                in resource-factory.implementation ;
-                                                                }
-                                                                tree
-                                                    ) ;
-                                        secrets_ =
-                                            let
-                                                mapper =
-                                                    path : name : value :
-                                                    if value == "regular" then
-                                                        let
-                                                            derivation =
-                                                                pkgs.stdenv.mkDerivation
-                                                                    {
-                                                                        installPhase =
-                                                                            ''
-                                                                                age --decrypt --identity ${ config.personal.agenix } --output $out ${ builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) }
-                                                                            '' ;
-                                                                        name = "derivation" ;
-                                                                        nativeBuildInputs = [ pkgs.age pkgs.coreutils pkgs.makeWrapper ] ;
-                                                                        src = ./. ;
-                                                                    } ;
-                                                            in "${ derivation }"
-                                                       else if value == "directory" then builtins.mapAttrs ( mapper ( builtins.concatLists [ path [ name ] ] ) ) ( builtins.readDir ( builtins.concatStringsSep "/" ( builtins.concatLists [ path [ name ] ] ) ) )
-                                                       else builtins.throw "We can not handle ${ value }." ;
-                                                in builtins.mapAttrs ( mapper [ ( builtins.toString secrets ) ] ) ( builtins.readDir ( builtins.toString secrets ) ) ;
                                         in
                                             {
                                                 config =
@@ -1526,28 +1072,28 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
-                                                        systemd.services.resources-log-listener =
-                                                            {
-                                                                after = [ "network.target" ] ;
-                                                                serviceConfig =
-                                                                    {
-                                                                        ExecStart =
-                                                                            let
-                                                                                log-event-listener =
-                                                                                    resources.lib.listeners.log-event-listener
-                                                                                        {
-                                                                                            coreutils = pkgs.coreutils ;
-                                                                                            flock = pkgs.flock ;
-                                                                                            redis = pkgs.redis ;
-                                                                                            resources-directory = "/home/${ config.personal. name }/resources" ;
-                                                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                                                            yq-go = pkgs.yq-go ;
-                                                                                        } ;
-                                                                                in "${ log-event-listener.implementation }/bin/log-event-listener" ;
-                                                                        User = config.personal.name ;
-                                                                    } ;
-                                                                wantedBy = [ "multi-user.target" ] ;
-                                                            } ;
+                                                        # systemd.services.resources-log-listener =
+                                                        #    {
+                                                        #         after = [ "network.target" ] ;
+                                                        #         serviceConfig =
+                                                        #             {
+                                                        #                 ExecStart =
+                                                        #                     let
+                                                        #                         log-event-listener =
+                                                        #                             resources.lib.listeners.log-event-listener
+                                                        #                                 {
+                                                        #                                     coreutils = pkgs.coreutils ;
+                                                        #                                     flock = pkgs.flock ;
+                                                        #                                     redis = pkgs.redis ;
+                                                        #                                     resources-directory = "/home/${ config.personal. name }/resources" ;
+                                                        #                                     writeShellApplication = pkgs.writeShellApplication ;
+                                                        #                                     yq-go = pkgs.yq-go ;
+                                                        #                                 } ;
+                                                        #                         in "${ log-event-listener.implementation }/bin/log-event-listener" ;
+                                                        #                 User = config.personal.name ;
+                                                        #             } ;
+                                                        #         wantedBy = [ "multi-user.target" ] ;
+                                                        #     } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
@@ -1556,114 +1102,63 @@
                                                                 isNormalUser = true ;
                                                                 name = config.personal.name ;
                                                                 packages =
-                                                                    let
-                                                                        studio =
-                                                                            name : repository :
-                                                                                pkgs.stdenv.mkDerivation
-                                                                                    {
-                                                                                        installPhase =
-                                                                                            ''
-                                                                                                mkdir --parents $out/bin
-                                                                                                makeWrapper ${ pkgs.jetbrains.idea-community }/bin/idea-community $out/bin/${ name } --run "REPO=\"\$( ${ repository } )\" || exit 64" --add-flags "\$REPO"
-                                                                                            '' ;
-                                                                                        name = "derivation" ;
-                                                                                        nativeBuildInputs = [ pkgs.makeWrapper ] ;
-                                                                                        src = ./. ;
-                                                                                    } ;
-                                                                        in
-                                                                            [
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "alpha" ;
-                                                                                            text = "echo hi" ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "studio" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.jetbrains.idea-community ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || exit 64
-                                                                                                    cd "$HOMEY"
-                                                                                                    idea-community .
-                                                                                                '' ;
-                                                                                        }
-                                                                                )
-                                                                                pkgs.git
-                                                                                pkgs.yq
-                                                                                pkgs.lsof
-                                                                                pkgs.inotify-tools
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "home" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.home ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "double-check-promotion" ;
-                                                                                            text = "echo promotion works" ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "foobar" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.secrets.dot-ssh.boot."identity.asc.age" ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "debugging" ;
-                                                                                            runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo ALPHA=${ resources_.debug.alpha }
-                                                                                                    echo BETA=${ resources_.debug.beta }
-                                                                                                '' ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "studio" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    HOMEY="$( ${ resources_.home } )" || exit 64
-                                                                                                    cd "$HOMEY"
-                                                                                                    idea-community
-                                                                                                '' ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "dot-ssh" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text = resources_.dot-ssh.mobile ;
-                                                                                        }
-                                                                                )
-                                                                                (
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "foobar" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo HI
-                                                                                                '' ;
-                                                                                        }
-                                                                                )
-                                                                            ] ;
+                                                                    [
+                                                                        pkgs.gh
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "studio" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } c6fbc6bd" ) }
+                                                                                            idea-community "$STUDIO/git-repository"
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        pkgs.git
+                                                                        pkgs.chromium
+                                                                        pkgs.redis
+                                                                        pkgs.yq-go
+                                                                        pkgs.jq
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar-read" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jq ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            jq "." < /tmp/message
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar-listen" ;
+                                                                                    runtimeInputs = [ pkgs.redis ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            redis-cli SUBSCRIBE resource | while read -r MESSAGE
+                                                                                            do
+                                                                                                echo "$MESSAGE" > /tmp/message
+                                                                                            done
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : "${ setup }" ) }
+                                                                                            echo "$FOOBAR"
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                    ] ;
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
@@ -1808,292 +1303,454 @@
                                             } ;
                     in
                         {
+                            apps =
+                                {
+                                    chromium =
+                                        {
+                                            type = "app" ;
+                                            program = "${ pkgs.chromium }/bin/chromium" ;
+                                        } ;
+                                    pass =
+                                        {
+                                            type = "app" ;
+                                            program = "${ pkgs.pass }/bin/pass" ;
+                                        } ;
+                                } ;
                             checks =
-                                let
-                                    # failure = failure_.check { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                                    log-event-listener =
-                                        resources.lib.listeners.log-event-listener
+                                {
+                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
+                                    dot-ssh =
+                                        _dot-ssh.check
                                             {
-                                                coreutils = pkgs.coreutils ;
-                                                flock = pkgs.flock ;
-                                                redis = pkgs.redis ;
-                                                resources-directory = "/build/resources" ;
-                                                writeShellApplication = pkgs.writeShellApplication ;
-                                                yq-go = pkgs.yq-go ;
+                                                configuration =
+                                                    {
+                                                        b-mobile =
+                                                            {
+                                                                strict-host-key-checking = true ;
+                                                                host-name = "192.168.1.192" ;
+                                                                identity-file = { pkgs , resources , self } :
+                                                                    {
+                                                                        directory = resources.directory ;
+                                                                        file = resources.file ;
+                                                                    } ;
+                                                                port = 8022 ;
+                                                                user = "git" ;
+                                                            } ;
+                                                        a-mobile =
+                                                            {
+                                                                strict-host-key-checking = true ;
+                                                                host-name = "192.168.1.202" ;
+                                                                identity-file =
+                                                                    { pkgs , resources , self } :
+                                                                        {
+                                                                            directory = resources.directory ;
+                                                                            file = resources.file ;
+                                                                        } ;
+                                                                port = 8022 ;
+                                                                user = "git" ;
+                                                            } ;
+                                                    } ;
+                                                expected = "/nix/store/ygkmvyd5d4snw0i7k1j7iycjcyyl25ai-init/bin/init" ;
+                                                failure = _failure.implementation "8bc0fd4b" ;
+                                                pkgs = pkgs ;
+                                                resources =
+                                                    {
+                                                        directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
+                                                        file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
+                                                    } ;
+                                                self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
                                             } ;
-                                    test-home =
-                                        name :
+                                   failure =
+                                       _failure.check
+                                           {
+                                               compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ;
+                                               diffutil = pkgs.diffutil ;
+                                               expected-standard-error =
+                                                   ''
+                                                       compile-time-arguments:
+                                                         path: []
+                                                         type: string
+                                                         value: 469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3
+                                                       run-time-arguments:
+                                                         - ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f
+                                                         - b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b
+                                                    '' ;
+                                               run-time-arguments =
+                                                   [
+                                                       "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f"
+                                                       "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
+                                                   ] ;
+                                           } ;
+                                    git-repository =
+                                        _git-repository.check
                                             {
-                                                name = "test-home:  ${ name }" ;
-                                                value =
-                                                    pkgs.nixosTest
-                                                       {
-                                                           name = "home-test" ;
-                                                           nodes.machine =
-                                                               { pkgs, ... } :
-                                                                   {
-                                                                       imports = [ user ] ;
-                                                                       environment.systemPackages =
-                                                                           [
-                                                                               (
-                                                                                    pkgs.writeShellApplication
-                                                                                       {
-                                                                                            name = "test-home" ;
-                                                                                            runtimeInputs =
-                                                                                                [
-                                                                                                    (
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "create-mock-repository" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        BUILD="$1"
-                                                                                                                        NAME="$2"
-                                                                                                                        TOKEN="$3"
-                                                                                                                        if [[ -e "$BUILD/repo/$NAME" ]]
-                                                                                                                        then
-                                                                                                                            ${ failure_.implementation "bf9496b6" } "$BUILD/repo/$NAME" already exists"
-                                                                                                                        fi
-                                                                                                                        mkdir --parents "$BUILD/repo/$NAME"
-                                                                                                                        cd "$BUILD/repo/$NAME"
-                                                                                                                        git init --bare
-                                                                                                                        if [[ -e "$BUILD/work/$NAME" ]]
-                                                                                                                        then
-                                                                                                                            ${ failure_.implementation "05fce8e3" } "$BUILD/work/$NAME already exists"
-                                                                                                                        fi
-                                                                                                                        GIT_DIR="$BUILD/work/$NAME/git"
-                                                                                                                        export GIT_DIR
-                                                                                                                        mkdir --parents "$GIT_DIR"
-                                                                                                                        GIT_WORK_TREE="$BUILD/work/$NAME/work-tree"
-                                                                                                                        export GIT_WORK_TREE
-                                                                                                                        mkdir --parents "$GIT_WORK_TREE"
-                                                                                                                        git init
-                                                                                                                        git config user.email nina.nix@example.com
-                                                                                                                        git config user.name "Nina Nix"
-                                                                                                                        git remote add origin "$BUILD/repo/$NAME"
-                                                                                                                        git checkout -b branch/test
-                                                                                                                        touch "$GIT_WORK_TREE/$TOKEN"
-                                                                                                                        git add "$TOKEN"
-                                                                                                                        git commit -m "" --allow-empty-message
-                                                                                                                        git push origin branch/test
-                                                                                                                        echo "created $NAME repository at $BUILD/repository/$NAME"
-                                                                                                                    '' ;
-                                                                                                            }
-                                                                                                    )
-                                                                                                    (
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "verify-mock-repository" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.diffutils ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        BUILD="$1"
-                                                                                                                        HOMEY="$2"
-                                                                                                                        NAME="$3"
-                                                                                                                        if [[ ! -d "$HOMEY" ]]
-                                                                                                                        then
-                                                                                                                            ${ failure_.implementation "13510afd" } Missing HOME
-                                                                                                                            exit 64
-                                                                                                                        fi
-                                                                                                                        if [[ ! -L "$HOMEY/$NAME" ]]
-                                                                                                                        then
-                                                                                                                            ${ failure_.implementation "863a3d5b" } "Missing $NAME"
-                                                                                                                            exit 64
-                                                                                                                        fi
-                                                                                                                        if ! diff --recursive "$BUILD/work/$NAME/work-tree" "$HOMEY/$NAME/work-tree"
-                                                                                                                        then
-                                                                                                                            ${ failure_.implementation "eb549b33" } Not the same
-                                                                                                                        fi
-                                                                                                                        echo "tested $NAME"
-                                                                                                                    '' ;
-                                                                                                            }
-                                                                                                    )
-                                                                                                    pkgs.age
-                                                                                                    pkgs.coreutils
-                                                                                                    pkgs.git
-                                                                                                    pkgs.which
-                                                                                                ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo "Starting test-home with $# arguments"
-                                                                                                    BUILD="$1"
-                                                                                                    echo Using "BUILD=$BUILD"
-                                                                                                    mkdir --parents "$BUILD"
-                                                                                                    age-keygen -y ${ self }/age.test.key 2>&1
-                                                                                                    age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
-                                                                                                    age-keygen -y ${ self }/age.test.key > "$BUILD/age.test.key.pub" 2>&1
-                                                                                                    echo computed public key
-                                                                                                    mkdir --parents "$BUILD/secrets/dot-ssh/mobile"
-                                                                                                    echo 1fc11953a79d521af9082d3966596b1443048a8d2bbe7c5c2071c205211627fea557812b0014e3f6f3143d94edb2d54dfb728ea3ec3b2d622e35e1b323558494 > "$BUILD/secrets/dot-ssh/mobile/identity.asc"
-                                                                                                    echo 1572ace6d3ec3303f01f43c474c40e55f0d707596043b1ce49f7f98711814920e956cbc57754ae93f5f26b0489c2ac467fc7d3f73fb71749d5e861a70aa6245b > "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
-                                                                                                    mkdir --parents "$BUILD/repository/secrets"
-                                                                                                    git -C "$BUILD/repository/secrets" init
-                                                                                                    git -C "$BUILD/repository/secrets" config user.email nina.nix@example.com
-                                                                                                    git -C "$BUILD/repository/secrets" config user.name "Nina Nix"
-                                                                                                    git -C "$BUILD/repository/secrets" checkout -b branch/test
-                                                                                                    mkdir --parents "$BUILD/repository/secrets/dot-ssh/mobile"
-                                                                                                    age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/identity.asc.age" "$BUILD/secrets/dot-ssh/mobile/identity.asc"
-                                                                                                    age --recipients-file "$BUILD/age.test.key.pub" --output "$BUILD/repository/secrets/dot-ssh/mobile/unknown-hosts.asc.age" "$BUILD/secrets/dot-ssh/mobile/unknown-hosts.asc"
-                                                                                                    git -C "$BUILD/repository/secrets" add dot-ssh/mobile/identity.asc.age
-                                                                                                    git -C "$BUILD/repository/secrets" add dot-ssh/mobile/unknown-hosts.asc.age
-                                                                                                    git -C "$BUILD/repository/secrets" commit -m "" --allow-empty-message
-                                                                                                    echo "created secrets repository at $BUILD/repository/secrets"
-                                                                                                    create-mock-repository "$BUILD" failure f72362bddf315fe5959b74a5ce95d0fbb93155178c4f2e0c5c2dc4804be9fb3a3310b0a0f5621b2f737cdabecd84b5826fb1368888557f5b414a25f418e211bd
-                                                                                                    create-mock-repository "$BUILD" personal 1ffb60928ded3a21bbff490191b3e3c6c19182d242d68b40aec1aece20bcde205c48e09b7d002c1498ab37cf865e83acdee15ad81a64ef5579f5e8b35d446eae
-                                                                                                    create-mock-repository "$BUILD" private ad10b001d2d3d601bbba2c09c1df1c931098cec29d8f80901d5f21514477b1f8425c0a7d9df779da4376e911931bc83ffd48daee06d309573288e0200baf9038
-                                                                                                    create-mock-repository "$BUILD" resources 604966cdd13bc61481fd84915aac1639a409de6020b88a0ac0f95196cd29201beae8d4c30990325a799c8ee14c44d9f038bae7963e83c368e5c48f43cd8b5e90
-                                                                                                    create-mock-repository "$BUILD" secrets 386436e6b7328385c261d1ec574c023f88140e66507f698968014281f02d15b2eb17d0d7f434ce7f6b0298e23c47da4f78e32a8e1c0b54bb2902948d1be1c8bb
-                                                                                                    create-mock-repository "$BUILD" visitor 0cd4c650d1051817e663a4a1a5e3133f029919991ab5fa85845d5c0ac1c09e2e0bb4ae65fc8e3c3735c123993ff75e6f5359572a344b6c060c844378a9788ef3
-                                                                                                    echo before execute test code
-                                                                                                    HOMEY="$( home )" || ${ failure_.implementation "013a89e9" }
-                                                                                                    echo after execute test code
-                                                                                                    verify-mock-repository "$BUILD" "$HOMEY" failure
-                                                                                                    verify-mock-repository "$BUILD" "$HOMEY" personal
-                                                                                                    verify-mock-repository "$BUILD" "$HOMEY" private
-                                                                                                    verify-mock-repository "$BUILD" "$HOMEY" resources
-                                                                                                    verify-mock-repository "$BUILD" "$HOMEY" secrets
-                                                                                                    verify-mock-repository "$BUILD" "$HOMEY" visitor
-                                                                                                '' ;
-                                                                                       }
-                                                                                )
-                                                                           ] ;
-                                                                       personal =
-                                                                           {
-                                                                                agenix = self + "/age.test.key" ;
-                                                                                description = "Bob Wonderful" ;
-                                                                                name = "bob" ;
-                                                                                password = "password" ;
-                                                                                repository =
-                                                                                    {
-                                                                                        failure =
-                                                                                            {
-                                                                                                branch = "branch/test" ;
-                                                                                                remote = "/tmp/build/repo/failure" ;
-                                                                                            } ;
-                                                                                        personal =
-                                                                                            {
-                                                                                                branch = "branch/test" ;
-                                                                                                remote = "/tmp/build/repo/personal" ;
-                                                                                            } ;
-                                                                                        private =
-                                                                                            {
-                                                                                                branch = "branch/test" ;
-                                                                                                remote = "/tmp/build/repo/private" ;
-                                                                                            } ;
-                                                                                        resources =
-                                                                                            {
-                                                                                                branch = "branch/test" ;
-                                                                                                remote = "/tmp/build/repo/resources" ;
-                                                                                            } ;
-                                                                                        secrets =
-                                                                                            {
-                                                                                                branch = "branch/test" ;
-                                                                                                remote = "/tmp/build/repo/secrets" ;
-                                                                                            } ;
-                                                                                        visitor =
-                                                                                            {
-                                                                                                branch = "branch/test" ;
-                                                                                                remote = "/tmp/build/repo/visitor" ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                           } ;
-                                                                   } ;
-                                                           testScript =
-                                                               ''
-                                                                   start_all()
-                                                                   machine.wait_for_unit("multi-user.target")
-                                                                   status, stdout = machine.execute("su - bob --command 'test-home /tmp/build'")
-                                                                   print("STDOUT:\n", stdout)
-                                                                   assert status == 0, "test-home failed"
-                                                               '' ;
-                                                       } ;
+                                                expected = "/nix/store/wm2hnfhij3d1av2zkkjld4k1a4kfj1jw-init/bin/init" ;
+                                                failure = _failure.implementation "8a8f3b60" ;
+                                                pkgs = pkgs ;
                                             } ;
-                                    test-resource =
-                                        name : throws-error : has-standard-error : target-mismatch : is-transient : test :
-                                            let
-                                                resource-factory =
-                                                    resources.lib.factories.generic
-                                                        {
-                                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                            coreutils = pkgs.coreutils ;
-                                                            findutils = pkgs.findutils ;
-                                                            error = 129 ;
-                                                            flock = pkgs.flock ;
-                                                            init =
-                                                                self :
+                                    resource-happy =
+                                        let
+                                            factory =
+                                                _resource
+                                                    {
+                                                        resources-directory = "/build/resources" ;
+                                                        resources =
+                                                            {
+                                                                d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 =
                                                                     let
                                                                         application =
                                                                             pkgs.writeShellApplication
                                                                                 {
-                                                                                    name = "init" ;
-                                                                                    runtimeInputs = [ ] ;
+                                                                                    name = "f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            echo f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
-                                                                                            echo c8fb600c10065059a89aed599cf5e3590d46095b63bcde89c3ecf109ca8f5737a9c3bf97f917eb4e8dd5851a503e3c58296250fd2a9b060bcf3c85daba2b8216 ${ if has-standard-error then ">&2" else "> /scratch/null" }
-                                                                                            touch /mount/${ if target-mismatch then "98236ab2df439c61422251ca03830facf0e9a1e06fecb2d267f8c4574cd8a05b12224b536ab5661adc9a0347fba244e1a3db425ec7044166ae861cc93e50bd49" else "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" }
-                                                                                            exit ${ if throws-error then "125" else "0" }
+                                                                                            echo resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
                                                                                         '' ;
                                                                                 } ;
-                                                                        in "${ application }/bin/init" ;
-                                                            jq = pkgs.jq ;
-                                                            makeBinPath = pkgs.lib.makeBinPath ;
-                                                            makeWrapper = pkgs.makeWrapper ;
-                                                            seed = name ;
+                                                                        in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
+                                                            } ;
+                                                        store-garbage-collection-root = "/build/gc-roots" ;
+                                                    } ;
+                                            in
+                                                factory.check
+                                                    {
+                                                        arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                        diffutils = pkgs.diffutils ;
+                                                        expected-resource-dependencies = [ "f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ] ;
+                                                        expected-store-dependencies = [ "bjb2xx943rkfl0r6x7wgp2069zym5wwi-cowsay-3.8.3" ] ;
+                                                        expected-index = "0000000311691948" ;
+                                                        expected-originator-pid = 45 ;
+                                                        expected-provenance = "new" ;
+                                                        expected-standard-error = "" ;
+                                                        expected-standard-output =
+                                                            ''
+                                                                 _________________________________________
+                                                                / f83f1836809a4c2148e7c4d4b3dc543d2d36808 \
+                                                                | 5d786a49366fd8b36cd730d93502da258b69d16 |
+                                                                | 94f2a437efa86666cf44a72e2c574a452044062 |
+                                                                \ 1e8dc2a9fc8                             /
+                                                                 -----------------------------------------
+                                                                        \   ^__^
+                                                                         \  (oo)\_______
+                                                                            (__)\       )\/\
+                                                                                ||----w |
+                                                                                ||     ||
+                                                                resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
+                                                                self = /build/resources/mounts/0000000311691948
+                                                            '' ;
+                                                        expected-status = 0 ;
+                                                        expected-targets =
+                                                                [
+                                                                    "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                                ] ;
+                                                            expected-transient = -1 ;
+                                                        init =
+                                                            { pkgs , resources , self } :
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "init" ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
+                                                                                        ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                        echo "self = ${ self }"
+                                                                                        echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
+                                                                                        echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
+                                                                                        root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                        root-store ${ pkgs.cowsay }
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/init" ;
+                                                        resources-directory-fixture =
+                                                            resources-directory :
+                                                                ''
+                                                                    mkdir --parents ${ resources-directory }/sequential
+                                                                    echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                '' ;
+                                                        seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
+                                                        standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                        standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                        status = 0 ;
+                                                        targets =
+                                                            [
+                                                                "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                            ] ;
+                                                        transient = false ;
+                                                  } ;
+                                    resource-sad =
+                                       let
+                                           factory =
+                                               _resource
+                                                   {
+                                                       resources-directory = "/build/resources" ;
+                                                       resources =
+                                                           {
+                                                               fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 =
+                                                                   let
+                                                                       application =
+                                                                           pkgs.writeShellApplication
+                                                                               {
+                                                                                   name = "5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
+                                                                                   runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                   text =
+                                                                                       ''
+                                                                                           echo resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
+                                                                                       '' ;
+                                                                               } ;
+                                                                       in "${ application }/bin/5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
+                                                           } ;
+                                                       store-garbage-collection-root = "/build/gc-roots" ;
+                                                   } ;
+                                         in
+                                             factory.check
+                                                 {
+                                                     arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                     diffutils = pkgs.diffutils ;
+                                                     expected-resource-dependencies = [ "5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ] ;
+                                                     expected-store-dependencies = [ ] ;
+                                                     expected-index = "0000000437766789" ;
+                                                     expected-originator-pid = 45 ;
+                                                     expected-provenance = "new" ;
+                                                     expected-standard-error = "ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9" ;
+                                                     expected-standard-output =
+                                                           ''
+                                                                 _________________________________________
+                                                                / cfb1a86984144d2e4c03594b4299585aa6ec2f5 \
+                                                                | 03a7b39b1385a5338c9fc314fd87bd904d01188 |
+                                                                | b301b3cf641c4158b28852778515eba52ad7e4b |
+                                                                \ 148f216d1d5                             /
+                                                                 -----------------------------------------
+                                                                        \   ^__^
+                                                                         \  (oo)\_______
+                                                                            (__)\       )\/\
+                                                                                ||----w |
+                                                                                ||     ||
+                                                                resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
+                                                                self = /build/resources/mounts/0000000437766789
+                                                           '' ;
+                                                     expected-status = 70 ;
+                                                     expected-targets =
+                                                         [
+                                                             "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"
+                                                         ] ;
+                                                     expected-transient = -1 ;
+                                                     init =
+                                                         { pkgs , resources , self } :
+                                                             let
+                                                                 application =
+                                                                     pkgs.writeShellApplication
+                                                                         {
+                                                                             name = "init" ;
+                                                                             runtimeInputs = [ pkgs.coreutils pkgs.cowsay ] ;
+                                                                             text =
+                                                                                 ''
+                                                                                     cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
+                                                                                     ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
+                                                                                     echo "self = ${ self }"
+                                                                                     echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
+                                                                                     echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
+                                                                                     echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
+                                                                                     root-resource ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
+                                                                                     exit 70
+                                                                                 '' ;
+                                                                         } ;
+                                                                 in "${ application }/bin/init" ;
+                                                     resources-directory-fixture =
+                                                         resources-directory :
+                                                             ''
+                                                                 mkdir --parents ${ resources-directory }/sequential
+                                                                 echo 437766789 > ${ resources-directory }/sequential/sequential.counter
+                                                             '' ;
+                                                    seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
+                                                    standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                     standard-error =
+                                                         ''
+                                                             compile-time-arguments:
+                                                               path: []
+                                                               type: string
+                                                               value: f135add3
+                                                             run-time-arguments:
+                                                               - a05ad0c3
+                                                         '' ;
+                                                     standard-output = "" ;
+                                                     status = 64 ;
+                                                       targets =
+                                                           [
+                                                               "20828320279b5890d7dccda8c6572b676c7954280559beb66be87ab7d2aeb060dd65c81053766fda24c36ed1ab5db40af70a420e913e16501c3b965d2d99c7e6"
+                                                           ] ;
+                                                       transient = false ;
+                                                 } ;
+                                        secret =
+                                            _secret.check
+                                                {
+                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
+                                                    expected = "/nix/store/gciqcwms4g5z2imjafmpgd203adss1sw-init/bin/init" ;
+                                                    identity = ignore : "${ fixture }/age/identity/private" ;
+                                                    failure = _failure.implementation "a720a5e7" ;
+                                                    pkgs = pkgs ;
+                                               } ;
+                                                visitor-happy =
+                                                    _visitor.check
+                                                        {
+                                                            coreutils = pkgs.coreutils ;
+                                                            diffutil = pkgs.diffutil ;
+                                                            expected =
+                                                                {
+                                                                    bool =
+                                                                        [
+                                                                            {
+                                                                                path = [ "bool" ] ;
+                                                                                type = "bool" ;
+                                                                                value = true ;
+                                                                            }
+                                                                        ] ;
+                                                                    float =
+                                                                        [
+                                                                            {
+                                                                                path = [ "float" ] ;
+                                                                                type = "float" ;
+                                                                                value = 1.0 ;
+                                                                            }
+                                                                        ] ;
+                                                                    int =
+                                                                        [
+                                                                            {
+                                                                                path = [ "int" ] ;
+                                                                                type = "int" ;
+                                                                                value = 1 ;
+                                                                            }
+                                                                        ] ;
+                                                                    lambda =
+                                                                        [
+                                                                            {
+                                                                                path = [ "lambda" ] ;
+                                                                                type = "lambda" ;
+                                                                                value = null ;
+                                                                            }
+                                                                        ] ;
+                                                                    list =
+                                                                        [
+                                                                            [
+                                                                                {
+                                                                                    path = [ "list" 0 ] ;
+                                                                                    type = "int" ;
+                                                                                    value = 1 ;
+                                                                                }
+                                                                            ]
+                                                                        ] ;
+                                                                    null =
+                                                                        [
+                                                                            {
+                                                                                path = [ "null" ] ;
+                                                                                type = "null" ;
+                                                                                value = null ;
+                                                                            }
+                                                                        ] ;
+                                                                    path =
+                                                                        [
+                                                                            {
+                                                                                path = [ "path" ] ;
+                                                                                type = "path" ;
+                                                                                value = ./. ;
+                                                                            }
+                                                                        ] ;
+                                                                    set =
+                                                                        {
+                                                                            one =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "one" ] ;
+                                                                                        type = "int" ;
+                                                                                        value = 1 ;
+                                                                                    }
+                                                                                ] ;
+                                                                        } ;
+                                                                    string =
+                                                                        [
+                                                                            {
+                                                                                path = [ "string" ] ;
+                                                                                type = "string" ;
+                                                                                value = "1" ;
+                                                                            }
+                                                                        ] ;
+                                                                } ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            ps = pkgs.ps ;
-                                                            redis = pkgs.redis ;
-                                                            resources-directory = "/build/resources" ;
-                                                            targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
-                                                            transient = false ;
-                                                            visitor = visitor ;
+                                                            success = true ;
+                                                            value =
+                                                                {
+                                                                    bool = true ;
+                                                                    float = 1.0 ;
+                                                                    int = 1 ;
+                                                                    lambda = i : i ;
+                                                                    list = [ 1 ] ;
+                                                                    null = null ;
+                                                                    path = ./. ;
+                                                                    set = { one = 1 ; } ;
+                                                                    string = "1" ;
+                                                                } ;
+                                                            visitors =
+                                                                let
+                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                                    in
+                                                                        {
+                                                                            bool = string ;
+                                                                            float = string ;
+                                                                            int = string ;
+                                                                            lambda = string ;
+                                                                            null = string ;
+                                                                            path = string ;
+                                                                            string = string ;
+                                                                        } ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                             yq-go = pkgs.yq-go ;
                                                         } ;
-                                                    in { name = "test-resource:  ${ name }" ; value = resource-factory.check test ; } ;
-                                            tests =
-                                                [
-                                                    # { name = "t0" ; value = failure_.check { compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ; run-time-arguments = [ "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f" ] ; } ; }
-                                                    { name = "t1" ; value = log-event-listener.check { log-file = [ "409d85c81f91fa72bcb589647e59aa81b9b48a36e7e65e8d562cf86120955fe07d35dd7733f6349bc8c8bb4ed634630a03e5da0150de9ea81ef79c46a64a2456" ] ; message = "7ec5c1abf8934880c738af14ed3213437edb7e8a3b1833b31a9b253934606a0604cb80ca36f25d0f41e7f134eb9b7e6dc5473a69204b6f7c14aa2bf78d4ad840" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ; }
-                                                    ( test-home "simple test" )
-                                                    (
-                                                        test-resource
-                                                            "Happy Case"
-                                                            false
-                                                            false
-                                                            false
-                                                            false
-                                                            {
-                                                                arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
-                                                                expected-dependencies = [ ] ;
-                                                                expected-index = "0000000311691948" ;
-                                                                expected-originator-pid = 45 ;
-                                                                expected-provenance = "new" ;
-                                                                expected-standard-error = "" ;
-                                                                expected-standard-output = "f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8" ;
-                                                                expected-status = 0 ;
-                                                                expected-targets = [ "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4" ] ;
-                                                                expected-transient = -1 ;
-                                                                resources-directory-fixture =
-                                                                   resources-directory :
-                                                                        ''
-                                                                            mkdir --parents ${ resources-directory }/sequential
-                                                                            echo 311691948 > ${ resources-directory }/sequential/sequential.counter
-                                                                        '' ;
-                                                                standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
-                                                                standard-output = "/build/resources/mounts/0000000311691948" ;
-                                                                status = 0 ;
-                                                           }
-                                                    )
-                                                ] ;
-                                            in builtins.listToAttrs tests ;
+                                                string-happy =
+                                                    _string.check
+                                                        {
+                                                            coreutils = pkgs.coreutils ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                            success = true ;
+                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                            value = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                            values =
+                                                                {
+                                                                    alpha = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                                } ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                        } ;
+                                                string-sad =
+                                                    _string.check
+                                                        {
+                                                            coreutils = pkgs.coreutils ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                            success = false ;
+                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                            value = false ;
+                                                            values =
+                                                                {
+                                                                    alpha = x : "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                                } ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                        } ;
+                                                visitor-sad =
+                                                    _visitor.check
+                                                        {
+                                                            coreutils = pkgs.coreutils ;
+                                                            diffutil = pkgs.diffutil ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                            yq-go = pkgs.yq-go ;
+                                                        } ;
+                                            } ;
                                     modules =
                                         {
                                             user = user ;
-                                        } ;
-                                    tests =
-                                        {
                                         } ;
                                 } ;
             } ;
