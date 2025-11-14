@@ -1458,7 +1458,7 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = "/nix/store/wm2hnfhij3d1av2zkkjld4k1a4kfj1jw-init/bin/init" ;
+                                                expected = "/nix/store/rg1ns7nvwcvz6ir6178vr6nlwvdakh3q-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                                 self = "" ;
