@@ -211,9 +211,11 @@
                                                                                                                             git fetch origin main
                                                                                                                             UUID="$( uuidgen )" || failure f235d1e2
                                                                                                                             git checkout -b "scratch/\$UUID"
-                                                                                                                            git push origin HEAD
                                                                                                                             if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
+                                                                                                                                git reset --soft origin/main
+                                                                                                                                git commit --no-verify -a --verbose
+                                                                                                                                git push origin HEAD
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
                                                                                                                                 if [[ -z "\$LAST_COMMIT_MESSAGE" ]]
@@ -706,6 +708,7 @@
                                                                                                                             ''
                                                                                                                                 BRANCH="$1"
                                                                                                                                 git fetch origin "$BRANCH"
+                                                                                                                                git checkout "origin/$BRANCH"
                                                                                                                                 UUID="$( uuidgen )" || failure 382b0fd1
                                                                                                                                 git checkout -b "scratch/$UUID"
                                                                                                                                 git submodule sync
