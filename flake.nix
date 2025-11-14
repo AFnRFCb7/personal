@@ -208,8 +208,7 @@
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                         do
                                                                                                                             cd "\$INPUT"
-                                                                                                                            if ! git
-                                                                                                                            diff --quiet || ! git -C "\$INPUT" diff --cached --quiet
+                                                                                                                            if ! git diff --quiet || ! git -C "\$INPUT" diff --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git -C "\$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git -C "\$INPUT" log -1 -pretty=%B )" || failure dec8cece
