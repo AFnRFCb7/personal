@@ -1415,11 +1415,12 @@
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
-                                                                identity-file = { mount , pkgs , resources , stage } :
-                                                                    {
-                                                                        directory = resources.directory ;
-                                                                        file = resources.file ;
-                                                                    } ;
+                                                                identity-file =
+                                                                    { mount , pkgs , resources , stage } :
+                                                                        {
+                                                                            directory = resources.directory ;
+                                                                            file = resources.file ;
+                                                                        } ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
