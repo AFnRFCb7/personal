@@ -1455,13 +1455,13 @@
                                                        "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
                                                    ] ;
                                            } ;
-                                    # git-repository =
-                                    #     _git-repository.check
-                                    #         {
-                                    #             expected = "/nix/store/wm2hnfhij3d1av2zkkjld4k1a4kfj1jw-init/bin/init" ;
-                                    #             failure = _failure.implementation "8a8f3b60" ;
-                                    #             pkgs = pkgs ;
-                                    #        } ;
+                                    git-repository =
+                                        _git-repository.check
+                                            {
+                                                expected = "/nix/store/wm2hnfhij3d1av2zkkjld4k1a4kfj1jw-init/bin/init" ;
+                                                failure = _failure.implementation "8a8f3b60" ;
+                                                pkgs = pkgs ;
+                                           } ;
                                     resource-happy =
                                         let
                                             factory =
