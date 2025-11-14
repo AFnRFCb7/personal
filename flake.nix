@@ -219,7 +219,7 @@
                                                                                                                         gh auth logout
                                                                                                                         cd "$FILE"
                                                                                                                         git fetch origin main
-                                                                                                                        if ! git diff --quiet || ! git -C "$FILE" diff --cached --quiet
+                                                                                                                        if ! git diff --quiet origin/main || ! git -C "$FILE" diff --cached --quiet origin/main
                                                                                                                         then
                                                                                                                             git rm flake.lock
                                                                                                                             nixos-rebuild build --flake "$FILE#user"
