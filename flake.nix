@@ -214,7 +214,7 @@
                                                                                                                             if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
                                                                                                                                 git reset --soft origin/main
-                                                                                                                                git commit --no-verify -a --verbose
+                                                                                                                                git commit --no-verify -a --verbose -m "" --allow-empty-message
                                                                                                                                 git push origin HEAD
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
