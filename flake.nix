@@ -208,6 +208,7 @@
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                         do
                                                                                                                             cd "\$INPUT"
+                                                                                                                            git fetch origin main
                                                                                                                             if ! git diff --quiet || ! git diff --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
@@ -219,7 +220,7 @@
                                                                                                                         gh auth logout
                                                                                                                         cd "$FILE"
                                                                                                                         git fetch origin main
-                                                                                                                        if ! git diff --quiet origin/main || ! git -C "$FILE" diff --cached --quiet origin/main
+                                                                                                                        if ! git diff --quiet origin/main || ! git diff --cached --quiet origin/main
                                                                                                                         then
                                                                                                                             git rm flake.lock
                                                                                                                             nixos-rebuild build --flake "$FILE#user"
@@ -687,6 +688,24 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.hydrate" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "hydrate" ;
+                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                BRANCH="$1"
+                                                                                                                                git fetch origin "$BRANCH"
+                                                                                                                                git scratch
+                                                                                                                                git submodule sync
+                                                                                                                                git submodule update --init --recursive
+                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} scratch \;
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                        in "${ application }/bin/hydrate" ;
                                                                                                     "alias.inherit" =
                                                                                                         let
                                                                                                             application =
