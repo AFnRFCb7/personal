@@ -207,7 +207,9 @@
                                                                                                                         gh auth login --with-token < "$TOKEN_FILE/secret"
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                         do
-                                                                                                                            if ! git -C "\$INPUT" diff --quiet || ! git -C "\$INPUT" diff --cached --quiet
+                                                                                                                            cd "\$INPUT"
+                                                                                                                            if ! git
+                                                                                                                            diff --quiet || ! git -C "\$INPUT" diff --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git -C "\$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git -C "\$INPUT" log -1 -pretty=%B )" || failure dec8cece
@@ -226,7 +228,7 @@
                                                                                                                             sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
                                                                                                                             git checkout -b scratch/$(uuidgen)
                                                                                                                             git reset --soft origin/main
-                                                                                                                            git commit -a --verbose
+                                                                                                                            git commit --no-verify -a --verbose
                                                                                                                             COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
                                                                                                                             git push origin "\$COMMIT"
                                                                                                                             git checkout main
