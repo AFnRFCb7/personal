@@ -217,19 +217,22 @@
                                                                                                                             fi
                                                                                                                         done
                                                                                                                         gh auth logout
-                                                                                                                        git -C "$FILE" fetch origin main
-                                                                                                                        if ! git -C "$FILE" diff --quiet || ! git diff -C "$FILE" --cached --quiet
+                                                                                                                        cd "$FILE"
+                                                                                                                        git fetch origin main
+                                                                                                                        if ! git diff --quiet || ! git -C "$FILE" diff --cached --quiet
                                                                                                                         then
-                                                                                                                            git -C "$FILE" scratch
-                                                                                                                            git -C "$FILE" reset --soft origin/main
-                                                                                                                            git -C "$FILE" commit -a --verbose
-                                                                                                                            COMMIT="\$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
-                                                                                                                            git -C "$FILE" push origin "\$COMMIT"
-                                                                                                                            git -C "$FILE" checkout main
-                                                                                                                            git -C "$FILE" rebase origin "\$COMMIT"
-                                                                                                                            git -C "$FILE" push origin main
+                                                                                                                            git rm flake.lock
+                                                                                                                            nixos-rebuild build --flake "$FILE#user"
+                                                                                                                            sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
+                                                                                                                            git checkout -b scratch/$(uuidgen)
+                                                                                                                            git reset --soft origin/main
+                                                                                                                            git commit -a --verbose
+                                                                                                                            COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
+                                                                                                                            git push origin "\$COMMIT"
+                                                                                                                            git checkout main
+                                                                                                                            git rebase origin "\$COMMIT"
+                                                                                                                            git push origin main
                                                                                                                         fi
-                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
