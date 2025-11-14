@@ -209,6 +209,9 @@
                                                                                                                         do
                                                                                                                             cd "\$INPUT"
                                                                                                                             git fetch origin main
+                                                                                                                            UUID="$( uuidgen )" || failure f235d1e2
+                                                                                                                            git checkout -b "scratch/$UUID"
+                                                                                                                            git push origin HEAD
                                                                                                                             if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
@@ -698,12 +701,13 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "hydrate" ;
-                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "71d0fbbe" ) ] ;
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 BRANCH="$1"
                                                                                                                                 git fetch origin "$BRANCH"
-                                                                                                                                git scratch
+                                                                                                                                UUID="$( uuidgen )" || failure 382b0fd1
+                                                                                                                                git checkout -b "scratch/$UUID"
                                                                                                                                 git submodule sync
                                                                                                                                 git submodule update --init --recursive
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} scratch \;
