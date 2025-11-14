@@ -209,7 +209,7 @@
                                                                                                                         do
                                                                                                                             cd "\$INPUT"
                                                                                                                             git fetch origin main
-                                                                                                                            if ! git diff --quiet || ! git diff --cached --quiet
+                                                                                                                            if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git log -1 -pretty=%B )" || failure dec8cece
@@ -229,7 +229,7 @@
                                                                                                                             git reset --soft origin/main
                                                                                                                             git commit --no-verify -a --verbose
                                                                                                                             COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
-                                                                                                                            git push origin "\$COMMIT"
+                                                                                                                            git push origin HEAD
                                                                                                                             git checkout main
                                                                                                                             git rebase origin "\$COMMIT"
                                                                                                                             git push origin main
