@@ -213,7 +213,7 @@
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
-                                                                                                                                if [[ -z "$LAST_COMMIT_MESSAGE" ]]
+                                                                                                                                if [[ -z "\$LAST_COMMIT_MESSAGE" ]]
                                                                                                                                 then
                                                                                                                                     LAST_COMMIT_MESSAGE="purposefully blank"
                                                                                                                                 fi
