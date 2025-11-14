@@ -1433,13 +1433,14 @@
                                                     } ;
                                                 expected = "/nix/store/5rhxgmggdis8f97sga61bxslws8wrs2a-init/bin/init" ;
                                                 failure = _failure.implementation "8bc0fd4b" ;
+                                                mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
                                                 pkgs = pkgs ;
                                                 resources =
                                                     {
                                                         directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
                                                         file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
                                                     } ;
-                                                self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
+                                                stage = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
                                             } ;
                                    failure =
                                        _failure.check
@@ -1519,7 +1520,8 @@
                                                                                 ||----w |
                                                                                 ||     ||
                                                                 resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
-                                                                self = /build/resources/mounts/0000000311691948
+                                                                mount = /build/resources/mounts/0000000311691948
+                                                                stage = /build/resources/stages/0000000311691948
                                                             '' ;
                                                         expected-status = 0 ;
                                                         expected-targets =
@@ -1528,7 +1530,7 @@
                                                                 ] ;
                                                             expected-transient = -1 ;
                                                         init =
-                                                            { pkgs , resources , self } :
+                                                            { mount , pkgs , resources , stage } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -1539,7 +1541,8 @@
                                                                                     ''
                                                                                         cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                         ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
-                                                                                        echo "self = ${ self }"
+                                                                                        echo "mount = ${ mount }"
+                                                                                        echo "stage = ${ stage }"
                                                                                         echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
                                                                                         root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
@@ -1613,7 +1616,8 @@
                                                                                 ||----w |
                                                                                 ||     ||
                                                                 resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
-                                                                self = /build/resources/mounts/0000000437766789
+                                                                mount = /build/resources/mounts/0000000437766789
+                                                                stage = /build/resources/stages/0000000437766789
                                                            '' ;
                                                      expected-status = 70 ;
                                                      expected-targets =
