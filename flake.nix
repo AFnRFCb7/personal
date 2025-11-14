@@ -237,10 +237,10 @@
                                                                                                                             git checkout -b scratch/$(uuidgen)
                                                                                                                             git reset --soft origin/main
                                                                                                                             git commit --no-verify -a --verbose
-                                                                                                                            BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 82c1414a
+                                                                                                                            COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
                                                                                                                             git push origin HEAD
                                                                                                                             git checkout main
-                                                                                                                            git rebase origin "\$BRANCH"
+                                                                                                                            git rebase "\$COMMIT"
                                                                                                                             git push origin main
                                                                                                                         fi
                                                                                                                         EOF
