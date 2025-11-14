@@ -1138,18 +1138,23 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "log-event-listener" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ] ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ( _failure.implementation "c5160404" )] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                     exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                     flock 203
-                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r LINE
+                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                     do
-                                                                                                        if [[ "$LINE" == "message" ]]
+                                                                                                        if [[ "$TYPE" == "message" ]]
                                                                                                         then
-                                                                                                            read -r MESSAGE
-                                                                                                            echo "$MESSAGE" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                            read -r CHANNEL
+                                                                                                            if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                            then
+                                                                                                                failure 3aab9086
+                                                                                                            fi
+                                                                                                            read -r PAYLOAD
+                                                                                                            echo "$PAYLOAD" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                         fi
                                                                                                     done
                                                                                                 '' ;
