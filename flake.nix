@@ -741,6 +741,10 @@
                                                                                                                                 git add .gitmodules
                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
+                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 6acfd685
+                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                git submodule sync --recursive
+                                                                                                                                git submodule update --init --recursive
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME"
@@ -750,10 +754,6 @@
                                                                                                                                     git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                     git -C "$INPUT" scratch
                                                                                                                                 done
-                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 6acfd685
-                                                                                                                                export GIT_SSH_COMMAND
-                                                                                                                                git submodule sync --recursive
-                                                                                                                                git submodule update --init --recursive
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                                 in "!${ application }/bin/inherit" ;
