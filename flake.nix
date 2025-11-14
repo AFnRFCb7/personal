@@ -207,29 +207,42 @@
                                                                                                                         gh auth login --with-token < "$TOKEN_FILE/secret"
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                         do
-                                                                                                                            if ! git -C "\$INPUT" diff --quiet || ! git -C "\$INPUT" diff --cached --quiet
+                                                                                                                            cd "\$INPUT"
+                                                                                                                            git fetch origin main
+                                                                                                                            UUID="$( uuidgen )" || failure f235d1e2
+                                                                                                                            git checkout -b "scratch/\$UUID"
+                                                                                                                            if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
-                                                                                                                                BRANCH="\$( git -C "\$INPUT" rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
-                                                                                                                                LAST_COMMIT_MESSAGE="\$( git -C "\$INPUT" log -1 -pretty=%B )" || failure dec8cece
-                                                                                                                                cd "\$INPUT"
-                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
+                                                                                                                                git reset --soft origin/main
+                                                                                                                                git commit --no-verify -a --verbose -m "" --allow-empty-message
+                                                                                                                                git push origin HEAD
+                                                                                                                                BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
+                                                                                                                                LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
+                                                                                                                                if [[ -z "\$LAST_COMMIT_MESSAGE" ]]
+                                                                                                                                then
+                                                                                                                                    LAST_COMMIT_MESSAGE="purposefully blank"
+                                                                                                                                fi
+                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body "\$LAST_COMMIT_MESSAGE" )" || failure a2f8c05a
                                                                                                                                 gh pr merge "\$URL" --squash
                                                                                                                             fi
                                                                                                                         done
                                                                                                                         gh auth logout
-                                                                                                                        git -C "$FILE" fetch origin main
-                                                                                                                        if ! git -C "$FILE" diff --quiet || ! git diff -C "$FILE" --cached --quiet
+                                                                                                                        cd "$FILE"
+                                                                                                                        git fetch origin main
+                                                                                                                        if ! git diff --quiet origin/main || ! git diff --cached --quiet origin/main
                                                                                                                         then
-                                                                                                                            git -C "$FILE" scratch
-                                                                                                                            git -C "$FILE" reset --soft origin/main
-                                                                                                                            git -C "$FILE" commit -a --verbose
-                                                                                                                            COMMIT="\$( git -C "$FILE" rev-parse HEAD )" || failure 82c1414a
-                                                                                                                            git -C "$FILE" push origin "\$COMMIT"
-                                                                                                                            git -C "$FILE" checkout main
-                                                                                                                            git -C "$FILE" rebase origin "\$COMMIT"
-                                                                                                                            git -C "$FILE" push origin main
+                                                                                                                            git rm flake.lock
+                                                                                                                            nixos-rebuild build --flake "$FILE#user"
+                                                                                                                            sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
+                                                                                                                            git checkout -b scratch/$(uuidgen)
+                                                                                                                            git reset --soft origin/main
+                                                                                                                            git commit --no-verify -a --verbose
+                                                                                                                            COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
+                                                                                                                            git push origin HEAD
+                                                                                                                            git checkout main
+                                                                                                                            git rebase origin "\$COMMIT"
+                                                                                                                            git push origin main
                                                                                                                         fi
-                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
                                                                                                                         EOF
                                                                                                                         chmod 0500 /mount/switch
                                                                                                                         cat > /mount/test <<EOF
@@ -657,6 +670,15 @@
                                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                                 git submodule init 2>&1
                                                                                                                                 git submodule update --recursive 2>&1
+                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                do
+                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME"
+                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
+                                                                                                                                    git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                    git -C "$INPUT" scratch
+                                                                                                                                done
                                                                                                                                 for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                                 do
                                                                                                                                     IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
@@ -675,6 +697,26 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.hydrate" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "hydrate" ;
+                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "71d0fbbe" ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                BRANCH="$1"
+                                                                                                                                git fetch origin "$BRANCH"
+                                                                                                                                git checkout "origin/$BRANCH"
+                                                                                                                                UUID="$( uuidgen )" || failure 382b0fd1
+                                                                                                                                git checkout -b "scratch/$UUID"
+                                                                                                                                git submodule sync
+                                                                                                                                git submodule update --init --recursive
+                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} scratch \;
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                        in "!${ application }/bin/hydrate" ;
                                                                                                     "alias.inherit" =
                                                                                                         let
                                                                                                             application =
@@ -737,6 +779,10 @@
                                                                                                                                 git add .gitmodules
                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
+                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 6acfd685
+                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                git submodule sync --recursive 2>&1
+                                                                                                                                git submodule update --init --recursive 2>&1
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME"
@@ -1104,6 +1150,7 @@
                                                                 packages =
                                                                     [
                                                                         pkgs.gh
+                                                                        ( _failure.implementation "762e3818" )
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
@@ -1111,8 +1158,21 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } c6fbc6bd" ) }
-                                                                                            idea-community "$STUDIO/git-repository"
+                                                                                            if [[ "$#" -gt 0 ]]
+                                                                                            then
+                                                                                                HAS_ARGUMENTS=true
+                                                                                                ARGUMENTS="$1"
+                                                                                            else
+                                                                                                HAS_ARGUMENTS=false
+                                                                                                ARGUMENTS=
+                                                                                            fi
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : ''${ setup } "$ARGUMENTS"'' ) }
+                                                                                            if "$HAS_ARGUMENTS"
+                                                                                            then
+                                                                                                echo "$STUDIO/git-repository"
+                                                                                            else
+                                                                                                idea-community "$STUDIO/git-repository"
+                                                                                            fi
                                                                                         '' ;
                                                                                 }
                                                                         )
