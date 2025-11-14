@@ -212,7 +212,7 @@
                                                                                                                             if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
-                                                                                                                                LAST_COMMIT_MESSAGE="\$( git log -1 -pretty=%B )" || failure dec8cece
+                                                                                                                                LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
                                                                                                                                 URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
                                                                                                                                 gh pr merge "\$URL" --squash
                                                                                                                             fi
@@ -1139,6 +1139,7 @@
                                                                 packages =
                                                                     [
                                                                         pkgs.gh
+                                                                        ( failure "762e3818" )
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
