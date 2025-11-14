@@ -29,6 +29,7 @@
                             _git-repository = git-repository.lib { visitor = _visitor.implementation ; } ;
                             _resource =
                                 {
+                                    channel ,
                                     resources-directory ,
                                     resources ,
                                     store-garbage-collection-root
@@ -36,6 +37,7 @@
                                     resource.lib
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                            channel = channel ;
                                             coreutils = pkgs.coreutils ;
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
@@ -72,6 +74,7 @@
                                                                 r =
                                                                     _resource
                                                                         {
+                                                                            channel = config.personal.channel ;
                                                                             resources = resources__ ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
@@ -1118,28 +1121,38 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
-                                                        # systemd.services.resources-log-listener =
-                                                        #    {
-                                                        #         after = [ "network.target" ] ;
-                                                        #         serviceConfig =
-                                                        #             {
-                                                        #                 ExecStart =
-                                                        #                     let
-                                                        #                         log-event-listener =
-                                                        #                             resources.lib.listeners.log-event-listener
-                                                        #                                 {
-                                                        #                                     coreutils = pkgs.coreutils ;
-                                                        #                                     flock = pkgs.flock ;
-                                                        #                                     redis = pkgs.redis ;
-                                                        #                                     resources-directory = "/home/${ config.personal. name }/resources" ;
-                                                        #                                     writeShellApplication = pkgs.writeShellApplication ;
-                                                        #                                     yq-go = pkgs.yq-go ;
-                                                        #                                 } ;
-                                                        #                         in "${ log-event-listener.implementation }/bin/log-event-listener" ;
-                                                        #                 User = config.personal.name ;
-                                                        #             } ;
-                                                        #         wantedBy = [ "multi-user.target" ] ;
-                                                        #     } ;
+                                                        systemd.services.resources-log-listener =
+                                                           {
+                                                                after = [ "network.target" ] ;
+                                                                serviceConfig =
+                                                                    {
+                                                                        ExecStart =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "log-event-listener" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                    exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                    flock 203
+                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r LINE
+                                                                                                    do
+                                                                                                        if [[ "$LINE" == "message" ]]
+                                                                                                        then
+                                                                                                            read -r MESSAGE
+                                                                                                            echo "$MESSAGE" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                        fi
+                                                                                                    done
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/log-event-listener" ;
+                                                                        User = config.personal.name ;
+                                                                    } ;
+                                                                wantedBy = [ "multi-user.target" ] ;
+                                                            } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
@@ -1233,6 +1246,7 @@
                                                                         recipient = lib.mkOption { default = "688A5A79ED45AED4D010D56452EDF74F9A9A6E20" ; type = lib.types.str ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/artifacts.git" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                channel = lib.mkOption { default = "f8d8866f434b53ddef89e1f445b382ed8ad034fada809284fda25a9db0ffecf79a8b6a17c95d83bb1e40f5c287e8a95b5523ae6717b2c45f429d4e78e73b354f" ; type = lib.types.str ; } ;
                                                                 chromium =
                                                                     {
                                                                         branch = lib.mkOption { default = "artifact/eb5e3536f8f42f3e6d42d135cc85c4e0df4b955faaf7d221a0ed5ef" ; type = lib.types.str ; } ;
@@ -1410,7 +1424,7 @@
                                                                 user = "git" ;
                                                             } ;
                                                     } ;
-                                                expected = "/nix/store/ygkmvyd5d4snw0i7k1j7iycjcyyl25ai-init/bin/init" ;
+                                                expected = "/nix/store/5rhxgmggdis8f97sga61bxslws8wrs2a-init/bin/init" ;
                                                 failure = _failure.implementation "8bc0fd4b" ;
                                                 pkgs = pkgs ;
                                                 resources =
@@ -1444,15 +1458,17 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = "/nix/store/wm2hnfhij3d1av2zkkjld4k1a4kfj1jw-init/bin/init" ;
+                                                expected = "/nix/store/rg1ns7nvwcvz6ir6178vr6nlwvdakh3q-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
-                                            } ;
+                                                self = "" ;
+                                           } ;
                                     resource-happy =
                                         let
                                             factory =
                                                 _resource
                                                     {
+                                                        channel = "58c7d369b0ce01c248dc06747e2414e64190b49ec8b54ab8b5d20f96a2033759636788d718be578255e47ea0ab95810bfe7e027b8bd7f7eb4c1d3bfb5e682480" ;
                                                         resources-directory = "/build/resources" ;
                                                         resources =
                                                             {
@@ -1546,6 +1562,7 @@
                                            factory =
                                                _resource
                                                    {
+                                                       channel = "7410b4a734c6e9ffad193874e22750a93798cbedf60c356b56d4ead212851f3b71f091197f2c4835e99be38af552d7d6818786e09ccaae2380c062c24d3d248a" ;
                                                        resources-directory = "/build/resources" ;
                                                        resources =
                                                            {
@@ -1629,12 +1646,21 @@
                                                     standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
                                                      standard-error =
                                                          ''
-                                                             compile-time-arguments:
-                                                               path: []
-                                                               type: string
-                                                               value: f135add3
-                                                             run-time-arguments:
-                                                               - a05ad0c3
+                                                                compile-time-arguments:
+                                                                  path: []
+                                                                  type: string
+                                                                  value: f135add3
+                                                                run-time-arguments:
+                                                                  - a05ad0c3
+                                                                  - ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9
+                                                                  - "70"
+                                                                  - '['
+                                                                  - '  "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",'
+                                                                  - '  "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"'
+                                                                  - ']'
+                                                                  - '['
+                                                                  - '  "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"'
+                                                                  - ']'
                                                          '' ;
                                                      standard-output = "" ;
                                                      status = 64 ;
