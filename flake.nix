@@ -1461,6 +1461,7 @@
                                                 expected = "/nix/store/wm2hnfhij3d1av2zkkjld4k1a4kfj1jw-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
+                                                self = "" ;
                                            } ;
                                     resource-happy =
                                         let
