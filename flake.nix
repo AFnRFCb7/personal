@@ -1422,7 +1422,7 @@
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
                                                                 identity-file =
-                                                                    { pkgs , resources , self } :
+                                                                    { mount , pkgs , resources , stage } :
                                                                         {
                                                                             directory = resources.directory ;
                                                                             file = resources.file ;
