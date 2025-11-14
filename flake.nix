@@ -210,7 +210,7 @@
                                                                                                                             cd "\$INPUT"
                                                                                                                             git fetch origin main
                                                                                                                             UUID="$( uuidgen )" || failure f235d1e2
-                                                                                                                            git checkout -b "scratch/$UUID"
+                                                                                                                            git checkout -b "scratch/\$UUID"
                                                                                                                             git push origin HEAD
                                                                                                                             if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
                                                                                                                             then
