@@ -1139,7 +1139,7 @@
                                                                 packages =
                                                                     [
                                                                         pkgs.gh
-                                                                        ( failure "762e3818" )
+                                                                        ( _failure.implementation "762e3818" )
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
