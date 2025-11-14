@@ -222,7 +222,7 @@
                                                                                                                                 then
                                                                                                                                     LAST_COMMIT_MESSAGE="purposefully blank"
                                                                                                                                 fi
-                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
+                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body "\$LAST_COMMIT_MESSAGE" )" || failure a2f8c05a
                                                                                                                                 gh pr merge "\$URL" --squash
                                                                                                                             fi
                                                                                                                         done
