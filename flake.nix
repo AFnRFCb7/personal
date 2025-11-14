@@ -748,8 +748,8 @@
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 6acfd685
                                                                                                                                 export GIT_SSH_COMMAND
-                                                                                                                                git submodule sync --recursive
-                                                                                                                                git submodule update --init --recursive
+                                                                                                                                git submodule sync --recursive 2>&1
+                                                                                                                                git submodule update --init --recursive 2>&1
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                 do
                                                                                                                                     git -C "$INPUT" config user.name "$USER_NAME"
