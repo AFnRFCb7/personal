@@ -152,18 +152,18 @@
                                                                             "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
-                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mouny , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     user = "git" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host-name = "192.168.1.192" ;
-                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             nix =
@@ -1392,7 +1392,14 @@
                                 } ;
                             checks =
                                 {
-                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
+                                    dot-gnupg =
+                                        _dot-gnupg.check
+                                            {
+                                                expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
+                                                failure = _failure.implementation "dff7788e" ;
+                                                ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
+                                                secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
+                                            } ;
                                     dot-ssh =
                                         _dot-ssh.check
                                             {
@@ -1402,7 +1409,7 @@
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
-                                                                identity-file = { pkgs , resources , self } :
+                                                                identity-file = { mount , pkgs , resources , stage } :
                                                                     {
                                                                         directory = resources.directory ;
                                                                         file = resources.file ;
@@ -1461,7 +1468,6 @@
                                                 expected = "/nix/store/rg1ns7nvwcvz6ir6178vr6nlwvdakh3q-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
-                                                self = "" ;
                                            } ;
                                     resource-happy =
                                         let
