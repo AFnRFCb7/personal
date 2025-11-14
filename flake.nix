@@ -665,6 +665,10 @@
                                                                                                                             else
                                                                                                                                 failure 1da13d01
                                                                                                                             fi
+                                                                                                                            GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 4efc06ef
+                                                                                                                            export GIT_SSH_COMMAND
+                                                                                                                            git submodule sync --recursive
+                                                                                                                            git submodule update --init --recursive
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
@@ -746,6 +750,10 @@
                                                                                                                                     git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                     git -C "$INPUT" scratch
                                                                                                                                 done
+                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 6acfd685
+                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                git submodule sync --recursive
+                                                                                                                                git submodule update --init --recursive
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                                 in "!${ application }/bin/inherit" ;
