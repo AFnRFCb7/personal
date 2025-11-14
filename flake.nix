@@ -203,7 +203,7 @@
                                                                                                                         TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                         cat > /mount/switch <<EOF
                                                                                                                         set -euo pipefail
-                                                                                                                        export PATH=\$PATH:${ failure.implementation "f3b796fb" }/bin
+                                                                                                                        export PATH=\$PATH:${ _failure.implementation "f3b796fb" }/bin
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
                                                                                                                         gh auth login --with-token < "$TOKEN_FILE/secret"
                                                                                                                         find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
