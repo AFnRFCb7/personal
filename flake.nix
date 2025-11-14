@@ -657,6 +657,15 @@
                                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                                 git submodule init 2>&1
                                                                                                                                 git submodule update --recursive 2>&1
+                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                do
+                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME"
+                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
+                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
+                                                                                                                                    git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                    git -C "$INPUT" scratch
+                                                                                                                                done
                                                                                                                                 for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
                                                                                                                                 do
                                                                                                                                     IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
@@ -665,10 +674,6 @@
                                                                                                                             else
                                                                                                                                 failure 1da13d01
                                                                                                                             fi
-                                                                                                                            GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 4efc06ef
-                                                                                                                            export GIT_SSH_COMMAND
-                                                                                                                            git submodule sync --recursive
-                                                                                                                            git submodule update --init --recursive
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
