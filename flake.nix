@@ -1111,8 +1111,21 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } c6fbc6bd" ) }
-                                                                                            idea-community "$STUDIO/git-repository"
+                                                                                            if [[ "$#" -gt 0 ]]
+                                                                                            then
+                                                                                                HAS_ARGUMENTS=true
+                                                                                                ARGUMENTS="$1"
+                                                                                            else
+                                                                                                HAS_ARGUMENTS=false
+                                                                                                ARGUMENTS=
+                                                                                            fi
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } $ARGUMENTS" ) }
+                                                                                            if "$HAS_ARGUMENTS"
+                                                                                            then
+                                                                                                echo "$STUDIO/git-repository"
+                                                                                            else
+                                                                                                idea-community "$STUDIO/git-repository"
+                                                                                            fi
                                                                                         '' ;
                                                                                 }
                                                                         )
