@@ -213,6 +213,10 @@
                                                                                                                             then
                                                                                                                                 BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
                                                                                                                                 LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
+                                                                                                                                if [[ -z "$LAST_COMMIT_MESSAGE" ]]
+                                                                                                                                then
+                                                                                                                                    LAST_COMMIT_MESSAGE="purposefully blank"
+                                                                                                                                fi
                                                                                                                                 URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body-file <( echo "\$LAST_COMMIT_MESSAGE" ) )" || failure a2f8c05a
                                                                                                                                 gh pr merge "\$URL" --squash
                                                                                                                             fi
@@ -705,7 +709,7 @@
                                                                                                                                 find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} scratch \;
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                        in "${ application }/bin/hydrate" ;
+                                                                                                        in "!${ application }/bin/hydrate" ;
                                                                                                     "alias.inherit" =
                                                                                                         let
                                                                                                             application =
