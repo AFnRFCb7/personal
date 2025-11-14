@@ -1119,7 +1119,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : "${ setup } $ARGUMENTS" ) }
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : ''${ setup } "$ARGUMENTS"'' ) }
                                                                                             if "$HAS_ARGUMENTS"
                                                                                             then
                                                                                                 echo "$STUDIO/git-repository"
