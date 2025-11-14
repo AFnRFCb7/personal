@@ -1473,7 +1473,7 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = "/nix/store/rg1ns7nvwcvz6ir6178vr6nlwvdakh3q-init/bin/init" ;
+                                                expected = "/nix/store/wxv6156kdfg4jnqidbpf8p5zjwqpwasq-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                            } ;
