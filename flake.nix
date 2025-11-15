@@ -84,7 +84,13 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            dot-gnupg = ignore : _dot-gnupg.implementation { ownertrust-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ; } ;
+                                                            dot-gnupg =
+                                                                ignore :
+                                                                    _dot-gnupg.implementation
+                                                                        {
+                                                                            ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                        } ;
                                                             dot-ssh =
                                                                 ignore :
                                                                     _dot-ssh.implementation
@@ -105,7 +111,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pkgs , resources , self } :
+                                                                            { mount , pkgs , resources , stage } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -142,8 +148,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { pkgs , resources , self } : resources.production.secrets.ownertrust ;
-                                                                            secret-keys-fun = { pkgs , resources , self } : resources.production.secrets.secret-keys ;
+                                                                            ownertrust-fun = { mount , pkgs , resources , stage } : resources.production.secrets.ownertrust ;
+                                                                            secret-keys-fun = { mount , pkgs , resources , stage } : resources.production.secrets.secret-keys ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -152,18 +158,18 @@
                                                                             "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
-                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     user = "git" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host-name = "192.168.1.192" ;
-                                                                                    identity-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { pkgs , resources , self } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             nix =
@@ -172,7 +178,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pkgs , resources , self } :
+                                                                                    { mount , pkgs , resources , stage } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -270,7 +276,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pkgs , resources , self } :
+                                                                                    { mount , pkgs , resources , stage } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -287,8 +293,8 @@
                                                                                                                                     name = "start" ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            export SHARED_DIR="${ self }/shared"
-                                                                                                                                            "${ self }/result/bin/run-nixos-vm"
+                                                                                                                                            export SHARED_DIR="${ mount }/shared"
+                                                                                                                                            "${ mount }/result/bin/run-nixos-vm"
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/start" ;
@@ -330,7 +336,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pkgs , resources , self } :
+                                                                                    { mount , pkgs , resources , stage } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -347,8 +353,8 @@
                                                                                                                                     name = "start" ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            export SHARED_DIR="${ self }/shared"
-                                                                                                                                            "${ self }/result/bin/run-nixos-vm"
+                                                                                                                                            export SHARED_DIR="${ mount }/shared"
+                                                                                                                                            "${ mount }/result/bin/run-nixos-vm"
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/start" ;
@@ -396,7 +402,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pkgs , resources , self } :
+                                                                                    { mount , pkgs , resources , stage } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -455,7 +461,7 @@
                                                                                     } ;
                                                                             in "${ application }/bin/post-commit" ;
                                                                     ssh =
-                                                                        { pkgs , resources , self } :
+                                                                        { mount , pkgs , resources , stage } :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -511,7 +517,7 @@
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
                                                                                                     "alias.build" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -528,7 +534,7 @@
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/build" ;
                                                                                                     "alias.build-vm" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -545,7 +551,7 @@
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/build-vm" ;
                                                                                                     "alias.build-vm-with-bootloader" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -562,7 +568,7 @@
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/build-vm-with-bootloader" ;
                                                                                                     "alias.check" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -579,7 +585,7 @@
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/check" ;
                                                                                                     "core.sshCommand" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -617,7 +623,7 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                { pkgs , resources , self } :
+                                                                                                { mount , pkgs , resources , stage } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -813,7 +819,7 @@
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
                                                                                                     "alias.snapshot" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -850,7 +856,7 @@
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/snapshot" ;
                                                                                                     "core.sshCommand" =
-                                                                                                        { pkgs , resources , self } :
+                                                                                                        { mount , pkgs , resources , stage } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -876,7 +882,7 @@
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
-                                                                                                { pkgs , resources , self } :
+                                                                                                { mount , pkgs , resources , stage } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -1132,18 +1138,23 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "log-event-listener" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ] ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ( _failure.implementation "c5160404" )] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                     exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                     flock 203
-                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r LINE
+                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                     do
-                                                                                                        if [[ "$LINE" == "message" ]]
+                                                                                                        if [[ "$TYPE" == "message" ]]
                                                                                                         then
-                                                                                                            read -r MESSAGE
-                                                                                                            echo "$MESSAGE" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                            read -r CHANNEL
+                                                                                                            if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                            then
+                                                                                                                failure 3aab9086
+                                                                                                            fi
+                                                                                                            read -r PAYLOAD
+                                                                                                            echo "$PAYLOAD" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                         fi
                                                                                                     done
                                                                                                 '' ;
@@ -1392,7 +1403,14 @@
                                 } ;
                             checks =
                                 {
-                                    dot-gnupg = _dot-gnupg.check { expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ; failure = _failure.implementation "dff7788e" ; ownertrust-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ; secret-keys-fun = { pkgs , resources , self } : ignore : "${ fixture }/gnupg/secret-keys.asc" ; } ;
+                                    dot-gnupg =
+                                        _dot-gnupg.check
+                                            {
+                                                expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
+                                                failure = _failure.implementation "dff7788e" ;
+                                                ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
+                                                secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
+                                            } ;
                                     dot-ssh =
                                         _dot-ssh.check
                                             {
@@ -1402,11 +1420,12 @@
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
-                                                                identity-file = { pkgs , resources , self } :
-                                                                    {
-                                                                        directory = resources.directory ;
-                                                                        file = resources.file ;
-                                                                    } ;
+                                                                identity-file =
+                                                                    { mount , pkgs , resources , stage } :
+                                                                        {
+                                                                            directory = resources.directory ;
+                                                                            file = resources.file ;
+                                                                        } ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
@@ -1415,7 +1434,7 @@
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
                                                                 identity-file =
-                                                                    { pkgs , resources , self } :
+                                                                    { mount , pkgs , resources , stage } :
                                                                         {
                                                                             directory = resources.directory ;
                                                                             file = resources.file ;
@@ -1426,13 +1445,14 @@
                                                     } ;
                                                 expected = "/nix/store/5rhxgmggdis8f97sga61bxslws8wrs2a-init/bin/init" ;
                                                 failure = _failure.implementation "8bc0fd4b" ;
+                                                mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
                                                 pkgs = pkgs ;
                                                 resources =
                                                     {
                                                         directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
                                                         file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
                                                     } ;
-                                                self = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
+                                                stage = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
                                             } ;
                                    failure =
                                        _failure.check
@@ -1458,10 +1478,9 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = "/nix/store/rg1ns7nvwcvz6ir6178vr6nlwvdakh3q-init/bin/init" ;
+                                                expected = "/nix/store/wxv6156kdfg4jnqidbpf8p5zjwqpwasq-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
-                                                self = "" ;
                                            } ;
                                     resource-happy =
                                         let
@@ -1513,7 +1532,8 @@
                                                                                 ||----w |
                                                                                 ||     ||
                                                                 resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
-                                                                self = /build/resources/mounts/0000000311691948
+                                                                mount = /build/resources/mounts/0000000311691948
+                                                                stage = /build/resources/stages/0000000311691948
                                                             '' ;
                                                         expected-status = 0 ;
                                                         expected-targets =
@@ -1522,7 +1542,7 @@
                                                                 ] ;
                                                             expected-transient = -1 ;
                                                         init =
-                                                            { pkgs , resources , self } :
+                                                            { mount , pkgs , resources , stage } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -1533,7 +1553,8 @@
                                                                                     ''
                                                                                         cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                         ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
-                                                                                        echo "self = ${ self }"
+                                                                                        echo "mount = ${ mount }"
+                                                                                        echo "stage = ${ stage }"
                                                                                         echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
                                                                                         root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
@@ -1607,7 +1628,8 @@
                                                                                 ||----w |
                                                                                 ||     ||
                                                                 resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
-                                                                self = /build/resources/mounts/0000000437766789
+                                                                mount = /build/resources/mounts/0000000437766789
+                                                                stage = /build/resources/stages/0000000437766789
                                                            '' ;
                                                      expected-status = 70 ;
                                                      expected-targets =
@@ -1616,7 +1638,7 @@
                                                          ] ;
                                                      expected-transient = -1 ;
                                                      init =
-                                                         { pkgs , resources , self } :
+                                                         { mount , pkgs , resources , stage } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
@@ -1627,7 +1649,8 @@
                                                                                  ''
                                                                                      cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
                                                                                      ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
-                                                                                     echo "self = ${ self }"
+                                                                                     echo "mount = ${ mount }"
+                                                                                     echo "stage = ${ stage }"
                                                                                      echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
                                                                                      echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
                                                                                      echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
