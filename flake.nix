@@ -901,7 +901,7 @@
                                                                                                                                         in "${ application }/bin/snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    makeWrapper ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
+                                                                                                                                    wrapProgram ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
                                                                                                                                     git fetch origin main 2>&1
                                                                                                                                     git checkout origin/main 2>&1
                                                                                                                                     git scratch
