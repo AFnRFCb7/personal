@@ -202,7 +202,7 @@
                                                                                                                             INPUTS+=( "--override-input" )
                                                                                                                             INPUTS+=( "$INPUT_NAME" )
                                                                                                                             INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
                                                                                                                         cat > /mount/command <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
@@ -311,7 +311,7 @@
                                                                                                                             INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
                                                                                                                             INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
                                                                                                                             INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
                                                                                                                         cat > /mount/command <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
@@ -373,7 +373,7 @@
                                                                                                                             INPUTS+=( "--override-input" )
                                                                                                                             INPUTS+=( "$INPUT_NAME" )
                                                                                                                             INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                         GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure c1173d09
                                                                                                                         cat > /mount/command <<EOF
                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
@@ -423,7 +423,7 @@
                                                                                                                     INPUTS+=( "--override-input" )
                                                                                                                     INPUTS+=( "$INPUT_NAME" )
                                                                                                                     INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                done < <( find "$DIRECTORY/git-repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
                                                                                                                 GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure 9d73c5ec
                                                                                                                 cat > /mount/command <<EOF
                                                                                                                 export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
@@ -851,7 +851,7 @@
                                                                                                                                     BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
                                                                                                                                     COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
                                                                                                                                     RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
-                                                                                                                                    echo "$RESOURCE/git-repository"
+                                                                                                                                    echo "$RESOURCE/repository"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/snapshot" ;
@@ -1193,9 +1193,9 @@
                                                                                             STUDIO=${ resources__.production.repository.studio ( setup : ''${ setup } "$ARGUMENTS"'' ) }
                                                                                             if "$HAS_ARGUMENTS"
                                                                                             then
-                                                                                                echo "$STUDIO/git-repository"
+                                                                                                echo "$STUDIO/repository"
                                                                                             else
-                                                                                                idea-community "$STUDIO/git-repository"
+                                                                                                idea-community "$STUDIO/repository"
                                                                                             fi
                                                                                         '' ;
                                                                                 }
@@ -1478,7 +1478,7 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = "/nix/store/wxv6156kdfg4jnqidbpf8p5zjwqpwasq-init/bin/init" ;
+                                                expected = "/nix/store/k9irxzmyhwq2zpqabncgnh695knjg6rx-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                            } ;
