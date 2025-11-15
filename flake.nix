@@ -891,15 +891,10 @@
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            echo cde044f2-dd96-4a52-8dfc-5779b8ee5068 > /tmp/DEBUG2
-                                                                                                                            git fetch origin main 2>&1
-                                                                                                                            echo 5c0271a4-9ec2-4a30-83d3-f7c3f2c98366 >> /tmp/DEBUG2
-                                                                                                                            git checkout origin/main 2>&1
-                                                                                                                            echo 1d85197e-e1fc-4be5-87f0-3c7106d96b28 >> /tmp/DEBUG2
-                                                                                                                            git scratch
-                                                                                                                            echo 99954e8b-76b0-44fd-859f-9eb571b6667d >> /tmp/DEBUG2
-                                                                                                                            git inherit
-                                                                                                                            echo b4cd6bd1-3c59-4b0b-ab9b-7698667c6086 >> /tmp/DEBUG2
+                                                                                                                            # git fetch origin main 2>&1
+                                                                                                                            # git checkout origin/main 2>&1
+                                                                                                                            # git scratch
+                                                                                                                            # git inherit
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
