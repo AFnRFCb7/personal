@@ -620,7 +620,7 @@
                                                                                                 } ;
                                                                                             remotes =
                                                                                                 {
-                                                                                                    local = { mount , pkgs , resources } : "${ mount }/stage/studio" ;
+                                                                                                    local = { mount , pkgs , resources , stage } : "${ mount }/stage/studio" ;
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
