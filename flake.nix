@@ -860,7 +860,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git ] ;
+                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             snapshot =
