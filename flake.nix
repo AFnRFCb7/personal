@@ -894,7 +894,7 @@
                                                                                                                                                         fi
                                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b00eeb9b
                                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure fb344a70
-                                                                                                                                                        RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --source ${ mount } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
+                                                                                                                                                        RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --source "${ mount }" --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
                                                                                                                                                         echo "$RESOURCE/repository"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
