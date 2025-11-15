@@ -1193,7 +1193,6 @@
                                                                                             STUDIO=${ resources__.production.repository.studio ( setup : ''${ setup } "$ARGUMENTS"'' ) }
                                                                                             if "$HAS_ARGUMENTS"
                                                                                             then
-                                                                                                echo "HAS_ARGUMENTS=$HAS_ARGUMENTS"
                                                                                                 echo "$STUDIO/git-repository"
                                                                                             else
                                                                                                 idea-community "$STUDIO/git-repository"
