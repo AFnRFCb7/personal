@@ -890,12 +890,47 @@
                                                                                                                     name = "setup" ;
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
-                                                                                                                        ''
-                                                                                                                            git fetch origin main 2>&1
-                                                                                                                            git checkout origin/main 2>&1
-                                                                                                                            git scratch
-                                                                                                                            git inherit
-                                                                                                                        '' ;
+                                                                                                                        let
+                                                                                                                            snapshot =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "snapshot" ;
+                                                                                                                                        runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "6c8629a0" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                INPUTS=()
+                                                                                                                                                while IFS= read -r INPUT
+                                                                                                                                                do
+                                                                                                                                                    cd "$INPUT"
+                                                                                                                                                    if ! git diff --quiet || ! git diff --cached --quiet
+                                                                                                                                                    then
+                                                                                                                                                        git scratch
+                                                                                                                                                        git commit -am --allow-empty-message ""
+                                                                                                                                                    fi
+                                                                                                                                                    NAME="$( basename "$INPUT" )" || failure 9c67a20d
+                                                                                                                                                    BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure b84231e2
+                                                                                                                                                    COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure a528ebd3
+                                                                                                                                                    INPUTS+=( "--input" "$NAME" "$BRANCH" "$COMMIT" )
+                                                                                                                                                done < <( find "$MOUNT/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                if ! git diff --quiet || ! git diff --cached --quiet
+                                                                                                                                                then
+                                                                                                                                                    git scratch
+                                                                                                                                                    git commit -am --allow-empty-message ""
+                                                                                                                                                fi
+                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b00eeb9b
+                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure fb344a70
+
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in
+                                                                                                                                ''
+
+                                                                                                                                    git fetch origin main 2>&1
+                                                                                                                                    git checkout origin/main 2>&1
+                                                                                                                                    git scratch
+                                                                                                                                    git inherit
+                                                                                                                                '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
                                                                                         } ;
