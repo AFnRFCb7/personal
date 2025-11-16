@@ -826,7 +826,7 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
-                                                                                                    "alias.snapshot" = { mount , pkgs , resources , stage } : "${ mount }/stage/snapshot" ;
+                                                                                                    "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { mount , pkgs , resources , stage } :
                                                                                                             let
