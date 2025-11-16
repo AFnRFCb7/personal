@@ -683,7 +683,7 @@
                                                                                                                                         git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "$USER_EMAIL"
                                                                                                                                         git config user.name "$USER_NAME"
-                                                                                                                                        git fetch local "$INPUT_BRANCH"
+                                                                                                                                        git fetch origin "$INPUT_BRANCH"
                                                                                                                                         git checkout "$INPUT_COMMIT"
                                                                                                                                         INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
@@ -881,6 +881,7 @@
                                                                                                                                                         then
                                                                                                                                                             git scratch > /dev/null 2>&1
                                                                                                                                                             git commit -am --allow-empty-message "" >/dev/null 2>&1
+                                                                                                                                                            git push origin HEAD 2>&1
                                                                                                                                                         fi
                                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b00eeb9b
                                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure fb344a70
