@@ -663,6 +663,9 @@
                                                                                                                                         INPUT_NAME="$2"
                                                                                                                                         INPUT_BRANCH="$3"
                                                                                                                                         INPUT_COMMIT="$4"
+                                                                                                                                        pwd
+                                                                                                                                        append pwd
+                                                                                                                                        append "ls -lah /"
                                                                                                                                         append "ls -lah /mount"
                                                                                                                                         append "ls -lah /mount/repository"
                                                                                                                                         append "ls -lah /mount/repository/inputs"
