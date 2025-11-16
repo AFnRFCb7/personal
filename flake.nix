@@ -487,21 +487,6 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "alias.secret" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "secret" ;
-                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "919121ca" ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                TOKEN="$1"
-                                                                                                                                RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 53cf8277
-                                                                                                                                echo -n "$TOKEN" | age --encrypt --recipient "$RECIPIENT" --output "inputs/secrets/github-token.asc.age"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/secret" ;
                                                                                                     "alias.build" =
                                                                                                         { mount , pkgs , resources , stage } :
                                                                                                             let
@@ -519,23 +504,7 @@
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "!${ application }/bin/build" ;
-                                                                                                    "alias.build-vm" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "build-vm" ;
-                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
-                                                                                                                                    BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
-                                                                                                                                    echo "$BUILD_VM"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "!${ application }/bin/build-vm" ;
+                                                                                                    "alias.build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm" ;
                                                                                                     "alias.build-vm-with-bootloader" =
                                                                                                         { mount , pkgs , resources , stage } :
                                                                                                             let
@@ -618,61 +587,90 @@
                                                                                                                     name = "setup" ;
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
-                                                                                                                        ''
-                                                                                                                            USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
-                                                                                                                            USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
-                                                                                                                            GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
-                                                                                                                            export GIT_SSH_COMMAND
-                                                                                                                            OVERRIDE_INPUTS=()
-                                                                                                                            while [[ "$#" -gt 0 ]]
-                                                                                                                            do
-                                                                                                                                case "$1" in
-                                                                                                                                    --mount)
-                                                                                                                                        MOUNT="$2"
-                                                                                                                                        # root-resource "$MOUNT"
-                                                                                                                                        ln --symbolic "$MOUNT/repository" /mount/stage/studio
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --branch)
-                                                                                                                                        BRANCH="$2"
-                                                                                                                                        git fetch local "$BRANCH" 2>&1
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --commit)
-                                                                                                                                        COMMIT="$2"
-                                                                                                                                        git checkout "$COMMIT" 2>&1
-                                                                                                                                        git submodule init 2>&1
-                                                                                                                                        git submodule update --recursive 2>&1
-                                                                                                                                        find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                        do
-                                                                                                                                            cd "$INPUT"
-                                                                                                                                            git config user.name "$USER_NAME"
-                                                                                                                                            git config user.email "$USER_EMAIL"
+                                                                                                                        let
+                                                                                                                            build-vm =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "build-vm" ;
+                                                                                                                                                runtimeInputs = [ pkgs.nix ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$MOUNT" "$MOUNT/repository"'' ) }
+                                                                                                                                                        echo "$BUILD_VM"
+                                                                                                                                                        if [[ -e "$BUILD_VM/status" ]]
+                                                                                                                                                        then
+                                                                                                                                                            STATUS="$( cat "$BUILD_VM/status" )" || failure 47dbf8ee
+                                                                                                                                                            if [[ 0 == "$STATUS" ]]
+                                                                                                                                                            then
+                                                                                                                                                                "$BUILD_VM/start"
+                                                                                                                                                            else
+                                                                                                                                                                failure 6a29733a
+                                                                                                                                                            fi
+                                                                                                                                                        else
+                                                                                                                                                            failure 7fe55d06
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/build-vm" ;
+                                                                                                                        in
+                                                                                                                            ''
+                                                                                                                                USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
+                                                                                                                                USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
+                                                                                                                                GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
+                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                OVERRIDE_INPUTS=()
+                                                                                                                                while [[ "$#" -gt 0 ]]
+                                                                                                                                do
+                                                                                                                                    case "$1" in
+                                                                                                                                        --mount)
+                                                                                                                                            MOUNT="$2"
+                                                                                                                                            # root-resource "$MOUNT"
+                                                                                                                                            ln --symbolic "$MOUNT/repository" /mount/stage/studio
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --branch)
+                                                                                                                                            BRANCH="$2"
+                                                                                                                                            git fetch local "$BRANCH" 2>&1
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --commit)
+                                                                                                                                            COMMIT="$2"
+                                                                                                                                            git checkout "$COMMIT" 2>&1
+                                                                                                                                            git submodule init 2>&1
+                                                                                                                                            git submodule update --recursive 2>&1
+                                                                                                                                            find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                            do
+                                                                                                                                                cd "$INPUT"
+                                                                                                                                                git config user.name "$USER_NAME"
+                                                                                                                                                git config user.email "$USER_EMAIL"
+                                                                                                                                                git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                            done
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --input)
+                                                                                                                                            INPUT_NAME="$2"
+                                                                                                                                            INPUT_BRANCH="$3"
+                                                                                                                                            INPUT_COMMIT="$4"
+                                                                                                                                            cd "/mount/repository/inputs/$INPUT_NAME"
                                                                                                                                             git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                        done
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --input)
-                                                                                                                                        INPUT_NAME="$2"
-                                                                                                                                        INPUT_BRANCH="$3"
-                                                                                                                                        INPUT_COMMIT="$4"
-                                                                                                                                        cd "/mount/repository/inputs/$INPUT_NAME"
-                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                        git config user.email "$USER_EMAIL"
-                                                                                                                                        git config user.name "$USER_NAME"
-                                                                                                                                        git fetch origin "$INPUT_BRANCH" 2>&1
-                                                                                                                                        git checkout "$INPUT_COMMIT" 2>&1
-                                                                                                                                        INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
-                                                                                                                                        OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                                        shift 4
-                                                                                                                                        ;;
-                                                                                                                                    *)
-                                                                                                                                        failure 6e18cb53 "$1"
-                                                                                                                                        ;;
-                                                                                                                                esac
-                                                                                                                            done
-                                                                                                                            echo "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }" > "${ mount }/stage/override-inputs"
-                                                                                                                        '' ;
+                                                                                                                                            git config user.email "$USER_EMAIL"
+                                                                                                                                            git config user.name "$USER_NAME"
+                                                                                                                                            git fetch origin "$INPUT_BRANCH" 2>&1
+                                                                                                                                            git checkout "$INPUT_COMMIT" 2>&1
+                                                                                                                                            INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
+                                                                                                                                            OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
+                                                                                                                                            shift 4
+                                                                                                                                            ;;
+                                                                                                                                        *)
+                                                                                                                                            failure 6e18cb53 "$1"
+                                                                                                                                            ;;
+                                                                                                                                    esac
+                                                                                                                                done
+                                                                                                                                makeWrapper ${ build-vm } "${ mount }/stage/build-vm"
+                                                                                                                                echo "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }" > "${ mount }/stage/override-inputs"
+                                                                                                                            '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
                                                                                         } ;
@@ -794,6 +792,21 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.secret" =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "secret" ;
+                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "919121ca" ) ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                TOKEN="$1"
+                                                                                                                                RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 53cf8277
+                                                                                                                                echo -n "$TOKEN" | age --encrypt --recipient "$RECIPIENT" --output "inputs/secrets/github-token.asc.age"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/secret" ;
                                                                                                     "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { mount , pkgs , resources , stage } :
