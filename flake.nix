@@ -683,7 +683,7 @@
                                                                                                                                         git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "$USER_EMAIL"
                                                                                                                                         git config user.name "$USER_NAME"
-                                                                                                                                        git fetch origin "$INPUT_BRANCH"
+                                                                                                                                        git fetch local "$INPUT_BRANCH"
                                                                                                                                         git checkout "$INPUT_COMMIT"
                                                                                                                                         INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
