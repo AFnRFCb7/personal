@@ -664,7 +664,7 @@
                                                                                                                                             shift 4
                                                                                                                                             ;;
                                                                                                                                         *)
-                                                                                                                                            failure 976c0031 "$1"
+                                                                                                                                            failure 78a59363 "$1"
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
