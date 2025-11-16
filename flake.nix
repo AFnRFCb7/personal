@@ -670,7 +670,6 @@
                                                                                                                                             git config user.email "$USER_EMAIL"
                                                                                                                                             git config alias.scratch "$SCRATCH"
                                                                                                                                             git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                            git scratch
                                                                                                                                         done
                                                                                                                                         shift 2
                                                                                                                                         ;;
@@ -683,9 +682,7 @@
                                                                                                                                         git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "$USER_EMAIL"
                                                                                                                                         git config user.name "$USER_NAME"
-                                                                                                                                        echo -e "\n\nce228372\nABOUT TO ERROR:  INPUT_NAME=$INPUT_NAME INPUT_BRANCH=$INPUT_BRANCH INPUT_COMMIT=$INPUT_COMMIT"
                                                                                                                                         git fetch origin "$INPUT_BRANCH"
-                                                                                                                                        echo -e "\n\nd056c66c\nJUST ERRORED"
                                                                                                                                         git checkout "$INPUT_COMMIT"
                                                                                                                                         INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
