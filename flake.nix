@@ -657,7 +657,6 @@
                                                                                                                                         INPUT_BRANCH="$3"
                                                                                                                                         INPUT_COMMIT="$4"
                                                                                                                                         cd "/mount/repository/inputs/$INPUT_NAME"
-                                                                                                                                        git config alias.scratch "$SCRATCH"
                                                                                                                                         git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "$USER_EMAIL"
                                                                                                                                         git config user.name "$USER_NAME"
