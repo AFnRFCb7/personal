@@ -901,6 +901,7 @@
                                                                                                                                         in "${ application }/bin/snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
+                                                                                                                                    # shellcheck source=/dev/null
                                                                                                                                     source ${ pkgs.makeWrapper }/nix-support/setup-hook
                                                                                                                                     wrapProgram ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
                                                                                                                                     git fetch origin main 2>&1
