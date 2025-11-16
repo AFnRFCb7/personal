@@ -637,13 +637,7 @@
                                                                                                                             USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
                                                                                                                             GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                             export GIT_SSH_COMMAND
-                                                                                                                            SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
-                                                                                                                            COMMANDS=()
                                                                                                                             OVERRIDE_INPUTS=()
-                                                                                                                            append() {
-                                                                                                                                local CMD=( "$@" )
-                                                                                                                                COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
-                                                                                                                            }
                                                                                                                             while [[ "$#" -gt 0 ]]
                                                                                                                             do
                                                                                                                                 case "$1" in
@@ -693,6 +687,7 @@
                                                                                                                                         ;;
                                                                                                                                 esac
                                                                                                                             done
+                                                                                                                            echo "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }" > "${ mount }/stage/override-inputs"
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
