@@ -633,7 +633,6 @@
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-
                                                                                                                             USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
                                                                                                                             USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
                                                                                                                             GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
@@ -671,6 +670,7 @@
                                                                                                                                         append git config user.name "$USER_NAME"
                                                                                                                                         append git fetch origin "$INPUT_BRANCH"
                                                                                                                                         append git checkout "$INPUT_COMMIT"
+                                                                                                                                        INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                                         shift 5
                                                                                                                                         ;;
