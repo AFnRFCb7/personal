@@ -649,14 +649,29 @@
                                                                                                                                 case "$1" in
                                                                                                                                     --mount)
                                                                                                                                         MOUNT="$2"
+                                                                                                                                        # root-resource "$MOUNT"
+                                                                                                                                        ln --symbolic "$MOUNT/repository" /mount/stage/studio
                                                                                                                                         shift 2
                                                                                                                                         ;;
                                                                                                                                     --branch)
                                                                                                                                         BRANCH="$2"
+                                                                                                                                        git fetch local "$BRANCH" 2>&1
                                                                                                                                         shift 2
                                                                                                                                         ;;
                                                                                                                                     --commit)
                                                                                                                                         COMMIT="$2"
+                                                                                                                                        git checkout "$COMMIT" 2>&1
+                                                                                                                                        git submodule init 2>&1
+                                                                                                                                        git submodule update --recursive 2>&1
+                                                                                                                                        find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                        do
+                                                                                                                                            cd "$INPUT"
+                                                                                                                                            git config user.name "$USER_NAME"
+                                                                                                                                            git config user.email "$USER_EMAIL"
+                                                                                                                                            git config alias.scratch "$SCRATCH"
+                                                                                                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                            git scratch
+                                                                                                                                        done
                                                                                                                                         shift 2
                                                                                                                                         ;;
                                                                                                                                     --input)
@@ -679,31 +694,6 @@
                                                                                                                                         ;;
                                                                                                                                 esac
                                                                                                                             done
-                                                                                                                            if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]] && [[ -n "$MOUNT" ]]
-                                                                                                                            then
-                                                                                                                                # root-resource "$MOUNT"
-                                                                                                                                ln --symbolic "$MOUNT/repository" /mount/stage/studio
-                                                                                                                                git fetch local "$BRANCH" 2>&1
-                                                                                                                                git checkout "$COMMIT" 2>&1
-                                                                                                                                git submodule init 2>&1
-                                                                                                                                git submodule update --recursive 2>&1
-                                                                                                                                find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                do
-                                                                                                                                    cd "$INPUT"
-                                                                                                                                    git config user.name "$USER_NAME"
-                                                                                                                                    git config user.email "$USER_EMAIL"
-                                                                                                                                    git config alias.scratch "$SCRATCH"
-                                                                                                                                    git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                    git scratch
-                                                                                                                                done
-                                                                                                                                for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
-                                                                                                                                do
-                                                                                                                                    IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
-                                                                                                                                    "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
-                                                                                                                                done
-                                                                                                                            else
-                                                                                                                                failure 1da13d01
-                                                                                                                            fi
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
