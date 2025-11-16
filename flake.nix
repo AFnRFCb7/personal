@@ -681,7 +681,7 @@
                                                                                                                             done
                                                                                                                             if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]] && [[ -n "$MOUNT" ]]
                                                                                                                             then
-                                                                                                                                root-resource "$MOUNT"
+                                                                                                                                # root-resource "$MOUNT"
                                                                                                                                 ln --symbolic "$MOUNT/repository" /mount/stage/studio
                                                                                                                                 git fetch local "$BRANCH" 2>&1
                                                                                                                                 git checkout "$COMMIT" 2>&1
