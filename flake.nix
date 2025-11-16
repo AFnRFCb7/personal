@@ -502,20 +502,6 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/secret" ;
-                                                                                                    "alias.scratch" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "scratch" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "185363fa " ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 1e8f4371
-                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/scratch" ;
                                                                                                     "alias.build" =
                                                                                                         { mount , pkgs , resources , stage } :
                                                                                                             let
@@ -620,6 +606,7 @@
                                                                                                 } ;
                                                                                             remotes =
                                                                                                 {
+                                                                                                    local = { mount , pkgs , resources , stage } : "${ mount }/stage/studio" ;
                                                                                                     origin = config.personal.repository.private.remote ;
                                                                                                 } ;
                                                                                             setup =
@@ -636,66 +623,55 @@
                                                                                                                             USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
                                                                                                                             GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
                                                                                                                             export GIT_SSH_COMMAND
-                                                                                                                            SCRATCH="$( git config --get "alias.scratch" )" || failure "65cb6383"
-                                                                                                                            COMMANDS=()
                                                                                                                             OVERRIDE_INPUTS=()
-                                                                                                                            append() {
-                                                                                                                                local CMD=( "$@" )
-                                                                                                                                COMMANDS+=( "$( printf '%s\037' "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" )" )
-                                                                                                                            }
                                                                                                                             while [[ "$#" -gt 0 ]]
                                                                                                                             do
                                                                                                                                 case "$1" in
+                                                                                                                                    --mount)
+                                                                                                                                        MOUNT="$2"
+                                                                                                                                        # root-resource "$MOUNT"
+                                                                                                                                        ln --symbolic "$MOUNT/repository" /mount/stage/studio
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
                                                                                                                                     --branch)
                                                                                                                                         BRANCH="$2"
+                                                                                                                                        git fetch local "$BRANCH" 2>&1
                                                                                                                                         shift 2
                                                                                                                                         ;;
                                                                                                                                     --commit)
                                                                                                                                         COMMIT="$2"
+                                                                                                                                        git checkout "$COMMIT" 2>&1
+                                                                                                                                        git submodule init 2>&1
+                                                                                                                                        git submodule update --recursive 2>&1
+                                                                                                                                        find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                        do
+                                                                                                                                            cd "$INPUT"
+                                                                                                                                            git config user.name "$USER_NAME"
+                                                                                                                                            git config user.email "$USER_EMAIL"
+                                                                                                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                        done
                                                                                                                                         shift 2
                                                                                                                                         ;;
                                                                                                                                     --input)
                                                                                                                                         INPUT_NAME="$2"
-                                                                                                                                        INPUT_REMOTE="3"
-                                                                                                                                        INPUT_BRANCH="$4"
-                                                                                                                                        INPUT_COMMIT="$5"
-                                                                                                                                        append git -C "inputs/$INPUT_NAME" config alias.scratch "$SCRATCH"
-                                                                                                                                        append git -C "inputs/$INPUT_NAME" config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                        append git -C "inputs/$INPUT_NAME" config user.email "$USER_EMAIL"
-                                                                                                                                        append git -C "inputs/$INPUT_NAME" config user.name "$USER_NAME"
-                                                                                                                                        append git -C "inputs/$INPUT_NAME" fetch origin "$INPUT_BRANCH"
-                                                                                                                                        append git -C "inputs/$INPUT_NAME" checkout "$INPUT_COMMIT"
+                                                                                                                                        INPUT_BRANCH="$3"
+                                                                                                                                        INPUT_COMMIT="$4"
+                                                                                                                                        cd "/mount/repository/inputs/$INPUT_NAME"
+                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                        git config user.email "$USER_EMAIL"
+                                                                                                                                        git config user.name "$USER_NAME"
+                                                                                                                                        git fetch origin "$INPUT_BRANCH" 2>&1
+                                                                                                                                        git checkout "$INPUT_COMMIT" 2>&1
+                                                                                                                                        INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                                        shift 5
+                                                                                                                                        shift 4
                                                                                                                                         ;;
                                                                                                                                     *)
                                                                                                                                         failure 6e18cb53 "$1"
                                                                                                                                         ;;
                                                                                                                                 esac
                                                                                                                             done
-                                                                                                                            if [[ -n "$BRANCH" ]] && [[ -n "$COMMIT" ]]
-                                                                                                                            then
-                                                                                                                                git fetch origin "$BRANCH" 2>&1
-                                                                                                                                git checkout "$COMMIT" 2>&1
-                                                                                                                                git submodule init 2>&1
-                                                                                                                                git submodule update --recursive 2>&1
-                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                do
-                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME"
-                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL"
-                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
-                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
-                                                                                                                                    git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                    git -C "$INPUT" scratch
-                                                                                                                                done
-                                                                                                                                for SERIALIZED in "${ builtins.concatStringsSep "" [ "$" "{" "COMMANDS[@]" "}" ] }"
-                                                                                                                                do
-                                                                                                                                    IFS=$'\037' read -r -a CMD <<<"$SERIALIZED"
-                                                                                                                                    "${ builtins.concatStringsSep "" [ "$" "{" "CMD[@]" "}" ] }" 2>&1
-                                                                                                                                done
-                                                                                                                            else
-                                                                                                                                failure 1da13d01
-                                                                                                                            fi
+                                                                                                                            echo "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }" > "${ mount }/stage/override-inputs"
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
@@ -818,43 +794,7 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "!${ application }/bin/scratch" ;
-                                                                                                    "alias.snapshot" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "snapshot" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ( _failure.implementation "0eb2ec6d" ) ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    TOP_LEVEL="$( git rev-parse --show-toplevel )" || failure 6a4becc8
-                                                                                                                                    INPUTS=()
-                                                                                                                                    while IFS= read -r INPUT
-                                                                                                                                    do
-                                                                                                                                        if ! git -C "$INPUT" diff --quiet || ! git -C "$INPUT" diff --cached --quiet
-                                                                                                                                        then
-                                                                                                                                            git -C "$INPUT" commit -am "" --allow-empty-message
-                                                                                                                                        fi
-                                                                                                                                        git -C "$INPUT" push origin HEAD 2>&1
-                                                                                                                                        NAME="$( basename "$INPUT" )" || failure d6990665
-                                                                                                                                        REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
-                                                                                                                                        BRANCH="$( git -C "$INPUT" rev-parse --abbrev-ref HEAD )" || failure d9c84600
-                                                                                                                                        COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure aaed95d6
-                                                                                                                                        INPUTS+=( "--input" "$NAME" "$REMOTE" "$BRANCH" "$COMMIT" )
-                                                                                                                                    done < <( find "$TOP_LEVEL/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                                    if ! git -C "$TOP_LEVEL" diff --quiet || ! git -C "$TOP_LEVEL" diff --cached --quiet
-                                                                                                                                    then
-                                                                                                                                        git -C "$TOP_LEVEL" commit -am "" --allow-empty-message
-                                                                                                                                    fi
-                                                                                                                                    git -C "$TOP_LEVEL" push origin HEAD 2>&1
-                                                                                                                                    BRANCH="$( git -C "$TOP_LEVEL" rev-parse --abbrev-ref HEAD )" || failure 82a96f2f
-                                                                                                                                    COMMIT="$( git -C "$TOP_LEVEL" rev-parse HEAD )" || failure 508b2be6
-                                                                                                                                    RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
-                                                                                                                                    echo "$RESOURCE/repository"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "!${ application }/bin/snapshot" ;
+                                                                                                    "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                                     "core.sshCommand" =
                                                                                                         { mount , pkgs , resources , stage } :
                                                                                                             let
@@ -888,14 +828,57 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git ] ;
+                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                     text =
-                                                                                                                        ''
-                                                                                                                            git fetch origin main 2>&1
-                                                                                                                            git checkout origin/main 2>&1
-                                                                                                                            git scratch
-                                                                                                                            git inherit
-                                                                                                                        '' ;
+                                                                                                                        let
+                                                                                                                            snapshot =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "snapshot" ;
+                                                                                                                                                runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "6c8629a0" ) ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        INPUTS=()
+                                                                                                                                                        while IFS= read -r INPUT
+                                                                                                                                                        do
+                                                                                                                                                            cd "$INPUT"
+                                                                                                                                                            if ! git diff --quiet || ! git diff --cached --quiet
+                                                                                                                                                            then
+                                                                                                                                                                git scratch > /dev/null 2>&1
+                                                                                                                                                                git commit -am --allow-empty-message "" > /dev/null 2>&1
+                                                                                                                                                            fi
+                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 9c67a20d
+                                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b84231e2
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure a528ebd3
+                                                                                                                                                            INPUTS+=( "--input" "$NAME" "$BRANCH" "$COMMIT" )
+                                                                                                                                                        done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                                                        cd "$MOUNT/repository"
+                                                                                                                                                        if ! git diff --quiet || ! git diff --cached --quiet
+                                                                                                                                                        then
+                                                                                                                                                            git scratch > /dev/null 2>&1
+                                                                                                                                                            git commit -am --allow-empty-message "" >/dev/null 2>&1
+                                                                                                                                                            git push origin HEAD 2>&1
+                                                                                                                                                        fi
+                                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b00eeb9b
+                                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure fb344a70
+                                                                                                                                                        RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --mount "$MOUNT" --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
+                                                                                                                                                        echo "$RESOURCE/repository"
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                        in "${ application }/bin/snapshot" ;
+                                                                                                                            in
+                                                                                                                                ''
+                                                                                                                                    # shellcheck source=/dev/null
+                                                                                                                                    source ${ pkgs.makeWrapper }/nix-support/setup-hook
+                                                                                                                                    makeWrapper ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
+                                                                                                                                    git fetch origin main 2>&1
+                                                                                                                                    git checkout origin/main 2>&1
+                                                                                                                                    git scratch
+                                                                                                                                    git inherit
+                                                                                                                                '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
                                                                                         } ;
