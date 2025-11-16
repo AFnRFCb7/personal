@@ -853,7 +853,7 @@
                                                                                                                                                             fi
                                                                                                                                                             NAME="$( basename "$INPUT" )" || failure 9c67a20d
                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b84231e2
-                                                                                                                                                            git push origin "$BRANCH"
+                                                                                                                                                            git push origin HEAD
                                                                                                                                                             COMMIT="$( git rev-parse HEAD )" || failure a528ebd3
                                                                                                                                                             INPUTS+=( "--input" "$NAME" "$BRANCH" "$COMMIT" )
                                                                                                                                                         done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
