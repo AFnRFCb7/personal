@@ -672,7 +672,7 @@
                                                                                                                                         append git checkout "$INPUT_COMMIT"
                                                                                                                                         INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                                        shift 5
+                                                                                                                                        shift 4
                                                                                                                                         ;;
                                                                                                                                     *)
                                                                                                                                         failure 6e18cb53 "$1"
