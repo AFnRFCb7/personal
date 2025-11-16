@@ -502,20 +502,6 @@
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/secret" ;
-                                                                                                    "alias.scratch" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "scratch" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "185363fa " ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 1e8f4371
-                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/scratch" ;
                                                                                                     "alias.build" =
                                                                                                         { mount , pkgs , resources , stage } :
                                                                                                             let
@@ -662,7 +648,6 @@
                                                                                                                                             cd "$INPUT"
                                                                                                                                             git config user.name "$USER_NAME"
                                                                                                                                             git config user.email "$USER_EMAIL"
-                                                                                                                                            git config alias.scratch "$SCRATCH"
                                                                                                                                             git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         done
                                                                                                                                         shift 2
