@@ -903,7 +903,7 @@
                                                                                                                                 ''
                                                                                                                                     # shellcheck source=/dev/null
                                                                                                                                     source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                    wrapProgram ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
+                                                                                                                                    makeWrapper ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
                                                                                                                                     git fetch origin main 2>&1
                                                                                                                                     git checkout origin/main 2>&1
                                                                                                                                     git scratch
