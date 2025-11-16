@@ -663,7 +663,7 @@
                                                                                                                                         INPUT_NAME="$2"
                                                                                                                                         INPUT_BRANCH="$3"
                                                                                                                                         INPUT_COMMIT="$4"
-                                                                                                                                        append "cd /mount/repository/inputs/$INPUT_NAME"
+                                                                                                                                        append "cd inputs/$INPUT_NAME"
                                                                                                                                         append git config alias.scratch "$SCRATCH"
                                                                                                                                         append git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         append git config user.email "$USER_EMAIL"
