@@ -663,13 +663,13 @@
                                                                                                                                         INPUT_NAME="$2"
                                                                                                                                         INPUT_BRANCH="$3"
                                                                                                                                         INPUT_COMMIT="$4"
-                                                                                                                                        append "cd ${ mount }/repository/inputs/$INPUT_NAME"
-                                                                                                                                        append git config alias.scratch "$SCRATCH"
-                                                                                                                                        append git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                        append git config user.email "$USER_EMAIL"
-                                                                                                                                        append git config user.name "$USER_NAME"
-                                                                                                                                        append git fetch origin "$INPUT_BRANCH"
-                                                                                                                                        append git checkout "$INPUT_COMMIT"
+                                                                                                                                        cd /mount/repository/inputs/$INPUT_NAME
+                                                                                                                                        git config alias.scratch "$SCRATCH"
+                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                                        git config user.email "$USER_EMAIL"
+                                                                                                                                        git config user.name "$USER_NAME"
+                                                                                                                                        git fetch origin "$INPUT_BRANCH"
+                                                                                                                                        git checkout "$INPUT_COMMIT"
                                                                                                                                         INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                                         shift 4
