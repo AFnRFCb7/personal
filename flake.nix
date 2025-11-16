@@ -660,10 +660,8 @@
                                                                                                                                         git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "$USER_EMAIL"
                                                                                                                                         git config user.name "$USER_NAME"
-                                                                                                                                        echo -e "\n\ndd6ff642\nBEFORE\nINPUT_NAME=$INPUT_NAME INPUT_BRANCH=$INPUT_BRANCH INPUT_COMMIT=$INPUT_COMMIT MOUNT=${ mount }"
-                                                                                                                                        git fetch origin "$INPUT_BRANCH"
-                                                                                                                                        echo -e "\n\n8575c803\nAFTER" 2>&1
-                                                                                                                                        git checkout "$INPUT_COMMIT"
+                                                                                                                                        git fetch origin "$INPUT_BRANCH" 2>&1
+                                                                                                                                        git checkout "$INPUT_COMMIT" 2>&1
                                                                                                                                         INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
                                                                                                                                         OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
                                                                                                                                         shift 4
