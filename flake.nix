@@ -393,7 +393,7 @@
                                                                                                                             } ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            # makeWrapper ${ build-vm }/bin/build-vm /mount/stage/build-vm --set MOUNT "${ mount }"
+                                                                                                                            makeWrapper ${ build-vm }/bin/build-vm /mount/stage/build-vm --set MOUNT "${ mount }"
                                                                                                                             # makeWrapper ${ build-vm-with-bootloader }/bin/build-vm-with-bootloader /mount/stage/build-vm-with-bootloader --set MOUNT "${ mount }"
                                                                                                                             # makeWrapper ${ check }/bin/check /mount/stage/check --set MOUNT "${ mount }"
                                                                                                                             # makeWrapper ${ scratch }/bin/scratch /mount/stage/scratch --set MOUNT "${ mount }"
