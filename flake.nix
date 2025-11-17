@@ -794,7 +794,7 @@
                                                                                                                                                         cd "$MOUNT"
                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure "f167c9c1"
                                                                                                                                                         BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure "bb6b1b2c"
-                                                                                                                                                        git checkout -b "$BRANCH 2>&1
+                                                                                                                                                        git checkout -b "$BRANCH" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/scratch" ;
@@ -809,7 +809,8 @@
                                                                                                                                                     ''
                                                                                                                                                         : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
                                                                                                                                                         update
-                                                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                        TOKEN_FILE=${ resources.production.secrets.
+                                                                                                                                                        token ( setup : setup ) }
                                                                                                                                                         gh auth login < "$TOKEN_FILE"
                                                                                                                                                         while read -r INPUT
                                                                                                                                                         do
