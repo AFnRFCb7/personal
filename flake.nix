@@ -680,6 +680,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/check" ;
                                                                                                     "alias.hydrate" =
                                                                                                         let
                                                                                                             application =
@@ -844,6 +845,38 @@
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git pkgs.makeWrapper ] ;
                                                                                                                     text =
                                                                                                                         let
+                                                                                                                            check =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "check" ;
+                                                                                                                                                runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "999256c5" ) ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        while read -r INPUT
+                                                                                                                                                        do
+                                                                                                                                                            cd "$INPUT"
+                                                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                            then
+                                                                                                                                                                git commit -a --verbose
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                                BASENAME="$( basename "INPUT" )" || failure "d88d5af7"
+                                                                                                                                                                nix flake update --flake "$MOUNT" --update-input "$BASENAME"
+                                                                                                                                                            fi
+                                                                                                                                                        done < <( find "$MOUNT/inputs" -mindepth 1 -maxdepth 1 -type d )
+                                                                                                                                                        cd "$MOUNT"
+                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                        then
+                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            nix flake check "$MOUNT"
+                                                                                                                                                        else
+                                                                                                                                                            failure "114a2aaf"
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/check" ;
                                                                                                                             snapshot =
                                                                                                                                 let
                                                                                                                                     application =
