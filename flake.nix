@@ -399,7 +399,13 @@
                                                                                                                             makeWrapper ${ scratch }/bin/scratch /mount/stage/scratch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ switch }/bin/switch /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test }/bin/test /mount/stage/test --set MOUNT "${ mount }"
-                                                                                                                            # git fetch origin main 2>&1
+                                                                                                                            if git fetch origin main 2> /mount/stage/debug.err
+                                                                                                                            then
+                                                                                                                                echo "$?" > /mount/stage/debug.success
+                                                                                                                            else
+                                                                                                                                echo "$?" > /mount/stage/debug.error
+                                                                                                                            fi
+
                                                                                                                             # git checkout origin/main 2>&1
                                                                                                                             # git scratch
                                                                                                                         '' ;
