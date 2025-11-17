@@ -681,7 +681,7 @@
                                                                                             configs =
                                                                                                 {
                                                                                                     "alias.build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm" ;
-                                                                                                    "alias.build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount/stage/build-vm-with-bootloader }" ;
+                                                                                                    "alias.build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm-with-bootloader" ;
                                                                                                     "alias.check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/check" ;
                                                                                                     "alias.scratch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/scratch" ;
                                                                                                     "alias.secret" =
