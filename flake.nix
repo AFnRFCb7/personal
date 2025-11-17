@@ -219,10 +219,6 @@
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
-                                                                                    hooks =
-                                                                                        {
-                                                                                            post-commit = post-commit ;
-                                                                                        } ;
                                                                                     remotes =
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
