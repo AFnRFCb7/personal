@@ -783,19 +783,21 @@
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/check" ;
                                                                                                                             scratch =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "scratch" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "6bab0b8d" ) ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                cd "$MOUNT"
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure "f167c9c1"
-                                                                                                                                                BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure "bb6b1b2c"
-                                                                                                                                                git checkout -b "$BRANCH 2>&1
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                                in "${ application }/bin/scratch" ;
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "scratch" ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "6bab0b8d" ) ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        cd "$MOUNT"
+                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure "f167c9c1"
+                                                                                                                                                        BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure "bb6b1b2c"
+                                                                                                                                                        git checkout -b "$BRANCH 2>&1
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/scratch" ;
                                                                                                                             switch =
                                                                                                                                 let
                                                                                                                                     application =
