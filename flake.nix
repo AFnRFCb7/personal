@@ -870,10 +870,8 @@
                                                                                                                                                         then
                                                                                                                                                             git commit -a --verbose
                                                                                                                                                             git push origin HEAD
-                                                                                                                                                            nix flake check "$MOUNT"
-                                                                                                                                                        else
-                                                                                                                                                            failure "114a2aaf"
                                                                                                                                                         fi
+                                                                                                                                                        nix flake check "$MOUNT"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/check" ;
@@ -917,6 +915,7 @@
                                                                                                                                         in "${ application }/bin/snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
+                                                                                                                                    makeWrapper ${ check } /mount/stage/check --set MOUNT "${ mount }"
                                                                                                                                     makeWrapper ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
                                                                                                                                     git fetch origin main 2>&1
                                                                                                                                     git checkout origin/main 2>&1
