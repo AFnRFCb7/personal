@@ -804,7 +804,7 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "switch" ;
-                                                                                                                                                runtimeInputs = [ ( pkgs.findutils pkgs.gh password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) nixos-rebuild update ( _failure.implementation "7bccbe71" ) ] ;
+                                                                                                                                                runtimeInputs = [ ( pkgs.findutils pkgs.gh pkgs.nix password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) update ( _failure.implementation "7bccbe71" ) ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
@@ -854,7 +854,7 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "test" ;
-                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) nixos-rebuild update ] ;
+                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) update ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
