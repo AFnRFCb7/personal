@@ -871,7 +871,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "1d801508" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                 while read -r INPUT
                                                                                                                                                 do
                                                                                                                                                     cd "$INPUT"
