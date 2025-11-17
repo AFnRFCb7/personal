@@ -823,13 +823,14 @@
                                                                                                                                                                 git reset --soft origin/main
                                                                                                                                                                 git commit -a --verbose
                                                                                                                                                                 git push origin HEAD
-                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-read HEAD" )" || failure "6ade826f"
+                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure "6ade826f"
                                                                                                                                                                 read -r -p "TITLE:  " TITLE
                                                                                                                                                                 read -r -p "BODY:  " BODY
-                                                                                                                                                                URL="$( gh pr create --title "$TITLE" --body "BODY" --base main --head "$BRANCH" --label "scripted" ) || failure "bb1548cf"
+                                                                                                                                                                URL="$( gh pr create --title "$TITLE" --body "$BODY" --base main --head "$BRANCH" --label "scripted" )" || failure "bb1548cf"
                                                                                                                                                                 gh pr merge --rebase "$URL"
                                                                                                                                                                 BASENAME="$( basename "$INPUT" )" || failure "d88d5af7"
                                                                                                                                                                 nix flake update --flake "$MOUNT" --update-input "$BASENAME"
+                                                                                                                                                            fi
                                                                                                                                                         done < <( find "$MOUNT" -mindepth 1 -maxdepth 1 -type d )
                                                                                                                                                         gh auth logout
                                                                                                                                                         cd "$MOUNT"
