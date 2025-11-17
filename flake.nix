@@ -746,7 +746,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.nixos-rebuild update ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
+                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                         update
                                                                                                                                                         nixos-rebuild build-vm "$MOUNT#user"
                                                                                                                                                     '' ;
@@ -761,7 +761,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.nixos-rebuild update ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
+                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                         update
                                                                                                                                                         nixos-rebuild build-vm-with-bootloader "$MOUNT#user"
                                                                                                                                                     '' ;
@@ -776,7 +776,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.nix update ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
+                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                         update
                                                                                                                                                         nix flake check "$MOUNT"
                                                                                                                                                     '' ;
@@ -791,6 +791,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "6bab0b8d" ) ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
+                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                         cd "$MOUNT"
                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure "f167c9c1"
                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure "bb6b1b2c"
@@ -807,7 +808,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.findutils pkgs.gh pkgs.nix ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) update ( _failure.implementation "7bccbe71" ) ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
+                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                         update
                                                                                                                                                         TOKEN_FILE=${ resources.production.secrets.
                                                                                                                                                         token ( setup : setup ) }
@@ -858,7 +859,7 @@
                                                                                                                                                 runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) update ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        : ${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }
+                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                         update
                                                                                                                                                         nixos-rebuild test "$MOUNT#user"
                                                                                                                                                     '' ;
