@@ -399,11 +399,11 @@
                                                                                                                             makeWrapper ${ scratch }/bin/scratch /mount/stage/scratch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ switch }/bin/switch /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test }/bin/test /mount/stage/test --set MOUNT "${ mount }"
-                                                                                                                            if git fetch origin main 2> /mount/stage/debug.err
+                                                                                                                            if git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
                                                                                                                             then
-                                                                                                                                echo "$?" > /mount/stage/debug.success
+                                                                                                                                echo "$?" > /mount/stage/status
                                                                                                                             else
-                                                                                                                                echo "$?" > /mount/stage/debug.error
+                                                                                                                                echo "$?" > /mount/stage/status
                                                                                                                             fi
 
                                                                                                                             # git checkout origin/main 2>&1
