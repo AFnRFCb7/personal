@@ -402,12 +402,12 @@
                                                                                                                             cd "${ mount }"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
                                                                                                                             echo "$DOT_SSH"
-                                                                                                                            # if GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F \"$DOT_SSH\"" git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
-                                                                                                                            # then
-                                                                                                                            #     echo "$?" > /mount/stage/status
-                                                                                                                            # else
-                                                                                                                            #     echo "$?" > /mount/stage/status
-                                                                                                                            # fi
+                                                                                                                            if GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F \"$DOT_SSH\"" git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
+                                                                                                                            then
+                                                                                                                                echo "$?" > /mount/stage/status
+                                                                                                                            else
+                                                                                                                                echo "$?" > /mount/stage/status
+                                                                                                                            fi
                                                                                                                             # git checkout origin/main 2>&1
                                                                                                                             # git scratch
                                                                                                                         '' ;
