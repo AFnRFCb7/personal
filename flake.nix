@@ -183,6 +183,7 @@
                                                                                             "alias.build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm" ;
                                                                                             "alias.build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm-with-bootloader" ;
                                                                                             "alias.check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/check" ;
+                                                                                            "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                             "alias.scratch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/scratch" ;
                                                                                             "alias.secret" =
                                                                                                 let
@@ -264,6 +265,26 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/check" ;
+                                                                                                                    hydrate =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "hydrate" ;
+                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
+                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                BRANCH="$1"
+                                                                                                                                                git fetch origin "$BRANCH"
+                                                                                                                                                git checkout "origin/$BRANCH"
+                                                                                                                                                git scratch
+                                                                                                                                                git submodule sync
+                                                                                                                                                git submodule update --init --recursive
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/hydrate" ;
                                                                                                                     scratch =
                                                                                                                         let
                                                                                                                             application =
@@ -396,6 +417,7 @@
                                                                                                                             makeWrapper ${ build-vm } /mount/stage/build-vm --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ build-vm-with-bootloader } /mount/stage/build-vm-with-bootloader --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ check } /mount/stage/check --set MOUNT "${ mount }"
+                                                                                                                            makeWrapper ${ hydrate } /mount/stage/hydrate --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ scratch } /mount/stage/scratch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ ssh } /mount/stage/ssh --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ switch } /mount/stage/switch --set MOUNT "${ mount }"
