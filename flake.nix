@@ -381,7 +381,7 @@
                                                                                                                                                 BASENAME="$( basename "$INPUT" )" || failure "d88d5af7"
                                                                                                                                                 nix flake update --flake "$MOUNT" --update-input "$BASENAME"
                                                                                                                                             fi
-                                                                                                                                        done < <( find "$MOUNT/inputs" -mindepth 1 -maxdepth 1 -type d )
+                                                                                                                                        done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d )
                                                                                                                                         cd "$MOUNT"
                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                         then
