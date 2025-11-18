@@ -201,22 +201,7 @@
                                                                                                     in "${ application }/bin/secret" ;
                                                                                             "alias.switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/switch" ;
                                                                                             "alias.test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/test" ;
-                                                                                            "core.sshCommand" =
-                                                                                                { mount , pkgs , resources , stage } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "ssh" ;
-                                                                                                                    runtimeInputs = [ pkgs.libuuid pkgs.openssh ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            UUID="$( uuidgen )" || failure dcd17f20
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo \"\$UUID\" | ${ setup }" ) }
-                                                                                                                            ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/ssh" ;
+                                                                                            "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
                                                                                         } ;
@@ -296,6 +281,20 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/scratch" ;
+                                                                                                                    ssh =
+                                                                                                                        { mount , pkgs , resources , stage } :
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "ssh" ;
+                                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    ssh -F "${ mount }/stage/dot-ssh/dot-ssh" "$@"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                        in "${ application }/bin/ssh" ;
                                                                                                                     switch =
                                                                                                                         let
                                                                                                                             application =
@@ -401,8 +400,9 @@
                                                                                                                             makeWrapper ${ switch } /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test } /mount/stage/test --set MOUNT "${ mount }"
                                                                                                                             cd "${ mount }/repository"
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
-                                                                                                                            export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/dot-ssh"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                            root-resource "$DOT_SSH"
+                                                                                                                            ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch
