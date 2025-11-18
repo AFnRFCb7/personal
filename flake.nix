@@ -291,7 +291,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
-                                                                                                                                                ssh -F "${ mount }/stage/dot-ssh/dot-ssh" "$@"
+                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/dot-ssh" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                         in "${ application }/bin/ssh" ;
