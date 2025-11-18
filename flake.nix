@@ -397,7 +397,7 @@
                                                                                                                             makeWrapper ${ build-vm-with-bootloader } /mount/stage/build-vm-with-bootloader --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ check } /mount/stage/check --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ scratch } /mount/stage/scratch --set MOUNT "${ mount }"
-                                                                                                                            makeWrapper ${ scratch } /mount/stage/ssh --set MOUNT "${ mount }"
+                                                                                                                            makeWrapper ${ ssh } /mount/stage/ssh --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ switch } /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test } /mount/stage/test --set MOUNT "${ mount }"
                                                                                                                             cd "${ mount }/repository"
