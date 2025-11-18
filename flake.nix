@@ -271,7 +271,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "hydrate" ;
-                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                        runtimeInputs = [ ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
