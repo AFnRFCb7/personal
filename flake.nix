@@ -158,18 +158,18 @@
                                                                             "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
+                                                                                    # identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
+                                                                                    # user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                     user = "git" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host-name = "192.168.1.192" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
+                                                                                    # identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
+                                                                                    # user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             repository =
@@ -401,7 +401,7 @@
                                                                                                                             makeWrapper ${ test }/bin/test /mount/stage/test --set MOUNT "${ mount }"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
                                                                                                                             echo "$DOT_SSH"
-                                                                                                                            # if GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F \"$DOT_SSH\""  git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
+                                                                                                                            # if GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F \"$DOT_SSH\"" git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
                                                                                                                             # then
                                                                                                                             #     echo "$?" > /mount/stage/status
                                                                                                                             # else
