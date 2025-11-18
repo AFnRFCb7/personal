@@ -405,6 +405,7 @@
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch
+                                                                                                                            git submodule sync
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
