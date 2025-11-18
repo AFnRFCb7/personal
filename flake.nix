@@ -402,12 +402,7 @@
                                                                                                                             cd "${ mount }/repository"
                                                                                                                             # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
                                                                                                                             # echo "$DOT_SSH"
-                                                                                                                            if git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
-                                                                                                                            then
-                                                                                                                                echo "$?" > /mount/stage/status
-                                                                                                                            else
-                                                                                                                                echo "$?" > /mount/stage/status
-                                                                                                                            fi
+                                                                                                                            git fetch origin main 2>&1
                                                                                                                             # git checkout origin/main 2>&1
                                                                                                                             # git scratch
                                                                                                                         '' ;
