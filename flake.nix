@@ -208,10 +208,11 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "ssh" ;
-                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                    runtimeInputs = [ pkgs.libuuid pkgs.openssh ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                            UUID="$( uuidgen )" || failure dcd17f20
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo \"\$UUID\" | ${ setup }" ) }
                                                                                                                             ssh -F "$DOT_SSH/dot-ssh" "$@"
                                                                                                                         '' ;
                                                                                                                 } ;
