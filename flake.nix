@@ -410,13 +410,13 @@
                                                                                                                             EMAIL="$( git config --get user.email )" || failure ec448449
                                                                                                                             NAME="$( git config --get user.name )" || failure b85e5a6c
                                                                                                                             SSH="$( git config --get core.sshCommand )" || failure 32d40447
-                                                                                                                            find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-                                                                                                                            do
-                                                                                                                                cd "$INPUT"
-                                                                                                                                git config user.email "$EMAIL"
-                                                                                                                                git config user.name "$NAME"
-                                                                                                                                git config core.sshCommand "$SSH"
-                                                                                                                            done
+                                                                                                                            # find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+                                                                                                                            # do
+                                                                                                                            #     cd "$INPUT"
+                                                                                                                            #     git config user.email "$EMAIL"
+                                                                                                                            #     git config user.name "$NAME"
+                                                                                                                            #     git config core.sshCommand "$SSH"
+                                                                                                                            # done
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
