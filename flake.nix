@@ -282,18 +282,18 @@
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/scratch" ;
                                                                                                                     ssh =
-                                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "ssh" ;
-                                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                            text =
-                                                                                                                                                ''
-                                                                                                                                                    ssh -F "${ mount }/stage/dot-ssh/dot-ssh" "$@"
-                                                                                                                                                '' ;
-                                                                                                                                        } ;
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
+                                                                                                                                                ssh -F "${ mount }/stage/dot-ssh/dot-ssh" "$@"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
                                                                                                                         in "${ application }/bin/ssh" ;
                                                                                                                     switch =
                                                                                                                         let
