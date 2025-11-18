@@ -275,6 +275,8 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
+                                                                                                                                                echo 09e001b12dcd7ae673471fc6684d695c67c3d4515a77070885246c9e244a6458e3a822434b9bde1fae07d8bd15c9200302b1410a435032bb0e1e16a9a7c1c775
+                                                                                                                                                git -v
                                                                                                                                                 echo 0f67e56a71795fffcd8fcc0691e15bfa6b8ed5b35a2a1e19aca8f6fe25bae02bda29ceab41f0fa7fbcd6a2f8dd5b8133d9fbf2450a79b0a9725875f7678b209f
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 echo fcae62f95a634fb78298f03f5ce2943493a9a6588f1a8d35991ba837a3eb93d5854d4e64bcf4e122f06432fe704f7185a196163b00d01b9b08045aaa25775f3c
