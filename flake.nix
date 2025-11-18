@@ -271,7 +271,18 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "hydrate" ;
-                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                        runtimeInputs =
+                                                                                                                                            let
+                                                                                                                                                  git_2_40 = pkgs.git.overrideAttrs
+                                                                                                                                                    (
+                                                                                                                                                        old:
+                                                                                                                                                            {
+                                                                                                                                                                version = "2.40.1" ;
+                                                                                                                                                                sha256 = "<the-correct-hash-for-2.40.1>";
+                                                                                                                                                            }
+                                                                                                                                                    ) ;
+                                                                                                                                                in
+                                                                                                                                                    [ git_2_40 ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
