@@ -400,8 +400,8 @@
                                                                                                                             makeWrapper ${ switch } /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test } /mount/stage/test --set MOUNT "${ mount }"
                                                                                                                             cd "${ mount }/repository"
-                                                                                                                            # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
-                                                                                                                            # echo "$DOT_SSH"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
+                                                                                                                            export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/dot-ssh"
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch
