@@ -231,7 +231,7 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                 update
-                                                                                                                                                nixos-rebuild build-vm "$MOUNT#user"
+                                                                                                                                                nixos-rebuild build-vm "$MOUNT/repository#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/build-vm" ;
@@ -246,7 +246,7 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                 update
-                                                                                                                                                nixos-rebuild build-vm-with-bootloader "$MOUNT#user"
+                                                                                                                                                nixos-rebuild build-vm-with-bootloader "$MOUNT/repository#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/build-vm" ;
@@ -364,7 +364,7 @@
                                                                                                                                                     git push origin HEAD
                                                                                                                                                     git scratch
                                                                                                                                                 fi
-                                                                                                                                                nixos-rebuild switch "$MOUNT#user"
+                                                                                                                                                nixos-rebuild switch "$MOUNT/repository#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/switch" ;
@@ -379,7 +379,7 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                 update
-                                                                                                                                                nixos-rebuild test "$MOUNT#user"
+                                                                                                                                                nixos-rebuild test "$MOUNT/repository#user"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/test" ;
