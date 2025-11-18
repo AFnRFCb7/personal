@@ -158,18 +158,18 @@
                                                                             "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                     user = "git" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host-name = "192.168.1.192" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : "echo | ${ setup " ; ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             repository =
