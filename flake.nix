@@ -406,7 +406,7 @@
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             git scratch
                                                                                                                             git submodule sync
-                                                                                                                            git submodule update --init --recursive
+                                                                                                                            git submodule update --init --recursive 2>&1
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
