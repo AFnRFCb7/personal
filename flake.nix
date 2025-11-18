@@ -382,7 +382,7 @@
                                                                                                                                                 nix flake update --flake "$MOUNT" --update-input "$BASENAME"
                                                                                                                                             fi
                                                                                                                                         done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d )
-                                                                                                                                        cd "$MOUNT"
+                                                                                                                                        cd "$MOUNT/repository"
                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                         then
                                                                                                                                             git scratch
