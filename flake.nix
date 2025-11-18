@@ -288,7 +288,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
-                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                cd "$MOUNT/repository"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure "f167c9c1"
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure "bb6b1b2c"
                                                                                                                                                 git checkout -b "$BRANCH" 2>&1
