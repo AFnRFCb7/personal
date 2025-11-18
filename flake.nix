@@ -403,7 +403,7 @@
                                                                                                                             # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup } WTF" ) }
                                                                                                                             # echo "$DOT_SSH"
                                                                                                                             git fetch origin main 2>&1
-                                                                                                                            # git checkout origin/main 2>&1
+                                                                                                                            git checkout origin/main 2>&1
                                                                                                                             # git scratch
                                                                                                                         '' ;
                                                                                                         } ;
