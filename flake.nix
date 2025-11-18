@@ -404,21 +404,22 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
                                                                                                                             root-resource "$DOT_SSH"
                                                                                                                             ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
-                                                                                                                            # git fetch origin main 2>&1
-                                                                                                                            # git checkout origin/main 2>&1
-                                                                                                                            # git scratch
-                                                                                                                            # git submodule sync
-                                                                                                                            # git submodule update --init --recursive 2>&1
-                                                                                                                            # EMAIL="$( git config --get user.email )" || failure ec448449
-                                                                                                                            # NAME="$( git config --get user.name )" || failure b85e5a6c
-                                                                                                                            # SSH="$( git config --get core.sshCommand )" || failure 32d40447
-                                                                                                                            # find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-                                                                                                                            # do
-                                                                                                                            #     cd "$INPUT"
-                                                                                                                            #     git config user.email "$EMAIL"
-                                                                                                                            #     git config user.name "$NAME"
-                                                                                                                            #     git config core.sshCommand "$SSH"
-                                                                                                                            # done
+                                                                                                                            git fetch origin main 2>&1
+                                                                                                                            git checkout origin/main 2>&1
+                                                                                                                            git scratch
+                                                                                                                            EMAIL="$( git config --get user.email )" || failure ec448449
+                                                                                                                            NAME="$( git config --get user.name )" || failure b85e5a6c
+                                                                                                                            GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 32d40447
+                                                                                                                            export GIT_SSH_COMMAND
+                                                                                                                            git submodule sync
+                                                                                                                            git submodule update --init --recursive 2>&1
+                                                                                                                            find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+                                                                                                                            do
+                                                                                                                                cd "$INPUT"
+                                                                                                                                git config user.email "$EMAIL"
+                                                                                                                                git config user.name "$NAME"
+                                                                                                                                git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                            done
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
