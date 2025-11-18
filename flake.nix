@@ -404,7 +404,7 @@
                                                                                                                             # echo "$DOT_SSH"
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
-                                                                                                                            git scratch
+                                                                                                                            # git scratch
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
