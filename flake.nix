@@ -401,7 +401,7 @@
                                                                                                                             makeWrapper ${ switch } /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test } /mount/stage/test --set MOUNT "${ mount }"
                                                                                                                             cd "${ mount }/repository"
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root-resource "$DOT_SSH"
                                                                                                                             ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                             git fetch origin main 2>&1
