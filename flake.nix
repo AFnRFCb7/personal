@@ -260,7 +260,7 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
                                                                                                                                                 update
-                                                                                                                                                nix flake check "$MOUNT"
+                                                                                                                                                nix flake check "$MOUNT/repository"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/check" ;
