@@ -399,8 +399,8 @@
                                                                                                                             makeWrapper ${ scratch }/bin/scratch /mount/stage/scratch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ switch }/bin/switch /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test }/bin/test /mount/stage/test --set MOUNT "${ mount }"
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                            echo "$DOT_SSH"
+                                                                                                                            # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                            # echo "$DOT_SSH"
                                                                                                                             # if GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F \"$DOT_SSH\""  git fetch origin main > /mount/stage/standard.output 2> /mount/stage/standard.error
                                                                                                                             # then
                                                                                                                             #     echo "$?" > /mount/stage/status
