@@ -271,6 +271,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "hydrate" ;
+                                                                                                                                        #
                                                                                                                                         runtimeInputs = [ ] ;
                                                                                                                                         text =
                                                                                                                                             ''
