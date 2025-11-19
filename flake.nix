@@ -524,7 +524,7 @@
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
 																	root-resource "$DOT_SSH"
-																	makeWrapper ${ ssh } /mount/stage/ssh --set MOUNT "${ mount }"
+																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
