@@ -682,9 +682,6 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/dot-ssh/ ;
-                                                                                                    "user.email" = config.personal.repository.private.email ;
-                                                                                                    "user.name" = config.personal.repository.private.name ;
                                                                                                 } ;
                                                                                             hooks =
                                                                                                 {
@@ -700,7 +697,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git pkgs.makeWrapper ] ;
+                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             in
