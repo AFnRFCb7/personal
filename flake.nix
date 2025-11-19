@@ -506,6 +506,19 @@
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         let
+																ssh =
+																	let
+																		application =
+																			pkgs.writeShellApplication
+																				{
+																					name = "ssh" ;
+																					runtimeInputs = [ pkgs.openssh ] ;
+																					text =
+																						''
+																							ssh -F "${ mount }/stage/dot-ssh/dot-ssh
+																						'' ;
+																				} ;
+																		in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
