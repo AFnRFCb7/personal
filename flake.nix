@@ -505,24 +505,11 @@
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         let
-																ssh =
-																	let
-																		application =
-																			pkgs.writeShellApplication
-																				{
-																					name = "ssh" ;
-																					runtimeInputs = [ pkgs.openssh ] ;
-																					text =
-																						''
-																							ssh -F "$MOUNT/stage/dot-ssh/dot-ssh \"$@\"" ;
-																						'' ;
-																				} ;
-																		in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
-																	makeWrapper ${ ssh } /mount/stage/ssh --set MOUNT "${ mount }"
+																	root-resource "$DOT_SSH"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
