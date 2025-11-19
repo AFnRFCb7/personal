@@ -174,15 +174,48 @@
                                                                         } ;
                                                             repository =
                                                                 {
+                                                                    snapshot =
+                                                                        ignore :
+                                                                            _git-repository.implementation
+                                                                                {
+                                                                                    configs =
+                                                                                        {
+
+                                                                                        } ;
+                                                                                    hooks =
+                                                                                        {
+
+                                                                                        } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            local = { mount , pkgs , resources , stage } : "${ mount }/stage/studio/repository" ;
+                                                                                        } ;
+                                                                                    setup =
+                                                                                        { mount , pkgs , resources , stage } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "setup" ;
+                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    STUDIO="$1"
+                                                                                                                    BRANCH="$2"
+                                                                                                                    COMMIT="$3"
+                                                                                                                    ln --symbolic "$STUDIO" /mount/stage/studio
+                                                                                                                    git fetch local "$BRANCH"
+                                                                                                                    git checkout "$COMMIT"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/setup" ;
+                                                                                } ;
                                                                     studio =
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm" ;
-                                                                                            "alias.build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/build-vm-with-bootloader" ;
-                                                                                            "alias.check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/check" ;
                                                                                             "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                             "alias.scratch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/scratch" ;
                                                                                             "alias.secret" =
@@ -200,8 +233,7 @@
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/secret" ;
-                                                                                            "alias.switch2" = { mount , pkgs , resources , stage } : "!${ mount }/stage/switch" ;
-                                                                                            "alias.test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/test" ;
+                                                                                            "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                             "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                             "user.email" = config.personal.repository.private.email ;
                                                                                             "user.name" = config.personal.repository.private.name ;
@@ -271,14 +303,6 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "hydrate" ;
-                                                                                                                                        #
-                                                                                                                                        #
-                                                                                                                                        #
-                                                                                                                                        #
-                                                                                                                                        #
-                                                                                                                                        #
-                                                                                                                                        #
-                                                                                                                                        #
                                                                                                                                         runtimeInputs = [ ] ;
                                                                                                                                         text =
                                                                                                                                             ''
@@ -310,6 +334,32 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/scratch" ;
+                                                                                                                    snapshot =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "snapshot" ;
+                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "MOUNT:? Must export MOUNT before running this script" "}" ] }"
+                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio ( setup : "${ setup } $MOUNT" ) }
+                                                                                                                                                while read -r INPUT
+                                                                                                                                                do
+                                                                                                                                                    cd "$INPUT"
+                                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                    then
+                                                                                                                                                        git scratch
+                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                    fi
+                                                                                                                                                done < <( find "$MOUNT/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+                                                                                                                                                if ! git diff --quiet
+                                                                                                                                                echo "$SNAPSHOT"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/snapshot" ;
                                                                                                                     ssh =
                                                                                                                         let
                                                                                                                             application =
@@ -427,6 +477,7 @@
                                                                                                                             makeWrapper ${ check } /mount/stage/check --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ hydrate } /mount/stage/hydrate --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ scratch } /mount/stage/scratch --set MOUNT "${ mount }"
+                                                                                                                            makeWrapper ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ ssh } /mount/stage/ssh --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ switch } /mount/stage/switch --set MOUNT "${ mount }"
                                                                                                                             makeWrapper ${ test } /mount/stage/test --set MOUNT "${ mount }"
