@@ -488,6 +488,7 @@
                                                                                             configs =
                                                                                                 {
 													"alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
+													"alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
 													"core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                                 } ;
                                                                                             hooks =
@@ -528,6 +529,28 @@
 																						'' ;
 																				} ;
 																		in "${ application }/bin/hydrate" ;
+																snapshot =
+																	let
+																		application =
+																			pkgs.writeShellApplication
+																				{
+																					name = "snapshot" ;
+																					runtimeInputs = [ pkgs.findutils ( _failure.implementation "" ) ] ;
+																					text =
+																						''
+																							cd "$MOUNT"
+																							while read -r INPUT
+																							do
+																								if ! git diff --quiet || ! git diff --quiet --cache
+																								then
+																									git commit -a --verbose
+										INPUT_NAME="$( basename "$INPUT" ) || failure
+																												nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+																								fi
+																							done
+																						'' ;
+																				} ;
+																		in "${ application }/bin/snapshot" ;
 																ssh =
 																	let
 																		application =
@@ -546,6 +569,7 @@
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
 																	root-resource "$DOT_SSH"
+																	make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
