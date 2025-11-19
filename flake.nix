@@ -487,7 +487,6 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-													alias.hydrate = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                                 } ;
                                                                                             hooks =
                                                                                                 {
@@ -506,23 +505,6 @@
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         let
-																hydrate =
-																	let
-																		application =
-																			pkgs.writeShellApplication
-																				{
-																					name = "hydrate" ;
-																					runtimeInputs = [ ] ;
-																					text =
-																						''
-																							BRANCH="$1"
-																							git fetch origin "$BRANCH"
-																							git checkout "$BRANCH"
-																							git submodule sync
-																							git submodule update --init --recursive
-																						'' ;
-																				} ;
-																		in "${ application }/bin/hydrate" ;
 																ssh =
 																	let
 																		application =
@@ -540,7 +522,6 @@
                                                                                                                                 ''
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
-                                                                                                                                    makeWrapper ${ hydrate } /mount/stage/hydrate --set MOUNT "${ mount }"
 																	makeWrapper ${ ssh } /mount/stage/ssh --set MOUNT "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
