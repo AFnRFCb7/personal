@@ -558,37 +558,6 @@
 																						'' ;
 																				} ;
 																		in "${ application }/bin/hydrate" ;
-																snapshot =
-																	let
-																		application =
-																			pkgs.writeShellApplication
-																				{
-																					name = "snapshot" ;
-																					runtimeInputs = [ pkgs.findutils ( _failure.implementation "" ) ] ;
-																					text =
-																						''
-																							cd "$MOUNT"
-																							while read -r INPUT
-																							do
-																								if ! git diff --quiet || ! git diff --quiet --cache
-																								then
-																									git commit -a --verbose
-			git push origin HEAD
-										INPUT_NAME="$( basename "$INPUT" )" || failure
-																												nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
-																								fi
-																							done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d )
-												if ! git diff --quiet || ! git diff --quiet --update
-												then
-													git commit -a --verbose
-													git push origin HEAD
-												fi
-												BRANCH="$( git rev-parse --abbrev-ref HEAD)" || failure 
-												COMMIT=$( git rev-parse HEAD )" || failure
-												SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$BRANCH" "$COMMIT"'' ) }
-																						'' ;
-																				} ;
-																		in "${ application }/bin/snapshot" ;
 																ssh =
 																	let
 																		application =
