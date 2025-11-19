@@ -702,7 +702,7 @@
                                                                                                                         let
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    # shellcheck source=/dev/null
+                                                                                                                                    true
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
