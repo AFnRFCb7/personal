@@ -521,7 +521,7 @@
 																		in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
-																	DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+																	DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
 																	root-resource "$DOT_SSH"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
