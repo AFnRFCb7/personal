@@ -515,7 +515,7 @@
 																					runtimeInputs = [ pkgs.openssh ] ;
 																					text =
 																						''
-																							ssh -F "${ mount }/stage/dot-ssh/dot-ssh
+																							ssh -F "${ mount }/stage/dot-ssh/dot-ssh" "$@"
 																						'' ;
 																				} ;
 																		in "${ application }/bin/ssh" ;
