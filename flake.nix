@@ -481,35 +481,6 @@
                                                                                 in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
-										snapshot =
-											ignore :
-												_git-repository.implementation
-													{
-														remotes =
-															{
-																local = { mount , pkgs , resources , stage } : "${ mount }/stage/local" ;
-															} ;
-														setup =
-															{ mount , pkgs , resources , stage } :
-																let
-																	application =
-																		pkgs.writeShellApplication
-																			{
-																				name = "setup" ;
-																				runtimeInputs = [ ] ;
-																				text =
-																					''
-																						LOCAL="$1"
-																						BRANCH="$2"
-																						COMMIT="$3"
-																						root-resource "$LOCAL"
-																						ln --symbolic "$LOCAL/repository" /mount/stage/local
-																						git fetch local "$BRANCH"
-																						git checkout "$COMMIT"
-																					'' ;
-																			} ;
-																	in "${ application }/bin/setup" ;
-													} ;
                                                                             studio =
                                                                                 ignore :
                                                                                     _git-repository.implementation
