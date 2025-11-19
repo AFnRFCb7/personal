@@ -200,7 +200,7 @@
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/secret" ;
-                                                                                            "alias.switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/switch" ;
+                                                                                            "alias.switch2" = { mount , pkgs , resources , stage } : "!${ mount }/stage/switch" ;
                                                                                             "alias.test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/test" ;
                                                                                             "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                             "user.email" = config.personal.repository.private.email ;
