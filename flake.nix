@@ -487,7 +487,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
-													"core.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
+													"core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                                 } ;
                                                                                             hooks =
                                                                                                 {
