@@ -481,6 +481,35 @@
                                                                                 in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
+										snapshot =
+											ignore :
+												_git-repository.implementation
+													{
+														remotes =
+															{
+																local = { mount , pkgs , resources , stage } : "${ mount }/stage/local" ;
+															} ;
+														setup =
+															{ mount , pkgs , resources , stage } :
+																let
+																	application =
+																		pkgs.writeShellApplication
+																			{
+																				name = "setup" ;
+																				runtimeInputs = [ ] ;
+																				text =
+																					''
+																						LOCAL="$1"
+																						BRANCH="$2"
+																						COMMIT="$3"
+																						root-resource "$LOCAL"
+																						ln --symbolic "$LOCAL/repository" /mount/stage/local
+																						git fetch local "$BRANCH"
+																						git checkout "$COMMIT"
+																					'' ;
+																			} ;
+																	in "${ application }/bin/setup" ;
+													} ;
                                                                             studio =
                                                                                 ignore :
                                                                                     _git-repository.implementation
@@ -544,10 +573,19 @@
 																								if ! git diff --quiet || ! git diff --quiet --cache
 																								then
 																									git commit -a --verbose
+			git push origin HEAD
 										INPUT_NAME="$( basename "$INPUT" )" || failure
 																												nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
 																								fi
-																							done
+																							done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d )
+												if ! git diff --quiet || ! git diff --quiet --update
+												then
+													git commit -a --verbose
+													git push origin HEAD
+												fi
+												BRANCH="$( git rev-parse --abbrev-ref HEAD)" || failure 
+												COMMIT=$( git rev-parse HEAD )" || failure
+												SNAPSHOT=${ resources.production.repository.snapshot ( setup : "${ setup } "$MOUNT" "$BRANCH" "$COMMIT" ) }
 																						'' ;
 																				} ;
 																		in "${ application }/bin/snapshot" ;
@@ -569,6 +607,7 @@
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
 																	root-resource "$DOT_SSH"
+																	make-wrapper ${ hydrate } /mount/stage/hydrate "${ mount }"
 																	make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                                 '' ;
