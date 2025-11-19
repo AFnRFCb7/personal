@@ -544,7 +544,7 @@
 																								if ! git diff --quiet || ! git diff --quiet --cache
 																								then
 																									git commit -a --verbose
-										INPUT_NAME="$( basename "$INPUT" ) || failure
+										INPUT_NAME="$( basename "$INPUT" )" || failure
 																												nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
 																								fi
 																							done
