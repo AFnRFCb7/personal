@@ -487,6 +487,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+													"alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
 													"core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                                 } ;
                                                                                             hooks =
@@ -506,6 +507,27 @@
                                                                                                                     runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         let
+																hydrate =
+																	let
+																		application =
+																			pkgs.writeShellApplication
+																				{
+																					name = "hydrate" ;
+																					runtimeInputs = [ pkgs.coreutils pkgs.find pkgs.libuuid  _failure.implementation "" ] ;
+																					text =
+																						''
+																							BRANCH="$1"
+																							cd "$MOUNT/repository"
+																							git fetch origin "$BRANCH"
+																							git checkout "origin/$BRANCH"
+																							UUID="$( uuidgen )" || failure
+																							git checkout -b "scratch/$UUID"
+																							git submodule sync
+																							git submodule update --init --recursive
+																							find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} checkout -b "scratch/$UUID" \;
+																						'' ;
+																				} ;
+																		in "${ application }/bin/hydrate" ;
 																ssh =
 																	let
 																		application =
