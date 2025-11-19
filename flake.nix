@@ -585,7 +585,7 @@
 												fi
 												BRANCH="$( git rev-parse --abbrev-ref HEAD)" || failure 
 												COMMIT=$( git rev-parse HEAD )" || failure
-												SNAPSHOT=${ resources.production.repository.snapshot ( setup : "${ setup } "$MOUNT" "$BRANCH" "$COMMIT" ) }
+												SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$BRANCH" "$COMMIT"'' ) }
 																						'' ;
 																				} ;
 																		in "${ application }/bin/snapshot" ;
