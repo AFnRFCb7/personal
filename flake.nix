@@ -479,7 +479,7 @@ let
 					''
 						while read -r INPUT
 						do
-							if ! git diff --quiet || ! git diff --quiet --cache
+							if ! git diff --quiet || ! git diff --quiet --cached
 							then
 								git commit -a --verbose
 								INPUT_NAME="$( basename "$INPUT" )" || failure
@@ -487,7 +487,7 @@ let
 							fi
 						done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
 						cd "$MOUNT/repository"
-						if ! git diff --quiet || ! git diff --quiet --cache
+						if ! git diff --quiet || ! git diff --quiet --cached
 						then
 							git commit -a --verbose
 						fi
@@ -520,6 +520,13 @@ let
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
 																	export GIT_SSH_COMMAND=${ ssh }
 																	git hydrate main
+																	find inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+																	do
+																		cd "$INPUT"
+																		git config user.email "${ config.personal.repository.email }"
+																		git config user.name "${ config.personal.repository.name }"
+																		git config core.sshCommand "GIT_SSH_COMMAND"
+																	done
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
