@@ -329,6 +329,7 @@
                                                                                                                                                     ssh -F "$MOUNT/stage/dot-ssh" "$@"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
+                                                                                                                                in "${ application }/bin/ssh" ;
 												                                                                        in
 													                                                                        ''
 														                                                                        STUDIO="$1"
@@ -342,6 +343,7 @@
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
 														                                                                        root-resource "$DOT_SSH"
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" ${ mount }/stage/dot-ssh
+														                                                                        #
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
                                                                                                         } ;
@@ -474,7 +476,9 @@
 																		                                                            cd "$INPUT"
 																		                                                            git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
-																		                                                            git config core.sshCommand "GIT_SSH_COMMAND"
+																		                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
+																		                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 894e4448
+																		                                                            nix flake update --flake "$MOUNT" --update-input "$INPUT_NAME"
 																	                                                            done
                                                                                                                             '' ;
                                                                                                                 } ;
