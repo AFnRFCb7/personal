@@ -388,7 +388,7 @@ snapshot =
 																				export SHARED_DIR="$VM/shared"
 																				"$VM/result/bin/run-nixos-vm"
 																			else
-																				failure "$VM"
+																				failure "$VM" "$STATUS"
 																			fi
 																		'' ;
 																} ;
