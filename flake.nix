@@ -520,7 +520,7 @@ let
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
 																	export GIT_SSH_COMMAND=${ ssh }
 																	git hydrate main
-																	find "${ mount }/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+																	find "${ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
 																	do
 																		cd "$INPUT"
 																		git config user.email "${ config.personal.repository.private.email }"
