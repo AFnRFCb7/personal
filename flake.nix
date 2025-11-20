@@ -453,7 +453,7 @@ application =
 																							git fetch origin "$BRANCH" 2>&1
 																							git checkout "origin/$BRANCH" 2>&1
 																							UUID="$( uuidgen )" || failure
-																							git checkout -b "scratch/$UUID"
+																							git checkout -b "scratch/$UUID" 2>&1
 																							git submodule sync 2>&1
 																							git submodule update --init --recursive 2>&1
 																							find inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
