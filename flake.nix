@@ -245,19 +245,6 @@
 																		                                                                    '' ;
                                                                                                                                     } ;
 														                                                                        in "${ application }/bin/flake-build-vm" ;
-												                                                                        flake-test =
-													                                                                        let
-														                                                                        application =
-															                                                                        pkgs.writeShellApplication
-																                                                                        {
-																	                                                                        name = "flake-build-vm" ;
-																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
-																	                                                                        text =
-																		                                                                        ''
-																			                                                                        nixos-rebuild test --flake "$MOUNT/repository#user"
-																		                                                                        '' ;
-																                                                                        } ;
-														                                                                        in "${ application }/bin/flake-build-vm" ;
 												                                                                        flake-check =
 													                                                                        let
 														                                                                        application =
@@ -271,6 +258,59 @@
 																		                                                                        '' ;
 																                                                                        } ;
 														                                                                            in "${ application }/bin/flake-check" ;
+												                                                                        flake-switch =
+													                                                                        let
+														                                                                        application =
+															                                                                        pkgs.writeShellApplication
+																                                                                        {
+																	                                                                        name = "flake-switch" ;
+																	                                                                        runtimeInputs =
+																	                                                                            [
+																	                                                                                pkgs.findutils
+																	                                                                                ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
+																	                                                                                (
+																	                                                                                    pkgs.writeShellApplication
+																	                                                                                        {
+																	                                                                                            name = "flake-switch-input" ;
+																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git ] ;
+																	                                                                                            text =
+																	                                                                                                ''
+																	                                                                                                    INPUT="$1"
+																	                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+																	                                                                                                    gh auth login --with-token
+																	                                                                                                    git fetch origin main
+                                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                        then
+                                                                                                                                                                            git checkout -b scratch/$(uuidgen)
+                                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            git push
+                                                                                                                                                                        fi
+																	                                                                                                    gh auth logout
+																	                                                                                                '' ;
+																	                                                                                        }
+																	                                                                                )
+                                                                                                                                                ] ;
+																	                                                                        text =
+																		                                                                        ''
+																		                                                                            find "$MOUNT/repository/inputs -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
+																			                                                                        nixos-rebuild switch --flake "$MOUNT/repository#user"
+																		                                                                        '' ;
+																                                                                        } ;
+														                                                                        in "${ application }/bin/flake-switch" ;
+												                                                                        flake-test =
+													                                                                        let
+														                                                                        application =
+															                                                                        pkgs.writeShellApplication
+																                                                                        {
+																	                                                                        name = "flake-test ;
+																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+																	                                                                        text =
+																		                                                                        ''
+																			                                                                        nixos-rebuild test --flake "$MOUNT/repository#user"
+																		                                                                        '' ;
+																                                                                        } ;
+														                                                                        in "${ application }/bin/flake-test" ;
 												                                                                        in
 													                                                                        ''
 														                                                                        STUDIO="$1"
@@ -278,6 +318,7 @@
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														                                                                        git checkout "$COMMIT" 2>&1
                                                                                                                                 make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
+														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-test "${ mount }"
 														                                                                        make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
