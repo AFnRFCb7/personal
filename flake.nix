@@ -288,7 +288,7 @@
 																	                                                                                                    git fetch origin main
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
-                                                                                                                                                                            git checkout -b scratch/$(uuidgen)
+                                                                                                                                                                            git checkout -b "scratch/$(uuidgen)"
                                                                                                                                                                             git reset --soft origin/main
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             git push
