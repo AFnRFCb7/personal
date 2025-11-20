@@ -378,8 +378,8 @@ snapshot =
 																{
 																	name = "flake-build-vm" ;
 																	text =
-																		''
-																			VM=${ resources.production.flake.build-vm ( self : self ) }
+																		''													
+																			VM=${ resources.production.flake.build-vm ( setup : ''${ setup } "$MOUNT/repository"'' ) }
 																			STATUS="( cat < "$VM/status" )" || failure
 																			if [[ "0" == "$STATUS" ]]
 																			then
