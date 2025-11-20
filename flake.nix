@@ -485,7 +485,7 @@ snapshot =
 	ignore :
 		_git-repository.implementation
 			{
-				config =
+				configs =
 					{
 						"alias.flake-check" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-check" ;
 					} ;
