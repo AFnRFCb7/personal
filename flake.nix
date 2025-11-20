@@ -309,7 +309,7 @@
 														                                                                        application =
 															                                                                        pkgs.writeShellApplication
 																                                                                        {
-																	                                                                        name = "flake-test ;
+																	                                                                        name = "flake-test" ;
 																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
 																	                                                                        text =
 																		                                                                        ''
