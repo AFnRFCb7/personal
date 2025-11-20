@@ -498,10 +498,13 @@ snapshot =
 										name = "setup" ;
 										text =
 											''
-												BRANCH="$1"
-												COMMIT="$2"
-												echo "$BRANCH"
-												echo "$COMMIT"
+												STUDIO="$1"
+												BRANCH="$2"
+												COMMIT="$3"
+												root-resource "$STUDIO"
+												ln --symbolic "$STUDIO/repository" /mount/stage/local
+												git fetch origin "$BRANCH"
+												git checkout "$COMMIT"
 											'' ;
 									} ;
 							in "${ application }/bin/setup" ;
@@ -579,7 +582,7 @@ let
 						fi
 						BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure
 						COMMIT="$( git rev-parse HEAD )" || failure
-						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$BRANCH" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
 					'' ;
 			} ;
