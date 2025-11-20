@@ -340,19 +340,33 @@
 		                                                                                                                            pkgs.writeShellApplication
 			                                                                                                                            {
 				                                                                                                                            name = "snapshot" ;
-				                                                                                                                            runtimeInputs = [ pkgs.findutils ( _failure.implementation "" ) ] ;
+				                                                                                                                            runtimeInputs =
+				                                                                                                                                [
+				                                                                                                                                    pkgs.findutils
+				                                                                                                                                    ( _failure.implementation "" )
+				                                                                                                                                    (
+				                                                                                                                                        pkgs.writeShellApplication
+				                                                                                                                                            {
+				                                                                                                                                                name = "snapshot-input" ;
+				                                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        INPUT="$1"
+                                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                        then
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                        fi
+                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                    '' ;
+				                                                                                                                                            }
+				                                                                                                                                    )
+				                                                                                                                                ] ;
 				                                                                                                                            text =
 					                                                                                                                            ''
-						                                                                                                                            while read -r INPUT
-                                                                                                                                                    do
-							                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
-							                                                                                                                            then
-								                                                                                                                            git commit -a --verbose
-								                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure
-                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
-                                                                                                                                                        fi
-							                                                                                                                        git push origin HEAD
-						                                                                                                                            done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
 						                                                                                                                            cd "$MOUNT/repository"
 						                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
 						                                                                                                                            then
