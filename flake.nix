@@ -409,7 +409,7 @@ snapshot =
 														COMMIT="$2"
 														export STUDIO
 														export COMMIT
-														# git fetch "$STUDIO/repository" "$COMMIT"
+														git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														# git checkout "$COMMIT"
 														# make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
 														# make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
