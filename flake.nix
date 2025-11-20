@@ -492,7 +492,9 @@ let
 							git commit -a --verbose
 						fi
 						COMMIT="$( git rev-parse HEAD )" || failure
-						echo 'SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }'
+						cat <<EOF
+						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
+						EOF
 						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
 					'' ;
