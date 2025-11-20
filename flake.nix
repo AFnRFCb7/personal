@@ -450,8 +450,8 @@ application =
 																						''
 																							BRANCH="$1"
 																							cd "$MOUNT/repository"
-																							git fetch origin "$BRANCH" 2>1
-																							git checkout "origin/$BRANCH" 2>1
+																							git fetch origin "$BRANCH" 2>&1
+																							git checkout "origin/$BRANCH" 2>&1
 																							UUID="$( uuidgen )" || failure
 																							git checkout -b "scratch/$UUID"
 																							git submodule sync 2>&1
