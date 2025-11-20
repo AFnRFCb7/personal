@@ -450,13 +450,16 @@ application =
 																						''
 																							BRANCH="$1"
 																							cd "$MOUNT/repository"
-																							git fetch origin "$BRANCH"
-																							git checkout "origin/$BRANCH"
+																							git fetch origin "$BRANCH" 2>1
+																							git checkout "origin/$BRANCH" 2>1
 																							UUID="$( uuidgen )" || failure
 																							git checkout -b "scratch/$UUID"
-																							git submodule sync
-																							git submodule update --init --recursive
-																							find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} checkout -b "scratch/$UUID" \;
+																							git submodule sync 2>&1
+																							git submodule update --init --recursive 2>&1
+																							find inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+																							do
+																								git -C "$INPUT" checkout -b "scratch/$UUID" 2>&1
+																							done
 																						'' ;
 																				} ;
 																		in "${ application }/bin/hydrate" ;
