@@ -407,8 +407,8 @@ snapshot =
 													''
 														STUDIO="$1"
 														COMMIT="$2"
-														export "$STUDIO"
-														export "$COMMIT"
+														export STUDIO
+														export COMMIT
 														# git fetch "$STUDIO/repository" "$COMMIT"
 														# git checkout "$COMMIT"
 														# make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
