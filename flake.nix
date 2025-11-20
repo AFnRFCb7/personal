@@ -500,7 +500,7 @@ snapshot =
 											''
 												BRANCH="$1"
 												COMMIT="$2"
-												STUDIO=${ resources.productions.repository.studio ( setup : setup ) }
+												STUDIO=${ resources.production.repository.studio ( setup : setup ) }
 												root-resource "$STUDIO"
 												ln --symbolic "$STUDIO/repository" /mount/stage/local
 												echo "$BRANCH"
