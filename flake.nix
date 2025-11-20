@@ -393,6 +393,19 @@ snapshot =
 																		'' ;
 																} ;
 														in "${ application }/bin/flake-build-vm" ;
+												flake-test =
+													let
+														application =
+															pkgs.writeShellApplication
+																{
+																	name = "flake-build-vm" ;
+																	runtimeInputs = [ ( passwordless-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+																	text =
+																		''												
+																			nixos-build test --flake "$MOUNT/repository#user"	
+																		'' ;
+																} ;
+														in "${ application }/bin/flake-build-vm" ;
 												flake-check =
 													let
 														application =
