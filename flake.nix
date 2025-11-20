@@ -485,6 +485,10 @@ snapshot =
 	ignore :
 		_git-repository.implementation
 			{
+				remotes =
+					{
+						local = { mount , pkgs , resources , stage } : "${ mount }/stage/local" ;
+					} ;
 			} ;
                                                                             studio =
                                                                                 ignore :
