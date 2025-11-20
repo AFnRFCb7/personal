@@ -409,8 +409,8 @@ snapshot =
 														COMMIT="$2"
 														git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														git checkout "$COMMIT" 2>&1
-														make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
-														make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
+														# make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
+														# make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													'' ;
 									} ;
 							in "${ application }/bin/setup" ;
@@ -492,11 +492,6 @@ let
 							git commit -a --verbose
 						fi
 						COMMIT="$( git rev-parse HEAD )" || failure
-						cat <<EOF
-MOUNT="$MOUNT"
-COMMIT="$COMMIT"
-SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
-EOF
 						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
 					'' ;
