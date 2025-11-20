@@ -510,6 +510,7 @@ let
 																	make-wrapper ${ hydrate } /mount/stage/hydrate "${ mount }"
 																	make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+																	export GIT_SSH_COMMAND=${ ssh }
 																	git hydrate main
                                                                                                                                 '' ;
                                                                                                                 } ;
