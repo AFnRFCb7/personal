@@ -428,7 +428,8 @@
                                                                                                                                                                         then
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure
-                                                                                                                                                                            # nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                            cd "$MOUNT/repository"
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                         fi
                                                                                                                                                                         git push origin HEAD
                                                                                                                                                                     '' ;
@@ -487,7 +488,6 @@
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
 																		                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
 																		                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 894e4448
-																		                                                            nix flake update --flake "$MOUNT" --update-input "$INPUT_NAME"
 																	                                                            done
                                                                                                                             '' ;
                                                                                                                 } ;
