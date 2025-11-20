@@ -489,10 +489,6 @@ snapshot =
 					{
 						"alias.flake-check" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-check" ;
 					} ;
-				remotes =
-					{
-						local = { mount , pkgs , resources , stage } : "${ mount }/stage/local" ;
-					} ;
 				setup =
 					{ mount , pkgs , resources , stage } :
 						let
@@ -517,11 +513,9 @@ snapshot =
 												in
 													''
 														STUDIO="$1"
-														BRANCH="$2"
-														COMMIT="$3"
-														export STUDIO
-														export BRANCH
-														export COMMIT
+														COMMIT="$2"
+														git fetch "$STUDIO/repository" "$COMMIT"
+														git checkout "$COMMIT"
 													'' ;
 									} ;
 							in "${ application }/bin/setup" ;
@@ -597,9 +591,8 @@ let
 						then
 							git commit -a --verbose
 						fi
-						BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure
 						COMMIT="$( git rev-parse HEAD )" || failure
-						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$BRANCH" "$COMMIT"'' ) }
+						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
 					'' ;
 			} ;
