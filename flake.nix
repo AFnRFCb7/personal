@@ -359,7 +359,7 @@
                                                                                                                                                                         then
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure
-                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                            # nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                         fi
                                                                                                                                                                         git push origin HEAD
                                                                                                                                                                     '' ;
