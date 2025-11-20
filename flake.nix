@@ -441,11 +441,11 @@ snapshot =
                                                                                                                         let
 																hydrate =
 																	let
-																		application =
-																			pkgs.writeShellApplication
-																				{
-																					name = "hydrate" ;
-																					runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.libuuid  _failure.implementation "" ] ;
+application =
+	pkgs.writeShellApplication
+		{
+			name = "hydrate" ;
+			runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.libuuid  ( _failure.implementation "" ) ] ;
 																					text =
 																						''
 																							BRANCH="$1"
