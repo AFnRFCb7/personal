@@ -487,6 +487,8 @@ snapshot =
 			{
 				configs =
 					{
+						"alias.flake-build-vm" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-build-vm" ;
+						"alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-build-vm-with-bootloader" ;
 						"alias.flake-check" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-check" ;
 					} ;
 				setup =
@@ -498,6 +500,17 @@ snapshot =
 										name = "setup" ;
 										text =
 											let
+												flake-build-vm =
+													let
+														application =
+															pkgs.writeShellApplication
+																{
+																	name = "flake-build-vm" ;
+																	text =
+																		''
+																		'' ;
+																} ;
+														in "${ application }/bin/flake-build-vm" ;
 												flake-check =
 													let
 														application =
