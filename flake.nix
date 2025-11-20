@@ -382,7 +382,7 @@ snapshot =
 																	text =
 																		''													
 																			VM=${ resources.production.flake.build-vm ( setup : ''${ setup } "$MOUNT/repository"'' ) }
-																			STATUS="( cat < "$VM/status" )" || failure
+																			STATUS="( cat "$VM/status" )" || failure
 																			if [[ "0" == "$STATUS" ]]
 																			then
 																				export SHARED_DIR="$VM/shared"
