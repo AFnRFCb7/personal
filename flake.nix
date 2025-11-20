@@ -282,6 +282,7 @@
 																	                                                                                            text =
 																	                                                                                                ''
 																	                                                                                                    INPUT="$1"
+                                                                                                                                                                        cd "$INPUT"
 																	                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
 																	                                                                                                    gh auth login --with-token < "$TOKEN/secret"
 																	                                                                                                    git fetch origin main
@@ -291,6 +292,9 @@
                                                                                                                                                                             git reset --soft origin/main
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             git push
+                                                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 92c1bf82
+                                                                                                                                                                            URL="$( gh pr create --title "$TITLE" --body "$BODY" --base main --head "$BRANCH" --label "snapshot" )" || failure 579ae7bd
+                                                                                                                                                                            gh pr merge "$URL" --rebase
                                                                                                                                                                         fi
 																	                                                                                                    gh auth logout
 																	                                                                                                '' ;
