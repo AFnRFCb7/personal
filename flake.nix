@@ -523,8 +523,8 @@ let
 																	find inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
 																	do
 																		cd "$INPUT"
-																		git config user.email "${ config.personal.repository.email }"
-																		git config user.name "${ config.personal.repository.name }"
+																		git config user.email "${ config.personal.repository.private.email }"
+																		git config user.name "${ config.personal.repository.private.name }"
 																		git config core.sshCommand "GIT_SSH_COMMAND"
 																	done
                                                                                                                                 '' ;
