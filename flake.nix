@@ -493,8 +493,8 @@ let
 						fi
 						COMMIT="$( git rev-parse HEAD )" || failure
 						cat <<EOF
-					SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
-					EOF
+SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
+EOF
 						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
 					'' ;
