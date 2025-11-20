@@ -509,7 +509,7 @@ let
 																	root-resource "$DOT_SSH"
 																	make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
-																	hydrate main
+																	git hydrate main
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
