@@ -478,7 +478,7 @@
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
 																		                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
 																		                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 894e4448
-																		                                                            nix flake update --flake "$MOUNT" --update-input "$INPUT_NAME"
+																		                                                            # nix flake update --flake "$MOUNT" --update-input "$INPUT_NAME"
 																	                                                            done
                                                                                                                             '' ;
                                                                                                                 } ;
