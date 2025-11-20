@@ -357,9 +357,10 @@ snapshot =
 			{
 				configs =
 					{
-						"alias.flake-build-vm" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-build-vm" ;
-						"alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-build-vm-with-bootloader" ;
-						"alias.flake-check" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-check" ;
+						"alias.flake-build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm" ;
+						"alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
+						"alias.flake-check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-check" ;
+						"alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
 					} ;
 				setup =
 					{ mount , pkgs , resources , stage } :
@@ -408,6 +409,8 @@ snapshot =
 														COMMIT="$2"
 														git fetch "$STUDIO/repository" "$COMMIT"
 														git checkout "$COMMIT"
+														make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
+														make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													'' ;
 									} ;
 							in "${ application }/bin/setup" ;
