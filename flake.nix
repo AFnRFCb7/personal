@@ -498,8 +498,15 @@ snapshot =
 										name = "setup" ;
 										text =
 											''
+												BRANCH="$1"
+												COMMIT="$2"
+												STUDIO=${ resources.productions.repository.studio ( setup : setup ) }
+												root-resource "$STUDIO"
+												ln --symbolic "$STUDIO/repository" /mount/stage/local
+												echo "$BRANCH"
+												echo "$COMMIT"
 											'' ;
-									}
+									} ;
 							in "${ application }/bin/setup" ;
 			} ;
                                                                             studio =
