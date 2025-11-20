@@ -507,6 +507,7 @@ let
 																	DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
 																	ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
 																	root-resource "$DOT_SSH"
+																	make-wrapper ${ hydrate } /mount/stage/hydrate "${ mount }"
 																	make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
 																	git hydrate main
