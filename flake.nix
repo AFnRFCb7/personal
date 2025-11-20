@@ -196,6 +196,7 @@
 																then
 																	echo "$?" > status
 																else
+																	touch result
 																	echo "$?" > status
 																fi
 															'' ;
