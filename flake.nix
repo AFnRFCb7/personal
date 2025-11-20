@@ -489,6 +489,18 @@ snapshot =
 					{
 						local = { mount , pkgs , resources , stage } : "${ mount }/stage/local" ;
 					} ;
+				setup =
+					{ mount , pkgs , resources , stage } :
+						let
+							application =
+								pkgs.writeShellApplication
+									{
+										name = "setup" ;
+										text =
+											''
+											'' ;
+									}
+							in "${ application }/bin/setup" ;
 			} ;
                                                                             studio =
                                                                                 ignore :
