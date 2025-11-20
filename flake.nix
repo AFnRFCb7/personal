@@ -402,7 +402,7 @@ snapshot =
 																	runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
 																	text =
 																		''												
-																			nixos-build test --flake "$MOUNT/repository#user"	
+																			nixos-rebuild test --flake "$MOUNT/repository#user"	
 																		'' ;
 																} ;
 														in "${ application }/bin/flake-build-vm" ;
