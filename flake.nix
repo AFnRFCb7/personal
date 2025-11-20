@@ -519,11 +519,9 @@ snapshot =
 														STUDIO="$1"
 														BRANCH="$2"
 														COMMIT="$3"
-														root-resource "$STUDIO"
-														ln --symbolic "$STUDIO/repository" /mount/stage/local
-														make-wrapper ${ application } /mount/stage/flake-check
-														git fetch origin "$BRANCH"
-														git checkout "$COMMIT"
+														export STUDIO
+														export BRANCH
+														export COMMIT
 													'' ;
 									} ;
 							in "${ application }/bin/setup" ;
