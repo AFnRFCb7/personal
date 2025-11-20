@@ -424,6 +424,8 @@ snapshot =
 													"alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
 													"alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
 													"core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
+													"user.email" = "${ config.personal.repository.private.email }"
+													"user.name" = "${ config.personal.repository.private.name }"
                                                                                                 } ;
                                                                                             hooks =
                                                                                                 {
