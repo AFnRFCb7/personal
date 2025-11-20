@@ -409,7 +409,7 @@ snapshot =
 														COMMIT="$2"
 														git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														git checkout "$COMMIT" 2>&1
-														# make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
+														make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
 														# make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													'' ;
 									} ;
