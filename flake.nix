@@ -366,6 +366,8 @@
 				                                                                                                                                ] ;
 				                                                                                                                            text =
 					                                                                                                                            ''
+					                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
+					                                                                                                                                export GIT_SSH_COMMAND
 						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
 						                                                                                                                            cd "$MOUNT/repository"
 						                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
