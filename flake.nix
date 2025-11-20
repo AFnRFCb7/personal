@@ -172,106 +172,8 @@
                                                                                     user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
-                                                            nix =
+                                                            flake =
                                                                 {
-                                                                    build =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { mount , pkgs , resources , stage } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        DIRECTORY="$1"
-                                                                                                                        FILE="$2"
-                                                                                                                        cd /mount
-                                                                                                                        root-store "$DIRECTORY"
-                                                                                                                        INPUTS=()
-                                                                                                                        while IFS= read -r INPUT
-                                                                                                                        do
-                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
-                                                                                                                            INPUTS+=( "--override-input" )
-                                                                                                                            INPUTS+=( "$INPUT_NAME" )
-                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
-                                                                                                                        cat > /mount/command <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild build --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/command
-                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                        cat > /mount/switch <<EOF
-                                                                                                                        set -euo pipefail
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        gh auth login --with-token < "$TOKEN_FILE/secret"
-                                                                                                                        find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-                                                                                                                        do
-                                                                                                                            cd "\$INPUT"
-                                                                                                                            git fetch origin main
-                                                                                                                            UUID="$( uuidgen )" || failure f235d1e2
-                                                                                                                            git checkout -b "scratch/\$UUID"
-                                                                                                                            if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
-                                                                                                                            then
-                                                                                                                                git reset --soft origin/main
-                                                                                                                                git commit --no-verify -a --verbose -m "" --allow-empty-message
-                                                                                                                                git push origin HEAD
-                                                                                                                                BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
-                                                                                                                                LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
-                                                                                                                                if [[ -z "\$LAST_COMMIT_MESSAGE" ]]
-                                                                                                                                then
-                                                                                                                                    LAST_COMMIT_MESSAGE="purposefully blank"
-                                                                                                                                fi
-                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body "\$LAST_COMMIT_MESSAGE" )" || failure a2f8c05a
-                                                                                                                                gh pr merge "\$URL" --squash
-                                                                                                                            fi
-                                                                                                                        done
-                                                                                                                        gh auth logout
-                                                                                                                        cd "$FILE"
-                                                                                                                        git fetch origin main
-                                                                                                                        if ! git diff --quiet origin/main || ! git diff --cached --quiet origin/main
-                                                                                                                        then
-                                                                                                                            git rm flake.lock
-                                                                                                                            nixos-rebuild build --flake "$FILE#user"
-                                                                                                                            sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
-                                                                                                                            git checkout -b scratch/$(uuidgen)
-                                                                                                                            git reset --soft origin/main
-                                                                                                                            git commit --no-verify -a --verbose
-                                                                                                                            COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
-                                                                                                                            git push origin HEAD
-                                                                                                                            git checkout main
-                                                                                                                            git rebase "\$COMMIT"
-                                                                                                                            git push origin main
-                                                                                                                        fi
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/switch
-                                                                                                                        cat > /mount/test <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/test
-                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
-                                                                                                                        then
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                        else
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                            touch /mount/result
-                                                                                                                        fi
-                                                                                                                        mkdir /mount/shared
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "switch" "test" ] ;
-                                                                            } ;
                                                                     build-vm =
                                                                         ignore :
                                                                             {
@@ -285,52 +187,20 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
                                                                                                             let
-                                                                                                                start =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "start" ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            export SHARED_DIR="${ mount }/shared"
-                                                                                                                                            "${ mount }/result/bin/run-nixos-vm"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/start" ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        DIRECTORY="$1"
-                                                                                                                        FILE="$2"
-                                                                                                                        cd /mount
-                                                                                                                        root-store "$DIRECTORY"
-                                                                                                                        INPUTS=()
-                                                                                                                        while IFS= read -r INPUT
-                                                                                                                        do
-                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
-                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
-                                                                                                                        cat > /mount/command <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild build-vm --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/command
-                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
-                                                                                                                        then
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                        else
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                            touch /mount/result
-                                                                                                                        fi
-                                                                                                                        ln --symbolic ${ start } /mount/start
-                                                                                                                        mkdir /mount/shared
-                                                                                                                    '' ;
+														in
+															''
+																SNAPSHOT="$1"
+ 																mkdir /mount/shared
+																if nixos-rebuild build-vm --flake "$SNAPSHOT/repository#user" > standard-output 2> standard-error
+																then
+																	echo "$?" > status
+																else
+																	echo "$?" > status
+																fi
+															'' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
+                                                                                targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                     build-vm-with-bootloader =
                                                                         ignore :
@@ -508,6 +378,15 @@ snapshot =
 																	name = "flake-build-vm" ;
 																	text =
 																		''
+																			VM=${ resources.production.flake.build-vm ( self : self ) }
+																			STATUS="( cat < "$VM/status" )" || failure
+																			if [[ "0" == "$STATUS" ]]
+																			then
+																				export SHARED_DIR="$VM/shared"
+																				"$VM/result/bin/run-nixos-vm"
+																			else
+																				failure "$VM"
+																			fi
 																		'' ;
 																} ;
 														in "${ application }/bin/flake-build-vm" ;
@@ -630,6 +509,7 @@ let
 																	root-resource "$DOT_SSH"
 																	make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
 																	make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+																	hydrate main
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
