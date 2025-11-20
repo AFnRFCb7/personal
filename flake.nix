@@ -192,7 +192,7 @@
 																SNAPSHOT="$1"
 																cd /mount
  																mkdir /mount/shared
-																if nixos-rebuild build-vm --flake "$SNAPSHOT/repository#user" > standard-output 2> standard-error
+																if nixos-rebuild build-vm --flake "$SNAPSHOT/#user" > standard-output 2> standard-error
 																then
 																	echo "$?" > status
 																else
