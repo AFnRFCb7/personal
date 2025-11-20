@@ -445,7 +445,7 @@ snapshot =
 																			pkgs.writeShellApplication
 																				{
 																					name = "hydrate" ;
-																					runtimeInputs = [ pkgs.coreutils pkgs.find pkgs.libuuid  _failure.implementation "" ] ;
+																					runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.libuuid  _failure.implementation "" ] ;
 																					text =
 																						''
 																							BRANCH="$1"
