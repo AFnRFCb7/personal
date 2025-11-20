@@ -530,27 +530,33 @@
 																				} ;
 																		in "${ application }/bin/hydrate" ;
 																snapshot =
-																	let
-																		application =
-																			pkgs.writeShellApplication
-																				{
-																					name = "snapshot" ;
-																					runtimeInputs = [ pkgs.findutils ( _failure.implementation "" ) ] ;
-																					text =
-																						''
-																							cd "$MOUNT"
-																							while read -r INPUT
-																							do
-																								if ! git diff --quiet || ! git diff --quiet --cache
-																								then
-																									git commit -a --verbose
-										INPUT_NAME="$( basename "$INPUT" )" || failure
-																												nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
-																								fi
-																							done
-																						'' ;
-																				} ;
-																		in "${ application }/bin/snapshot" ;
+let
+	application =
+		pkgs.writeShellApplication
+			{
+				name = "snapshot" ;
+				runtimeInputs = [ pkgs.findutils ( _failure.implementation "" ) ] ;
+				text =
+					''
+						while read -r INPUT
+						do
+							if ! git diff --quiet || ! git diff --quiet --cache
+							then
+								git commit -a --verbose
+								INPUT_NAME="$( basename "$INPUT" )" || failure
+								nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+							fi
+						done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
+						cd "$MOUNT/repository"
+						if ! git diff --quiet || ! git diff --quiet --cache
+						then
+							git commit -a --verbose
+						fi
+						SNAPSHOT=
+						echo "$SNAPSHOT/repository"
+					'' ;
+			} ;
+		in "${ application }/bin/snapshot" ;
 																ssh =
 																	let
 																		application =
