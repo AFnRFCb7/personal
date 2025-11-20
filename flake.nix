@@ -481,6 +481,11 @@
                                                                                 in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
+snapshot =
+	ignore :
+		_git-repository.implementation
+			{
+			} ;
                                                                             studio =
                                                                                 ignore :
                                                                                     _git-repository.implementation
@@ -552,7 +557,9 @@ let
 						then
 							git commit -a --verbose
 						fi
-						SNAPSHOT=
+						BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure
+						COMMIT="$( git rev-parse HEAD )" || failure
+						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
 					'' ;
 			} ;
