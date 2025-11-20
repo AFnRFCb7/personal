@@ -214,6 +214,7 @@
 						                                                                    "alias.flake-build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm" ;
 						                                                                    "alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
 						                                                                    "alias.flake-check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-check" ;
+						                                                                    "alias.flake-switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-switch" ;
 						                                                                    "alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
 						                                                                    "config.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
 					                                                                    } ;
