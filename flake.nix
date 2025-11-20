@@ -480,19 +480,21 @@ let
 				text =
 					''
 						while read -r INPUT
-						do
+						do						
 							if ! git diff --quiet || ! git diff --quiet --cached
 							then
 								git commit -a --verbose
 								INPUT_NAME="$( basename "$INPUT" )" || failure
 								nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
 							fi
+							git push origin HEAD
 						done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
 						cd "$MOUNT/repository"
 						if ! git diff --quiet || ! git diff --quiet --cached
 						then
 							git commit -a --verbose
 						fi
+						git push origin HEAD
 						COMMIT="$( git rev-parse HEAD )" || failure
 						SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
 						echo "$SNAPSHOT/repository"
