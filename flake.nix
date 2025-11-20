@@ -407,12 +407,10 @@ snapshot =
 													''
 														STUDIO="$1"
 														COMMIT="$2"
-														export STUDIO
-														export COMMIT
 														git fetch "$STUDIO/repository" "$COMMIT" 2>&1
-														# git checkout "$COMMIT"
-														# make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
-														# make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
+														git checkout "$COMMIT" 2>&1
+														make-wrapper ${ flake-build-vm } /mount/stage/build-vm "${ mount }"
+														make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													'' ;
 									} ;
 							in "${ application }/bin/setup" ;
