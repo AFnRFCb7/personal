@@ -320,6 +320,8 @@
 																					                                                            text =
 																						                                                            ''
 																							                                                            BRANCH="$1"
+					                                                                                                                                    GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
+					                                                                                                                                    export GIT_SSH_COMMAND
                                                             																							cd "$MOUNT/repository"
 															                                                            								git fetch origin "$BRANCH" 2>&1
 																							                                                            git checkout "origin/$BRANCH" 2>&1
