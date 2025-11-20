@@ -215,7 +215,12 @@
 						                                                                    "alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
 						                                                                    "alias.flake-check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-check" ;
 						                                                                    "alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
+						                                                                    "config.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
 					                                                                    } ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
                                                                                     setup =
 					                                                                    { mount , pkgs , resources , stage } :
 						                                                                    let
@@ -277,7 +282,7 @@
 																	                                                                                                ''
 																	                                                                                                    INPUT="$1"
 																	                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-																	                                                                                                    gh auth login --with-token
+																	                                                                                                    gh auth login --with-token < "$TOKEN/secret"
 																	                                                                                                    git fetch origin main
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
@@ -311,6 +316,18 @@
 																		                                                                        '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-test" ;
+                                                                                                                        ssh =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "ssh" ;
+                                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    ssh -F "$MOUNT/stage/dot-ssh" "$@"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
 												                                                                        in
 													                                                                        ''
 														                                                                        STUDIO="$1"
@@ -320,6 +337,10 @@
                                                                                                                                 make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
 														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-test "${ mount }"
 														                                                                        make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
+														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
+														                                                                        root-resource "$DOT_SSH"
+														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" ${ mount }/stage/dot-ssh
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
                                                                                                         } ;
