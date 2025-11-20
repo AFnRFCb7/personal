@@ -485,6 +485,10 @@ snapshot =
 	ignore :
 		_git-repository.implementation
 			{
+				config =
+					{
+						"alias.flake-check" = { mount , pkgs , resources , stage } : "${ mount }/stage/flake-check" ;
+					} ;
 				remotes =
 					{
 						local = { mount , pkgs , resources , stage } : "${ mount }/stage/local" ;
@@ -497,15 +501,30 @@ snapshot =
 									{
 										name = "setup" ;
 										text =
-											''
-												STUDIO="$1"
-												BRANCH="$2"
-												COMMIT="$3"
-												root-resource "$STUDIO"
-												ln --symbolic "$STUDIO/repository" /mount/stage/local
-												git fetch origin "$BRANCH"
-												git checkout "$COMMIT"
-											'' ;
+											let
+												flake-check =
+													let
+														application =
+															pkgs.writeShellApplication
+																{
+																	name = "flake-check" ;
+																	text =
+																		''
+																			nix flake check --flake "$MOUNT/repository"
+																		'' ;
+																} ;
+														in "${ application }/bin/flake-check" ;
+												in
+													''
+														STUDIO="$1"
+														BRANCH="$2"
+														COMMIT="$3"
+														root-resource "$STUDIO"
+														ln --symbolic "$STUDIO/repository" /mount/stage/local
+														make-wrapper ${ application } /mount/stage/flake-check
+														git fetch origin "$BRANCH"
+														git checkout "$COMMIT"
+													'' ;
 									} ;
 							in "${ application }/bin/setup" ;
 			} ;
