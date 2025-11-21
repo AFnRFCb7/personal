@@ -349,7 +349,7 @@
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
 														                                                                        root-resource "$DOT_SSH"
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
-														                                                                        git submodule init --recursive
+														                                                                        git submodule init
 														                                                                        git submodule update --init --recursive --checkout
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
