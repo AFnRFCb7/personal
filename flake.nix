@@ -341,7 +341,7 @@
 														                                                                        echo 36b60f92-0037-415d-976c-8f07345f0e09 >> /debug/FLAG
 														                                                                        COMMIT="$2"
 														                                                                        echo 2fea58bb-4aac-4996-b9f5-44664e6001ff >> /debug/FLAG
-														                                                                        GIT_SSH_COMMAND=/mount/state/ssh
+														                                                                        GIT_SSH_COMMAND=/mount/stage/ssh
                                                                                                                                 echo 266a4d5f-931d-4ad1-8433-2c3c1c306d30 >> /debug/FLAG
 														                                                                        export GIT_SSH_COMMAND
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
