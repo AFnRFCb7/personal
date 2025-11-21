@@ -336,6 +336,7 @@
                                                                                                                                 in "${ application }/bin/ssh" ;
 												                                                                        in
 													                                                                        ''
+													                                                                            echo a922669d-0ee6-4b76-a8e5-81162e0e4793 >> /tmp/DEBUG
 														                                                                        STUDIO="$1"
 														                                                                        COMMIT="$2"
 														                                                                        GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure d8961c71
