@@ -443,6 +443,7 @@
 				                                                                                                                                ] ;
 				                                                                                                                            text =
 					                                                                                                                            ''
+					                                                                                                                                echo 1391edcf-35c0-4544-ad48-f61a33a3e98f
 					                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
 					                                                                                                                                export GIT_SSH_COMMAND
 						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
@@ -457,8 +458,10 @@
 							                                                                                                                            git commit -a --verbose
 						                                                                                                                            fi
 						                                                                                                                            git push origin HEAD
-						                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure
+						                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
+						                                                                                                                            echo 992063d7-32d3-4863-893e-3588581826c4
 						                                                                                                                            SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
+						                                                                                                                            echo 8d7598a2-3810-4e55-be07-202f13aad662
                                                                                                                                                     echo "$SNAPSHOT/repository"
 					                                                                                                                            '' ;
 			                                                                                                                            } ;
