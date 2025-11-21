@@ -303,7 +303,7 @@
                                                                                                                                                 ] ;
 																	                                                                        text =
 																		                                                                        ''
-																		                                                                            find "$MOUNT/repository/inputs -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
+																		                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
 																			                                                                        nixos-rebuild switch --flake "$MOUNT/repository#user"
 																		                                                                        '' ;
 																                                                                        } ;
