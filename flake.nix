@@ -405,7 +405,7 @@
                                                                                                                                                         do
 																								                                                            git -C "$INPUT" checkout -b "scratch/$UUID" 2>&1
                                                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure d53a8dd1
-                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME" 2>&1
 																							                                                            done
 																						                                                            '' ;
 																				                                                            } ;
