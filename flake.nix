@@ -341,7 +341,7 @@
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														                                                                        git checkout "$COMMIT" 2>&1
                                                                                                                                 make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
-														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-test "${ mount }"
+														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
 														                                                                        make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
 														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
