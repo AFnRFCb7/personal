@@ -336,10 +336,13 @@
                                                                                                                                 in "${ application }/bin/ssh" ;
 												                                                                        in
 													                                                                        ''
-													                                                                            echo a922669d-0ee6-4b76-a8e5-81162e0e4793 >> /tmp/DEBUG
+													                                                                            echo f091d578-e8fa-47d4-90d4-92ebc134116b >> /debug/FLAG
 														                                                                        STUDIO="$1"
+														                                                                        echo 36b60f92-0037-415d-976c-8f07345f0e09 >> /debug/FLAG
 														                                                                        COMMIT="$2"
+														                                                                        echo 2fea58bb-4aac-4996-b9f5-44664e6001ff >> /debug/FLAG
 														                                                                        GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure d8961c71
+                                                                                                                                echo 266a4d5f-931d-4ad1-8433-2c3c1c306d30 >> /debug/FLAG
 														                                                                        export GIT_SSH_COMMAND
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														                                                                        git checkout "$COMMIT" 2>&1
