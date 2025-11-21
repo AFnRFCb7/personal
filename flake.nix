@@ -338,6 +338,8 @@
 													                                                                        ''
 														                                                                        STUDIO="$1"
 														                                                                        COMMIT="$2"
+														                                                                        GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure d8961c71
+														                                                                        export GIT_SSH_COMMAND
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														                                                                        git checkout "$COMMIT" 2>&1
                                                                                                                                 make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
@@ -347,6 +349,8 @@
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
 														                                                                        root-resource "$DOT_SSH"
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
+														                                                                        git submodule init --recursive
+														                                                                        git submodule update --init --recursive --checkout
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
                                                                                                         } ;
