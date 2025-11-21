@@ -346,7 +346,7 @@
 														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
 														                                                                        root-resource "$DOT_SSH"
-														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" ${ mount }/stage/dot-ssh
+														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
 														                                                                        find "{ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
 														                                                                        do
 														                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure d9d05c9e
