@@ -341,7 +341,7 @@
 														                                                                        echo 36b60f92-0037-415d-976c-8f07345f0e09 >> /debug/FLAG
 														                                                                        COMMIT="$2"
 														                                                                        echo 2fea58bb-4aac-4996-b9f5-44664e6001ff >> /debug/FLAG
-														                                                                        GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure d8961c71
+														                                                                        GIT_SSH_COMMAND="$3"
                                                                                                                                 echo 266a4d5f-931d-4ad1-8433-2c3c1c306d30 >> /debug/FLAG
 														                                                                        export GIT_SSH_COMMAND
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
@@ -447,30 +447,22 @@
 				                                                                                                                                ] ;
 				                                                                                                                            text =
 					                                                                                                                            ''
-					                                                                                                                                echo 1391edcf-35c0-4544-ad48-f61a33a3e98f
 					                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
 					                                                                                                                                export GIT_SSH_COMMAND
-					                                                                                                                                echo 10025d42-d42e-45a2-98cf-373942fc3484
 						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
-						                                                                                                                            echo 31f432a8-afb2-4878-91e5-4c06b5b473f4
 						                                                                                                                            cd "$MOUNT/repository"
-						                                                                                                                            echo 9557b32e-1b5d-49d5-8539-6ae3cfbe2ec5
 						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                                     do
                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure 853515e3
                                                                                                                                                         nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                     done
-                                                                                                                                                    echo cc8c4a3a-2fb9-4bca-8532-7cada92f6fa4
 						                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
 						                                                                                                                            then
 							                                                                                                                            git commit -a --verbose
 						                                                                                                                            fi
-						                                                                                                                            echo b3621b85-4ef0-4ab5-b9fd-66e6f4a88e44
 						                                                                                                                            git push origin HEAD
-						                                                                                                                            echo ee526a25-4565-496e-83eb-a4996dad225f
 						                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
-						                                                                                                                            echo 992063d7-32d3-4863-893e-3588581826c4
-						                                                                                                                            SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
+						                                                                                                                            SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT" ${ ssh }'' ) }
 						                                                                                                                            echo 8d7598a2-3810-4e55-be07-202f13aad662
                                                                                                                                                     echo "$SNAPSHOT/repository"
 					                                                                                                                            '' ;
