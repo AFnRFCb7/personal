@@ -293,7 +293,7 @@
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             git push
                                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 92c1bf82
-                                                                                                                                                                            URL="$( gh pr create --title "$TITLE" --body "$BODY" --base main --head "$BRANCH" --label "snapshot" )" || failure 579ae7bd
+                                                                                                                                                                            URL="$( gh pr create --base main --head "$BRANCH" --label "snapshot" )" || failure 579ae7bd
                                                                                                                                                                             gh pr merge "$URL" --rebase
                                                                                                                                                                         fi
                                                                                                                                                                         gh auth logout
