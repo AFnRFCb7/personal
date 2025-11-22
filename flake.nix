@@ -280,12 +280,12 @@
 																	                                                                                            name = "flake-switch-input" ;
 																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git ] ;
 																	                                                                                            text =
-																	                                                                                                ''
-																	                                                                                                    INPUT="$1"
+                                                                                                                                                                    ''
+                                                                                                                                                                        INPUT="$1"
                                                                                                                                                                         cd "$INPUT"
-																	                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-																	                                                                                                    gh auth login --with-token < "$TOKEN/secret"
-																	                                                                                                    git fetch origin main
+                                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                        git fetch origin main
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
                                                                                                                                                                             git checkout -b "scratch/$(uuidgen)"
@@ -296,16 +296,16 @@
                                                                                                                                                                             URL="$( gh pr create --title "$TITLE" --body "$BODY" --base main --head "$BRANCH" --label "snapshot" )" || failure 579ae7bd
                                                                                                                                                                             gh pr merge "$URL" --rebase
                                                                                                                                                                         fi
-																	                                                                                                    gh auth logout
-																	                                                                                                '' ;
+                                                                                                                                                                        gh auth logout
+                                                                                                                                                                    '' ;
 																	                                                                                        }
 																	                                                                                )
                                                                                                                                                 ] ;
 																	                                                                        text =
-																		                                                                        ''
-																		                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
-																			                                                                        nixos-rebuild switch --flake "$MOUNT/repository#user"
-																		                                                                        '' ;
+                                                                                                                                                ''
+                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
+                                                                                                                                                    nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-switch" ;
 												                                                                        flake-test =
