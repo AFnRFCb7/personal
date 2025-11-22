@@ -362,9 +362,9 @@
 														                                                                        echo f5c7420a-734e-4690-a4fc-2a0482010317 >> /debug/FLAG
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
 														                                                                        echo b0d96aec-8c35-45d0-8fee-2fdeb8da48b0 >> /debug/FLAG
-														                                                                        git submodule init
+														                                                                        git submodule init 2>&1
 														                                                                        echo a13fc6a8-c53c-4fb5-9b0c-58078e285f3a >> /debug/FLAG
-														                                                                        git submodule update --init --recursive --checkout
+														                                                                        git submodule update --init --recursive --checkout 2>&1
 														                                                                        echo 50dcf283-db2e-4859-836a-0b477a9cc961 >> /debug/FLAG
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
