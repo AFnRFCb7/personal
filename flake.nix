@@ -353,7 +353,7 @@
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
 														                                                                        git submodule init 2>&1
 														                                                                        git submodule update --init --recursive --checkout 2>&1
-														                                                                        find "${ mount }/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+														                                                                        find "${ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
 														                                                                        do
 														                                                                            cd "$INPUT"
 														                                                                            git config user.email "${ config.personal.repository.private.email }"
