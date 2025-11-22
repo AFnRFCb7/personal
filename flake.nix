@@ -217,6 +217,8 @@
 						                                                                    "alias.flake-switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-switch" ;
 						                                                                    "alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
 						                                                                    "config.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
+						                                                                    "user.email" = config.personal.repository.private.email ;
+						                                                                    "user.name" = config.personal.repository.private.name ;
 					                                                                    } ;
                                                                                     remotes =
                                                                                         {
@@ -336,36 +338,28 @@
                                                                                                                                 in "${ application }/bin/ssh" ;
 												                                                                        in
 													                                                                        ''
-													                                                                            echo f091d578-e8fa-47d4-90d4-92ebc134116b >> /debug/FLAG
 														                                                                        STUDIO="$1"
-														                                                                        echo 36b60f92-0037-415d-976c-8f07345f0e09 >> /debug/FLAG
 														                                                                        COMMIT="$2"
-														                                                                        echo 2fea58bb-4aac-4996-b9f5-44664e6001ff >> /debug/FLAG
 														                                                                        GIT_SSH_COMMAND=/mount/stage/ssh
-                                                                                                                                echo 266a4d5f-931d-4ad1-8433-2c3c1c306d30 >> /debug/FLAG
 														                                                                        export GIT_SSH_COMMAND
-														                                                                        echo 80e3f5b1-79c7-4b29-987b-7b2293c3f198 >> /debug/FLAG
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														                                                                        git checkout "$COMMIT" 2>&1
-														                                                                        echo 0d55b2fd-de8f-4ae3-8cf9-2fc3720fc718 >> /debug/FLAG
                                                                                                                                 make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
-                                                                                                                                echo e3f4dd62-30fd-406c-b464-8f5b0e4222f0 >> /debug/FLAG
 														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
-														                                                                        echo 066be299-4611-4ce5-9f06-3dda168bf84d >> /debug/FLAG
 														                                                                        make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
-														                                                                        echo f858e161-0e2b-4174-9fcf-c1a1e7ea84a2 >> /debug/FLAG
 														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
-														                                                                        echo fa4489dd-a818-47f4-bcba-1ce2c805fd10 >> /debug/FLAG
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
-														                                                                        echo 5915b345-9134-48c2-b6f2-f44dc9e7eda8 >> /debug/FLAG
 														                                                                        root-resource "$DOT_SSH"
-														                                                                        echo f5c7420a-734e-4690-a4fc-2a0482010317 >> /debug/FLAG
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
-														                                                                        echo b0d96aec-8c35-45d0-8fee-2fdeb8da48b0 >> /debug/FLAG
 														                                                                        git submodule init 2>&1
-														                                                                        echo a13fc6a8-c53c-4fb5-9b0c-58078e285f3a >> /debug/FLAG
 														                                                                        git submodule update --init --recursive --checkout 2>&1
-														                                                                        echo 50dcf283-db2e-4859-836a-0b477a9cc961 >> /debug/FLAG
+														                                                                        find ${ mount }/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+														                                                                        do
+														                                                                            cd "$INPUT"
+														                                                                            git config user.email "${ config.personal.repository.private.email }"
+														                                                                            git config user.name "${ config.personal.repository.private.name }"
+														                                                                            git config core.sshCommand "${ ssh }"
+														                                                                        done
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
                                                                                                         } ;
