@@ -172,106 +172,8 @@
                                                                                     user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
-                                                            nix =
+                                                            flake =
                                                                 {
-                                                                    build =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { mount , pkgs , resources , stage } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        DIRECTORY="$1"
-                                                                                                                        FILE="$2"
-                                                                                                                        cd /mount
-                                                                                                                        root-store "$DIRECTORY"
-                                                                                                                        INPUTS=()
-                                                                                                                        while IFS= read -r INPUT
-                                                                                                                        do
-                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
-                                                                                                                            INPUTS+=( "--override-input" )
-                                                                                                                            INPUTS+=( "$INPUT_NAME" )
-                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
-                                                                                                                        cat > /mount/command <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild build --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/command
-                                                                                                                        TOKEN_FILE=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                        cat > /mount/switch <<EOF
-                                                                                                                        set -euo pipefail
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        gh auth login --with-token < "$TOKEN_FILE/secret"
-                                                                                                                        find $FILE/inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-                                                                                                                        do
-                                                                                                                            cd "\$INPUT"
-                                                                                                                            git fetch origin main
-                                                                                                                            UUID="$( uuidgen )" || failure f235d1e2
-                                                                                                                            git checkout -b "scratch/\$UUID"
-                                                                                                                            if ! git diff origin/main --quiet || ! git diff origin/main --cached --quiet
-                                                                                                                            then
-                                                                                                                                git reset --soft origin/main
-                                                                                                                                git commit --no-verify -a --verbose -m "" --allow-empty-message
-                                                                                                                                git push origin HEAD
-                                                                                                                                BRANCH="\$( git rev-parse --abbrev-ref HEAD )" || failure 1fbb747d
-                                                                                                                                LAST_COMMIT_MESSAGE="\$( git log -1 --pretty=%B )" || failure dec8cece
-                                                                                                                                if [[ -z "\$LAST_COMMIT_MESSAGE" ]]
-                                                                                                                                then
-                                                                                                                                    LAST_COMMIT_MESSAGE="purposefully blank"
-                                                                                                                                fi
-                                                                                                                                URL="\$( gh pr create --base main --head "\$BRANCH" --title "\$LAST_COMMIT_MESSAGE" --body "\$LAST_COMMIT_MESSAGE" )" || failure a2f8c05a
-                                                                                                                                gh pr merge "\$URL" --squash
-                                                                                                                            fi
-                                                                                                                        done
-                                                                                                                        gh auth logout
-                                                                                                                        cd "$FILE"
-                                                                                                                        git fetch origin main
-                                                                                                                        if ! git diff --quiet origin/main || ! git diff --cached --quiet origin/main
-                                                                                                                        then
-                                                                                                                            git rm flake.lock
-                                                                                                                            nixos-rebuild build --flake "$FILE#user"
-                                                                                                                            sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild switch --flake "$FILE#user"
-                                                                                                                            git checkout -b scratch/$(uuidgen)
-                                                                                                                            git reset --soft origin/main
-                                                                                                                            git commit --no-verify -a --verbose
-                                                                                                                            COMMIT="\$( git rev-parse HEAD )" || failure 82c1414a
-                                                                                                                            git push origin HEAD
-                                                                                                                            git checkout main
-                                                                                                                            git rebase "\$COMMIT"
-                                                                                                                            git push origin main
-                                                                                                                        fi
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/switch
-                                                                                                                        cat > /mount/test <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        sudo --preserve-env=GIT_SSH_COMMAND nixos-rebuild test --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/test
-                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
-                                                                                                                        then
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                        else
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                            touch /mount/result
-                                                                                                                        fi
-                                                                                                                        mkdir /mount/shared
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "status" "switch" "test" ] ;
-                                                                            } ;
                                                                     build-vm =
                                                                         ignore :
                                                                             {
@@ -284,538 +186,217 @@
                                                                                                         name = "init" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "e8f7af55" ) ] ;
                                                                                                         text =
-                                                                                                            let
-                                                                                                                start =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "start" ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            export SHARED_DIR="${ mount }/shared"
-                                                                                                                                            "${ mount }/result/bin/run-nixos-vm"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/start" ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        DIRECTORY="$1"
-                                                                                                                        FILE="$2"
-                                                                                                                        cd /mount
-                                                                                                                        root-store "$DIRECTORY"
-                                                                                                                        INPUTS=()
-                                                                                                                        while IFS= read -r INPUT
-                                                                                                                        do
-                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure e661dd72
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure d6230040
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 081de42a
-                                                                                                                            INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure "332ea582"
-                                                                                                                        cat > /mount/command <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild build-vm --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/command
-                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
-                                                                                                                        then
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                        else
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                            touch /mount/result
-                                                                                                                        fi
-                                                                                                                        ln --symbolic ${ start } /mount/start
-                                                                                                                        mkdir /mount/shared
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
-                                                                            } ;
-                                                                    build-vm-with-bootloader =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { mount , pkgs , resources , stage } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nixos-rebuild ( _failure.implementation "6554d957" ) ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                start =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "start" ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            export SHARED_DIR="${ mount }/shared"
-                                                                                                                                            "${ mount }/result/bin/run-nixos-vm"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/start" ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        DIRECTORY="$1"
-                                                                                                                        FILE="$2"
-                                                                                                                        cd /mount
-                                                                                                                        root-store "$DIRECTORY"
-                                                                                                                        INPUTS=()
-                                                                                                                        while IFS= read -r INPUT
-                                                                                                                        do
-                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 62be64a5
-                                                                                                                            INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 7b24bffe
-                                                                                                                            INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure 1ba4a40c
-                                                                                                                            INPUTS+=( "--override-input" )
-                                                                                                                            INPUTS+=( "$INPUT_NAME" )
-                                                                                                                            INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                        done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                        GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure c1173d09
-                                                                                                                        cat > /mount/command <<EOF
-                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                        nixos-rebuild build-vm-with-bootloader --flake "$FILE#user" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                        EOF
-                                                                                                                        chmod 0500 /mount/command
-                                                                                                                        if /mount/command > /mount/standard-output 2> /mount/standard-error
-                                                                                                                        then
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                        else
-                                                                                                                            echo "$?" > /mount/status
-                                                                                                                            touch /mount/result
-                                                                                                                        fi
-                                                                                                                        ln --symbolic ${ start } /mount/start
-                                                                                                                        mkdir /mount/shared
-                                                                                                                        if [ ! -e /mount/result ]
-                                                                                                                        then
-                                                                                                                            date > /mount/result
-                                                                                                                        fi
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "result" "shared" "standard-error" "standard-output" "start" "status" ] ;
-                                                                            } ;
-                                                                    check =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { mount , pkgs , resources , stage } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix ( _failure.implementation "218458ec" ) ] ;
-                                                                                                        text =
                                                                                                             ''
-                                                                                                                DIRECTORY="$1"
-                                                                                                                FILE="$2"
-                                                                                                                root-store "$DIRECTORY"
-                                                                                                                INPUTS=()
-                                                                                                                while IFS= read -r INPUT
-                                                                                                                do
-                                                                                                                    INPUT_NAME="$( basename "$INPUT" )" || failure ca043af2
-                                                                                                                    INPUT_REMOTE="$( git -C "$INPUT" remote get-url origin )" || failure 0d6dfe6a
-                                                                                                                    INPUT_COMMIT="$( git -C "$INPUT" rev-parse HEAD )" || failure d44daf9d
-                                                                                                                    INPUTS+=( "--override-input" )
-                                                                                                                    INPUTS+=( "$INPUT_NAME" )
-                                                                                                                    INPUTS+=( "git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                done < <( find "$DIRECTORY/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                GIT_SSH_COMMAND="$( git -C "$FILE" config --get core.sshCommand )" || failure 9d73c5ec
-                                                                                                                cat > /mount/command <<EOF
-                                                                                                                export GIT_SSH_COMMAND="$GIT_SSH_COMMAND"
-                                                                                                                nix flake check "$FILE" ${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[*]" "}" ] }
-                                                                                                                EOF
-                                                                                                                chmod 0500 /mount/command
-                                                                                                                if /mount/command > /mount/standard-output 2> /mount/standard-error
+                                                                                                                SNAPSHOT="$1"
+                                                                                                                cd /mount
+                                                                                                                mkdir /mount/shared
+                                                                                                                if nixos-rebuild build-vm --flake "$SNAPSHOT/#user" > standard-output 2> standard-error
                                                                                                                 then
-                                                                                                                    echo "$?" > /mount/status
+                                                                                                                    echo "$?" > status
                                                                                                                 else
-                                                                                                                    echo "$?" > /mount/status
+                                                                                                                    touch result
+                                                                                                                    echo "$?" > status
                                                                                                                 fi
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "command" "standard-error" "standard-output" "status" ] ;
+                                                                                targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
                                                             repository =
-                                                                let
-                                                                    post-commit =
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "post-commit" ;
-                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                while ! git push origin HEAD
-                                                                                                do
-                                                                                                    sleep 1s
-                                                                                                done
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/post-commit" ;
-                                                                    ssh =
-                                                                        { mount , pkgs , resources , stage } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
+                                                                {
+                                                                    snapshot =
+	                                                                    ignore :
+		                                                                    _git-repository.implementation
+                                                                                {
+				                                                                    configs =
+					                                                                    {
+						                                                                    "alias.flake-build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm" ;
+						                                                                    "alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
+						                                                                    "alias.flake-check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-check" ;
+						                                                                    "alias.flake-switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-switch" ;
+						                                                                    "alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
+						                                                                    "config.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
+						                                                                    "user.email" = config.personal.repository.private.email ;
+						                                                                    "user.name" = config.personal.repository.private.name ;
+					                                                                    } ;
+                                                                                    remotes =
                                                                                         {
-                                                                                            name = "ssh" ;
-                                                                                            runtimeInputs = [ pkgs.openssh ];
-                                                                                            text =
-                                                                                                ''
-                                                                                                    if [[ -t 0 ]]
-                                                                                                    then
-                                                                                                        ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                    else
-                                                                                                        cat | ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                    fi
-                                                                                                '' ;
+                                                                                            origin = config.personal.repository.private.remote ;
                                                                                         } ;
-                                                                                in "${ application }/bin/ssh" ;
-                                                                    in
-                                                                        {
-                                                                            snapshot =
-                                                                                ignore :
-                                                                                    _git-repository.implementation
-                                                                                        {
-                                                                                            configs =
-                                                                                                {
-                                                                                                    "alias.secret" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "secret" ;
-                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "919121ca" ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                TOKEN="$1"
-                                                                                                                                RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 53cf8277
-                                                                                                                                echo -n "$TOKEN" | age --encrypt --recipient "$RECIPIENT" --output "inputs/secrets/github-token.asc.age"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/secret" ;
-                                                                                                    "alias.build" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "build" ;
-                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
-                                                                                                                                    BUILD=${ resources.production.nix.build ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
-                                                                                                                                    echo "$BUILD"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "!${ application }/bin/build" ;
-                                                                                                    "alias.build-vm" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "build-vm" ;
-                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4af6f905
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 6ee2312e
-                                                                                                                                    BUILD_VM=${ resources.production.nix.build-vm ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
-                                                                                                                                    echo "$BUILD_VM"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "!${ application }/bin/build-vm" ;
-                                                                                                    "alias.build-vm-with-bootloader" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "build-vm-with-bootloader" ;
-                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure a612c90b
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure 5183bdb8
-                                                                                                                                    BUILD_VM_WITH_BOOTLOADER=${ resources.production.nix.build-vm-with-bootloader ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
-                                                                                                                                    echo "$BUILD_VM_WITH_BOOTLOADER"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "!${ application }/bin/build-vm-with-bootloader" ;
-                                                                                                    "alias.check" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "check" ;
-                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    FILE="$( git rev-parse --show-toplevel )" || failure 4084df8a
-                                                                                                                                    DIRECTORY="$( dirname "$FILE" )" || failure b3b73c3c
-                                                                                                                                    CHECK=${ resources.production.nix.check ( setup : ''${ setup } "$DIRECTORY" "$FILE"'' ) }
-                                                                                                                                    echo "$CHECK"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "!${ application }/bin/check" ;
-                                                                                                    "core.sshCommand" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "ssh" ;
-                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                                    ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/ssh" ;
-                                                                                                    "user.email" = config.personal.repository.private.email ;
-                                                                                                    "user.name" = config.personal.repository.private.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    pre-commit =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "pre-commit" ;
-                                                                                                                        runtimeInputs = [ ( _failure.implementation "70006125" ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                failure be1e88e9 "This is a read-only git repository"
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                                in "${ application }/bin/pre-commit" ;
-                                                                                                } ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    local = { mount , pkgs , resources , stage } : "${ mount }/stage/studio" ;
-                                                                                                    origin = config.personal.repository.private.remote ;
-                                                                                                } ;
-                                                                                            setup =
-                                                                                                { mount , pkgs , resources , stage } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.git ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            USER_EMAIL="$( git config --get user.email )" || failure "7644d0fd"
-                                                                                                                            USER_NAME="$( git config --get "user.name" )" || failure "88ebeba0"
-                                                                                                                            GIT_SSH_COMMAND="$( git config --get "core.sshCommand" )" || failure "31dba1df"
-                                                                                                                            export GIT_SSH_COMMAND
-                                                                                                                            OVERRIDE_INPUTS=()
-                                                                                                                            while [[ "$#" -gt 0 ]]
-                                                                                                                            do
-                                                                                                                                case "$1" in
-                                                                                                                                    --mount)
-                                                                                                                                        MOUNT="$2"
-                                                                                                                                        # root-resource "$MOUNT"
-                                                                                                                                        ln --symbolic "$MOUNT/repository" /mount/stage/studio
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --branch)
-                                                                                                                                        BRANCH="$2"
-                                                                                                                                        git fetch local "$BRANCH" 2>&1
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --commit)
-                                                                                                                                        COMMIT="$2"
-                                                                                                                                        git checkout "$COMMIT" 2>&1
-                                                                                                                                        git submodule init 2>&1
-                                                                                                                                        git submodule update --recursive 2>&1
-                                                                                                                                        find /mount/repository/inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                        do
-                                                                                                                                            cd "$INPUT"
-                                                                                                                                            git config user.name "$USER_NAME"
-                                                                                                                                            git config user.email "$USER_EMAIL"
-                                                                                                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                        done
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --input)
-                                                                                                                                        INPUT_NAME="$2"
-                                                                                                                                        INPUT_BRANCH="$3"
-                                                                                                                                        INPUT_COMMIT="$4"
-                                                                                                                                        cd "/mount/repository/inputs/$INPUT_NAME"
-                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                        git config user.email "$USER_EMAIL"
-                                                                                                                                        git config user.name "$USER_NAME"
-                                                                                                                                        git fetch origin "$INPUT_BRANCH" 2>&1
-                                                                                                                                        git checkout "$INPUT_COMMIT" 2>&1
-                                                                                                                                        INPUT_REMOTE="$( git remote get-url origin )" || failure 82fbc1ce
-                                                                                                                                        OVERRIDE_INPUTS+=( "--override-input $INPUT_NAME git+ssh://${ builtins.concatStringsSep "" [ "$" "{" "INPUT_REMOTE/:/\/" "}" ] }?rev=$INPUT_COMMIT" )
-                                                                                                                                        shift 4
-                                                                                                                                        ;;
-                                                                                                                                    *)
-                                                                                                                                        failure 6e18cb53 "$1"
-                                                                                                                                        ;;
-                                                                                                                                esac
-                                                                                                                            done
-                                                                                                                            echo "${ builtins.concatStringsSep "" [ "$" "{" "OVERRIDE_INPUTS[*]" "}" ] }" > "${ mount }/stage/override-inputs"
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/setup" ;
-                                                                                        } ;
+                                                                                    setup =
+					                                                                    { mount , pkgs , resources , stage } :
+						                                                                    let
+							                                                                    application =
+								                                                                    pkgs.writeShellApplication
+									                                                                    {
+										                                                                    name = "setup" ;
+										                                                                    text =
+											                                                                    let
+												                                                                    flake-build-vm =
+													                                                                    let
+														                                                                    application =
+															                                                                    pkgs.writeShellApplication
+																                                                                    {
+																	                                                                    name = "flake-build-vm" ;
+																	                                                                    text =
+																		                                                                    ''
+																			                                                                    VM=${ resources.production.flake.build-vm ( setup : ''${ setup } "$MOUNT/repository"'' ) }
+																			                                                                    STATUS="$( cat "$VM/status" )" || failure
+																			                                                                    if [[ "0" == "$STATUS" ]]
+																			                                                                    then
+																				                                                                    export SHARED_DIR="$VM/shared"
+																				                                                                    "$VM/result/bin/run-nixos-vm"
+																			                                                                    else
+																				                                                                    failure "$VM" "$STATUS"
+																			                                                                    fi
+																		                                                                    '' ;
+                                                                                                                                    } ;
+														                                                                        in "${ application }/bin/flake-build-vm" ;
+												                                                                        flake-check =
+													                                                                        let
+														                                                                        application =
+															                                                                        pkgs.writeShellApplication
+																                                                                        {
+																	                                                                        name = "flake-check" ;
+                                                                                                                                            runtimeInputs = [ pkgs.nix ] ;
+																	                                                                        text =
+																		                                                                        ''
+																			                                                                        nix flake check --flake "$MOUNT/repository"
+																		                                                                        '' ;
+																                                                                        } ;
+														                                                                            in "${ application }/bin/flake-check" ;
+												                                                                        flake-switch =
+													                                                                        let
+														                                                                        application =
+															                                                                        pkgs.writeShellApplication
+																                                                                        {
+																	                                                                        name = "flake-switch" ;
+																	                                                                        runtimeInputs =
+																	                                                                            [
+																	                                                                                pkgs.findutils
+																	                                                                                ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
+																	                                                                                (
+																	                                                                                    pkgs.writeShellApplication
+																	                                                                                        {
+																	                                                                                            name = "flake-switch-input" ;
+																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git ] ;
+																	                                                                                            text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        echo 9e456ede-f1b6-488b-9414-e31905fcb625
+                                                                                                                                                                        INPUT="$1"
+                                                                                                                                                                        echo 2a91f21c-19fc-4e9d-8742-9fe3dc57d2e2
+                                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                                        echo 2b0e92e4-0db0-4f57-be03-5bb852b09fd9
+                                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                        echo 476821c5-bb0d-4d74-bd9e-7e07b522b184
+                                                                                                                                                                        git fetch origin main
+                                                                                                                                                                        echo 4a27cde2-c918-4359-8a75-0559831fa850
+                                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                        then
+                                                                                                                                                                            echo 18052a00-a24c-454d-9090-688cd6ca67d9
+                                                                                                                                                                            git checkout -b "scratch/$(uuidgen)"
+                                                                                                                                                                            echo 81c8b3f1-48d3-485b-bceb-570bccbb680f
+                                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                                            echo d9546d9e-6f6d-49e6-afd0-0302d205fa9a
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            echo 740646d4-9db6-4ca7-972f-2c25473cb978
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                            echo 5a0f825a-a031-448b-9fac-9c11cee9db5c
+                                                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 92c1bf82
+                                                                                                                                                                            echo ca65d038-1982-4516-8848-bd9651a1c3e9
+                                                                                                                                                                            gh pr create --base main --head "$BRANCH" --label "snapshot"
+                                                                                                                                                                            echo 07d79e0b-3a45-45d0-8893-6ac6ca35863a
+                                                                                                                                                                            URL="$( gh pr view --json url --jq .url )" || failure 15f039fa
+                                                                                                                                                                            echo 141bdd4c-50e1-4918-8e53-7a8e43ee5977
+                                                                                                                                                                            gh pr merge "$URL" --rebase
+                                                                                                                                                                            echo fa5fc92c-c454-487d-aa56-d7d0f0ea4c47
+                                                                                                                                                                        fi
+                                                                                                                                                                        echo caa7fb08-f46b-451e-b4e3-d36ee882675f
+                                                                                                                                                                        gh auth logout
+                                                                                                                                                                        echo 7a52cc1c-37a0-4b7a-9ad6-ddce96281d6e
+                                                                                                                                                                    '' ;
+																	                                                                                        }
+																	                                                                                )
+                                                                                                                                                ] ;
+																	                                                                        text =
+                                                                                                                                                ''
+                                                                                                                                                    echo 9d450522-72d3-4010-a89a-cae37e3cfdef
+                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
+                                                                                                                                                    echo 1f4895c1-a991-4811-ac9d-6c909b831e33
+                                                                                                                                                    nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                    echo ddcc919a-3156-4735-9069-661a03e9e845
+                                                                                                                                                '' ;
+																                                                                        } ;
+														                                                                        in "${ application }/bin/flake-switch" ;
+												                                                                        flake-test =
+													                                                                        let
+														                                                                        application =
+															                                                                        pkgs.writeShellApplication
+																                                                                        {
+																	                                                                        name = "flake-test" ;
+																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+																	                                                                        text =
+                                                                                                                                                ''
+                                                                                                                                                    echo nixos-rebuild test --flake "$MOUNT/repository#user"
+                                                                                                                                                    nixos-rebuild test --flake "$MOUNT/repository#user"
+                                                                                                                                                '' ;
+																                                                                        } ;
+														                                                                        in "${ application }/bin/flake-test" ;
+                                                                                                                        ssh =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "ssh" ;
+                                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    ssh -F "$MOUNT/stage/dot-ssh" "$@"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/ssh" ;
+												                                                                        in
+													                                                                        ''
+														                                                                        STUDIO="$1"
+														                                                                        COMMIT="$2"
+														                                                                        GIT_SSH_COMMAND=/mount/stage/ssh
+														                                                                        export GIT_SSH_COMMAND
+														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
+														                                                                        git checkout "$COMMIT" 2>&1
+                                                                                                                                make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
+														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
+														                                                                        make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
+														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
+														                                                                        root-resource "$DOT_SSH"
+														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
+														                                                                        git submodule init 2>&1
+														                                                                        git submodule update --init --recursive --checkout 2>&1
+														                                                                        find "${ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+														                                                                        do
+														                                                                            cd "$INPUT"
+														                                                                            git config user.email "${ config.personal.repository.private.email }"
+														                                                                            git config user.name "${ config.personal.repository.private.name }"
+														                                                                            git config core.sshCommand "${ ssh }"
+														                                                                        done
+														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
+													                                                                        '' ;
+                                                                                                        } ;
+							                                                                        in "${ application }/bin/setup" ;
+			                                                                    } ;
                                                                             studio =
                                                                                 ignore :
                                                                                     _git-repository.implementation
                                                                                         {
                                                                                             configs =
                                                                                                 {
-                                                                                                    "alias.hydrate" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "hydrate" ;
-                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "71d0fbbe" ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                BRANCH="$1"
-                                                                                                                                git fetch origin "$BRANCH"
-                                                                                                                                git checkout "origin/$BRANCH"
-                                                                                                                                UUID="$( uuidgen )" || failure 382b0fd1
-                                                                                                                                git checkout -b "scratch/$UUID"
-                                                                                                                                git submodule sync
-                                                                                                                                git submodule update --init --recursive
-                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d -exec git -C {} scratch \;
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                        in "!${ application }/bin/hydrate" ;
-                                                                                                    "alias.inherit" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "inherit" ;
-                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                USER_NAME="$( git config --get user.name )" || failure "b0a3ba6f"
-                                                                                                                                USER_EMAIL="$( git config --get user.email )" || failure "cc7c46fb"
-                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure "99619549"
-                                                                                                                                export GIT_SSH_COMMAND
-                                                                                                                                SCRATCH="$( git config --get alias.scratch )" || failure "7c276c3a"
-                                                                                                                                mkdir --parents inputs
-                                                                                                                                if [[ ! -d inputs/dot-gnupg ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/9dbfd2d15c48d454c62cc0496f4834ae0252976be1519d85656fb github.com:AFnRFCb7/dot-gnupg inputs/dot-gnupg 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/dot-ssh ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/52b11d85efc7a21d375fd0d5098a34cfd5181e6a78f35cf422e9d github.com:AFnRFCb7/dot-ssh inputs/dot-ssh 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/failure ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/890e3c5ea2c888b4cf9a88e596582d489b3d007ce7255fd873540 github.com:AFnRFCb7/failure inputs/failure 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/fixture ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/42489785564458bb4f544d872bca6fcbb9f60a67cc8d911bf0666 github.com:AFnRFCb7/fixture inputs/fixture 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/git-repository ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/a54526fe0456c67a62b985bf2dd791fea9ef0a8837d6f36726840 github.com:AFnRFCb7/git-repository inputs/git-repository 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/personal ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/8862d6b14bbbf0bf2f9fe16622a6c119f489e71088bb271767aaa github.com:AFnRFCb7/personal inputs/personal 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/resource ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/b5c9d9c7a6a8e073a36b878c79d90014ee5c7b8b55e3bfadc08e7 github.com:AFnRFCb7/resource inputs/resource 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/secret ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/e462517fa0f57fef49dd5505ec1bf20fc5632195cb72732983d5a github.com:AFnRFCb7/secret inputs/secret 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/secrets ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/ca29db94562095bbb5b9854119e289763d3720f7e647e8dc8fb12 github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b inputs/secrets 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/string ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/752fa5f771ae7b8d9f736d9037d8f6c9274f326cd2be294c44602 github.com:AFnRFCb7/string inputs/string 2>&1
-                                                                                                                                fi
-                                                                                                                                if [[ ! -d inputs/visitor ]]
-                                                                                                                                then
-                                                                                                                                    git submodule add --branch submodules/10c57e23120e45d5af754934243d3bd50c4d7a2bb8ce3581323d4 github.com:AFnRFCb7/visitor inputs/visitor 2>&1
-                                                                                                                                fi
-                                                                                                                                git add .gitmodules
-                                                                                                                                git commit -am "" --allow-empty --allow-empty-message 2>&1
-                                                                                                                                git push origin HEAD 2>&1
-                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 6acfd685
-                                                                                                                                export GIT_SSH_COMMAND
-                                                                                                                                git submodule sync --recursive 2>&1
-                                                                                                                                git submodule update --init --recursive 2>&1
-                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                do
-                                                                                                                                    git -C "$INPUT" config user.name "$USER_NAME"
-                                                                                                                                    git -C "$INPUT" config user.email "$USER_EMAIL"
-                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
-                                                                                                                                    git -C "$INPUT" config alias.scratch "$SCRATCH"
-                                                                                                                                    git -C "$INPUT" config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                                    git -C "$INPUT" scratch
-                                                                                                                                done
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                                in "!${ application }/bin/inherit" ;
-                                                                                                    "alias.scratch" =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "scratch" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "185363fa " ) ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                UUID="$( uuidgen | sha512sum | cut --characters 1-64 )" || failure 0a36ac2f
-                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "!${ application }/bin/scratch" ;
+                                                                                                    "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                                     "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
-                                                                                                    "core.sshCommand" =
-                                                                                                        { mount , pkgs , resources , stage } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "ssh" ;
-                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                                    ssh -F "$DOT_SSH/dot-ssh" "$@"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/ssh" ;
-                                                                                                    "user.email" = config.personal.repository.private.email ;
-                                                                                                    "user.name" = config.personal.repository.private.name ;
-                                                                                                } ;
-                                                                                            hooks =
-                                                                                                {
-                                                                                                    post-commit = post-commit ;
+                                                                                                    "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
+                                                                                                    "user.email" = "${ config.personal.repository.private.email }" ;
+                                                                                                    "user.name" = "${ config.personal.repository.private.name }" ;
                                                                                                 } ;
                                                                                             remotes =
                                                                                                 {
@@ -828,57 +409,122 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git pkgs.makeWrapper ] ;
+                                                                                                                    runtimeInputs = [ pkgs.findutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         let
-                                                                                                                            snapshot =
-                                                                                                                                let
+																                                                            hydrate =
+																	                                                            let
                                                                                                                                     application =
-                                                                                                                                        pkgs.writeShellApplication
+	                                                                                                                                    pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                name = "snapshot" ;
-                                                                                                                                                runtimeInputs = [ pkgs.findutils pkgs.git ( _failure.implementation "6c8629a0" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        INPUTS=()
-                                                                                                                                                        while IFS= read -r INPUT
+			                                                                                                                                    name = "hydrate" ;
+			                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.libuuid  ( _failure.implementation "" ) ] ;
+																					                                                            text =
+																						                                                            ''
+																							                                                            BRANCH="$1"
+					                                                                                                                                    GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
+					                                                                                                                                    export GIT_SSH_COMMAND
+                                                            																							cd "$MOUNT/repository"
+															                                                            								git fetch origin "$BRANCH" 2>&1
+																							                                                            git checkout "origin/$BRANCH" 2>&1
+																							                                                            UUID="$( uuidgen )" || failure
+																							                                                            git checkout -b "scratch/$UUID" 2>&1
+																							                                                            git submodule sync 2>&1
+																							                                                            git submodule update --init --recursive 2>&1
+																							                                                            find inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
                                                                                                                                                         do
-                                                                                                                                                            cd "$INPUT"
-                                                                                                                                                            if ! git diff --quiet || ! git diff --cached --quiet
-                                                                                                                                                            then
-                                                                                                                                                                git scratch > /dev/null 2>&1
-                                                                                                                                                                git commit -am --allow-empty-message "" > /dev/null 2>&1
-                                                                                                                                                            fi
-                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 9c67a20d
-                                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b84231e2
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure a528ebd3
-                                                                                                                                                            INPUTS+=( "--input" "$NAME" "$BRANCH" "$COMMIT" )
-                                                                                                                                                        done < <( find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort )
-                                                                                                                                                        cd "$MOUNT/repository"
-                                                                                                                                                        if ! git diff --quiet || ! git diff --cached --quiet
-                                                                                                                                                        then
-                                                                                                                                                            git scratch > /dev/null 2>&1
-                                                                                                                                                            git commit -am --allow-empty-message "" >/dev/null 2>&1
-                                                                                                                                                            git push origin HEAD 2>&1
-                                                                                                                                                        fi
-                                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b00eeb9b
-                                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure fb344a70
-                                                                                                                                                        RESOURCE=${ resources.production.repository.snapshot ( setup : ''${ setup } --mount "$MOUNT" --branch "$BRANCH" --commit "$COMMIT" "${ builtins.concatStringsSep "" [ "$" "{" "INPUTS[@]" "}" ] }"'' ) }
-                                                                                                                                                        echo "$RESOURCE/repository"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                        in "${ application }/bin/snapshot" ;
-                                                                                                                            in
-                                                                                                                                ''
-                                                                                                                                    # shellcheck source=/dev/null
-                                                                                                                                    source ${ pkgs.makeWrapper }/nix-support/setup-hook
-                                                                                                                                    makeWrapper ${ snapshot } /mount/stage/snapshot --set MOUNT "${ mount }"
-                                                                                                                                    git fetch origin main 2>&1
-                                                                                                                                    git checkout origin/main 2>&1
-                                                                                                                                    git scratch
-                                                                                                                                    git inherit
-                                                                                                                                '' ;
+																								                                                            git -C "$INPUT" checkout -b "scratch/$UUID" 2>&1
+                                                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure d53a8dd1
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME" 2>&1
+																							                                                            done
+																						                                                            '' ;
+																				                                                            } ;
+																		                                                    in "${ application }/bin/hydrate" ;
+																                                                        snapshot =
+                                                                                                                            let
+	                                                                                                                            application =
+		                                                                                                                            pkgs.writeShellApplication
+			                                                                                                                            {
+				                                                                                                                            name = "snapshot" ;
+				                                                                                                                            runtimeInputs =
+				                                                                                                                                [
+				                                                                                                                                    pkgs.findutils
+				                                                                                                                                    ( _failure.implementation "" )
+				                                                                                                                                    (
+				                                                                                                                                        pkgs.writeShellApplication
+				                                                                                                                                            {
+				                                                                                                                                                name = "snapshot-input" ;
+				                                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        INPUT="$1"
+                                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                        then
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure
+                                                                                                                                                                            cd "$MOUNT/repository"
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                        fi
+                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                    '' ;
+				                                                                                                                                            }
+				                                                                                                                                    )
+				                                                                                                                                ] ;
+				                                                                                                                            text =
+					                                                                                                                            ''
+					                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
+					                                                                                                                                export GIT_SSH_COMMAND
+						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
+						                                                                                                                            cd "$MOUNT/repository"
+						                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                                    do
+                                                                                                                                                        INPUT_NAME="$( basename "$INPUT" )" || failure 853515e3
+                                                                                                                                                        nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                    done
+						                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
+						                                                                                                                            then
+							                                                                                                                            git commit -a --verbose
+						                                                                                                                            fi
+						                                                                                                                            git push origin HEAD
+						                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
+						                                                                                                                            SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
+						                                                                                                                            echo 8d7598a2-3810-4e55-be07-202f13aad662
+                                                                                                                                                    echo "$SNAPSHOT/repository"
+					                                                                                                                            '' ;
+			                                                                                                                            } ;
+		                                                                                                                            in "${ application }/bin/snapshot" ;
+                                                                                                                        ssh =
+                                                        																	let
+                                                        																		application =
+                                                        																			pkgs.writeShellApplication
+                                                        																				{
+                                                                                                                                            name = "ssh" ;
+                                                        																					runtimeInputs = [ pkgs.openssh ] ;
+                                                        																					text =
+                                                        																						''
+                                                        																							ssh -F "$MOUNT/stage/dot-ssh/dot-ssh" "$@"
+														                                                        								'' ;
+																				                                                        } ;
+																		                                                        in "${ application }/bin/ssh" ;
+                                                                                                                        in
+                                                                                                                            ''
+																	                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+																	                                                            ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
+																	                                                            root-resource "$DOT_SSH"
+                                                                                                                                make-wrapper ${ hydrate } /mount/stage/hydrate "${ mount }"
+																	                                                            make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
+																	                                                            make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+																	                                                            export GIT_SSH_COMMAND=${ ssh }
+																	                                                            git hydrate main
+																	                                                            find "${ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
+                                                                                                                                do
+																		                                                            cd "$INPUT"
+																		                                                            git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                    git config user.name "${ config.personal.repository.private.name }"
+																		                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
+																	                                                            done
+                                                                                                                            '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
                                                                                         } ;
@@ -1008,8 +654,8 @@
                                                                 rtkit.enable = true;
                                                                 sudo.extraConfig =
                                                                     ''
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/src/nix-collect-garbage
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/src/nixos-rebuild
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/bin/nix-collect-garbage
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/bin/nixos-rebuild
                                                                     '' ;
                                                             } ;
                                                         services =
