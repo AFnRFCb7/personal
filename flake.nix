@@ -283,30 +283,48 @@
 																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git ] ;
 																	                                                                                            text =
                                                                                                                                                                     ''
+                                                                                                                                                                        echo 9e456ede-f1b6-488b-9414-e31905fcb625
                                                                                                                                                                         INPUT="$1"
+                                                                                                                                                                        echo 2a91f21c-19fc-4e9d-8742-9fe3dc57d2e2
                                                                                                                                                                         cd "$INPUT"
+                                                                                                                                                                        echo 2b0e92e4-0db0-4f57-be03-5bb852b09fd9
                                                                                                                                                                         TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                         gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                        echo 476821c5-bb0d-4d74-bd9e-7e07b522b184
                                                                                                                                                                         git fetch origin main
+                                                                                                                                                                        echo 4a27cde2-c918-4359-8a75-0559831fa850
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
+                                                                                                                                                                            echo 18052a00-a24c-454d-9090-688cd6ca67d9
                                                                                                                                                                             git checkout -b "scratch/$(uuidgen)"
+                                                                                                                                                                            echo 81c8b3f1-48d3-485b-bceb-570bccbb680f
                                                                                                                                                                             git reset --soft origin/main
+                                                                                                                                                                            echo d9546d9e-6f6d-49e6-afd0-0302d205fa9a
                                                                                                                                                                             git commit -a --verbose
-                                                                                                                                                                            git push
+                                                                                                                                                                            echo 740646d4-9db6-4ca7-972f-2c25473cb978
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                            echo 5a0f825a-a031-448b-9fac-9c11cee9db5c
                                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 92c1bf82
+                                                                                                                                                                            echo ca65d038-1982-4516-8848-bd9651a1c3e9
                                                                                                                                                                             URL="$( gh pr create --base main --head "$BRANCH" --label "snapshot" )" || failure 579ae7bd
+                                                                                                                                                                            echo 141bdd4c-50e1-4918-8e53-7a8e43ee5977
                                                                                                                                                                             gh pr merge "$URL" --rebase
+                                                                                                                                                                            echo fa5fc92c-c454-487d-aa56-d7d0f0ea4c47
                                                                                                                                                                         fi
+                                                                                                                                                                        echo caa7fb08-f46b-451e-b4e3-d36ee882675f
                                                                                                                                                                         gh auth logout
+                                                                                                                                                                        echo 7a52cc1c-37a0-4b7a-9ad6-ddce96281d6e
                                                                                                                                                                     '' ;
 																	                                                                                        }
 																	                                                                                )
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
+                                                                                                                                                    echo 9d450522-72d3-4010-a89a-cae37e3cfdef
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
+                                                                                                                                                    echo 1f4895c1-a991-4811-ac9d-6c909b831e33
                                                                                                                                                     nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                    echo ddcc919a-3156-4735-9069-661a03e9e845
                                                                                                                                                 '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-switch" ;
