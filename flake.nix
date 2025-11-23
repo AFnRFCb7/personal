@@ -318,10 +318,10 @@
 																	                                                                        name = "flake-test" ;
 																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
 																	                                                                        text =
-																		                                                                        ''
-																			                                                                        echo nixos-rebuild test --flake "$MOUNT/repository#user"
-																			                                                                        nixos-rebuild test --flake "$MOUNT/repository#user"
-																		                                                                        '' ;
+                                                                                                                                                ''
+                                                                                                                                                    echo nixos-rebuild test --flake "$MOUNT/repository#user"
+                                                                                                                                                    nixos-rebuild test --flake "$MOUNT/repository#user"
+                                                                                                                                                '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-test" ;
                                                                                                                         ssh =
