@@ -319,6 +319,7 @@
 																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
 																	                                                                        text =
 																		                                                                        ''
+																			                                                                        echo nixos-rebuild test --flake "$MOUNT/repository#user"
 																			                                                                        nixos-rebuild test --flake "$MOUNT/repository#user"
 																		                                                                        '' ;
 																                                                                        } ;
