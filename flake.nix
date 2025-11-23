@@ -309,7 +309,7 @@
                                                                                                                                                                             if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                             then
                                                                                                                                                                                 echo 3922ecd0-faea-4205-a769-a6f0324443e5
-                                                                                                                                                                                gh label create snapshot --color "##333333" --description "Scripted Snapshot PR"
+                                                                                                                                                                                gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
                                                                                                                                                                                 echo c6e99e3f-4613-414f-aca4-2b7101e7df99
                                                                                                                                                                             fi
                                                                                                                                                                             echo 5ce734e0-ccd0-4ddc-afdb-6183d7922b0f
