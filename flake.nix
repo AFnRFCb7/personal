@@ -399,6 +399,7 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            #
                                                                                             "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                             "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                             "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
