@@ -220,11 +220,7 @@
 						                                                                    "user.email" = config.personal.repository.private.email ;
 						                                                                    "user.name" = config.personal.repository.private.name ;
 					                                                                    } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            origin = config.personal.repository.private.remote ;
-                                                                                        } ;
-                                                                                    setup =
+                                                                                    pre-setup =
 					                                                                    { mount , pkgs , resources , stage } :
 						                                                                    let
 							                                                                    application =
@@ -392,6 +388,10 @@
 													                                                                        '' ;
                                                                                                         } ;
 							                                                                        in "${ application }/bin/setup" ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
 			                                                                    } ;
                                                                     studio =
                                                                         ignore :
@@ -405,11 +405,7 @@
                                                                                             "user.email" = "${ config.personal.repository.private.email }" ;
                                                                                             "user.name" = "${ config.personal.repository.private.name }" ;
                                                                                         } ;
-                                                                                    remotes =
-                                                                                        {
-                                                                                            origin = config.personal.repository.private.remote ;
-                                                                                        } ;
-                                                                                    setup =
+                                                                                    pre-setup =
                                                                                         { mount , pkgs , resources , stage } :
                                                                                             let
                                                                                                 application =
@@ -534,6 +530,10 @@
                                                                                                                     '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
+                                                                                    remotes =
+                                                                                        {
+                                                                                            origin = config.personal.repository.private.remote ;
+                                                                                        } ;
                                                                                 } ;
                                                                 } ;
                                                             secrets =
