@@ -399,11 +399,11 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
-                                                                                            "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
-                                                                                            "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
+                                                                                            # "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
+                                                                                            # "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
+                                                                                            # "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
                                                                                             "user.email5" = "${ config.personal.repository.private.email }" ;
-                                                                                            "user.name1" = "${ config.personal.repository.private.name }" ;
+                                                                                            # "user.name1" = "${ config.personal.repository.private.name }" ;
                                                                                         } ;
                                                                                     pre-setup =
                                                                                         { mount , pkgs , resources , stage } :
