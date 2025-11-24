@@ -120,23 +120,23 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        # DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
-                                                                                                        # root-resource "$DOT_GNUPG"
-                                                                                                        # root-store ${ pkgs.gnupg }
-                                                                                                        # ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
-                                                                                                        # DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
-                                                                                                        # root-resource "$DOT_SSH"
-                                                                                                        # ln --symbolic "$DOT_SSH/dot-ssh" /mount
+                                                                                                        DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
+                                                                                                        root-resource "$DOT_GNUPG"
+                                                                                                        root-store ${ pkgs.gnupg }
+                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
+                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
+                                                                                                        root-resource "$DOT_SSH"
+                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
                                                                                                         # GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         # root-resource "$GIT_REPOSITORY"
-                                                                                                        # ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
-                                                                                                        # SECRET=${ resources.foobar.secret ( setup : setup ) }
-                                                                                                        # root-resource "$SECRET"
-                                                                                                        # ln --symbolic "$SECRET/secret" /mount
+                                                                                                        ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
+                                                                                                        SECRET=${ resources.foobar.secret ( setup : setup ) }
+                                                                                                        root-resource "$SECRET"
+                                                                                                        ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        # targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { } ;
