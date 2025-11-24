@@ -399,7 +399,7 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.hydrate" = stage : "!${ mount }/hydrate" ;
+                                                                                            "alias.hydrate" = stage : "!${ stage }/hydrate" ;
                                                                                             "alias.snapshot" = stage : "!${ stage }/snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                             "user.email" = "${ config.personal.repository.private.email }" ;
