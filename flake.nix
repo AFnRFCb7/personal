@@ -129,7 +129,7 @@
                                                                                                         ln --symbolic "$DOT_SSH/dot-ssh" /mount
                                                                                                         # GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         # root-resource "$GIT_REPOSITORY"
-                                                                                                        ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
+                                                                                                        # ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         root-resource "$SECRET"
                                                                                                         ln --symbolic "$SECRET/secret" /mount
