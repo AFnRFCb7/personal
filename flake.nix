@@ -211,7 +211,6 @@
                                                                                 {
 				                                                                    configs =
 					                                                                    {
-					                                                                        "flag2" = true ;
 						                                                                    "alias.flake-build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm" ;
 						                                                                    "alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
 						                                                                    "alias.flake-check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-check" ;
@@ -400,7 +399,6 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "flag1" = true ;
                                                                                             "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                             "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                             "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
