@@ -211,12 +211,12 @@
                                                                                 {
 				                                                                    configs =
 					                                                                    {
-						                                                                    "alias.flake-build-vm" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm" ;
-						                                                                    "alias.flake-build-vm-with-bootloader" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
-						                                                                    "alias.flake-check" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-check" ;
-						                                                                    "alias.flake-switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-switch" ;
-						                                                                    "alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
-						                                                                    "config.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
+						                                                                    "alias.flake-build-vm" = mount : "!${ mount }/stage/flake-build-vm" ;
+						                                                                    "alias.flake-build-vm-with-bootloader" = mount : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
+						                                                                    "alias.flake-check" = mount : "!${ mount }/stage/flake-check" ;
+						                                                                    "alias.flake-switch" = mount : "!${ mount }/stage/flake-switch" ;
+						                                                                    "alias.flake-test" = mount : "!${ mount }/stage/flake-test" ;
+						                                                                    "config.sshCommand" = mount : "!${ mount }/stage/ssh" ;
 						                                                                    "user.email" = config.personal.repository.private.email ;
 						                                                                    "user.name" = config.personal.repository.private.name ;
 					                                                                    } ;
@@ -399,9 +399,9 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
-                                                                                            "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
-                                                                                            "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
+                                                                                            "alias.hydrate" = mount : "!${ mount }/stage/hydrate" ;
+                                                                                            "alias.snapshot" = mount : "!${ mount }/stage/snapshot" ;
+                                                                                            "core.sshCommand" = mount : "${ mount }/stage/ssh" ;
                                                                                             "user.email" = "${ config.personal.repository.private.email }" ;
                                                                                             "user.name" = "${ config.personal.repository.private.name }" ;
                                                                                         } ;
