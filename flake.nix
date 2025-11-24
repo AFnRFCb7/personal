@@ -371,19 +371,10 @@
                                                                                                                                 make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
 														                                                                        make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
 														                                                                        make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
-														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+														                                              configs                          make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
 														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
 														                                                                        root-resource "$DOT_SSH"
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
-														                                                                        git submodule init 2>&1
-														                                                                        git submodule update --init --recursive --checkout 2>&1
-														                                                                        find "${ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-														                                                                        do
-														                                                                            cd "$INPUT"
-														                                                                            git config user.email "${ config.personal.repository.private.email }"
-														                                                                            git config user.name "${ config.personal.repository.private.name }"
-														                                                                            git config core.sshCommand "${ ssh }"
-														                                                                        done
 														                                                                        # make-wrapper ${ flake-check } /mount/stage/check "${ mount }"
 													                                                                        '' ;
                                                                                                         } ;
@@ -520,13 +511,6 @@
                                                                                                                         make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                         export GIT_SSH_COMMAND=${ ssh }
                                                                                                                         git hydrate main
-                                                                                                                        find "${ mount }/repository/inputs" -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-                                                                                                                        do
-                                                                                                                            cd "$INPUT"
-                                                                                                                            git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                            git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                                        done
                                                                                                                     '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
