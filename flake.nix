@@ -211,12 +211,12 @@
                                                                                 {
 				                                                                    configs =
 					                                                                    {
-						                                                                    "alias.flake-build-vm" = stage : "!${ mount }/stage/flake-build-vm" ;
-						                                                                    "alias.flake-build-vm-with-bootloader" = stage : "!${ mount }/stage/flake-build-vm-with-bootloader" ;
-						                                                                    "alias.flake-check" = stage : "!${ stage }/stage/flake-check" ;
-						                                                                    "alias.flake-switch" = stage : "!${ stage }/stage/flake-switch" ;
-						                                                                    "alias.flake-test" = stage : "!${ stage }/stage/flake-test" ;
-						                                                                    "config.sshCommand" = stage : "!${ stage }/stage/ssh" ;
+						                                                                    "alias.flake-build-vm" = stage : "!${ stage }/flake-build-vm" ;
+						                                                                    "alias.flake-build-vm-with-bootloader" = stage : "!${ stage }/flake-build-vm-with-bootloader" ;
+						                                                                    "alias.flake-check" = stage : "!${ stage }/flake-check" ;
+						                                                                    "alias.flake-switch" = stage : "!${ stage }/flake-switch" ;
+						                                                                    "alias.flake-test" = stage : "!${ stage }/flake-test" ;
+						                                                                    "config.sshCommand" = stage : "!${ stage }/ssh" ;
 						                                                                    "user.email" = config.personal.repository.private.email ;
 						                                                                    "user.name" = config.personal.repository.private.name ;
 					                                                                    } ;
