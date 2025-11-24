@@ -217,7 +217,7 @@
 						                                                                    "alias.flake-switch" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-switch" ;
 						                                                                    "alias.flake-test" = { mount , pkgs , resources , stage } : "!${ mount }/stage/flake-test" ;
 						                                                                    "config.sshCommand" = { mount , pkgs , resources , stage } : "!${ mount }/stage/ssh" ;
-						                                                                    "user.email" = config.personal.repository.private.email ;
+						                                                                    "user.email6" = config.personal.repository.private.email ;
 						                                                                    "user.name2" = config.personal.repository.private.name ;
 					                                                                    } ;
                                                                                     pre-setup =
@@ -402,7 +402,7 @@
                                                                                             "alias.hydrate" = { mount , pkgs , resources , stage } : "!${ mount }/stage/hydrate" ;
                                                                                             "alias.snapshot" = { mount , pkgs , resources , stage } : "!${ mount }/stage/snapshot" ;
                                                                                             "core.sshCommand" = { mount , pkgs , resources , stage } : "${ mount }/stage/ssh" ;
-                                                                                            "user.email" = "${ config.personal.repository.private.email }" ;
+                                                                                            "user.email5" = "${ config.personal.repository.private.email }" ;
                                                                                             "user.name1" = "${ config.personal.repository.private.name }" ;
                                                                                         } ;
                                                                                     pre-setup =
