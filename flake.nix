@@ -455,15 +455,18 @@
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
                                                                                                                                                                     cd "$INPUT"
-                                                                                                                                                                    git scratch
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
+                                                                                                                                                                        git scratch
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure
                                                                                                                                                                         cd "$MOUNT/repository"
                                                                                                                                                                         nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                     fi
-                                                                                                                                                                    git push origin HEAD
+                                                                                                                                                                    if git symbolic-ref -q HEAD > /dev/null
+                                                                                                                                                                    then
+                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
@@ -475,13 +478,15 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
-                                                                                                                                                git scratch
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
+                                                                                                                                                    git scratch
                                                                                                                                                     git commit -a --verbose
                                                                                                                                                 fi
-                                                                                                                                                git push origin HEAD
-                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
+                                                                                                                                                if git symbolic-ref -q HEAD > /dev/null
+                                                                                                                                                then
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                fi                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
                                                                                                                                                 SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                             '' ;
