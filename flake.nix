@@ -373,19 +373,6 @@
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
-                                                                                                                                                    VERBOSE=false
-                                                                                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                                                                                    do
-                                                                                                                                                        case "$1" in
-                                                                                                                                                            --verbose)
-                                                                                                                                                                VERBOSE=true
-                                                                                                                                                                shift
-                                                                                                                                                                ;;
-                                                                                                                                                            *)
-                                                                                                                                                                failure dc469537
-                                                                                                                                                                ;;
-                                                                                                                                                        esac
-                                                                                                                                                    done
                                                                                                                                                     echo starting
                                                                                                                                                     if ! nix flake check "$MOUNT/repository"
                                                                                                                                                     then
