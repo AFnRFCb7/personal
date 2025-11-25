@@ -88,8 +88,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            ownertrust-fun = { mount , pkgs , resources } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys-fun = { mount , pkgs , resources } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -111,7 +111,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources , stage } :
+                                                                            { mount , pkgs , resources } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -148,8 +148,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , stage } : resources.production.secrets.ownertrust ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , stage } : resources.production.secrets.secret-keys ;
+                                                                            ownertrust-fun = { mount , pkgs , resources } : resources.production.secrets.ownertrust ;
+                                                                            secret-keys-fun = { mount , pkgs , resources } : resources.production.secrets.secret-keys ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -158,18 +158,18 @@
                                                                             "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     user = "git" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host-name = "192.168.1.192" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             flake =
@@ -178,7 +178,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , stage } :
+                                                                                    { mount , pkgs , resources } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -206,7 +206,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , stage } :
+                                                                                    { mount , pkgs , resources } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -249,7 +249,7 @@
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-                                                                                        { mount , pkgs , resources , stage } :
+                                                                                        { mount , pkgs , resources } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -319,6 +319,7 @@
 																	                                                                        name = "flake-switch" ;
 																	                                                                        runtimeInputs =
 																	                                                                            [
+																	                                                                                pkgs.btrfs-progs
 																	                                                                                pkgs.findutils
 																	                                                                                ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
 																	                                                                                (
@@ -329,13 +330,21 @@
 																	                                                                                            text =
                                                                                                                                                                     ''
                                                                                                                                                                         INPUT="$1"
+                                                                                                                                                                        STATUS="$2"
+                                                                                                                                                                        cleanup ( ) {
+                                                                                                                                                                            if [[ 0 != "$?" ]]
+                                                                                                                                                                            then
+                                                                                                                                                                                touch "$STATUS/FLAG"
+                                                                                                                                                                            fi
+                                                                                                                                                                        }
+                                                                                                                                                                        trap cleanup EXIT
                                                                                                                                                                         cd "$INPUT"
                                                                                                                                                                         TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                         gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
-                                                                                                                                                                            git checkout -b "scratch/$(uuidgen)"
+                                                                                                                                                                            git scratch
                                                                                                                                                                             git reset --soft origin/main
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             git push origin HEAD
@@ -347,6 +356,9 @@
                                                                                                                                                                             gh pr create --base main --head "$BRANCH" --label "snapshot"
                                                                                                                                                                             URL="$( gh pr view --json url --jq .url )" || failure 15f039fa
                                                                                                                                                                             gh pr merge "$URL" --rebase
+                                                                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
+                                                                                                                                                                            cd "$MOUNT/repository"
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                         fi
                                                                                                                                                                         gh auth logout
                                                                                                                                                                     '' ;
@@ -359,8 +371,24 @@
                                                                                                                                                     then
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
                                                                                                                                                     fi
-                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
-                                                                                                                                                    nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                    STATUS=${ resources.production.temporary ( setup : setup ) }
+                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS" \;
+                                                                                                                                                    if [[ -f "$STATUS/FLAG" ]]
+                                                                                                                                                    then
+                                                                                                                                                        nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                        git fetch origin main
+                                                                                                                                                        git scratch
+                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure d44ce079
+                                                                                                                                                        git checkout main
+                                                                                                                                                        git rebase "$COMMIT"
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        git scratch
+                                                                                                                                                    else
+                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs"
+                                                                                                                                                    fi
                                                                                                                                                 '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-switch" ;
@@ -370,7 +398,7 @@
 															                                                                        pkgs.writeShellApplication
 																                                                                        {
 																	                                                                        name = "flake-test" ;
-																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+																	                                                                        runtimeInputs = [ pkgs.btrfs-progs ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
 																	                                                                        text =
                                                                                                                                                 ''
                                                                                                                                                     echo nixos-rebuild test --flake "$MOUNT/repository#user"
@@ -396,6 +424,7 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
+                                                                                                                            make-wrapper ${ flake-build-vm-with-bootloader } /mount/stage/flake-build-vm-with-bootloader "${ mount }"
                                                                                                                             make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
                                                                                                                             make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
                                                                                                                             make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
@@ -404,7 +433,7 @@
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
-					                                                                    { mount , pkgs , resources , stage } :
+					                                                                    { mount , pkgs , resources } :
 						                                                                    let
 							                                                                    application =
 								                                                                    pkgs.writeShellApplication
@@ -471,7 +500,7 @@
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-                                                                                        { mount , pkgs , resources , stage } :
+                                                                                        { mount , pkgs , resources } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -518,7 +547,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         git scratch
                                                                                                                                                                         git commit -a --verbose
-                                                                                                                                                                        INPUT_NAME="$( basename "$INPUT" )" || failure
+                                                                                                                                                                        INPUT_NAME="$( basename "$INPUT" )" || failure 4cf69f5f
                                                                                                                                                                         cd "$MOUNT/repository"
                                                                                                                                                                         nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                     fi
@@ -560,7 +589,7 @@
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
-                                                                                        { mount , pkgs , resources , stage } :
+                                                                                        { mount , pkgs , resources } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -652,6 +681,12 @@
                                                                     secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                     token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                 } ;
+                                                            temporary =
+                                                                ignore :
+                                                                    {
+                                                                        init = { mount , pkgs , resources } : "" ;
+                                                                        transient = true ;
+                                                                    } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
@@ -1141,8 +1176,8 @@
                                             {
                                                 expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
-                                                secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
+                                                ownertrust-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
+                                                secret-keys-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
                                             } ;
                                     dot-ssh =
                                         _dot-ssh.check
@@ -1154,7 +1189,7 @@
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
                                                                 identity-file =
-                                                                    { mount , pkgs , resources , stage } :
+                                                                    { mount , pkgs , resources } :
                                                                         {
                                                                             directory = resources.directory ;
                                                                             file = resources.file ;
@@ -1167,7 +1202,7 @@
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
                                                                 identity-file =
-                                                                    { mount , pkgs , resources , stage } :
+                                                                    { mount , pkgs , resources } :
                                                                         {
                                                                             directory = resources.directory ;
                                                                             file = resources.file ;
@@ -1185,7 +1220,6 @@
                                                         directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
                                                         file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
                                                     } ;
-                                                stage = "50a6090ed9d519bef70bc48269f1ae80065a778abdb0dbb4aa709a82636adefd39e1e32cea576c5202ef2fc8b1a96df9b911cd8eeecacef1320a7a84afba186c" ;
                                             } ;
                                    failure =
                                        _failure.check
@@ -1266,7 +1300,6 @@
                                                                                 ||     ||
                                                                 resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
                                                                 mount = /build/resources/mounts/0000000311691948
-                                                                stage = /build/resources/stages/0000000311691948
                                                             '' ;
                                                         expected-status = 0 ;
                                                         expected-targets =
@@ -1275,7 +1308,7 @@
                                                                 ] ;
                                                             expected-transient = -1 ;
                                                         init =
-                                                            { mount , pkgs , resources , stage } :
+                                                            { mount , pkgs , resources } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -1287,7 +1320,6 @@
                                                                                         cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                         ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
                                                                                         echo "mount = ${ mount }"
-                                                                                        echo "stage = ${ stage }"
                                                                                         echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
                                                                                         root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
@@ -1362,7 +1394,6 @@
                                                                                 ||     ||
                                                                 resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
                                                                 mount = /build/resources/mounts/0000000437766789
-                                                                stage = /build/resources/stages/0000000437766789
                                                            '' ;
                                                      expected-status = 70 ;
                                                      expected-targets =
@@ -1371,7 +1402,7 @@
                                                          ] ;
                                                      expected-transient = -1 ;
                                                      init =
-                                                         { mount , pkgs , resources , stage } :
+                                                         { mount , pkgs , resources } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
@@ -1383,7 +1414,6 @@
                                                                                      cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
                                                                                      ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
                                                                                      echo "mount = ${ mount }"
-                                                                                     echo "stage = ${ stage }"
                                                                                      echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
                                                                                      echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
                                                                                      echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
