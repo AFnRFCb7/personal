@@ -404,6 +404,7 @@
                                                                                     configs =
                                                                                         {
                                                                                             "alias.hydrate" = stage : "!${ stage }/hydrate" ;
+                                                                                            "alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "alias.snapshot" = stage : "!${ stage }/snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                             "user.email" = "${ config.personal.repository.private.email }" ;
@@ -447,6 +448,22 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                     in "${ application }/bin/hydrate" ;
+                                                                                                                scratch =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "scratch" ;
+                                                                                                                                    runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            cd "$MOUNT"
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure 73096040
+                                                                                                                                            BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 96d8692e
+                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                            in "${ application }/bin/scratch" ;
                                                                                                                 snapshot =
                                                                                                                     let
                                                                                                                         application =
@@ -504,6 +521,7 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ hydrate } /mount/stage/hydrate "${ mount }"
+                                                                                                                            make-wrapper ${ scratch } /mount/stage/scratch "${ scratch }"
                                                                                                                             make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
                                                                                                                             git hydrate main
                                                                                                                         '' ;
