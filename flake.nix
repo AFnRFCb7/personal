@@ -372,7 +372,7 @@
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
                                                                                                                                                     fi
                                                                                                                                                     STATUS=${ resources.production.temporary ( setup : setup ) }
-                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS"
+                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS" \;
                                                                                                                                                     if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                     then
                                                                                                                                                         nixos-rebuild switch --flake "$MOUNT/repository#user"
