@@ -385,20 +385,16 @@
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/ssh" ;
 												                                                                        in
-													                                                                        ''
-														                                                                        STUDIO="$1"
-														                                                                        COMMIT="$2"
-														                                                                        DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
-														                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
-														                                                                        root-resource "$DOT_SSH"
-														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
-														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
-														                                                                        git checkout "$COMMIT" 2>&1
-														                                                                        #
-														                                                                        #
-														                                                                        #
-														                                                                        ln --symbolic "$0" "${ mount }/stage/root"
-													                                                                        '' ;
+                                                                                                                            ''
+                                                                                                                                STUDIO="$1"
+                                                                                                                                COMMIT="$2"
+                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
+                                                                                                                                make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+                                                                                                                                root-resource "$DOT_SSH"
+                                                                                                                                ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
+                                                                                                                                git fetch "$STUDIO/repository" "$COMMIT" 2>&1
+                                                                                                                                git checkout "$COMMIT" 2>&1
+                                                                                                                            '' ;
                                                                                                         } ;
 							                                                                        in "${ application }/bin/setup" ;
                                                                                     remotes =
