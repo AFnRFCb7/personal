@@ -621,13 +621,16 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 BRANCH="$1"
-                                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
-                                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                                echo starting
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 git fetch origin "$BRANCH" 2>&1
+                                                                                                                                                echo "fetched BRANCH $BRANCH"
                                                                                                                                                 git checkout "origin/$BRANCH" 2>&1
+                                                                                                                                                echo "checked out $BRANCH"
                                                                                                                                                 git submodule sync 2>&1
+                                                                                                                                                echo "synced submodules"
                                                                                                                                                 git submodule update --init --recursive 2>&1
+                                                                                                                                                echo "updated submodules"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                         in "${ application }/bin/hydrate" ;
