@@ -335,7 +335,7 @@
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
-                                                                                                                                                                            git checkout -b "scratch/$(uuidgen)"
+                                                                                                                                                                            git scratch
                                                                                                                                                                             git reset --soft origin/main
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             git push origin HEAD
@@ -347,6 +347,9 @@
                                                                                                                                                                             gh pr create --base main --head "$BRANCH" --label "snapshot"
                                                                                                                                                                             URL="$( gh pr view --json url --jq .url )" || failure 15f039fa
                                                                                                                                                                             gh pr merge "$URL" --rebase
+                                                                                                                                                                            INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
+                                                                                                                                                                            cd "$MOUNT/repository"
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                         fi
                                                                                                                                                                         gh auth logout
                                                                                                                                                                     '' ;
@@ -519,7 +522,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         git scratch
                                                                                                                                                                         git commit -a --verbose
-                                                                                                                                                                        INPUT_NAME="$( basename "$INPUT" )" || failure
+                                                                                                                                                                        INPUT_NAME="$( basename "$INPUT" )" || failure 4cf69f5f
                                                                                                                                                                         cd "$MOUNT/repository"
                                                                                                                                                                         nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                     fi
