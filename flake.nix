@@ -373,7 +373,7 @@
                                                                                                                                                     fi
                                                                                                                                                     STATUS=${ resources.production.temporary ( setup : setup ) }"
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS"
-                                                                                                                                                    if [[ ]]
+                                                                                                                                                    if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                     then
                                                                                                                                                         nixos-rebuild switch --flake "$MOUNT/repository#user"
                                                                                                                                                         git fetch origin main
@@ -387,7 +387,7 @@
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         git scratch
                                                                                                                                                     else
-                                                                                                                                                        failure 67fc4ef0
+                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
 																                                                                        } ;
