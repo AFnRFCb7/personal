@@ -325,6 +325,10 @@
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
+                                                                                                                                                    if ! nix flake check "$MOUNT/repository"
+                                                                                                                                                    then
+                                                                                                                                                        failure 225a0019 "We will not switch unless checks pass"
+                                                                                                                                                    fi
                                                                                                                                                     echo 9d450522-72d3-4010-a89a-cae37e3cfdef
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
                                                                                                                                                     echo 1f4895c1-a991-4811-ac9d-6c909b831e33
