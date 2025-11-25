@@ -319,6 +319,7 @@
 																	                                                                        name = "flake-switch" ;
 																	                                                                        runtimeInputs =
 																	                                                                            [
+																	                                                                                pkgs.btrfs-progs
 																	                                                                                pkgs.findutils
 																	                                                                                ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
 																	                                                                                (
@@ -395,7 +396,7 @@
 															                                                                        pkgs.writeShellApplication
 																                                                                        {
 																	                                                                        name = "flake-test" ;
-																	                                                                        runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+																	                                                                        runtimeInputs = [ pkgs.btrfs-progs ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
 																	                                                                        text =
                                                                                                                                                 ''
                                                                                                                                                     echo nixos-rebuild test --flake "$MOUNT/repository#user"
