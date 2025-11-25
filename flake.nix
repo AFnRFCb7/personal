@@ -432,7 +432,7 @@
                                                                                                                                                 cd "$MOUNT"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 73096040
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
-                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                git checkout -b "$BRANCH" 2>&1
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/scratch" ;
@@ -450,7 +450,7 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "snapshot-input" ;
-                                                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                                                            runtimeInputs = [ ( _failure.implementation "19ae7e3f" ) ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
@@ -474,11 +474,7 @@
                                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                                do
-                                                                                                                                                    INPUT_NAME="$( basename "$INPUT" )" || failure 853515e3
-                                                                                                                                                    nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
-                                                                                                                                                done
+                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
                                                                                                                                                     git scratch
@@ -487,7 +483,6 @@
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
                                                                                                                                                 SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
-                                                                                                                                                echo 8d7598a2-3810-4e55-be07-202f13aad662
                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -515,7 +510,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "hydrate" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.libuuid  ( _failure.implementation "" ) ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( _failure.implementation "" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 BRANCH="$1"
@@ -524,8 +519,6 @@
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                                                 git checkout "origin/$BRANCH" 2>&1
-                                                                                                                                                UUID="$( uuidgen )" || failure
-                                                                                                                                                git checkout -b "scratch/$UUID" 2>&1
                                                                                                                                                 git submodule sync 2>&1
                                                                                                                                                 git submodule update --init --recursive 2>&1
                                                                                                                                             '' ;
