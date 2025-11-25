@@ -486,7 +486,8 @@
                                                                                                                                                 if git symbolic-ref -q HEAD > /dev/null
                                                                                                                                                 then
                                                                                                                                                     git push origin HEAD
-                                                                                                                                                fi                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
+                                                                                                                                                fi
+                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
                                                                                                                                                 SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                             '' ;
