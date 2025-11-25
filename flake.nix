@@ -457,6 +457,7 @@
                                                                                                                                                                     cd "$INPUT"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
+                                                                                                                                                                        git scratch
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure
                                                                                                                                                                         cd "$MOUNT/repository"
@@ -480,6 +481,7 @@
                                                                                                                                                 done
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
+                                                                                                                                                    git scratch
                                                                                                                                                     git commit -a --verbose
                                                                                                                                                 fi
                                                                                                                                                 git push origin HEAD
@@ -526,12 +528,6 @@
                                                                                                                                                 git checkout -b "scratch/$UUID" 2>&1
                                                                                                                                                 git submodule sync 2>&1
                                                                                                                                                 git submodule update --init --recursive 2>&1
-                                                                                                                                                # find inputs -mindepth 1 -maxdepth 1 -type d | sort | while read -r INPUT
-                                                                                                                                                # do
-                                                                                                                                                #     git -C "$INPUT" checkout -b "scratch/$UUID" 2>&1
-                                                                                                                                                #     INPUT_NAME="$( basename "$INPUT" )" || failure d53a8dd1
-                                                                                                                                                #     nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME" 2>&1
-                                                                                                                                                # done
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                         in "${ application }/bin/hydrate" ;
