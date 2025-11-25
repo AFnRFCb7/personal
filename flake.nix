@@ -455,9 +455,9 @@
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
                                                                                                                                                                     cd "$INPUT"
+                                                                                                                                                                    git scratch
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
-                                                                                                                                                                        git scratch
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure
                                                                                                                                                                         cd "$MOUNT/repository"
@@ -475,9 +475,9 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
+                                                                                                                                                git scratch
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
-                                                                                                                                                    git scratch
                                                                                                                                                     git commit -a --verbose
                                                                                                                                                 fi
                                                                                                                                                 git push origin HEAD
