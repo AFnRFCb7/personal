@@ -1152,12 +1152,9 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                email = "WRONG1" ;
                                                 expected = "/nix/store/k9irxzmyhwq2zpqabncgnh695knjg6rx-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
-                                                name = "WRONG2" ;
                                                 pkgs = pkgs ;
-                                                ssh = "WRONG3" ;
                                             } ;
                                     resource-happy =
                                         let
