@@ -330,6 +330,14 @@
 																	                                                                                            text =
                                                                                                                                                                     ''
                                                                                                                                                                         INPUT="$1"
+                                                                                                                                                                        STATUS="$2"
+                                                                                                                                                                        cleanup ( ) {
+                                                                                                                                                                            if [[ 0 != "$?" ]]
+                                                                                                                                                                            then
+                                                                                                                                                                                touch "$STATUS/FLAG"
+                                                                                                                                                                            fi
+                                                                                                                                                                        }
+                                                                                                                                                                        trap cleanup EXIT
                                                                                                                                                                         cd "$INPUT"
                                                                                                                                                                         TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                         gh auth login --with-token < "$TOKEN/secret"
@@ -363,15 +371,9 @@
                                                                                                                                                     then
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
                                                                                                                                                     fi
-                                                                                                                                                    STATUS=true
-                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                                    do
-                                                                                                                                                        if ! flake-switch-input "$INPUT"
-                                                                                                                                                        then
-                                                                                                                                                            STATUS=false
-                                                                                                                                                        fi
-                                                                                                                                                    done
-                                                                                                                                                    if "$STATUS"
+                                                                                                                                                    STATUS=${ resources.production.temporary ( setup : setup ) }"
+                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS"
+                                                                                                                                                    if [[ ]]
                                                                                                                                                     then
                                                                                                                                                         nixos-rebuild switch --flake "$MOUNT/repository#user"
                                                                                                                                                         git fetch origin main
@@ -679,6 +681,7 @@
                                                                     secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                     token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                 } ;
+                                                            temporary = ignore : { transient = true ; } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
