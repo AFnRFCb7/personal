@@ -566,7 +566,16 @@
                                                                                     ssh = stage : "${ stage }/ssh" ;
                                                                                     submodules =
                                                                                         {
+                                                                                            "inputs/dot-gnupg".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/dot-ssh".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/failure".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/fixture".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/git-repository".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "inputs/personal".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/resource".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/secrets".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/string".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/visitor".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                         } ;
                                                                                 } ;
                                                                 } ;
