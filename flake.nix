@@ -459,7 +459,7 @@
                                                                                                                                         ''
                                                                                                                                             cd "$MOUNT"
                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 73096040
-                                                                                                                                            BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 96d8692e
+                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                         '' ;
                                                                                                                                 } ;
