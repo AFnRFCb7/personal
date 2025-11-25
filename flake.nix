@@ -373,7 +373,7 @@
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
-                                                                                                                                                    echo starting
+                                                                                                                                                    echo starting it
                                                                                                                                                     if ! nix flake check "$MOUNT/repository"
                                                                                                                                                     then
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
