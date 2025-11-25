@@ -394,6 +394,10 @@
 														                                                                        ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
 														                                                                        git fetch "$STUDIO/repository" "$COMMIT" 2>&1
 														                                                                        git checkout "$COMMIT" 2>&1
+														                                                                        #
+														                                                                        #
+														                                                                        #
+														                                                                        ln --symbolic "$0" "${ mount }/stage/root"
 													                                                                        '' ;
                                                                                                         } ;
 							                                                                        in "${ application }/bin/setup" ;
