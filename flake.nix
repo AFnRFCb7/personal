@@ -216,10 +216,9 @@
 						                                                                    "alias.flake-check" = stage : "!${ stage }/flake-check" ;
 						                                                                    "alias.flake-switch" = stage : "!${ stage }/flake-switch" ;
 						                                                                    "alias.flake-test" = stage : "!${ stage }/flake-test" ;
-						                                                                    "config.sshCommand" = stage : "!${ stage }/ssh" ;
-						                                                                    "user.email" = config.personal.repository.private.email ;
-						                                                                    "user.name" = config.personal.repository.private.name ;
 					                                                                    } ;
+                                                                                    email = config.personal.repository.private.email ;
+                                                                                    name = config.personal.repository.private.name ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources , stage } :
                                                                                             let
@@ -351,6 +350,7 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
+                                                                                                                            make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
                                                                                                                             make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
                                                                                                                             make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
                                                                                                                         '' ;
