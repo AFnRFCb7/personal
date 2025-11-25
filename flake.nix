@@ -258,7 +258,7 @@
                                                                                                                                             runtimeInputs = [ pkgs.nix ] ;
 																	                                                                        text =
 																		                                                                        ''
-																			                                                                        nix flake check --flake "$MOUNT/repository"
+																			                                                                        nix flake check "$MOUNT/repository"
 																		                                                                        '' ;
 																                                                                        } ;
 														                                                                            in "${ application }/bin/flake-check" ;
