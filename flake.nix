@@ -293,10 +293,12 @@
                                                                                                                                                                         then
                                                                                                                                                                             echo 18052a00-a24c-454d-9090-688cd6ca67d9
                                                                                                                                                                             git checkout -b "scratch/$(uuidgen)"
-                                                                                                                                                                            echo 81c8b3f1-48d3-485b-bceb-570bccbb680f
-                                                                                                                                                                            git reset --soft origin/main
-                                                                                                                                                                            echo d9546d9e-6f6d-49e6-afd0-0302d205fa9a
-                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            echo 8110a306-5e1e-4df1-a1c5-765338d4b2a8
+                                                                                                                                                                            git rebase -i origin/main
+                                                                                                                                                                            # echo 81c8b3f1-48d3-485b-bceb-570bccbb680f
+                                                                                                                                                                            # git reset --soft origin/main
+                                                                                                                                                                            # echo d9546d9e-6f6d-49e6-afd0-0302d205fa9a
+                                                                                                                                                                            # git commit -a --verbose
                                                                                                                                                                             echo 740646d4-9db6-4ca7-972f-2c25473cb978
                                                                                                                                                                             git push origin HEAD
                                                                                                                                                                             echo 5a0f825a-a031-448b-9fac-9c11cee9db5c
