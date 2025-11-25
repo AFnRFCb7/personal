@@ -216,6 +216,7 @@
 						                                                                    "alias.flake-check" = stage : "!${ stage }/flake-check" ;
 						                                                                    "alias.flake-switch" = stage : "!${ stage }/flake-switch" ;
 						                                                                    "alias.flake-test" = stage : "!${ stage }/flake-test" ;
+						                                                                    "alias.scratch" = stage : "!${ stage }/scratch" ;
 					                                                                    } ;
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
@@ -353,12 +354,28 @@
                                                                                                                                                 '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-test" ;
+                                                                                                                        scratch =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "scratch" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure 73096040
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
+                                                                                                                                                    git checkout -b "$BRANCH" 2>&1
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/scratch" ;
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
                                                                                                                             make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
                                                                                                                             make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
                                                                                                                             make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
+                                                                                                                            make-wrapper ${ scratch } /mount/stage/scratch "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -402,6 +419,19 @@
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
+                                                                                    submodules =
+                                                                                        {
+                                                                                            "inputs/dot-gnupg".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/dot-ssh".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/failure".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/fixture".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/git-repository".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/personal".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/resource".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/secrets".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/string".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/visitor".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                        } ;
 			                                                                    } ;
                                                                     studio =
                                                                         ignore :
@@ -435,7 +465,6 @@
                                                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                cd "$MOUNT"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 73096040
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
                                                                                                                                                 git checkout -b "$BRANCH" 2>&1
