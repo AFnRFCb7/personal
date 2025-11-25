@@ -371,7 +371,7 @@
                                                                                                                                                     then
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
                                                                                                                                                     fi
-                                                                                                                                                    STATUS=${ resources.production.repository.temporary ( setup : setup ) }
+                                                                                                                                                    STATUS=${ resources.production.temporary ( setup : setup ) }
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS" \;
                                                                                                                                                     if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                     then
@@ -681,7 +681,12 @@
                                                                     secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
                                                                     token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                 } ;
-                                                            temporary = ignore : { transient = true ; } ;
+                                                            temporary =
+                                                                ignore :
+                                                                    {
+                                                                        init = { mount , pkgs , resources } : "" ;
+                                                                        transient = true ;
+                                                                    } ;
                                                         } ;
                                                 } ;
                                         password-less-wrap =
