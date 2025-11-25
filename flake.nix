@@ -88,8 +88,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            ownertrust-fun = { mount , pkgs , resources } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys-fun = { mount , pkgs , resources } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -111,7 +111,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources , stage } :
+                                                                            { mount , pkgs , resources } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -148,8 +148,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , stage } : resources.production.secrets.ownertrust ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , stage } : resources.production.secrets.secret-keys ;
+                                                                            ownertrust-fun = { mount , pkgs , resources } : resources.production.secrets.ownertrust ;
+                                                                            secret-keys-fun = { mount , pkgs , resources } : resources.production.secrets.secret-keys ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -158,18 +158,18 @@
                                                                             "github.com" =
                                                                                 {
                                                                                     host-name = "github.com" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     user = "git" ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
                                                                                     host-name = "192.168.1.192" ;
-                                                                                    identity-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                     port = 8022 ;
                                                                                     strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources , stage } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
                                                                                 } ;
                                                                         } ;
                                                             flake =
@@ -178,7 +178,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , stage } :
+                                                                                    { mount , pkgs , resources } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -206,7 +206,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , stage } :
+                                                                                    { mount , pkgs , resources } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -249,7 +249,7 @@
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-                                                                                        { mount , pkgs , resources , stage } :
+                                                                                        { mount , pkgs , resources } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -396,6 +396,7 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
+                                                                                                                            make-wrapper ${ flake-build-vm-with-bootloader } /mount/stage/flake-build-vm-with-bootloader "${ mount }"
                                                                                                                             make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
                                                                                                                             make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
                                                                                                                             make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
@@ -404,7 +405,7 @@
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
-					                                                                    { mount , pkgs , resources , stage } :
+					                                                                    { mount , pkgs , resources } :
 						                                                                    let
 							                                                                    application =
 								                                                                    pkgs.writeShellApplication
@@ -471,7 +472,7 @@
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-                                                                                        { mount , pkgs , resources , stage } :
+                                                                                        { mount , pkgs , resources } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -560,7 +561,7 @@
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
-                                                                                        { mount , pkgs , resources , stage } :
+                                                                                        { mount , pkgs , resources } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -1141,8 +1142,8 @@
                                             {
                                                 expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
-                                                secret-keys-fun = { mount , pkgs , resources , stage } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
+                                                ownertrust-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
+                                                secret-keys-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
                                             } ;
                                     dot-ssh =
                                         _dot-ssh.check
@@ -1154,7 +1155,7 @@
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
                                                                 identity-file =
-                                                                    { mount , pkgs , resources , stage } :
+                                                                    { mount , pkgs , resources } :
                                                                         {
                                                                             directory = resources.directory ;
                                                                             file = resources.file ;
@@ -1167,7 +1168,7 @@
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
                                                                 identity-file =
-                                                                    { mount , pkgs , resources , stage } :
+                                                                    { mount , pkgs , resources } :
                                                                         {
                                                                             directory = resources.directory ;
                                                                             file = resources.file ;
@@ -1275,7 +1276,7 @@
                                                                 ] ;
                                                             expected-transient = -1 ;
                                                         init =
-                                                            { mount , pkgs , resources , stage } :
+                                                            { mount , pkgs , resources } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -1371,7 +1372,7 @@
                                                          ] ;
                                                      expected-transient = -1 ;
                                                      init =
-                                                         { mount , pkgs , resources , stage } :
+                                                         { mount , pkgs , resources } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
