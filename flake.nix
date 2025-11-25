@@ -362,8 +362,30 @@
                                                                                                                                                     then
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
                                                                                                                                                     fi
-                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} \;
-                                                                                                                                                    nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                    STATUS=true
+                                                                                                                                                    find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                                    do
+                                                                                                                                                        if ! flake-switch-input "$INPUT"
+                                                                                                                                                        then
+                                                                                                                                                            STATUS=false
+                                                                                                                                                        fi
+                                                                                                                                                    done
+                                                                                                                                                    if "$STATUS"
+                                                                                                                                                    then
+                                                                                                                                                        nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                        git fetch origin main
+                                                                                                                                                        git scratch
+                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                        git commit -a --verboase
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure d44ce079
+                                                                                                                                                        git checkout main
+                                                                                                                                                        git rebase "$COMMIT"
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        git scratch
+                                                                                                                                                    else
+                                                                                                                                                        failure 67fc4ef0
+                                                                                                                                                    fi
                                                                                                                                                 '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-switch" ;
@@ -1269,7 +1291,6 @@
                                                                                 ||     ||
                                                                 resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
                                                                 mount = /build/resources/mounts/0000000311691948
-                                                                stage = /build/resources/stages/0000000311691948
                                                             '' ;
                                                         expected-status = 0 ;
                                                         expected-targets =
@@ -1364,7 +1385,6 @@
                                                                                 ||     ||
                                                                 resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
                                                                 mount = /build/resources/mounts/0000000437766789
-                                                                stage = /build/resources/stages/0000000437766789
                                                            '' ;
                                                      expected-status = 70 ;
                                                      expected-targets =
