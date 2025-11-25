@@ -376,7 +376,7 @@
                                                                                                                                                         git fetch origin main
                                                                                                                                                         git scratch
                                                                                                                                                         git reset --soft origin/main
-                                                                                                                                                        git commit -a --verboase
+                                                                                                                                                        git commit -a --verbose
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure d44ce079
                                                                                                                                                         git checkout main
