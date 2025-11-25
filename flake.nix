@@ -566,7 +566,7 @@
                                                                                     ssh = stage : "${ stage }/ssh" ;
                                                                                     submodules =
                                                                                         {
-                                                                                            "inputs/personal".configs.scratch = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/personal".configs.scratchwtf = stage : "!${ stage }/scratch" ;
                                                                                         } ;
                                                                                 } ;
                                                                 } ;
