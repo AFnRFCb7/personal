@@ -1227,7 +1227,7 @@
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
-                                                                identity-file = resource : resource ;
+                                                                identity-file = resource : "${ resource }/bf79d3d545bc4012d41f86ab5af5d937bc9c968b0ccde1dd6dda61cf85b22170a9861bd9928eb0dc8b3155c30a358f2b236384f4d9c2be33cddba051c9795809" ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
@@ -1235,7 +1235,7 @@
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
-                                                                identity-file = resource : resource ;
+                                                                identity-file = resource : "${ resource }/f1d578ed952b9de9ababbcfc5cb20a49dc17823b03a9613a471c46e6eb0b8490f52e89f6e80d2be4e7c9b06cc3999c32c16d887f6538da4b45266079418c7efc" ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
@@ -1247,11 +1247,11 @@
                                                     {
                                                         d8ceac953da699ce9dcb957df8609d60df9242fedfb56ac7a48422e9d846f7af845ac4047208ad0e94e8dc203451bb30f00f542d418cb41e725ed93893c522f8 =
                                                             {
-                                                                identity-file = { mount , pkgs , resources } : builtins.throw "This function exists *only* so the test can detect that the value is a lambda. It is NOT meant to be called.  If this exception is thrown, the test (or surrounding code)  evaluated the lambda when it should not have." ;
+                                                                identity-file = { mount , pkgs , resources } : pkgs.coreutils ;
                                                             } ;
                                                         fbe99582ebcf956b3166c2cc8298b50013bbe9d966a8e8fd0a507bd9dc1961a4d82df09c2330af7f8c9b3cea7667c1f8be47a1ddf591ea1960816926116916fb =
                                                             {
-                                                                identity-file = { mount , pkgs , resources } : builtins.throw "This function exists *only* so the test can detect that the value is a lambda. It is NOT meant to be called.  If this exception is thrown, the test (or surrounding code)  evaluated the lambda when it should not have." ;
+                                                                identity-file = { mount , pkgs , resources } : pkgs.coreutils ;
                                                             } ;
                                                     } ;
                                             } ;
