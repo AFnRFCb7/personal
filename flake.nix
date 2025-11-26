@@ -335,9 +335,9 @@
                                                                                                                                                                             if [[ 0 != "$?" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 cat > "$STATUS/FLAG" <<EOF
-                                                                                                                                                                                INPUT="$INPUT"
-                                                                                                                                                                                EXIT_CODE="$?"
-                                                                                                                                                                                EOF
+                                                                                                                                                                        INPUT="$INPUT"
+                                                                                                                                                                        EXIT_CODE="$?"
+                                                                                                                                                                        EOF
                                                                                                                                                                             fi
                                                                                                                                                                         }
                                                                                                                                                                         trap cleanup EXIT
