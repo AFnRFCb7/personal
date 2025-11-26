@@ -912,6 +912,7 @@
                                                         systemd.services.resources-log-listener =
                                                            {
                                                                 after = [ "network.target" ] ;
+                                                                enable = true ;
                                                                 serviceConfig =
                                                                     {
                                                                         ExecStart =
@@ -924,10 +925,10 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                    exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                    flock 203
                                                                                                     redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                     do
+                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                        flock 203
                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                         then
                                                                                                             read -r CHANNEL
