@@ -402,6 +402,7 @@
                                                                                                                                                         git scratch
                                                                                                                                                         echo scratched the main branch
                                                                                                                                                     else
+                                                                                                                                                        FAILURE="$( cat "$STATUS/FLAG" )" || failure c2363ef6
                                                                                                                                                         failure 67fc4ef0 "We observed a problem with one of the inputs" "$STATUS/FLAG"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
