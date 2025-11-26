@@ -332,11 +332,12 @@
                                                                                                                                                                         INPUT="$1"
                                                                                                                                                                         STATUS="$2"
                                                                                                                                                                         cleanup ( ) {
+                                                                                                                                                                            EXIT_CODE="$?"
                                                                                                                                                                             if [[ 0 != "$?" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 cat > "$STATUS/FLAG" <<EOF
                                                                                                                                                                         INPUT="$INPUT"
-                                                                                                                                                                        EXIT_CODE="$?"
+                                                                                                                                                                        EXIT_CODE="$EXIT_CODE"
                                                                                                                                                                         EOF
                                                                                                                                                                             fi
                                                                                                                                                                         }
