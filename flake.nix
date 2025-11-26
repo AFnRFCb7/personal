@@ -338,17 +338,20 @@
                                                                                                                                                                             fi
                                                                                                                                                                         }
                                                                                                                                                                         trap cleanup EXIT
+                                                                                                                                                                        echo "starting INPUT $INPUT"
                                                                                                                                                                         cd "$INPUT"
-                                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                         then
+                                                                                                                                                                            echo "there is a difference in $INPUT"
                                                                                                                                                                             git scratch
                                                                                                                                                                             git reset --soft origin/main
                                                                                                                                                                             git commit -a --verbose
                                                                                                                                                                             git push origin HEAD
+                                                                                                                                                                            echo "squashed the scratch $INPUT"
                                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 92c1bf82
+                                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                             if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                             then
                                                                                                                                                                                 gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
@@ -359,33 +362,42 @@
                                                                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
                                                                                                                                                                             cd "$MOUNT/repository"
                                                                                                                                                                             nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                            gh auth logout
+                                                                                                                                                                            echo "PRed $INPUT"
+                                                                                                                                                                        else
+                                                                                                                                                                            echo "there is no difference in $INPUT"
                                                                                                                                                                         fi
-                                                                                                                                                                        gh auth logout
                                                                                                                                                                     '' ;
 																	                                                                                        }
 																	                                                                                )
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
+                                                                                                                                                    echo starting
                                                                                                                                                     if ! nix flake check "$MOUNT/repository"
                                                                                                                                                     then
                                                                                                                                                         failure 225a0019 "We will not switch unless checks pass"
                                                                                                                                                     fi
                                                                                                                                                     STATUS=${ resources.production.temporary ( setup : setup ) }
+                                                                                                                                                    echo switching inputs
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS" \;
                                                                                                                                                     if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                     then
+                                                                                                                                                        echo successfully switched inputs
                                                                                                                                                         nixos-rebuild switch --flake "$MOUNT/repository#user"
                                                                                                                                                         git fetch origin main
                                                                                                                                                         git scratch
                                                                                                                                                         git reset --soft origin/main
                                                                                                                                                         git commit -a --verbose
                                                                                                                                                         git push origin HEAD
+                                                                                                                                                        echo squashed the scratch branch
                                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure d44ce079
                                                                                                                                                         git checkout main
                                                                                                                                                         git rebase "$COMMIT"
                                                                                                                                                         git push origin HEAD
+                                                                                                                                                        echo squashed the main branch
                                                                                                                                                         git scratch
+                                                                                                                                                        echo scratched the main branch
                                                                                                                                                     else
                                                                                                                                                         failure 67fc4ef0 "We observed a problem with one of the inputs"
                                                                                                                                                     fi
