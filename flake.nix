@@ -1231,7 +1231,7 @@
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
-                                                        d8ceac953da699ce9dcb957df8609d60df9242fedfb56ac7a48422e9d846f7af845ac4047208ad0e94e8dc203451bb30f00f542d418cb41e725ed93893c522f8 =
+                                                        cc1b697e7861e58d00266a8006f54a16f2279b79f7eb3184863106960d995c86d132a5fb4ef2d7a668478393a91aafb26401ccc565815d3ea5a493d559c6e6e6 =
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
