@@ -165,7 +165,7 @@
                                                                                             host-name = "github.com" ;
                                                                                             identity-file = resource : "${ resource }/secret" ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ; } ;
+                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ;
                                                                                             user = "git" ;
                                                                                         } ;
                                                                                     mobile =
@@ -174,7 +174,7 @@
                                                                                             identity-file = resource : "${ resource }/secret" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ; } ;
+                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ;
                                                                                         } ;
                                                                                 } ;
                                                                             resources =
