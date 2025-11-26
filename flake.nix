@@ -1245,7 +1245,10 @@
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
-                                                        ae957c1d91d1e2ce9a4a05a42df82dc7b09959d3e55f63e67a1e3a97cbe3c71dee8dcd927e5f1de5a53748e82fa55dc6da6103c7c273a7dda36f111390cd4ab2.known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                        ae957c1d91d1e2ce9a4a05a42df82dc7b09959d3e55f63e67a1e3a97cbe3c71dee8dcd927e5f1de5a53748e82fa55dc6da6103c7c273a7dda36f111390cd4ab2 =
+                                                            {
+                                                                known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                            } ;
                                                         # fbe99582ebcf956b3166c2cc8298b50013bbe9d966a8e8fd0a507bd9dc1961a4d82df09c2330af7f8c9b3cea7667c1f8be47a1ddf591ea1960816926116916fb.identity-file = { mount , pkgs , resources } : pkgs.coreutils ;
                                                     } ;
                                             } ;
