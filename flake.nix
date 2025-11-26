@@ -1240,7 +1240,7 @@
                                                                 user = "git" ;
                                                             } ;
                                                     } ;
-                                                expected = "/nix/store/5rhxgmggdis8f97sga61bxslws8wrs2a-init/bin/init" ;
+                                                expected = "/nix/store/v7x8fzgd3vnqzzwq3sdly3bqy28hay97-init/bin/init" ;
                                                 mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
