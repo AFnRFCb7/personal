@@ -333,7 +333,7 @@
                                                                                                                                                                         STATUS="$2"
                                                                                                                                                                         cleanup ( ) {
                                                                                                                                                                             EXIT_CODE="$?"
-                                                                                                                                                                            if [[ 0 != "$?" ]]
+                                                                                                                                                                            if [[ 0 != "$EXIT_CODE" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 cat > "$STATUS/FLAG" <<EOF
                                                                                                                                                                         INPUT="$INPUT"
