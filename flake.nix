@@ -57,7 +57,7 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
-                            _secret = secret.lib { } ;
+                            _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
                             _visitor = visitor.lib { } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
@@ -1040,7 +1040,7 @@
                                                                         recipient = lib.mkOption { default = "688A5A79ED45AED4D010D56452EDF74F9A9A6E20" ; type = lib.types.str ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/artifacts.git" ; type = lib.types.str ; } ;
                                                                     } ;
-                                                                channel = lib.mkOption { default = "f8d8866f434b53ddef89e1f445b382ed8ad034fada809284fda25a9db0ffecf79a8b6a17c95d83bb1e40f5c287e8a95b5523ae6717b2c45f429d4e78e73b354f" ; type = lib.types.str ; } ;
+                                                                channel = lib.mkOption { default = "redis" ; type = lib.types.str ; } ;
                                                                 chromium =
                                                                     {
                                                                         branch = lib.mkOption { default = "artifact/eb5e3536f8f42f3e6d42d135cc85c4e0df4b955faaf7d221a0ed5ef" ; type = lib.types.str ; } ;
