@@ -23,7 +23,7 @@
                     } @primary :
                         let
                             _dot-gnupg = dot-gnupg.lib { } ;
-                            _dot-ssh = dot-ssh.lib { visitor = _visitor.implementation ; } ;
+                            _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
@@ -95,16 +95,19 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
-                                                                            github =
+                                                                            configuration =
                                                                                 {
-                                                                                    strict-host-key-checking = true ;
-                                                                                    host-name = "github.com" ;
-                                                                                } ;
-                                                                            mobile =
-                                                                                {
-                                                                                    strict-host-key-checking = true ;
-                                                                                    host-name = "192.168.1.192" ;
-                                                                                    port = 8022 ;
+                                                                                    github =
+                                                                                        {
+                                                                                            strict-host-key-checking = true ;
+                                                                                            host-name = "github.com" ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            strict-host-key-checking = true ;
+                                                                                            host-name = "192.168.1.192" ;
+                                                                                            port = 8022 ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                             foobar =
@@ -126,7 +129,7 @@
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         root-resource "$DOT_SSH"
-                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
+                                                                                                        ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         root-resource "$GIT_REPOSITORY"
                                                                                                         ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
@@ -155,21 +158,37 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
-                                                                            "github.com" =
+                                                                            configuration =
                                                                                 {
-                                                                                    host-name = "github.com" ;
-                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
-                                                                                    strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
-                                                                                    user = "git" ;
+                                                                                    "github.com" =
+                                                                                        {
+                                                                                            host-name = "github.com" ;
+                                                                                            identity-file = resource : "${ resource }/secret" ;
+                                                                                            strict-host-key-checking = true ;
+                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ; } ;
+                                                                                            user = "git" ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            host-name = "192.168.1.192" ;
+                                                                                            identity-file = resource : "${ resource }/secret" ;
+                                                                                            port = 8022 ;
+                                                                                            strict-host-key-checking = true ;
+                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ; } ;
+                                                                                        } ;
                                                                                 } ;
-                                                                            mobile =
+                                                                            resources =
                                                                                 {
-                                                                                    host-name = "192.168.1.192" ;
-                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
-                                                                                    port = 8022 ;
-                                                                                    strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    "github.com" =
+                                                                                        {
+                                                                                            identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                             flake =
@@ -478,7 +497,7 @@
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
                                                                                                                                 make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                                 root-resource "$DOT_SSH"
-                                                                                                                                ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
+                                                                                                                                ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
                                                                                                                                 git fetch "$STUDIO/repository" "$COMMIT" 2>&1
                                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                             '' ;
@@ -645,7 +664,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/dot-ssh" "$@"
+                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/config" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/ssh" ;
@@ -1204,41 +1223,36 @@
                                             {
                                                 configuration =
                                                     {
-                                                        b-mobile =
+                                                        fbe99582ebcf956b3166c2cc8298b50013bbe9d966a8e8fd0a507bd9dc1961a4d82df09c2330af7f8c9b3cea7667c1f8be47a1ddf591ea1960816926116916fb =
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.192" ;
-                                                                identity-file =
-                                                                    { mount , pkgs , resources } :
-                                                                        {
-                                                                            directory = resources.directory ;
-                                                                            file = resources.file ;
-                                                                        } ;
+                                                                identity-file = resource : resource ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
-                                                        a-mobile =
+                                                        d8ceac953da699ce9dcb957df8609d60df9242fedfb56ac7a48422e9d846f7af845ac4047208ad0e94e8dc203451bb30f00f542d418cb41e725ed93893c522f8 =
                                                             {
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "192.168.1.202" ;
-                                                                identity-file =
-                                                                    { mount , pkgs , resources } :
-                                                                        {
-                                                                            directory = resources.directory ;
-                                                                            file = resources.file ;
-                                                                        } ;
+                                                                identity-file = resource : resource ;
                                                                 port = 8022 ;
                                                                 user = "git" ;
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/5rhxgmggdis8f97sga61bxslws8wrs2a-init/bin/init" ;
-                                                failure = _failure.implementation "8bc0fd4b" ;
                                                 mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
                                                 pkgs = pkgs ;
-                                                resources =
+                                                implementation-resources =
                                                     {
-                                                        directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
-                                                        file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
+                                                        d8ceac953da699ce9dcb957df8609d60df9242fedfb56ac7a48422e9d846f7af845ac4047208ad0e94e8dc203451bb30f00f542d418cb41e725ed93893c522f8 =
+                                                            {
+                                                                identity-file = { mount , pkgs , resources } : builtins.throw "This function exists *only* so the test can detect that the value is a lambda. It is NOT meant to be called.  If this exception is thrown, the test (or surrounding code)  evaluated the lambda when it should not have." ;
+                                                            } ;
+                                                        fbe99582ebcf956b3166c2cc8298b50013bbe9d966a8e8fd0a507bd9dc1961a4d82df09c2330af7f8c9b3cea7667c1f8be47a1ddf591ea1960816926116916fb =
+                                                            {
+                                                                identity-file = { mount , pkgs , resources } : builtins.throw "This function exists *only* so the test can detect that the value is a lambda. It is NOT meant to be called.  If this exception is thrown, the test (or surrounding code)  evaluated the lambda when it should not have." ;
+                                                            } ;
                                                     } ;
                                             } ;
                                    failure =
