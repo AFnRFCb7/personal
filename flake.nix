@@ -387,6 +387,9 @@
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS" \;
                                                                                                                                                     if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                     then
+                                                                                                                                                        FAILURE="$( cat "$STATUS/FLAG" )" || failure c2363ef6
+                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs" "$FAILURE"
+                                                                                                                                                    else
                                                                                                                                                         echo successfully switched inputs
                                                                                                                                                         nixos-rebuild switch --flake "$MOUNT/repository#user"
                                                                                                                                                         git fetch origin main
@@ -402,9 +405,6 @@
                                                                                                                                                         echo squashed the main branch
                                                                                                                                                         git scratch
                                                                                                                                                         echo scratched the main branch
-                                                                                                                                                    else
-                                                                                                                                                        FAILURE="$( cat "$STATUS/FLAG" )" || failure c2363ef6
-                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs" "$FAILURE"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
 																                                                                        } ;
