@@ -1475,7 +1475,7 @@
                                             _secret.check
                                                 {
                                                     encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                    expected = "/nix/store/gciqcwms4g5z2imjafmpgd203adss1sw-init/bin/init" ;
+                                                    expected = "/nix/store/6hghn0kl1k9arrw0ycr3vf1qxcf2kfj6-init/bin/init" ;
                                                     identity = ignore : "${ fixture }/age/identity/private" ;
                                                     failure = _failure.implementation "a720a5e7" ;
                                                     pkgs = pkgs ;
