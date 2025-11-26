@@ -326,7 +326,7 @@
 																	                                                                                    pkgs.writeShellApplication
 																	                                                                                        {
 																	                                                                                            name = "flake-switch-input" ;
-																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git ] ;
+																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.yq-go ] ;
 																	                                                                                            text =
                                                                                                                                                                     ''
                                                                                                                                                                         INPUT="$1"
@@ -334,7 +334,10 @@
                                                                                                                                                                         cleanup ( ) {
                                                                                                                                                                             if [[ 0 != "$?" ]]
                                                                                                                                                                             then
-                                                                                                                                                                                touch "$STATUS/FLAG"
+                                                                                                                                                                                cat > "$STATUS/FLAG" <<EOF
+                                                                                                                                                                                INPUT="$INPUT"
+                                                                                                                                                                                EXIT_CODE="$?"
+                                                                                                                                                                                EOF
                                                                                                                                                                             fi
                                                                                                                                                                         }
                                                                                                                                                                         trap cleanup EXIT
@@ -399,7 +402,7 @@
                                                                                                                                                         git scratch
                                                                                                                                                         echo scratched the main branch
                                                                                                                                                     else
-                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs"
+                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs" "$STATUS/FLAG"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
 																                                                                        } ;
