@@ -326,15 +326,19 @@
 																	                                                                                    pkgs.writeShellApplication
 																	                                                                                        {
 																	                                                                                            name = "flake-switch-input" ;
-																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git ] ;
+																	                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.yq-go ] ;
 																	                                                                                            text =
                                                                                                                                                                     ''
                                                                                                                                                                         INPUT="$1"
                                                                                                                                                                         STATUS="$2"
                                                                                                                                                                         cleanup ( ) {
-                                                                                                                                                                            if [[ 0 != "$?" ]]
+                                                                                                                                                                            EXIT_CODE="$?"
+                                                                                                                                                                            if [[ 0 != "$EXIT_CODE" ]]
                                                                                                                                                                             then
-                                                                                                                                                                                touch "$STATUS/FLAG"
+                                                                                                                                                                                cat > "$STATUS/FLAG" <<EOF
+                                                                                                                                                                        INPUT="$INPUT"
+                                                                                                                                                                        EXIT_CODE="$EXIT_CODE"
+                                                                                                                                                                        EOF
                                                                                                                                                                             fi
                                                                                                                                                                         }
                                                                                                                                                                         trap cleanup EXIT
@@ -399,7 +403,8 @@
                                                                                                                                                         git scratch
                                                                                                                                                         echo scratched the main branch
                                                                                                                                                     else
-                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs"
+                                                                                                                                                        FAILURE="$( cat "$STATUS/FLAG" )" || failure c2363ef6
+                                                                                                                                                        failure 67fc4ef0 "We observed a problem with one of the inputs" "$FAILURE"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
 																                                                                        } ;
