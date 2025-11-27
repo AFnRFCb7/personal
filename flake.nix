@@ -1022,43 +1022,93 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
-                                                        systemd.services.resources-log-listener =
-                                                           {
-                                                                after = [ "network.target" ] ;
-                                                                enable = true ;
-                                                                serviceConfig =
+                                                        systemd.services =
+                                                            {
+                                                                resources-log-cleaner =
                                                                     {
-                                                                        ExecStart =
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "log-event-listener" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ( _failure.implementation "c5160404" )] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
-                                                                                                    do
-                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                        flock 203
-                                                                                                        if [[ "$TYPE" == "message" ]]
-                                                                                                        then
-                                                                                                            read -r CHANNEL
-                                                                                                            if [[ ${ config.personal.channel } != "$CHANNEL" ]]
-                                                                                                            then
-                                                                                                                failure 3aab9086
-                                                                                                            fi
-                                                                                                            read -r PAYLOAD
-                                                                                                            echo "$PAYLOAD" | yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
-                                                                                                        fi
-                                                                                                    done
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/log-event-listener" ;
-                                                                        User = config.personal.name ;
+                                                                        after = [ "network.target" "redis.service" ] ;
+                                                                        enable = true ;
+                                                                        serviceConfig =
+                                                                            {
+                                                                                ExecStart =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "ExecStart" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                            redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
+                                                                                                            do
+                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                flock 203
+                                                                                                                if [[ "$TYPE" == "message" ]]
+                                                                                                                then
+                                                                                                                    read -r CHANNEL
+                                                                                                                    if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                                    then
+                                                                                                                        failure ea3c1e1c
+                                                                                                                    fi
+                                                                                                                    read -r PAYLOAD
+                                                                                                                    ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
+                                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                    # FIXME LATER
+                                                                                                                    HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
+                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
+                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "${ resources-directory }" "canonical/$HASH" "links/$INDEX" "locks/$INDEX" "locks/$HASH" "mounts/$INDEX"
+                                                                                                                    cd "${ resources-directory }"
+                                                                                                                    rm --recursive --force canonical/$HASH links/$INDEX locks/$INDEX locks/$HASH mounts/$INDEX
+                                                                                                                fi
+                                                                                                            done
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/ExecStart" ;
+                                                                                User = config.personal.name ;
+                                                                            } ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
-                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                resources-log-listener =
+                                                                   {
+                                                                        after = [ "network.target" "redis.service" ] ;
+                                                                        enable = true ;
+                                                                        requires = [ "redis.service" ] ;
+                                                                        serviceConfig =
+                                                                            {
+                                                                                ExecStart =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "log-event-listener" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ( _failure.implementation "c5160404" )] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                            redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
+                                                                                                            do
+                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                flock 203
+                                                                                                                if [[ "$TYPE" == "message" ]]
+                                                                                                                then
+                                                                                                                    read -r CHANNEL
+                                                                                                                    if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                                    then
+                                                                                                                        failure 3aab9086
+                                                                                                                    fi
+                                                                                                                    read -r PAYLOAD
+                                                                                                                    echo "$PAYLOAD" | yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                fi
+                                                                                                            done
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/log-event-listener" ;
+                                                                                User = config.personal.name ;
+                                                                            } ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                    } ;
                                                             } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
