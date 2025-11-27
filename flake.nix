@@ -528,9 +528,9 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.hydrate" = stage : "!${ stage }/hydrate" ;
-                                                                                            "alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "alias.immutable-snapshot" = stage : "!${ stage }/immutable-snapshot" ;
+                                                                                            "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
+                                                                                            "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
+                                                                                            "alias.mutable-snapshot" = stage : "!${ stage }/mutable-snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
                                                                                     email = config.personal.repository.private.email ;
@@ -545,12 +545,12 @@
                                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                                             text =
                                                                                                                 let
-                                                                                                                    immutable-snapshot =
+                                                                                                                    mutable-snapshot =
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "immutable-snapshot" ;
+                                                                                                                                        name = "mutable-snapshot" ;
                                                                                                                                         runtimeInputs =
                                                                                                                                             [
                                                                                                                                                 pkgs.findutils
@@ -577,7 +577,7 @@
                                                                                                                                                                     cd "$INPUT"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
-                                                                                                                                                                        git scratch
+                                                                                                                                                                        git mutable-scratch
                                                                                                                                                                         git commit -a --verbose --allow-empty-message
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure 4cf69f5f
                                                                                                                                                                         cd "$MOUNT/repository"
@@ -604,7 +604,7 @@
                                                                                                                                                 fi
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
-                                                                                                                                                    git scratch
+                                                                                                                                                    git mutable-scratch
                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                 fi
                                                                                                                                                 if git symbolic-ref -q HEAD > /dev/null
@@ -616,13 +616,13 @@
                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                                in "${ application }/bin/immutable-snapshot" ;
-                                                                                                                    scratch =
+                                                                                                                                in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                    mutable-scratch =
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "scratch" ;
+                                                                                                                                        name = "mutable-scratch" ;
                                                                                                                                         runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
@@ -634,8 +634,8 @@
                                                                                                                                 in "${ application }/bin/scratch" ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            make-wrapper ${ scratch } /mount/stage/scratch "${ scratch }"
-                                                                                                                            make-wrapper ${ immutable-snapshot } /mount/stage/immutable-snapshot "${ mount }"
+                                                                                                                            make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
+                                                                                                                            make-wrapper ${ mutable-snapshot } /mount/stage/immutable-snapshot "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -649,12 +649,12 @@
                                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                                             text =
                                                                                                                 let
-                                                                                                                    hydrate =
+                                                                                                                    mutable-hydrate =
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "hydrate" ;
+                                                                                                                                        name = "mutable-hydrate" ;
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( _failure.implementation "" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
@@ -668,7 +668,7 @@
                                                                                                                                                 git submodule update --init --recursive 2>&1
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                        in "${ application }/bin/hydrate" ;
+                                                                                                                        in "${ application }/bin/mutable-hydrate" ;
                                                                                                                     ssh =
                                                                                                                         let
                                                                                                                             application =
