@@ -704,7 +704,7 @@
                                                                                                                                                 git checkout -b "$BRANCH" 2>&1
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                                in "${ application }/bin/scratch" ;
+                                                                                                                                in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
