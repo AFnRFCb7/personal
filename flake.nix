@@ -1208,8 +1208,7 @@
                                             program = "${ pkgs.pass }/bin/pass" ;
                                         } ;
                                 } ;
-                            checks = { } ;
-                            checks3 =
+                            checks =
                                 {
                                     dot-ssh =
                                         _dot-ssh.check
@@ -1222,11 +1221,6 @@
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
-                                                        df6490a5 =
-                                                            {
-                                                                known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
-                                                            } ;
-                                                       # fbe99582ebcf956b3166c2cc8298b50013bbe9d966a8e8fd0a507bd9dc1961a4d82df09c2330af7f8c9b3cea7667c1f8be47a1ddf591ea1960816926116916fb.identity-file = { mount , pkgs , resources } : pkgs.coreutils ;
                                                     } ;
                                             } ;
                                 } ;
