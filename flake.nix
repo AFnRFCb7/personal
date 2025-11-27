@@ -23,7 +23,7 @@
                     } @primary :
                         let
                             _dot-gnupg = dot-gnupg.lib { } ;
-                            _dot-ssh = dot-ssh.lib { visitor = _visitor.implementation ; } ;
+                            _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
@@ -95,16 +95,19 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
-                                                                            github =
+                                                                            configuration =
                                                                                 {
-                                                                                    strict-host-key-checking = true ;
-                                                                                    host-name = "github.com" ;
-                                                                                } ;
-                                                                            mobile =
-                                                                                {
-                                                                                    strict-host-key-checking = true ;
-                                                                                    host-name = "192.168.1.192" ;
-                                                                                    port = 8022 ;
+                                                                                    github =
+                                                                                        {
+                                                                                            strict-host-key-checking = true ;
+                                                                                            host-name = "github.com" ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            strict-host-key-checking = true ;
+                                                                                            host-name = "192.168.1.192" ;
+                                                                                            port = 19952 ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                             foobar =
@@ -126,7 +129,7 @@
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         root-resource "$DOT_SSH"
-                                                                                                        ln --symbolic "$DOT_SSH/dot-ssh" /mount
+                                                                                                        ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         root-resource "$GIT_REPOSITORY"
                                                                                                         ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
@@ -155,21 +158,37 @@
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
-                                                                            "github.com" =
+                                                                            configuration =
                                                                                 {
-                                                                                    host-name = "github.com" ;
-                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ; file = "secret" ; } ;
-                                                                                    strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
-                                                                                    user = "git" ;
+                                                                                    "github.com" =
+                                                                                        {
+                                                                                            host-name = "github.com" ;
+                                                                                            identity-file = ignore : "secret" ;
+                                                                                            strict-host-key-checking = true ;
+                                                                                            user-known-hosts-file = ignore : "secret" ;
+                                                                                            user = "git" ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            host-name = "192.168.1.192" ;
+                                                                                            identity-file = ignore : "secret" ;
+                                                                                            port = 8022 ;
+                                                                                            strict-host-key-checking = true ;
+                                                                                            user-known-hosts-file = ignore : "secret" ;
+                                                                                        } ;
                                                                                 } ;
-                                                                            mobile =
+                                                                            resources =
                                                                                 {
-                                                                                    host-name = "192.168.1.192" ;
-                                                                                    identity-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ; file = "secret" ; } ;
-                                                                                    port = 8022 ;
-                                                                                    strict-host-key-checking = true ;
-                                                                                    user-known-hosts-file = { mount , pkgs , resources } : { directory = resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ; file = "secret" ; } ;
+                                                                                    "github.com" =
+                                                                                        {
+                                                                                            identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                             flake =
@@ -478,7 +497,7 @@
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
                                                                                                                                 make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                                 root-resource "$DOT_SSH"
-                                                                                                                                ln --symbolic "$DOT_SSH/dot-ssh" "${ mount }/stage/dot-ssh"
+                                                                                                                                ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
                                                                                                                                 git fetch "$STUDIO/repository" "$COMMIT" 2>&1
                                                                                                                                 git checkout "$COMMIT" 2>&1
                                                                                                                             '' ;
@@ -645,7 +664,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/dot-ssh" "$@"
+                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/config" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/ssh" ;
@@ -942,7 +961,7 @@
                                                                                                                 failure 3aab9086
                                                                                                             fi
                                                                                                             read -r PAYLOAD
-                                                                                                            echo "$PAYLOAD" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                            echo "$PAYLOAD" | yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                         fi
                                                                                                     done
                                                                                                 '' ;
@@ -1204,41 +1223,42 @@
                                             {
                                                 configuration =
                                                     {
-                                                        b-mobile =
+                                                        f5d69296 =
                                                             {
+                                                                user-known-hosts-file = ignore : "dfdad39d" ;
+                                                                port = 25112 ;
                                                                 strict-host-key-checking = true ;
-                                                                host-name = "192.168.1.192" ;
-                                                                identity-file =
-                                                                    { mount , pkgs , resources } :
-                                                                        {
-                                                                            directory = resources.directory ;
-                                                                            file = resources.file ;
-                                                                        } ;
-                                                                port = 8022 ;
-                                                                user = "git" ;
+                                                                host-name = "d860b627" ;
                                                             } ;
-                                                        a-mobile =
+                                                        cb8e09cf =
                                                             {
-                                                                strict-host-key-checking = true ;
-                                                                host-name = "192.168.1.202" ;
-                                                                identity-file =
-                                                                    { mount , pkgs , resources } :
-                                                                        {
-                                                                            directory = resources.directory ;
-                                                                            file = resources.file ;
-                                                                        } ;
-                                                                port = 8022 ;
-                                                                user = "git" ;
+                                                                user-known-hosts-file = ignore : "c2a91e38" ;
+                                                                strict-host-key-checking = false ;
+                                                                port = 12310 ;
+                                                                # we are excluding believe because it kept changing
+                                                                # we need a better way to test this
+                                                                # identity-file = ./. ;
+                                                                host-name = "eedaca3e" ;
                                                             } ;
                                                     } ;
-                                                expected = "/nix/store/5rhxgmggdis8f97sga61bxslws8wrs2a-init/bin/init" ;
-                                                failure = _failure.implementation "8bc0fd4b" ;
-                                                mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
+                                                expected = "/nix/store/iflzzyzrlm9qy68gn6bay3v3vx9c04j4-init/bin/init" ;
+                                                mount = "271a376c" ;
                                                 pkgs = pkgs ;
-                                                resources =
+                                                implementation-resources =
                                                     {
-                                                        directory = "8fc5318ded93faad225f0a476792c71f33b244d0bb6bc72a4f4e52b7d1d05d04f73d4c9df8d51551ee3103a583147e4f704d39fb5330ead882155b8288d5df13" ;
-                                                        file = "0aafe25583f5d05bcac9292354f28cf3010a84015ffebd0abb61cf712123133f14a909abf08c17be1ec7f0c8c9f13a4afab7e25056609457d5e7959b2d5612d9" ;
+                                                        cb8e09cf =
+                                                            {
+                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                            } ;
+                                                        f5d69296 =
+                                                            {
+                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                            } ;
+                                                        b8b6ddc8 =
+                                                            {
+                                                                strict-host-key-checking = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                            } ;
                                                     } ;
                                             } ;
                                    failure =
@@ -1485,160 +1505,216 @@
                                                     failure = _failure.implementation "a720a5e7" ;
                                                     pkgs = pkgs ;
                                                } ;
-                                                visitor-happy =
-                                                    _visitor.check
+                                        visitor-happy =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    expected =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            diffutil = pkgs.diffutil ;
-                                                            expected =
+                                                            bool =
+                                                                [
+                                                                    {
+                                                                        path = [ "bool" ] ;
+                                                                        type = "bool" ;
+                                                                        value = true ;
+                                                                    }
+                                                                ] ;
+                                                            float =
+                                                                [
+                                                                    {
+                                                                        path = [ "float" ] ;
+                                                                        type = "float" ;
+                                                                        value = 1.0 ;
+                                                                    }
+                                                                ] ;
+                                                            int =
+                                                                [
+                                                                    {
+                                                                        path = [ "int" ] ;
+                                                                        type = "int" ;
+                                                                        value = 1 ;
+                                                                    }
+                                                                ] ;
+                                                            lambda =
+                                                                [
+                                                                    {
+                                                                        path = [ "lambda" ] ;
+                                                                        type = "lambda" ;
+                                                                        value = null ;
+                                                                    }
+                                                                ] ;
+                                                            list =
+                                                                [
+                                                                    [
+                                                                        {
+                                                                            path = [ "list" 0 ] ;
+                                                                            type = "int" ;
+                                                                            value = 1 ;
+                                                                        }
+                                                                    ]
+                                                                ] ;
+                                                            null =
+                                                                [
+                                                                    {
+                                                                        path = [ "null" ] ;
+                                                                        type = "null" ;
+                                                                        value = null ;
+                                                                    }
+                                                                ] ;
+                                                            path =
+                                                                [
+                                                                    {
+                                                                        path = [ "path" ] ;
+                                                                        type = "path" ;
+                                                                        value = ./. ;
+                                                                    }
+                                                                ] ;
+                                                            set =
                                                                 {
-                                                                    bool =
+                                                                    one =
                                                                         [
                                                                             {
-                                                                                path = [ "bool" ] ;
-                                                                                type = "bool" ;
-                                                                                value = true ;
-                                                                            }
-                                                                        ] ;
-                                                                    float =
-                                                                        [
-                                                                            {
-                                                                                path = [ "float" ] ;
-                                                                                type = "float" ;
-                                                                                value = 1.0 ;
-                                                                            }
-                                                                        ] ;
-                                                                    int =
-                                                                        [
-                                                                            {
-                                                                                path = [ "int" ] ;
+                                                                                path = [ "set" "one" ] ;
                                                                                 type = "int" ;
                                                                                 value = 1 ;
                                                                             }
                                                                         ] ;
-                                                                    lambda =
-                                                                        [
-                                                                            {
-                                                                                path = [ "lambda" ] ;
-                                                                                type = "lambda" ;
-                                                                                value = null ;
-                                                                            }
-                                                                        ] ;
-                                                                    list =
-                                                                        [
-                                                                            [
-                                                                                {
-                                                                                    path = [ "list" 0 ] ;
-                                                                                    type = "int" ;
-                                                                                    value = 1 ;
-                                                                                }
-                                                                            ]
-                                                                        ] ;
-                                                                    null =
-                                                                        [
-                                                                            {
-                                                                                path = [ "null" ] ;
-                                                                                type = "null" ;
-                                                                                value = null ;
-                                                                            }
-                                                                        ] ;
-                                                                    path =
-                                                                        [
-                                                                            {
-                                                                                path = [ "path" ] ;
-                                                                                type = "path" ;
-                                                                                value = ./. ;
-                                                                            }
-                                                                        ] ;
-                                                                    set =
+                                                                    recur =
                                                                         {
-                                                                            one =
+                                                                            int =
                                                                                 [
                                                                                     {
-                                                                                        path = [ "set" "one" ] ;
+                                                                                        path = [ "set" "recur" "int" ] ;
                                                                                         type = "int" ;
                                                                                         value = 1 ;
                                                                                     }
                                                                                 ] ;
+                                                                            lambda =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "recur" "lambda" ] ;
+                                                                                        type = "lambda" ;
+                                                                                        value = null ;
+                                                                                    }
+                                                                                ] ;
                                                                         } ;
-                                                                    string =
-                                                                        [
-                                                                            {
-                                                                                path = [ "string" ] ;
-                                                                                type = "string" ;
-                                                                                value = "1" ;
-                                                                            }
-                                                                        ] ;
                                                                 } ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = true ;
-                                                            value =
-                                                                {
-                                                                    bool = true ;
-                                                                    float = 1.0 ;
-                                                                    int = 1 ;
-                                                                    lambda = i : i ;
-                                                                    list = [ 1 ] ;
-                                                                    null = null ;
-                                                                    path = ./. ;
-                                                                    set = { one = 1 ; } ;
-                                                                    string = "1" ;
-                                                                } ;
-                                                            visitors =
-                                                                let
-                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                                    in
-                                                                        {
-                                                                            bool = string ;
-                                                                            float = string ;
-                                                                            int = string ;
-                                                                            lambda = string ;
-                                                                            null = string ;
-                                                                            path = string ;
-                                                                            string = string ;
-                                                                        } ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                            yq-go = pkgs.yq-go ;
+                                                            string =
+                                                                [
+                                                                    {
+                                                                        path = [ "string" ] ;
+                                                                        type = "string" ;
+                                                                        value = "1" ;
+                                                                    }
+                                                                ] ;
                                                         } ;
-                                                string-happy =
-                                                    _string.check
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    value =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = true ;
-                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
-                                                            value = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
-                                                            values =
+                                                            bool = true ;
+                                                            float = 1.0 ;
+                                                            int = 1 ;
+                                                            lambda = i : i ;
+                                                            list = [ 1 ] ;
+                                                            null = null ;
+                                                            path = ./. ;
+                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                            string = "1" ;
+                                                        } ;
+                                                    visitors =
+                                                        let
+                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                            in
                                                                 {
-                                                                    alpha = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
-                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                                    bool = string ;
+                                                                    float = string ;
+                                                                    int = string ;
+                                                                    lambda = string ;
+                                                                    null = string ;
+                                                                    path = string ;
+                                                                    string = string ;
                                                                 } ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                        } ;
-                                                string-sad =
-                                                    _string.check
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
+                                        visitor-set =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    expected = [ "bool,float,int,lambda,list,null,path,set,string" ] ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    value =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = false ;
-                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
-                                                            value = false ;
-                                                            values =
+                                                            bool = true ;
+                                                            float = 1.0 ;
+                                                            int = 1 ;
+                                                            lambda = i : i ;
+                                                            list = [ 1 ] ;
+                                                            null = null ;
+                                                            path = ./. ;
+                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                            string = "1" ;
+                                                        } ;
+                                                    visitors =
+                                                        let
+                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                            in
                                                                 {
-                                                                    alpha = x : "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
-                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                                    bool = string ;
+                                                                    float = string ;
+                                                                    int = string ;
+                                                                    lambda = string ;
+                                                                    null = string ;
+                                                                    path = string ;
+                                                                    set = path : set : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
+                                                                    string = string ;
                                                                 } ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                        } ;
-                                                visitor-sad =
-                                                    _visitor.check
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
+                                        string-happy =
+                                            _string.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                    value = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                    values =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            diffutil = pkgs.diffutil ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                            yq-go = pkgs.yq-go ;
+                                                            alpha = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                            beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
                                                         } ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                } ;
+                                        string-sad =
+                                            _string.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = false ;
+                                                    template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                    value = false ;
+                                                    values =
+                                                        {
+                                                            alpha = x : "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                            beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                        } ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                } ;
+                                        visitor-sad =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
                                             } ;
                                     modules =
                                         {
