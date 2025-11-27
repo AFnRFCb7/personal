@@ -1239,7 +1239,7 @@
                                                         cb8e09cf =
                                                             {
                                                                 user-known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
-                                                            }
+                                                            } ;
                                                         b8b6ddc8 =
                                                             {
                                                                 strict-host-key-checking = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
