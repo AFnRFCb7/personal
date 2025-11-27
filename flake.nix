@@ -1215,22 +1215,6 @@
                                             {
                                                 configuration =
                                                     {
-                                                        fbe99582ebcf956b3166c2cc8298b50013bbe9d966a8e8fd0a507bd9dc1961a4d82df09c2330af7f8c9b3cea7667c1f8be47a1ddf591ea1960816926116916fb =
-                                                            {
-                                                                strict-host-key-checking = true ;
-                                                                host-name = "192.168.1.192" ;
-                                                                identity-file = resource : "${ resource }/bf79d3d545bc4012d41f86ab5af5d937bc9c968b0ccde1dd6dda61cf85b22170a9861bd9928eb0dc8b3155c30a358f2b236384f4d9c2be33cddba051c9795809" ;
-                                                                port = 8022 ;
-                                                                user = "git" ;
-                                                            } ;
-                                                        cc1b697e7861e58d00266a8006f54a16f2279b79f7eb3184863106960d995c86d132a5fb4ef2d7a668478393a91aafb26401ccc565815d3ea5a493d559c6e6e6 =
-                                                            {
-                                                                strict-host-key-checking = true ;
-                                                                host-name = "192.168.1.202" ;
-                                                                identity-file = resource : "${ resource }/f1d578ed952b9de9ababbcfc5cb20a49dc17823b03a9613a471c46e6eb0b8490f52e89f6e80d2be4e7c9b06cc3999c32c16d887f6538da4b45266079418c7efc" ;
-                                                                port = 8022 ;
-                                                                user = "git" ;
-                                                            } ;
                                                     } ;
                                                 expected = "/nix/store/v7x8fzgd3vnqzzwq3sdly3bqy28hay97-init/bin/init" ;
                                                 mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
