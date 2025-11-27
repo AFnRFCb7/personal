@@ -1242,7 +1242,7 @@
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/il1pf86sf7zi5ks36g4zrphsmg6q0jpk-init/bin/init" ;
-                                                mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
+                                                mount = "271a376c" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
