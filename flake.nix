@@ -1225,7 +1225,7 @@
                                                     {
                                                         f5d69296 =
                                                             {
-                                                                user-known-files-file = ignore : "dfdad39d" ;
+                                                                user-known-host-file = ignore : "dfdad39d" ;
                                                                 port = 25112 ;
                                                                 strict-host-key-checking = true ;
                                                                 host-name = "d860b627" ;
