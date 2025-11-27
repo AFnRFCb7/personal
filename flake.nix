@@ -1208,7 +1208,8 @@
                                             program = "${ pkgs.pass }/bin/pass" ;
                                         } ;
                                 } ;
-                            checks =
+                            checks = { } ;
+                            checks3 =
                                 {
                                     dot-ssh =
                                         _dot-ssh.check
