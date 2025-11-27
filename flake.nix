@@ -406,25 +406,24 @@
                                                                                                                                                     find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec flake-switch-input {} "$STATUS" \;
                                                                                                                                                     if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                     then
-                                                                                                                                                        echo successfully switched inputs
-                                                                                                                                                        nixos-rebuild switch --flake "$MOUNT/repository#user"
-                                                                                                                                                        git fetch origin main
-                                                                                                                                                        git scratch
-                                                                                                                                                        git reset --soft origin/main
-                                                                                                                                                        git commit -a --verbose
-                                                                                                                                                        git push origin HEAD
-                                                                                                                                                        echo squashed the scratch branch
-                                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure d44ce079
-                                                                                                                                                        git checkout main
-                                                                                                                                                        git rebase "$COMMIT"
-                                                                                                                                                        git push origin HEAD
-                                                                                                                                                        echo squashed the main branch
-                                                                                                                                                        git scratch
-                                                                                                                                                        echo scratched the main branch
-                                                                                                                                                    else
                                                                                                                                                         FAILURE="$( cat "$STATUS/FLAG" )" || failure c2363ef6
                                                                                                                                                         failure 67fc4ef0 "We observed a problem with one of the inputs" "$FAILURE"
                                                                                                                                                     fi
+                                                                                                                                                    echo successfully switched inputs
+                                                                                                                                                    nixos-rebuild switch --flake "$MOUNT/repository#user"
+                                                                                                                                                    git fetch origin main
+                                                                                                                                                    git scratch
+                                                                                                                                                    git reset --soft origin/main
+                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    echo squashed the scratch branch
+                                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure d44ce079
+                                                                                                                                                    git checkout main
+                                                                                                                                                    git rebase "$COMMIT"
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    echo squashed the main branch
+                                                                                                                                                    git scratch
+                                                                                                                                                    echo scratched the main branch
                                                                                                                                                 '' ;
 																                                                                        } ;
 														                                                                        in "${ application }/bin/flake-switch" ;
