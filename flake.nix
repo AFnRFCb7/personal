@@ -1228,7 +1228,9 @@
                                                                 user-known-hosts-file = ignore : "c2a91e38" ;
                                                                 strict-host-key-checking = false ;
                                                                 port = 12310 ;
-                                                                identity-file = ./. ;
+                                                                # we are excluding believe because it kept changing
+                                                                # we need a better way to test this
+                                                                # identity-file = ./. ;
                                                                 host-name = "eedaca3e" ;
                                                             } ;
                                                     } ;
