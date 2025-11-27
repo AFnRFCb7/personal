@@ -961,7 +961,7 @@
                                                                                                                 failure 3aab9086
                                                                                                             fi
                                                                                                             read -r PAYLOAD
-                                                                                                            echo "$PAYLOAD" | yq eval "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                            echo "$PAYLOAD" | yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                         fi
                                                                                                     done
                                                                                                 '' ;
