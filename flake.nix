@@ -163,15 +163,15 @@
                                                                                     "github.com" =
                                                                                         {
                                                                                             host-name = "github.com" ;
-                                                                                            identity-file = resource : "${ resource }/secret" ;
+                                                                                            identity-file = ignore : "secret" ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = resource : "${ resource }/secret" ;
+                                                                                            user-known-hosts-file = ignore : "secret" ;
                                                                                             user = "git" ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
                                                                                             host-name = "192.168.1.192" ;
-                                                                                            identity-file = resource : "${ resource }/secret" ;
+                                                                                            identity-file = ignore : "secret" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = true ;
                                                                                             user-known-hosts-file = resource : "${ resource }/secret" ;
