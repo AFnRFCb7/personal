@@ -1223,6 +1223,13 @@
                                             {
                                                 configuration =
                                                     {
+                                                        f5d69296 =
+                                                            {
+                                                                user-known-files-file = ignore : "dfdad39d" ;
+                                                                port = 25112 ;
+                                                                strict-host-key-checking = true ;
+                                                                host-name = "d860b627" ;
+                                                            } ;
                                                         cb8e09cf =
                                                             {
                                                                 user-known-hosts-file = ignore : "c2a91e38" ;
@@ -1240,6 +1247,10 @@
                                                 implementation-resources =
                                                     {
                                                         cb8e09cf =
+                                                            {
+                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                            } ;
+                                                        f5d69296 =
                                                             {
                                                                 user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
                                                             } ;
