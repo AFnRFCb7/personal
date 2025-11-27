@@ -181,13 +181,13 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            "alpha" = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                                                            "alpha" = { mount , pkgs , resources } : "/" ;
                                                                                             identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ;
                                                                                             user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            "beta" = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                                                            "beta" = { mount , pkgs , resources } : "/" ;
                                                                                             identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ;
                                                                                             user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.user-known-hosts-file ( setup : setup ) ;
                                                                                         } ;
