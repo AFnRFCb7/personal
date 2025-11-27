@@ -1210,22 +1210,6 @@
                                 } ;
                             checks =
                                 {
-                                    dot-ssh =
-                                        _dot-ssh.check
-                                            {
-                                                configuration =
-                                                    {
-                                                    } ;
-                                                expected = "/nix/store/v7x8fzgd3vnqzzwq3sdly3bqy28hay97-init/bin/init" ;
-                                                mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
-                                                pkgs = pkgs ;
-                                                implementation-resources =
-                                                    {
-                                                    } ;
-                                            } ;
-                                } ;
-                            checks2 =
-                                {
                                     dot-gnupg =
                                         _dot-gnupg.check
                                             {
@@ -1512,160 +1496,160 @@
                                                     failure = _failure.implementation "a720a5e7" ;
                                                     pkgs = pkgs ;
                                                } ;
-                                                visitor-happy =
-                                                    _visitor.check
+                                        visitor-happy =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    expected =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            diffutil = pkgs.diffutil ;
-                                                            expected =
+                                                            bool =
+                                                                [
+                                                                    {
+                                                                        path = [ "bool" ] ;
+                                                                        type = "bool" ;
+                                                                        value = true ;
+                                                                    }
+                                                                ] ;
+                                                            float =
+                                                                [
+                                                                    {
+                                                                        path = [ "float" ] ;
+                                                                        type = "float" ;
+                                                                        value = 1.0 ;
+                                                                    }
+                                                                ] ;
+                                                            int =
+                                                                [
+                                                                    {
+                                                                        path = [ "int" ] ;
+                                                                        type = "int" ;
+                                                                        value = 1 ;
+                                                                    }
+                                                                ] ;
+                                                            lambda =
+                                                                [
+                                                                    {
+                                                                        path = [ "lambda" ] ;
+                                                                        type = "lambda" ;
+                                                                        value = null ;
+                                                                    }
+                                                                ] ;
+                                                            list =
+                                                                [
+                                                                    [
+                                                                        {
+                                                                            path = [ "list" 0 ] ;
+                                                                            type = "int" ;
+                                                                            value = 1 ;
+                                                                        }
+                                                                    ]
+                                                                ] ;
+                                                            null =
+                                                                [
+                                                                    {
+                                                                        path = [ "null" ] ;
+                                                                        type = "null" ;
+                                                                        value = null ;
+                                                                    }
+                                                                ] ;
+                                                            path =
+                                                                [
+                                                                    {
+                                                                        path = [ "path" ] ;
+                                                                        type = "path" ;
+                                                                        value = ./. ;
+                                                                    }
+                                                                ] ;
+                                                            set =
                                                                 {
-                                                                    bool =
+                                                                    one =
                                                                         [
                                                                             {
-                                                                                path = [ "bool" ] ;
-                                                                                type = "bool" ;
-                                                                                value = true ;
-                                                                            }
-                                                                        ] ;
-                                                                    float =
-                                                                        [
-                                                                            {
-                                                                                path = [ "float" ] ;
-                                                                                type = "float" ;
-                                                                                value = 1.0 ;
-                                                                            }
-                                                                        ] ;
-                                                                    int =
-                                                                        [
-                                                                            {
-                                                                                path = [ "int" ] ;
+                                                                                path = [ "set" "one" ] ;
                                                                                 type = "int" ;
                                                                                 value = 1 ;
                                                                             }
                                                                         ] ;
-                                                                    lambda =
-                                                                        [
-                                                                            {
-                                                                                path = [ "lambda" ] ;
-                                                                                type = "lambda" ;
-                                                                                value = null ;
-                                                                            }
-                                                                        ] ;
-                                                                    list =
-                                                                        [
-                                                                            [
-                                                                                {
-                                                                                    path = [ "list" 0 ] ;
-                                                                                    type = "int" ;
-                                                                                    value = 1 ;
-                                                                                }
-                                                                            ]
-                                                                        ] ;
-                                                                    null =
-                                                                        [
-                                                                            {
-                                                                                path = [ "null" ] ;
-                                                                                type = "null" ;
-                                                                                value = null ;
-                                                                            }
-                                                                        ] ;
-                                                                    path =
-                                                                        [
-                                                                            {
-                                                                                path = [ "path" ] ;
-                                                                                type = "path" ;
-                                                                                value = ./. ;
-                                                                            }
-                                                                        ] ;
-                                                                    set =
-                                                                        {
-                                                                            one =
-                                                                                [
-                                                                                    {
-                                                                                        path = [ "set" "one" ] ;
-                                                                                        type = "int" ;
-                                                                                        value = 1 ;
-                                                                                    }
-                                                                                ] ;
-                                                                        } ;
-                                                                    string =
-                                                                        [
-                                                                            {
-                                                                                path = [ "string" ] ;
-                                                                                type = "string" ;
-                                                                                value = "1" ;
-                                                                            }
-                                                                        ] ;
                                                                 } ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = true ;
-                                                            value =
-                                                                {
-                                                                    bool = true ;
-                                                                    float = 1.0 ;
-                                                                    int = 1 ;
-                                                                    lambda = i : i ;
-                                                                    list = [ 1 ] ;
-                                                                    null = null ;
-                                                                    path = ./. ;
-                                                                    set = { one = 1 ; } ;
-                                                                    string = "1" ;
-                                                                } ;
-                                                            visitors =
-                                                                let
-                                                                    string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                                    in
-                                                                        {
-                                                                            bool = string ;
-                                                                            float = string ;
-                                                                            int = string ;
-                                                                            lambda = string ;
-                                                                            null = string ;
-                                                                            path = string ;
-                                                                            string = string ;
-                                                                        } ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                            yq-go = pkgs.yq-go ;
+                                                            string =
+                                                                [
+                                                                    {
+                                                                        path = [ "string" ] ;
+                                                                        type = "string" ;
+                                                                        value = "1" ;
+                                                                    }
+                                                                ] ;
                                                         } ;
-                                                string-happy =
-                                                    _string.check
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    value =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = true ;
-                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
-                                                            value = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
-                                                            values =
+                                                            bool = true ;
+                                                            float = 1.0 ;
+                                                            int = 1 ;
+                                                            lambda = i : i ;
+                                                            list = [ 1 ] ;
+                                                            null = null ;
+                                                            path = ./. ;
+                                                            set = { one = 1 ; } ;
+                                                            string = "1" ;
+                                                        } ;
+                                                    visitors =
+                                                        let
+                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                            in
                                                                 {
-                                                                    alpha = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
-                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                                    bool = string ;
+                                                                    float = string ;
+                                                                    int = string ;
+                                                                    lambda = string ;
+                                                                    null = string ;
+                                                                    path = string ;
+                                                                    string = string ;
                                                                 } ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                        } ;
-                                                string-sad =
-                                                    _string.check
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
+                                        string-happy =
+                                            _string.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                    value = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
+                                                    values =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            success = false ;
-                                                            template = { alpha , beta } : "${ alpha } ${ beta }" ;
-                                                            value = false ;
-                                                            values =
-                                                                {
-                                                                    alpha = x : "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
-                                                                    beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
-                                                                } ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                            alpha = "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                            beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
                                                         } ;
-                                                visitor-sad =
-                                                    _visitor.check
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                } ;
+                                        string-sad =
+                                            _string.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = false ;
+                                                    template = { alpha , beta } : "${ alpha } ${ beta }" ;
+                                                    value = false ;
+                                                    values =
                                                         {
-                                                            coreutils = pkgs.coreutils ;
-                                                            diffutil = pkgs.diffutil ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                            yq-go = pkgs.yq-go ;
+                                                            alpha = x : "ff29641ab04941b11b8226bc92d883fcc9242e8982584489022f28311ef1c5beb7f0c821d81fa84504311c2c638de8438be82bb802e71dfe4dd98698387dacfd" ;
+                                                            beta = "f40b6afea2a29f8d86ea7ea1e0ee785badde4ce1ecc22a4d15b98a2329f0bc11bab9ec1b2575ac2f76b124508160ada9ffb4159b6a5191a47ed17c137690a4fa" ;
                                                         } ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                } ;
+                                        visitor-sad =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
                                             } ;
                                     modules =
                                         {
