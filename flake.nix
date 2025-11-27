@@ -1621,7 +1621,7 @@
                                                 {
                                                     coreutils = pkgs.coreutils ;
                                                     diffutil = pkgs.diffutil ;
-                                                    expected = "bool,float,init,lambda,list,null,path,set,string" ;
+                                                    expected = [ "bool,float,init,lambda,list,null,path,set,string" ] ;
                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
                                                     success = true ;
                                                     value =
