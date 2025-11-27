@@ -1229,7 +1229,7 @@
                                                                 strict-host-key-checking = false ;
                                                                 port = 8022 ;
                                                                 identity-file = ./. ;
-                                                                host = "eedaca3e" ;
+                                                                host-name = "eedaca3e" ;
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/al5rjp5h9n8g38hbx53rkwj0hhczwcvz-init/bin/init" ;
