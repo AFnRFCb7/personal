@@ -106,7 +106,7 @@
                                                                                         {
                                                                                             strict-host-key-checking = true ;
                                                                                             host-name = "192.168.1.192" ;
-                                                                                            port = 8022 ;
+                                                                                            port = 19952 ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -1227,7 +1227,7 @@
                                                             {
                                                                 user-known-hosts-file = ignore : "c2a91e38" ;
                                                                 strict-host-key-checking = false ;
-                                                                port = 8022 ;
+                                                                port = 12310 ;
                                                                 identity-file = ./. ;
                                                                 host-name = "eedaca3e" ;
                                                             } ;
