@@ -1647,7 +1647,7 @@
                                                                     lambda = string ;
                                                                     null = string ;
                                                                     path = string ;
-                                                                    set = path : value : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
+                                                                    set = path : set : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
                                                                     string = string ;
                                                                 } ;
                                                     writeShellApplication = pkgs.writeShellApplication ;
