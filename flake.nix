@@ -708,7 +708,7 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-snapshot } /mount/stage/immutable-snapshot "${ mount }"
+                                                                                                                            make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
