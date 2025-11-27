@@ -1228,7 +1228,7 @@
                                                                 user-known-hosts-file = ignore : "c2a91e38" ;
                                                                 strict-host-key-checking = false ;
                                                                 port = 8022 ;
-                                                                identity-file = / ;
+                                                                identity-file = ./. ;
                                                                 host = "" ;
                                                             } ;
                                                     } ;
