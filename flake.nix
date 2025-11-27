@@ -531,7 +531,7 @@
                                                                                         {
                                                                                             "alias.hydrate" = stage : "!${ stage }/hydrate" ;
                                                                                             "alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "alias.snapshot" = stage : "!${ stage }/snapshot" ;
+                                                                                            "alias.immutable-snapshot" = stage : "!${ stage }/immutable-snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
                                                                                     email = config.personal.repository.private.email ;
@@ -546,27 +546,12 @@
                                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                                             text =
                                                                                                                 let
-                                                                                                                    scratch =
+                                                                                                                    immutable-snapshot =
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "scratch" ;
-                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 73096040
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
-                                                                                                                                                git checkout -b "$BRANCH" 2>&1
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                                in "${ application }/bin/scratch" ;
-                                                                                                                    snapshot =
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "snapshot" ;
+                                                                                                                                        name = "immutable-snapshot" ;
                                                                                                                                         runtimeInputs =
                                                                                                                                             [
                                                                                                                                                 pkgs.findutils
@@ -579,11 +564,22 @@
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
+                                                                                                                                                                    STATUS="$2"
+                                                                                                                                                                    cleanup ( ) {
+                                                                                                                                                                        EXIT_CODE="$?"
+                                                                                                                                                                        if [[ "$EXIT_CODE" != 0 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            cat > "$STATUS/FLAG" <<EOF
+                                                                                                                                                                        INPUT="$INPUT"
+                                                                                                                                                                        EXIT_CODE="$EXIT_CODE"
+                                                                                                                                                                        EOF
+                                                                                                                                                                        fi
+                                                                                                                                                                    }
                                                                                                                                                                     cd "$INPUT"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
                                                                                                                                                                         git scratch
-                                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                                        git commit -a --verbose --allow-empty-message
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure 4cf69f5f
                                                                                                                                                                         cd "$MOUNT/repository"
                                                                                                                                                                         nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
@@ -600,13 +596,17 @@
                                                                                                                                             ''
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
-                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
-                                                                                                                                                cd "$MOUNT/repository"
-                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} \;
+                                                                                                                                                STATUS=${ resources.production.temporary ( setup : setup ) }
+                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec snapshot-input {} "$STATUS" \;
+                                                                                                                                                if [[ -f "$STATUS/FLAG" ]]
+                                                                                                                                                then
+                                                                                                                                                    FAILURE="$( cat "$STATUS/FLAG" )" || failure 8a05e85a
+                                                                                                                                                    failure 19245941 "$FAILURE"
+                                                                                                                                                fi
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
                                                                                                                                                     git scratch
-                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                    git commit -a --verbose --allow-empty-message
                                                                                                                                                 fi
                                                                                                                                                 if git symbolic-ref -q HEAD > /dev/null
                                                                                                                                                 then
@@ -617,12 +617,27 @@
                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                                in "${ application }/bin/snapshot" ;
-                                                                                                                        in
-                                                                                                                            ''
-                                                                                                                                make-wrapper ${ scratch } /mount/stage/scratch "${ scratch }"
-                                                                                                                                make-wrapper ${ snapshot } /mount/stage/snapshot "${ mount }"
-                                                                                                                            '' ;
+                                                                                                                                in "${ application }/bin/immutable-snapshot" ;
+                                                                                                                    scratch =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "scratch" ;
+                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 73096040
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
+                                                                                                                                                git checkout -b "$BRANCH" 2>&1
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                                in "${ application }/bin/scratch" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            make-wrapper ${ scratch } /mount/stage/scratch "${ scratch }"
+                                                                                                                            make-wrapper ${ immutable-snapshot } /mount/stage/immutable-snapshot "${ mount }"
+                                                                                                                        '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
