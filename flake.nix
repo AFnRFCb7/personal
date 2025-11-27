@@ -1233,7 +1233,7 @@
                                                     {
                                                         b8b6ddc8 =
                                                             {
-                                                                strict-host-key-checking = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                                strict-host-key-checking = true ;
                                                                 user-known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
                                                             } ;
                                                     } ;
