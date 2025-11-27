@@ -529,6 +529,7 @@
                                                                                     configs =
                                                                                         {
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
+                                                                                            "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "alias.mutable-snapshot" = stage : "!${ stage }/mutable-snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
@@ -596,7 +597,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 STATUS=${ resources.production.temporary ( setup : setup ) }
-                                                                                                                                                find input -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
+                                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
                                                                                                                                                 if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                 then
                                                                                                                                                     FAILURE="$( cat "$STATUS/FLAG" )" || failure 68f97f84
@@ -704,9 +705,10 @@
                                                                                                                                                 git checkout -b "$BRANCH" 2>&1
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                                in "${ application }/bin/scratch" ;
+                                                                                                                                in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
                                                                                                                             make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
                                                                                                                         '' ;
