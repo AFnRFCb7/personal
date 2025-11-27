@@ -1058,9 +1058,9 @@
                                                                                                                     HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
                                                                                                                     TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "${ resources-directory }" "canonical/$HASH" "links/$INDEX" "locks/$INDEX" "locks/$HASH" "mounts/$INDEX"
-                                                                                                                    cd "${ resources-directory }"
-                                                                                                                    rm --recursive --force canonical/$HASH links/$INDEX locks/$INDEX locks/$HASH mounts/$INDEX
+                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/${ INDEX }"
+                                                                                                                    cd "/home/${ config.personal.name }"
+                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
                                                                                                                 fi
                                                                                                             done
                                                                                                         '' ;
