@@ -1223,12 +1223,23 @@
                                             {
                                                 configuration =
                                                     {
+                                                        cb8e09cf =
+                                                            {
+                                                                user-known-hosts-file = ignore : "c2a91e38" ;
+                                                                strict-host-key-checking = false ;
+                                                                port = 8022 ;
+                                                                identity-file = self ;
+                                                            } ;
                                                     } ;
                                                 expected = "/nix/store/al5rjp5h9n8g38hbx53rkwj0hhczwcvz-init/bin/init" ;
                                                 mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
+                                                        cb8e09cf =
+                                                            {
+                                                                user-known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                            }
                                                         b8b6ddc8 =
                                                             {
                                                                 strict-host-key-checking = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
