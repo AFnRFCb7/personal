@@ -999,8 +999,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=100
-
+                                                                                            STUDIO=${ resources__.production.repository.studio ( setup : ''${ setup } "$ARGUMENTS"'' ) }
                                                                                             if "$HAS_ARGUMENTS"
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
@@ -1221,19 +1220,23 @@
                                                 ownertrust-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
                                                 secret-keys-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
                                             } ;
-                                    # dot-ssh =
-                                    #     _dot-ssh.check
-                                    #         {
-                                    #             configuration =
-                                    #                 {
-                                    #                 } ;
-                                    #             expected = "/nix/store/v7x8fzgd3vnqzzwq3sdly3bqy28hay97-init/bin/init" ;
-                                    #             mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
-                                    #             pkgs = pkgs ;
-                                    #             implementation-resources =
-                                    #                 {
-                                    #                 } ;
-                                    #         } ;
+                                    dot-ssh =
+                                        _dot-ssh.check
+                                            {
+                                                configuration =
+                                                    {
+                                                    } ;
+                                                expected = "/nix/store/v7x8fzgd3vnqzzwq3sdly3bqy28hay97-init/bin/init" ;
+                                                mount = "45e10de89f958caa832bb6b4dd740aae2b5d0e4e688286dab3bb5881ca44eab29e663a0c068390a39a85915e4222ccbf19e85e2602fb431e608ef6cbc6d95a51" ;
+                                                pkgs = pkgs ;
+                                                implementation-resources =
+                                                    {
+                                                        b8b6ddc8 =
+                                                            {
+                                                                user-known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                            } ;
+                                                    } ;
+                                            } ;
                                    failure =
                                        _failure.check
                                            {
