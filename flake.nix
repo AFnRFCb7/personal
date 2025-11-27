@@ -1228,7 +1228,7 @@
                                                                 user-known-hosts-file = ignore : "c2a91e38" ;
                                                                 strict-host-key-checking = false ;
                                                                 port = 8022 ;
-                                                                identity-file = self ;
+                                                                identity-file = builtins.toString self ;
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/al5rjp5h9n8g38hbx53rkwj0hhczwcvz-init/bin/init" ;
