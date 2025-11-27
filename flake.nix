@@ -597,7 +597,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 STATUS=${ resources.production.temporary ( setup : setup ) }
-                                                                                                                                                find input -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
+                                                                                                                                                find inputs -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
                                                                                                                                                 if [[ -f "$STATUS/FLAG" ]]
                                                                                                                                                 then
                                                                                                                                                     FAILURE="$( cat "$STATUS/FLAG" )" || failure 68f97f84
