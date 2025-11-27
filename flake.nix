@@ -762,7 +762,7 @@
                                                                                                                         root-resource "$DOT_SSH"
                                                                                                                         make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
                                                                                                                         make-wrapper ${ mutable-hydrate } /mount/stage/mutable-hydrate "${ mount }"
-                                                                                                                        git hydrate main
+                                                                                                                        git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
