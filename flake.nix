@@ -1616,6 +1616,43 @@
                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                     yq-go = pkgs.yq-go ;
                                                 } ;
+                                        visitor-set =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    expected = "bool,float,init,lambda,list,null,path,set,string" ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    value =
+                                                        {
+                                                            bool = true ;
+                                                            float = 1.0 ;
+                                                            int = 1 ;
+                                                            lambda = i : i ;
+                                                            list = [ 1 ] ;
+                                                            null = null ;
+                                                            path = ./. ;
+                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                            string = "1" ;
+                                                        } ;
+                                                    visitors =
+                                                        let
+                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                            in
+                                                                {
+                                                                    bool = string ;
+                                                                    float = string ;
+                                                                    int = string ;
+                                                                    lambda = string ;
+                                                                    null = string ;
+                                                                    path = string ;
+                                                                    set = path : value : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
+                                                                    string = string ;
+                                                                } ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
                                         string-happy =
                                             _string.check
                                                 {
