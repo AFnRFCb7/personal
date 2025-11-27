@@ -1229,10 +1229,6 @@
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
-                                                        df6490a5 =
-                                                            {
-                                                                known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
-                                                            } ;
                                                     } ;
                                             } ;
                                    failure =
