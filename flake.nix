@@ -688,7 +688,7 @@
                                                                                                                         ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                         root-resource "$DOT_SSH"
                                                                                                                         make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
-                                                                                                                        make-wrapper ${ hydrate } /mount/stage/hydrate "${ mount }"
+                                                                                                                        make-wrapper ${ mutable-hydrate } /mount/stage/mutable-hydrate "${ mount }"
                                                                                                                         git hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
