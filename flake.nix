@@ -1573,12 +1573,20 @@
                                                                         ] ;
                                                                     recur =
                                                                         {
-                                                                            one =
+                                                                            int =
                                                                                 [
                                                                                     {
-                                                                                        path = [ "set" "one" "recur" ] ;
+                                                                                        path = [ "set" "recur" "int" ] ;
                                                                                         type = "int" ;
                                                                                         value = 1 ;
+                                                                                    }
+                                                                                ] ;
+                                                                            lambda =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "recur" "lambda" ] ;
+                                                                                        type = "lambda" ;
+                                                                                        value = null ;
                                                                                     }
                                                                                 ] ;
                                                                         } ;
@@ -1603,7 +1611,7 @@
                                                             list = [ 1 ] ;
                                                             null = null ;
                                                             path = ./. ;
-                                                            set = { one = 1 ; recur = { one = 1 ; } ; } ;
+                                                            set = { one = 1 ; recur = { int = 1 ; } ; { lambda = i : i ; } } ;
                                                             string = "1" ;
                                                         } ;
                                                     visitors =
