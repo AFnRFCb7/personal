@@ -1611,7 +1611,7 @@
                                                             list = [ 1 ] ;
                                                             null = null ;
                                                             path = ./. ;
-                                                            set = { one = 1 ; recur = { int = 1 ; } ; { lambda = i : i ; } } ;
+                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } } ;
                                                             string = "1" ;
                                                         } ;
                                                     visitors =
