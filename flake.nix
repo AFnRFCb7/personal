@@ -1238,7 +1238,7 @@
                                                     {
                                                         cb8e09cf =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources } : pkgs.coreutils ;
+                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         b8b6ddc8 =
                                                             {
