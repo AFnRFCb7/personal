@@ -1571,6 +1571,17 @@
                                                                                 value = 1 ;
                                                                             }
                                                                         ] ;
+                                                                    recur =
+                                                                        {
+                                                                            one =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "one" "recur" ] ;
+                                                                                        type = "int" ;
+                                                                                        value = 1 ;
+                                                                                    }
+                                                                                ] ;
+                                                                        } ;
                                                                 } ;
                                                             string =
                                                                 [
@@ -1592,7 +1603,7 @@
                                                             list = [ 1 ] ;
                                                             null = null ;
                                                             path = ./. ;
-                                                            set = { one = 1 ; } ;
+                                                            set = { one = 1 ; recur = { one = 1 ; } ; } ;
                                                             string = "1" ;
                                                         } ;
                                                     visitors =
