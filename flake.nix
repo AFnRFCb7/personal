@@ -1083,10 +1083,10 @@
                                                                                                                                     echo since it is a failed resource we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
-                                                                                                                                    envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval ".[] | select(.index == \"$INDEX\")" <<< "$PAYLOAD" > "/home/${ config.personal.name }/quarantine/$INDEX/log.yaml"
-                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/quarantine/$INDEX/resolve/$INDEX/log.yaml"
+                                                                                                                                    # envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
+                                                                                                                                    # chmod 0500 "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
+                                                                                                                                    # yq eval ".[] | select(.index == \"$INDEX\")" <<< "$PAYLOAD" > "/home/${ config.personal.name }/quarantine/$INDEX/log.yaml"
+                                                                                                                                    # chmod 0400 "/home/${ config.personal.name }/quarantine/$INDEX/resolve/$INDEX/log.yaml"
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
                                                                                                                                 fi
