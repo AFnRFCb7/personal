@@ -1157,7 +1157,7 @@
                                                                                                                         HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
                                                                                                                         INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
                                                                                                                         export INDEX
-                                                                                                                        RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" | failure 81daf915
+                                                                                                                        RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
                                                                                                                         export RELEASE
                                                                                                                         release-application
                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
