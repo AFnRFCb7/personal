@@ -1057,6 +1057,7 @@
                                                                                                                                         yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                                                     '' ;
                                                                                                                             } ;
+                                                                                                                    in "${ application }/bin/log" ;
                                                                                                             resolve =
                                                                                                                 let
                                                                                                                     application =
