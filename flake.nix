@@ -1052,8 +1052,8 @@
                                                                                                                                 runtimeInputs = [ pkgs.flock pkgs.yq-go ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                                        flock 203
+                                                                                                                                        # exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                        # flock -s 203
                                                                                                                                         yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml"
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -1071,7 +1071,7 @@
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
                                                                                                                                         tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
-                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
