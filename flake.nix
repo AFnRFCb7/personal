@@ -1024,7 +1024,7 @@
                                                             } ;
                                                         systemd.services =
                                                             {
-                                                                resources-log-cleaner =
+                                                                resources-log-error =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
                                                                         enable = true ;
@@ -1037,6 +1037,92 @@
                                                                                                 {
                                                                                                     name = "ExecStart" ;
                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
+                                                                                                    text =
+                                                                                                        let
+                                                                                                            resolve =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "resolve" ;
+                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
+                                                                                                                                tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX ".gcroot/$INDEX"
+                                                                                                                                cd "/home/${ config.personal.name }"
+                                                                                                                                rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in
+                                                                                                                ''
+                                                                                                                    mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
+                                                                                                                    do
+                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                        flock 203
+                                                                                                                        if [[ "$TYPE" == "message" ]]
+                                                                                                                        then
+                                                                                                                            read -r CHANNEL
+                                                                                                                            if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                                            then
+                                                                                                                                failure ea3c1e1c
+                                                                                                                            fi
+                                                                                                                            read -r PAYLOAD
+                                                                                                                            STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
+                                                                                                                            STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
+                                                                                                                            if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
+                                                                                                                            then
+                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
+                                                                                                                                mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    done
+                                                                                                                '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/ExecStart" ;
+                                                                                User = config.personal.name ;
+                                                                            } ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                    } ;
+                                                                resources-log-cleaner =
+                                                                    {
+                                                                        after = [ "network.target" "redis.service" ] ;
+                                                                        enable = true ;
+                                                                        serviceConfig =
+                                                                            {
+                                                                                ExecStart =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "ExecStart" ;
+                                                                                                    runtimeInputs =
+                                                                                                        [
+                                                                                                            pkgs.coreutils
+                                                                                                            pkgs.findutils
+                                                                                                            pkgs.gnutar
+                                                                                                            pkgs.redis
+                                                                                                            pkgs.yq-go
+                                                                                                            (
+                                                                                                                pkgs.buildFHSUserEnv
+                                                                                                                    {
+                                                                                                                        name = "release-application" ;
+                                                                                                                        extraBwrapArgs =
+                                                                                                                            [
+                                                                                                                                "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
+                                                                                                                                "--tmpfs /scratch"
+                                                                                                                            ] ;
+                                                                                                                        runScript =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "runScript" ;
+                                                                                                                                            text = "$RELEASE" ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/runScript" ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
@@ -1052,15 +1138,27 @@
                                                                                                                         failure ea3c1e1c
                                                                                                                     fi
                                                                                                                     read -r PAYLOAD
-                                                                                                                    ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
-                                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
-                                                                                                                    # FIXME LATER
-                                                                                                                    HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
-                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
-                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                    cd "/home/${ config.personal.name }"
-                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                    STATUS="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 428ce3a1
+                                                                                                                    STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure ebc1cb49
+                                                                                                                    if [[ 0 == "$STATUS" ]] && [[ -z "$STANDARD_ERROR" ]]
+                                                                                                                    then
+                                                                                                                        ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
+                                                                                                                        tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                        while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                        do
+                                                                                                                            sleep 1
+                                                                                                                        done
+                                                                                                                        HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
+                                                                                                                        INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
+                                                                                                                        export INDEX
+                                                                                                                        RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" | failure 81daf915
+                                                                                                                        export RELEASE
+                                                                                                                        release-application
+                                                                                                                        TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                        cd "/home/${ config.personal.name }"
+                                                                                                                        rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                    fi
                                                                                                                 fi
                                                                                                             done
                                                                                                         '' ;
