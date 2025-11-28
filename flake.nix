@@ -1040,7 +1040,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "ExecStart" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             resolve =
@@ -1109,6 +1109,7 @@
                                                                                                         [
                                                                                                             pkgs.coreutils
                                                                                                             pkgs.findutils
+                                                                                                            pkgs.flock
                                                                                                             pkgs.gnutar
                                                                                                             pkgs.redis
                                                                                                             pkgs.yq-go
