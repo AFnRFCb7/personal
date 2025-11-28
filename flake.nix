@@ -120,9 +120,13 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( _failure.implementation "b9d858ef" ) ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        if [[ "$#" -gt 0 ]]
+                                                                                                        then
+                                                                                                            failure b9a218e1
+                                                                                                        fi
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         root-resource "$DOT_GNUPG"
                                                                                                         root-store ${ pkgs.gnupg }
