@@ -1054,7 +1054,7 @@
                                                                                                                                     ''
                                                                                                                                         exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                         flock 203
-                                                                                                                                        yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                        yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/log" ;
