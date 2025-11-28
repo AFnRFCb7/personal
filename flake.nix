@@ -1291,7 +1291,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : ''${ setup } "$"'' ) }
+                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : ''${ setup } "$@"'' ) }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
