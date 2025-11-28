@@ -1040,18 +1040,21 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             resolve =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "resolve" ;
-                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
-                                                                                                                                tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX ".gcroot/$INDEX"
-                                                                                                                                cd "/home/${ config.personal.name }"
-                                                                                                                                rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
-                                                                                                                            '' ;
-                                                                                                                    } ;
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "resolve" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
+                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX ".gcroot/$INDEX"
+                                                                                                                                        cd "/home/${ config.personal.name }"
+                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/resolve" ;
                                                                                                             in
                                                                                                                 ''
                                                                                                                     mkdir --parents /home/${ config.personal.name }/resources/logs
@@ -1067,12 +1070,15 @@
                                                                                                                                 failure ea3c1e1c
                                                                                                                             fi
                                                                                                                             read -r PAYLOAD
+                                                                                                                            INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
                                                                                                                             STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
                                                                                                                             STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
                                                                                                                             if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
                                                                                                                             then
                                                                                                                                 INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
+                                                                                                                                envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
+                                                                                                                                echo "$PAYLOAD" | yq eval --prettyPrint "." > "/home/${ config.personal.name }/quarantine/$INDEX/log.yaml"
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     done
