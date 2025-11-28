@@ -1043,6 +1043,20 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         let
+                                                                                                            log =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "log" ;
+                                                                                                                                runtimeInputs = [ pkgs.flock pkgs.yq-go ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                        flock 203
+                                                                                                                                        yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                    '' ;
+                                                                                                                            } ;
                                                                                                             resolve =
                                                                                                                 let
                                                                                                                     application =
@@ -1089,10 +1103,10 @@
                                                                                                                                     export INDEX
                                                                                                                                     envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/current.yaml"
-                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/current.yaml"
-                                                                                                                                    # yq eval ".[] | select(.index == \"$INDEX\")" <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/past.yaml"
-                                                                                                                                    # chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/$INDEX/past.yaml"
+                                                                                                                                    yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
+                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
+                                                                                                                                    envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
                                                                                                                                 fi
