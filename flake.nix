@@ -1080,8 +1080,7 @@
                                                                                                                                 STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
                                                                                                                                 if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
                                                                                                                                 then
-                                                                                                                                    echo since it is a failed resource we are proceeding
-                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
+                                                                                                                                    echo since it is a failed resource we are proceeding "INDEX=$INDEX"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
                                                                                                                                     # envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
                                                                                                                                     # chmod 0500 "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
