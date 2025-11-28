@@ -1081,8 +1081,8 @@
                                                                                                                                 if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
                                                                                                                                 then
                                                                                                                                     echo since it is a failed resource we are proceeding "INDEX=$INDEX"
-                                                                                                                                    echo mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
-                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
+                                                                                                                                    echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     echo 2191dc450ee994b08ae556882241848cb5c52eb2930f72e2060d004071e395094470ae150142efb40b3a5cbccf3712909d67314a22bbe764dc855b93deefde96
                                                                                                                                     # envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
                                                                                                                                     # chmod 0500 "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
