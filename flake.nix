@@ -1049,7 +1049,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "resolve" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip ( _failure.implementation "7a2359f4" ) ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         # shellcheck disable=SC2034
