@@ -1049,7 +1049,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "resolve" ;
-                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
@@ -1086,8 +1086,10 @@
                                                                                                                                     echo 2191dc450ee994b08ae556882241848cb5c52eb2930f72e2060d004071e395094470ae150142efb40b3a5cbccf3712909d67314a22bbe764dc855b93deefde96
                                                                                                                                     envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval ".[] | select(.index == \"$INDEX\")" <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
-                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/$INDEX/log.yaml"
+                                                                                                                                    yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/current.yaml"
+                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/current.yaml"
+                                                                                                                                    # yq eval ".[] | select(.index == \"$INDEX\")" <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/past.yaml"
+                                                                                                                                    # chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/$INDEX/past.yaml"
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
                                                                                                                                 fi
