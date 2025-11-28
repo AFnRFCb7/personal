@@ -1052,6 +1052,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        # shellcheck disable=SC2034
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
                                                                                                                                         tar --create --xz --file "\$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/\$INDEX" "resources/locks/\$INDEX" "resources/mounts/\$INDEX" "resources/quarantine/\$INDEX" ".gcroot/\$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
