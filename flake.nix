@@ -1066,24 +1066,35 @@
                                                                                                                     do
                                                                                                                         exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                         flock 203
+                                                                                                                        echo We locked the log file
                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                         then
+                                                                                                                            echo since it is a message we are proceeding
                                                                                                                             read -r CHANNEL
-                                                                                                                            if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                                            if [[ ${ config.personal.channel } == "$CHANNEL" ]]
                                                                                                                             then
-                                                                                                                                failure ea3c1e1c
+                                                                                                                                echo since it is on our channel we are proceeding
+                                                                                                                                read -r PAYLOAD
+                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
+                                                                                                                                STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
+                                                                                                                                STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
+                                                                                                                                if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
+                                                                                                                                then
+                                                                                                                                    echo since it is a failed resource we are proceeding
+                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
+                                                                                                                                    envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
+                                                                                                                                    yq eval ".[] | select(.index == \"$INDEX\")" <<< "$PAYLOAD" > "/home/${ config.personal.name }/quarantine/$INDEX/log.yaml"
+                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/quarantine/$INDEX/resolve/$INDEX/log.yaml"
+                                                                                                                                else
+                                                                                                                                    echo since is a not a failed resource we are not proceeding
+                                                                                                                                fi
+                                                                                                                            else
+                                                                                                                                echo since it is not on our channel we are not proceeding
                                                                                                                             fi
-                                                                                                                            read -r PAYLOAD
-                                                                                                                            INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                            STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
-                                                                                                                            STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
-                                                                                                                            if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
-                                                                                                                            then
-                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
-                                                                                                                                envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
-                                                                                                                                echo "$PAYLOAD" | yq eval --prettyPrint "." > "/home/${ config.personal.name }/quarantine/$INDEX/log.yaml"
-                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            echo since it is not a message we are not proceeding
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
