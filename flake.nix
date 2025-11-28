@@ -1054,9 +1054,9 @@
                                                                                                                                     ''
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
-                                                                                                                                        tar --create --xz --file "\$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/\$INDEX" "resources/locks/\$INDEX" "resources/mounts/\$INDEX" "resources/quarantine/\$INDEX" ".gcroot/\$INDEX"
+                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
-                                                                                                                                        rm --recursive --force "resources/links/\$INDEX" "resources/locks/\$INDEX" "resources/mounts/\$INDEX" "resources/quarantine/\$INDEX" ".gcroot/\$INDEX"
+                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
@@ -1085,6 +1085,8 @@
                                                                                                                                     echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     echo 2191dc450ee994b08ae556882241848cb5c52eb2930f72e2060d004071e395094470ae150142efb40b3a5cbccf3712909d67314a22bbe764dc855b93deefde96
+                                                                                                                                    export TEMPORARY="\$TEMPORARY"
+                                                                                                                                    export INDEX
                                                                                                                                     envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/current.yaml"
