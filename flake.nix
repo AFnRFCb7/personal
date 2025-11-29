@@ -1185,6 +1185,7 @@
                                                                                                         [
                                                                                                             pkgs.coreutils
                                                                                                             pkgs.redis
+                                                                                                            pkgs.yq-go
                                                                                                             (
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
@@ -1193,6 +1194,8 @@
                                                                                                                             [
                                                                                                                                 pkgs.coreutils
                                                                                                                                 pkgs.gnutar
+                                                                                                                                pkgs.jq
+                                                                                                                                pkgs.redis
                                                                                                                                 pkgs.yq-go
                                                                                                                                 pkgs.xz
                                                                                                                                 (
@@ -1235,6 +1238,8 @@
                                                                                                                                 tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
                                                                                                                                 cd "/home/${ config.personal.name }"
                                                                                                                                 rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                JSON="$( jq --null-input --arg INDEX "$INDEX" '{ index : $INDEX , type : "fulfillment" }' )" || failure 4bb7e3d1
+                                                                                                                                redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
