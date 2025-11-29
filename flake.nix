@@ -1093,7 +1093,6 @@
                                                                                                                                                 --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
                                                                                                                                                 --arg MODE "$MODE" \
-                                                                                                                                                --arg RESOLUTION "$RESOLUTION" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
@@ -1142,7 +1141,7 @@
                                                                                                                                     export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                                     export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                     export STANDARD_INPUT="\$STANDARD_INPUT"
-                                                                                                                                    MODE=automatic RESOLUTION="" envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
+                                                                                                                                    MODE=automatic RESOLUTION="automatic" envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     jq --null-input --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" '{ "index" : $INDEX , "standard-error" : $STANDARD_ERROR , "status" : $STATUS }' | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
