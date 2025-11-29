@@ -1075,6 +1075,7 @@
                                                                                                                                         rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS=( "\$@" )
+                                                                                                                                        # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "\\" "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
