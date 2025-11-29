@@ -1138,10 +1138,10 @@
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     export TEMPORARY="\$TEMPORARY"
                                                                                                                                     export INDEX
-                                                                                                                                    export ARGUMENTS='$ARGUMENTS'
-                                                                                                                                    export ARGUMENTS_JSON='$ARGUMENTS_JSON'
-                                                                                                                                    export HAS_STANDARD_INPUT='$HAS_STANDARD_INPUT'
-                                                                                                                                    export STANDARD_INPUT='$STANDARD_INPUT'
+                                                                                                                                    export ARGUMENTS="\$ARGUMENTS"
+                                                                                                                                    export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                                    export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                                    export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                     MODE=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
