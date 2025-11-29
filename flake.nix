@@ -1095,7 +1095,6 @@
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
-                                                                                                                                                        "arguments" : "$ARGUMENTS" ,
                                                                                                                                                         "has-standard-input" : "$HAS_STANDARD_INPUT" ,
                                                                                                                                                         "mode" : $MODE ,
                                                                                                                                                         "resolution" : $RESOLUTION ,
