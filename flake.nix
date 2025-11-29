@@ -1296,24 +1296,44 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "log-event-listener" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ( _failure.implementation "c5160404" )] ;
+                                                                                                    runtimeInputs =
+                                                                                                        [
+                                                                                                            pkgs.coreutils
+                                                                                                            pkgs.flock
+                                                                                                            pkgs.redis
+                                                                                                            pkgs.yq-go
+                                                                                                            ( _failure.implementation "c5160404" )
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "iteration" ;
+                                                                                                                        runtimeInputs =
+                                                                                                                            [
+                                                                                                                                pkgs.flock
+                                                                                                                            ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                TYPE="$1"
+                                                                                                                                CHANNEL="$2"
+                                                                                                                                PAYLOAD="$3"
+                                                                                                                                TIMESTAMP="$( date +%s )" || failure 9fc28e61
+                                                                                                                                TEMPORARY="$( mktemp )" || failure db44ba4a
+                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --argjson PAYLOAD '{ "payload" : $PAYLOAD , "timestamp" : $TIMESTAMP }' > "$TEMPORARY"
+                                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                flock 203
+                                                                                                                                yq eval --prettyPrint "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                rm "$TEMPORARY"
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                             redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                             do
-                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                flock 203
-                                                                                                                if [[ "$TYPE" == "message" ]]
-                                                                                                                then
-                                                                                                                    read -r CHANNEL
-                                                                                                                    if [[ ${ config.personal.channel } != "$CHANNEL" ]]
-                                                                                                                    then
-                                                                                                                        failure 3aab9086
-                                                                                                                    fi
-                                                                                                                    read -r PAYLOAD
-                                                                                                                    echo "$PAYLOAD" | yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
-                                                                                                                fi
+                                                                                                                read -r TYPE CHANNEL PAYLOAD
+                                                                                                                iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                             done
                                                                                                         '' ;
                                                                                                 } ;
