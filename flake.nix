@@ -1118,13 +1118,14 @@
                                                                                                                             then
                                                                                                                                 echo since it is on our channel we are proceeding
                                                                                                                                 read -r PAYLOAD
-                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                                PROVENANCE="$( yq eval .provenance" - <<< "$PAYLOAD" )" || failure 4ccfcb5c
-                                                                                                                                STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
-                                                                                                                                STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
-                                                                                                                                if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
+                                                                                                                                TYPE_="$( yq eval ".type ) <<< $PAYLOAD" )" || failure 36088760
+                                                                                                                                if [[ "invalid" == "$TYPE_" ]]
                                                                                                                                 then
-                                                                                                                                    echo since it is a failed resource we are proceeding "INDEX=$INDEX"
+                                                                                                                                    echo since it is invalid we are proceeding
+                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
+                                                                                                                                    PROVENANCE="$( yq eval .provenance" - <<< "$PAYLOAD" )" || failure 4ccfcb5c
+                                                                                                                                    STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
+                                                                                                                                    STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
                                                                                                                                     echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     export TEMPORARY="\$TEMPORARY"
@@ -1156,7 +1157,7 @@
                                                                 resources-log-cleaner =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
-                                                                        enable = false ;
+                                                                        enable = true ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
@@ -1209,10 +1210,11 @@
                                                                                                                         failure ea3c1e1c
                                                                                                                     fi
                                                                                                                     read -r PAYLOAD
-                                                                                                                    STATUS="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 428ce3a1
-                                                                                                                    STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure ebc1cb49
-                                                                                                                    if [[ 0 == "$STATUS" ]] && [[ -z "$STANDARD_ERROR" ]]
+                                                                                                                    TYPE_="$( yq eval ".type" )" || failure 2ee1309a
+                                                                                                                    if [[ "valid" == "$TYPE_" ]]
                                                                                                                     then
+                                                                                                                        STATUS="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 428ce3a1
+                                                                                                                        STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure ebc1cb49
                                                                                                                         ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
                                                                                                                         tail --follow /dev/null --pid "$ORIGINATOR_PID"
                                                                                                                         while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
