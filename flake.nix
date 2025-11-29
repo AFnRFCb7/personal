@@ -1157,8 +1157,6 @@
                                                                                                                                         envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
                                                                                                                                         chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
                                                                                                                                     done
-
-
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
                                                                                                                                 fi
