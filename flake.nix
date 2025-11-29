@@ -1073,6 +1073,7 @@
                                                                                                                                         tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
                                                                                                                                         rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
+                                                                                                                                        # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS=( "\$@" )
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "\\" "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
                                                                                                                                         if [[ -t 0 ]]
@@ -1088,11 +1089,11 @@
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
-                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS_JSON" \
-                                                                                                                                                --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
-                                                                                                                                                --arg MODE "$MODE" \
-                                                                                                                                                --arg RESOLUTION "$RESOLUTION" \
-                                                                                                                                                --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                                                                --argjson ARGUMENTS "\$ARGUMENTS_JSON" \
+                                                                                                                                                --arg HAS_STANDARD_INPUT "\$HAS_STANDARD_INPUT" \
+                                                                                                                                                --arg MODE "\$MODE" \
+                                                                                                                                                --arg RESOLUTION "\$RESOLUTION" \
+                                                                                                                                                --arg STANDARD_INPUT "\$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : "\$ARGUMENTS" ,
@@ -1136,6 +1137,10 @@
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     export TEMPORARY="\$TEMPORARY"
                                                                                                                                     export INDEX
+                                                                                                                                    export ARGUMENTS="$ARGUMENTS"
+                                                                                                                                    export ARGUMENTS_JSON="$ARGUMENT_JSON"
+                                                                                                                                    export HAS_STANDARD_INPUT="$HAS_STANDARD_INPUT"
+                                                                                                                                    export STANDARD_INPUT="$STANDARD_INPUT"
                                                                                                                                     MODE=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
