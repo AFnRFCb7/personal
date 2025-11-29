@@ -79,7 +79,7 @@
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
-                                                                    in r.implementation { init = point.init or null ; seed = path ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
+                                                                    in r.implementation { init = point.init or null ; seed = { path = path ; resolutions = [ ] ; } ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
                                                 }
                                                 {
                                                     foobar =
@@ -1104,7 +1104,7 @@
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
-                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON"
+                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON" 2> /dev/null
                                                                                                                                         echo "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -1148,6 +1148,15 @@
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
+                                                                                                                                    RESOLUTIONS="$( yq eval ".description.seed.resolutions" <<< "$PAYLOAD" )" || failure 632e8f4e
+                                                                                                                                    for RESOLUTION in "RESOLUTIONS"
+                                                                                                                                    do
+                                                                                                                                        export MODE=manual
+                                                                                                                                        export RESOLUTION
+                                                                                                                                        envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
+                                                                                                                                        chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
+                                                                                                                                    done
+
 
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
