@@ -1238,24 +1238,28 @@
                                                                                                                                 STANDARD_ERROR_FILE="$( mktemp )" || failure ed38b9d5
                                                                                                                                 if release-application > "$STANDARD_OUTPUT" 2> "$STANDARD_ERROR"
                                                                                                                                 then
-                                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                    cd "/home/${ config.personal.name }"
-                                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                    STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure cefbc806
-                                                                                                                                    JSON="
-                                                                                                                                        $(
-                                                                                                                                            jq \
-                                                                                                                                                --null-input \
-                                                                                                                                                --arg INDEX \
-                                                                                                                                                --arg STANDARD_ERROR \
-                                                                                                                                                --arg STANDARD_OUTPUT \
-                                                                                                                                                "$INDEX" \
-                                                                                                                                                '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT type : "fulfillment" }'
-                                                                                                                                        )
-                                                                                                                                    " || failure 4bb7e3d1
-                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON"
+                                                                                                                                    STATUS="$?"
+                                                                                                                                else
+                                                                                                                                    STATUS="$?"
                                                                                                                                 fi
+                                                                                                                                TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                                tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                cd "/home/${ config.personal.name }"
+                                                                                                                                rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure 0c02b892
+                                                                                                                                STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure cefbc806
+                                                                                                                                JSON="
+                                                                                                                                    $(
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --arg INDEX "$INDEX" \
+                                                                                                                                            --arg STANDARD_ERROR "$STANDARD_ERROR" \
+                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                            --arg STATUS "$STATUS" \
+                                                                                                                                            '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT , "status" : $STATUS type : "fulfillment" }'
+                                                                                                                                    )
+                                                                                                                                " || failure 4bb7e3d1
+                                                                                                                                redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
