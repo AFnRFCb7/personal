@@ -1064,14 +1064,41 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "resolve" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
-                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
                                                                                                                                         rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
+                                                                                                                                        ARGUMENTS=( "$@" )
+                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ arguments-nix }" | jq -R . | jq -s . )"
+                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                        then
+                                                                                                                                            HAS_STANDARD_INPUT=true
+                                                                                                                                            STANDARD_INPUT="$( cat )" || failure b78f1b75
+                                                                                                                                        else
+                                                                                                                                            HAS_STANDARD_INPUT=false
+                                                                                                                                            STANDARD_INPUT=
+                                                                                                                                        fi
+                                                                                                                                        export HAS_STANDARD_INPUT
+                                                                                                                                        export STANDARD_INPUT
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --argjson ARGUMENTS "$ARGUMENTS"
+                                                                                                                                            --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
+                                                                                                                                            --arg MODE "$MODE" \
+                                                                                                                                            --arg RESOLUTION "$RESOLUTION" \
+                                                                                                                                            --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                                                            {
+                                                                                                                                                "arguments" : "$ARGUMENTS" ,
+                                                                                                                                                "has-standard-input" : "$HAS_STANDARD_INPUT" ,
+                                                                                                                                                "mode" : "$MODE" ,
+                                                                                                                                                "resolution" : $RESOLUTION ,
+                                                                                                                                                "standard-input" : "$STANDARD_INPUT" ,
+                                                                                                                                                "type" : "resolution"
+                                                                                                                                            }
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
@@ -1092,18 +1119,19 @@
                                                                                                                                 echo since it is on our channel we are proceeding
                                                                                                                                 read -r PAYLOAD
                                                                                                                                 INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                                STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
+                                                                                                                                PROVENANCE="$( yq eval .provenance" - <<< "$PAYLOAD" )" || failure 4ccfcb5c
                                                                                                                                 STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
+                                                                                                                                STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
                                                                                                                                 if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
                                                                                                                                 then
                                                                                                                                     echo since it is a failed resource we are proceeding "INDEX=$INDEX"
                                                                                                                                     echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
-                                                                                                                                    echo 2191dc450ee994b08ae556882241848cb5c52eb2930f72e2060d004071e395094470ae150142efb40b3a5cbccf3712909d67314a22bbe764dc855b93deefde96
                                                                                                                                     export TEMPORARY="\$TEMPORARY"
                                                                                                                                     export INDEX
-                                                                                                                                    envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
+                                                                                                                                    MODE=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
