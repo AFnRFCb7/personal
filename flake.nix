@@ -1090,18 +1090,18 @@
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
-                                                                                                                                                --argjson ARGUMENTS "\$ARGUMENTS_JSON" \
-                                                                                                                                                --arg HAS_STANDARD_INPUT "\$HAS_STANDARD_INPUT" \
-                                                                                                                                                --arg MODE "\$MODE" \
-                                                                                                                                                --arg RESOLUTION "\$RESOLUTION" \
-                                                                                                                                                --arg STANDARD_INPUT "\$STANDARD_INPUT" \
+                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS_JSON" \
+                                                                                                                                                --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
+                                                                                                                                                --arg MODE "$MODE" \
+                                                                                                                                                --arg RESOLUTION "$RESOLUTION" \
+                                                                                                                                                --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
-                                                                                                                                                        "arguments" : "\$ARGUMENTS" ,
-                                                                                                                                                        "has-standard-input" : "\$HAS_STANDARD_INPUT" ,
-                                                                                                                                                        "mode" : \$MODE ,
-                                                                                                                                                        "resolution" : \$RESOLUTION ,
-                                                                                                                                                        "standard-input" : \$STANDARD_INPUT ,
+                                                                                                                                                        "arguments" : "$ARGUMENTS" ,
+                                                                                                                                                        "has-standard-input" : "$HAS_STANDARD_INPUT" ,
+                                                                                                                                                        "mode" : $MODE ,
+                                                                                                                                                        "resolution" : $RESOLUTION ,
+                                                                                                                                                        "standard-input" : $STANDARD_INPUT ,
                                                                                                                                                         "type" : "resolution"
                                                                                                                                                     }
                                                                                                                                                 '
