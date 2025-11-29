@@ -1040,7 +1040,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "ExecStart" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.jq pkgs.redis pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             log =
@@ -1128,7 +1128,6 @@
                                                                                                                                 then
                                                                                                                                     echo since it is invalid we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                                    PROVENANCE="$( yq eval ".provenance" - <<< "$PAYLOAD" )" || failure 4ccfcb5c
                                                                                                                                     STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
                                                                                                                                     STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
                                                                                                                                     echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
@@ -1138,7 +1137,7 @@
                                                                                                                                     MODE=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
+                                                                                                                                    jq --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
