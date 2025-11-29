@@ -143,6 +143,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
+                                                                        resolutions = [ "alpha" "beta" "gamma" ] ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
@@ -1149,7 +1150,7 @@
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     RESOLUTIONS="$( yq eval ".description.seed.resolutions" <<< "$PAYLOAD" )" || failure 632e8f4e
-                                                                                                                                    for RESOLUTION in "RESOLUTIONS"
+                                                                                                                                    for RESOLUTION in "$RESOLUTIONS"
                                                                                                                                     do
                                                                                                                                         export MODE=manual
                                                                                                                                         export RESOLUTION
