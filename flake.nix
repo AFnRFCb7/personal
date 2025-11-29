@@ -1053,8 +1053,8 @@
                                                                                                                                 runtimeInputs = [ pkgs.flock pkgs.yq-go ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        # exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                                        # flock -s 203
+                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                        flock -s 203
                                                                                                                                         yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml"
                                                                                                                                     '' ;
                                                                                                                             } ;
