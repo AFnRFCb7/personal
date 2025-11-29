@@ -1690,6 +1690,7 @@
                                                                 "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
                                                             ] ;
                                                         transient = false ;
+                                                        type = "valid" ;
                                                   } ;
                                     resource-sad =
                                        let
@@ -1803,6 +1804,7 @@
                                                                "20828320279b5890d7dccda8c6572b676c7954280559beb66be87ab7d2aeb060dd65c81053766fda24c36ed1ab5db40af70a420e913e16501c3b965d2d99c7e6"
                                                            ] ;
                                                        transient = false ;
+                                                       type = "invalid" ;
                                                  } ;
                                         secret =
                                             _secret.check
