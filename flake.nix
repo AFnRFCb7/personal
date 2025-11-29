@@ -1149,7 +1149,7 @@
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval -o=json '.description.secondary.seed.resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                                    yq eval -o=json --raw-output '.description.secondary.seed.resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                                     do
                                                                                                                                         export MODE=manual
                                                                                                                                         export RESOLUTION
