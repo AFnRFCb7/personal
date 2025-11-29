@@ -1234,13 +1234,26 @@
                                                                                                                                 HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
                                                                                                                                 RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
                                                                                                                                 export RELEASE
-                                                                                                                                if release-application
+                                                                                                                                STANDARD_OUTPUT_FILE="$( mktemp )" || failure cf7116b5
+                                                                                                                                STANDARD_ERROR_FILE="$( mktemp )" || failure ed38b9d5
+                                                                                                                                if release-application > "$STANDARD_OUTPUT" 2> "$STANDARD_ERROR"
                                                                                                                                 then
                                                                                                                                     TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
                                                                                                                                     tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
                                                                                                                                     cd "/home/${ config.personal.name }"
                                                                                                                                     rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                    JSON="$( jq --null-input --arg INDEX "$INDEX" '{ index : $INDEX , type : "fulfillment" }' )" || failure 4bb7e3d1
+                                                                                                                                    STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure cefbc806
+                                                                                                                                    JSON="
+                                                                                                                                        $(
+                                                                                                                                            jq \
+                                                                                                                                                --null-input \
+                                                                                                                                                --arg INDEX \
+                                                                                                                                                --arg STANDARD_ERROR \
+                                                                                                                                                --arg STANDARD_OUTPUT \
+                                                                                                                                                "$INDEX" \
+                                                                                                                                                '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT type : "fulfillment" }'
+                                                                                                                                        )
+                                                                                                                                    " || failure 4bb7e3d1
                                                                                                                                     redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                                 fi
                                                                                                                             '' ;
@@ -1262,7 +1275,7 @@
                                                                                                                     TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
                                                                                                                     if [[ "valid" == "$TYPE_" ]]
                                                                                                                     then
-                                                                                                                        iteration &
+                                                                                                                        iteration "$PAYLOAD" &
                                                                                                                     fi
                                                                                                                 fi
                                                                                                             done
