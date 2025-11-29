@@ -1084,21 +1084,24 @@
                                                                                                                                         fi
                                                                                                                                         export HAS_STANDARD_INPUT
                                                                                                                                         export STANDARD_INPUT
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --argjson ARGUMENTS "$ARGUMENTS"
-                                                                                                                                            --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
-                                                                                                                                            --arg MODE "$MODE" \
-                                                                                                                                            --arg RESOLUTION "$RESOLUTION" \
-                                                                                                                                            --arg STANDARD_INPUT "$STANDARD_INPUT" \
-                                                                                                                                            {
-                                                                                                                                                "arguments" : "$ARGUMENTS" ,
-                                                                                                                                                "has-standard-input" : "$HAS_STANDARD_INPUT" ,
-                                                                                                                                                "mode" : "$MODE" ,
-                                                                                                                                                "resolution" : $RESOLUTION ,
-                                                                                                                                                "standard-input" : "$STANDARD_INPUT" ,
-                                                                                                                                                "type" : "resolution"
-                                                                                                                                            }
+                                                                                                                                        JSON="$(
+                                                                                                                                            jq \
+                                                                                                                                                --null-input \
+                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS" \
+                                                                                                                                                --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
+                                                                                                                                                --arg MODE "$MODE" \
+                                                                                                                                                --arg RESOLUTION "$RESOLUTION" \
+                                                                                                                                                --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                                                                {
+                                                                                                                                                    "arguments" : "$ARGUMENTS" ,
+                                                                                                                                                    "has-standard-input" : "$HAS_STANDARD_INPUT" ,
+                                                                                                                                                    "mode" : "$MODE" ,
+                                                                                                                                                    "resolution" : $RESOLUTION ,
+                                                                                                                                                    "standard-input" : "$STANDARD_INPUT" ,
+                                                                                                                                                    "type" : "resolution"
+                                                                                                                                                }
+                                                                                                                                        )" || failure 32dfb4b0
+                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
