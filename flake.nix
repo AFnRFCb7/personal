@@ -1149,7 +1149,7 @@
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    RESOLUTIONS="$( yq eval ".description.seed.resolutions" <<< "$PAYLOAD" )" || failure 632e8f4e
+                                                                                                                                    RESOLUTIONS="$( yq eval ".description.secondary.seed.resolutions" <<< "$PAYLOAD" )" || failure 632e8f4e
                                                                                                                                     for RESOLUTION in $RESOLUTIONS
                                                                                                                                     do
                                                                                                                                         export MODE=manual
