@@ -1153,7 +1153,7 @@
                                                                                                                                     do
                                                                                                                                         export MODE=manual
                                                                                                                                         export RESOLUTION
-                                                                                                                                        envsubst < "$resolve" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
+                                                                                                                                        envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
                                                                                                                                         chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
                                                                                                                                     done
                                                                                                                                 else
