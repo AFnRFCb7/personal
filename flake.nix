@@ -1090,7 +1090,6 @@
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
-                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
                                                                                                                                                 --arg MODE "$MODE" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
