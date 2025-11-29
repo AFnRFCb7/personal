@@ -1123,7 +1123,7 @@
                                                                                                                             then
                                                                                                                                 echo since it is on our channel we are proceeding
                                                                                                                                 read -r PAYLOAD
-                                                                                                                                TYPE_="$( yq eval ".type" - <<< $PAYLOAD" )" || failure 36088760
+                                                                                                                                TYPE_="$( yq eval ".type" - <<< "$PAYLOAD" )" || failure 36088760
                                                                                                                                 if [[ "invalid" == "$TYPE_" ]]
                                                                                                                                 then
                                                                                                                                     echo since it is invalid we are proceeding
