@@ -1115,9 +1115,6 @@
                                                                                                                     mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                     redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                                     do
-                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                        flock 203
-                                                                                                                        echo We locked the log file
                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                         then
                                                                                                                             echo since it is a message we are proceeding
@@ -1149,7 +1146,7 @@
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval -o=json --raw-output '.description.secondary.seed.resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                                    yq eval --raw-output '.description.secondary.seed.resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                                     do
                                                                                                                                         export MODE=manual
                                                                                                                                         export RESOLUTION
