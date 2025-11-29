@@ -1074,7 +1074,7 @@
                                                                                                                                         cd "/home/${ config.personal.name }"
                                                                                                                                         rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         ARGUMENTS=( "\$@" )
-                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "\" ""$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
+                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "\\" "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             HAS_STANDARD_INPUT=false
