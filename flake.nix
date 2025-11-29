@@ -1123,12 +1123,12 @@
                                                                                                                             then
                                                                                                                                 echo since it is on our channel we are proceeding
                                                                                                                                 read -r PAYLOAD
-                                                                                                                                TYPE_="$( yq eval ".type ) <<< $PAYLOAD" )" || failure 36088760
+                                                                                                                                TYPE_="$( yq eval ".type" - ) <<< $PAYLOAD" )" || failure 36088760
                                                                                                                                 if [[ "invalid" == "$TYPE_" ]]
                                                                                                                                 then
                                                                                                                                     echo since it is invalid we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                                    PROVENANCE="$( yq eval .provenance" - <<< "$PAYLOAD" )" || failure 4ccfcb5c
+                                                                                                                                    PROVENANCE="$( yq eval ".provenance" - <<< "$PAYLOAD" )" || failure 4ccfcb5c
                                                                                                                                     STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
                                                                                                                                     STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
                                                                                                                                     echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
@@ -1136,7 +1136,7 @@
                                                                                                                                     export TEMPORARY="\$TEMPORARY"
                                                                                                                                     export INDEX
                                                                                                                                     MODE=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     yq eval --prettyPrint "." <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
