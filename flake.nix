@@ -79,7 +79,7 @@
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
-                                                                    in r.implementation { init = point.init or null ; seed = { path = path ; resolutions = [ ] ; } ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
+                                                                    in r.implementation { init = point.init or null ; seed = { path = path ; resolutions = point.resolutions or [ ] ; } ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
                                                 }
                                                 {
                                                     foobar =
