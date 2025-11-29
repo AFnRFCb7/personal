@@ -1076,11 +1076,11 @@
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )"
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
-                                                                                                                                            HAS_STANDARD_INPUT=true
-                                                                                                                                            STANDARD_INPUT="$( cat )" || failure b78f1b75
-                                                                                                                                        else
                                                                                                                                             HAS_STANDARD_INPUT=false
                                                                                                                                             STANDARD_INPUT=
+                                                                                                                                        else
+                                                                                                                                            HAS_STANDARD_INPUT=true
+                                                                                                                                            STANDARD_INPUT="$( cat )" || failure b78f1b75
                                                                                                                                         fi
                                                                                                                                         export HAS_STANDARD_INPUT
                                                                                                                                         export STANDARD_INPUT
@@ -1137,7 +1137,7 @@
                                                                                                                                     MODE=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    jq --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" '{ "index" : $INDEX , "standard-error" : $STANDARD_ERROR , "status" : $STATUS }' | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
+                                                                                                                                    jq --null-input --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" '{ "index" : $INDEX , "standard-error" : $STANDARD_ERROR , "status" : $STATUS }' | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
                                                                                                                                     envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
