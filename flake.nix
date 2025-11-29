@@ -1227,39 +1227,32 @@
                                                                                                                                 tail --follow /dev/null --pid "$ORIGINATOR_PID"
                                                                                                                                 INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
                                                                                                                                 export INDEX
-                                                                                                                                while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                                while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
                                                                                                                                 do
                                                                                                                                     sleep 1
                                                                                                                                 done
                                                                                                                                 HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
                                                                                                                                 RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
                                                                                                                                 export RELEASE
-                                                                                                                                STANDARD_OUTPUT_FILE="$( mktemp )" || failure cf7116b5
-                                                                                                                                STANDARD_ERROR_FILE="$( mktemp )" || failure ed38b9d5
-                                                                                                                                if release-application > "$STANDARD_OUTPUT" 2> "$STANDARD_ERROR"
+                                                                                                                                mkdir --parents "/home/${ config.personal.name }/resources/release/$INDEX"
+                                                                                                                                if release-application > "/home/${ config.personal.name }/resources/release/$INDEX/standard-output" 2> "/home/${ config.personal.name }/resources/release/$INDEX/standard-err"
                                                                                                                                 then
-                                                                                                                                    STATUS="$?"
-                                                                                                                                else
-                                                                                                                                    STATUS="$?"
+                                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    cd "/home/${ config.personal.name }"
+                                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    JSON="
+                                                                                                                                        $(
+                                                                                                                                            jq \
+                                                                                                                                                --null-input \
+                                                                                                                                                --arg INDEX "$INDEX" \
+                                                                                                                                                --arg STANDARD_ERROR "$STANDARD_ERROR" \
+                                                                                                                                                --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT , "status" : $STATUS type : "fulfillment" }'
+                                                                                                                                        )
+                                                                                                                                    " || failure 4bb7e3d1
+                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                 fi
-                                                                                                                                TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                                tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                cd "/home/${ config.personal.name }"
-                                                                                                                                rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure 0c02b892
-                                                                                                                                STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure cefbc806
-                                                                                                                                JSON="
-                                                                                                                                    $(
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --arg INDEX "$INDEX" \
-                                                                                                                                            --arg STANDARD_ERROR "$STANDARD_ERROR" \
-                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                            --arg STATUS "$STATUS" \
-                                                                                                                                            '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT , "status" : $STATUS type : "fulfillment" }'
-                                                                                                                                    )
-                                                                                                                                " || failure 4bb7e3d1
-                                                                                                                                redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
