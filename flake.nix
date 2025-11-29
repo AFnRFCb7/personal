@@ -1095,9 +1095,9 @@
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "has-standard-input" : "$HAS_STANDARD_INPUT" ,
-                                                                                                                                                        "mode" : "$MODE" ,
+                                                                                                                                                        "mode" : $MODE ,
                                                                                                                                                         "resolution" : $RESOLUTION ,
-                                                                                                                                                        "standard-input" : "$STANDARD_INPUT" ,
+                                                                                                                                                        "standard-input" : $STANDARD_INPUT ,
                                                                                                                                                         "type" : "resolution"
                                                                                                                                                     }
                                                                                                                                                 '
