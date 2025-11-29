@@ -1067,6 +1067,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        cd
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
                                                                                                                                         tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
@@ -1104,6 +1105,7 @@
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON"
+                                                                                                                                        echo "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
