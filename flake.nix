@@ -1078,7 +1078,7 @@
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             HAS_STANDARD_INPUT=false
-                                                                                                                                            STANDARD_INPUT=
+                                                                                                                                            STANDARD_INPUT=""
                                                                                                                                         else
                                                                                                                                             HAS_STANDARD_INPUT=true
                                                                                                                                             STANDARD_INPUT="$( cat )" || failure b78f1b75
