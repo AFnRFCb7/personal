@@ -1218,8 +1218,6 @@
                                                                                                                     TYPE_="$( yq eval ".type" )" || failure 2ee1309a
                                                                                                                     if [[ "valid" == "$TYPE_" ]]
                                                                                                                     then
-                                                                                                                        STATUS="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 428ce3a1
-                                                                                                                        STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure ebc1cb49
                                                                                                                         ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
                                                                                                                         tail --follow /dev/null --pid "$ORIGINATOR_PID"
                                                                                                                         while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
