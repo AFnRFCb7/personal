@@ -1074,9 +1074,9 @@
                                                                                                                                         cd "/home/${ config.personal.name }"
                                                                                                                                         rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         # shellcheck disable=SC2034
-                                                                                                                                        ARGUMENTS=( "\$@" )
+                                                                                                                                        ARGUMENTS=( "$@" )
                                                                                                                                         # shellcheck disable=SC2034
-                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "\\" "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
+                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             HAS_STANDARD_INPUT=false
@@ -1141,7 +1141,7 @@
                                                                                                                                     export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                                     export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                     export STANDARD_INPUT="\$STANDARD_INPUT"
-                                                                                                                                    MODE=automatic RESOLUTION="automatic" envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
+                                                                                                                                    MODE=automatic RESOLUTION=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
                                                                                                                                     jq --null-input --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" '{ "index" : $INDEX , "standard-error" : $STANDARD_ERROR , "status" : $STATUS }' | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
