@@ -1073,8 +1073,8 @@
                                                                                                                                         tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
                                                                                                                                         rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
-                                                                                                                                        # ARGUMENTS=( "$@" )
-                                                                                                                                        # ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
+                                                                                                                                        ARGUMENTS=( "\$@" )
+                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "\" ""$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             HAS_STANDARD_INPUT=false
@@ -1088,16 +1088,18 @@
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
+                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
                                                                                                                                                 --arg MODE "$MODE" \
                                                                                                                                                 --arg RESOLUTION "$RESOLUTION" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
-                                                                                                                                                        "has-standard-input" : "$HAS_STANDARD_INPUT" ,
-                                                                                                                                                        "mode" : $MODE ,
-                                                                                                                                                        "resolution" : $RESOLUTION ,
-                                                                                                                                                        "standard-input" : $STANDARD_INPUT ,
+                                                                                                                                                        "arguments" : "\$ARGUMENTS" ,
+                                                                                                                                                        "has-standard-input" : "\$HAS_STANDARD_INPUT" ,
+                                                                                                                                                        "mode" : \$MODE ,
+                                                                                                                                                        "resolution" : \$RESOLUTION ,
+                                                                                                                                                        "standard-input" : \$STANDARD_INPUT ,
                                                                                                                                                         "type" : "resolution"
                                                                                                                                                     }
                                                                                                                                                 '
