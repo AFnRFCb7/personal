@@ -1222,24 +1222,27 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
+                                                                                                                                PAYLOAD="$1"
                                                                                                                                 ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
                                                                                                                                 tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
+                                                                                                                                export INDEX
                                                                                                                                 while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
                                                                                                                                 do
                                                                                                                                     sleep 1
                                                                                                                                 done
                                                                                                                                 HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
-                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
-                                                                                                                                export INDEX
                                                                                                                                 RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
                                                                                                                                 export RELEASE
-                                                                                                                                release-application
-                                                                                                                                TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                                tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                cd "/home/${ config.personal.name }"
-                                                                                                                                rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                JSON="$( jq --null-input --arg INDEX "$INDEX" '{ index : $INDEX , type : "fulfillment" }' )" || failure 4bb7e3d1
-                                                                                                                                redis-cli PUBLISH ${ config.personal.channel } "$JSON"
+                                                                                                                                if release-application
+                                                                                                                                then
+                                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    cd "/home/${ config.personal.name }"
+                                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    JSON="$( jq --null-input --arg INDEX "$INDEX" '{ index : $INDEX , type : "fulfillment" }' )" || failure 4bb7e3d1
+                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON"
+                                                                                                                                fi
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
