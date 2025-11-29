@@ -79,7 +79,7 @@
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
-                                                                    in r.implementation { init = point.init or null ; seed = path ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
+                                                                    in r.implementation { init = point.init or null ; seed = { path = path ; resolutions = point.resolutions or [ ] ; } ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
                                                 }
                                                 {
                                                     foobar =
@@ -120,9 +120,13 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( _failure.implementation "b9d858ef" ) ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        if [[ "$#" -gt 0 ]]
+                                                                                                        then
+                                                                                                            failure b9a218e1
+                                                                                                        fi
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         root-resource "$DOT_GNUPG"
                                                                                                         root-store ${ pkgs.gnupg }
@@ -139,6 +143,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
+                                                                        resolutions = [ "alpha" "beta" "gamma" ] ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
@@ -1036,50 +1041,125 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "ExecStart" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.redis pkgs.yq-go ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.jq pkgs.redis pkgs.yq-go ] ;
                                                                                                     text =
                                                                                                         let
+                                                                                                            log =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "log" ;
+                                                                                                                                runtimeInputs = [ pkgs.flock pkgs.yq-go ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                        flock -s 203
+                                                                                                                                        yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml"
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/log" ;
                                                                                                             resolve =
                                                                                                                 let
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "resolve" ;
-                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        cd
+                                                                                                                                        # shellcheck disable=SC2034
                                                                                                                                         TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
-                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         cd "/home/${ config.personal.name }"
-                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
+                                                                                                                                        # shellcheck disable=SC2034
+                                                                                                                                        ARGUMENTS=( "$@" )
+                                                                                                                                        # shellcheck disable=SC2034
+                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
+                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                        then
+                                                                                                                                            HAS_STANDARD_INPUT=false
+                                                                                                                                            STANDARD_INPUT=""
+                                                                                                                                        else
+                                                                                                                                            HAS_STANDARD_INPUT=true
+                                                                                                                                            STANDARD_INPUT="$( cat )" || failure b78f1b75
+                                                                                                                                        fi
+                                                                                                                                        export HAS_STANDARD_INPUT
+                                                                                                                                        export STANDARD_INPUT
+                                                                                                                                        JSON="$(
+                                                                                                                                            jq \
+                                                                                                                                                --null-input \
+                                                                                                                                                --arg ARGUMENTS "$ARGUMENTS_JSON" \
+                                                                                                                                                --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
+                                                                                                                                                --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                                                                '
+                                                                                                                                                    {
+                                                                                                                                                        "arguments" : $ARGUMENTS ,
+                                                                                                                                                        "has-standard-input" : $HAS_STANDARD_INPUT ,
+                                                                                                                                                        "mode" : "$MODE" ,
+                                                                                                                                                        "resolution" : "$RESOLUTION" ,
+                                                                                                                                                        "standard-input" : $STANDARD_INPUT ,
+                                                                                                                                                        "type" : "resolution"
+                                                                                                                                                    }
+                                                                                                                                                '
+                                                                                                                                        )" || failure 32dfb4b0
+                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
+                                                                                                                                        echo "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                     redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                                     do
-                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                        flock 203
                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                         then
+                                                                                                                            echo since it is a message we are proceeding
                                                                                                                             read -r CHANNEL
-                                                                                                                            if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                                            if [[ ${ config.personal.channel } == "$CHANNEL" ]]
                                                                                                                             then
-                                                                                                                                failure ea3c1e1c
+                                                                                                                                echo since it is on our channel we are proceeding
+                                                                                                                                read -r PAYLOAD
+                                                                                                                                TYPE_="$( yq eval ".type" - <<< "$PAYLOAD" )" || failure 36088760
+                                                                                                                                if [[ "invalid" == "$TYPE_" ]]
+                                                                                                                                then
+                                                                                                                                    echo since it is invalid we are proceeding
+                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
+                                                                                                                                    STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
+                                                                                                                                    STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
+                                                                                                                                    echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
+                                                                                                                                    export TEMPORARY="\$TEMPORARY"
+                                                                                                                                    export INDEX
+                                                                                                                                    export ARGUMENTS="\$ARGUMENTS"
+                                                                                                                                    export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                                    export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                                    export STANDARD_INPUT="\$STANDARD_INPUT"
+                                                                                                                                    export JSON="\$JSON"
+                                                                                                                                    MODE=automatic RESOLUTION=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
+                                                                                                                                    jq --null-input --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" '{ "index" : $INDEX , "standard-error" : $STANDARD_ERROR , "status" : $STATUS }' | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
+                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
+                                                                                                                                    envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
+                                                                                                                                    yq eval '.description.secondary.seed.resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                                    do
+                                                                                                                                        export MODE=manual
+                                                                                                                                        export RESOLUTION
+                                                                                                                                        envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
+                                                                                                                                        chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
+                                                                                                                                    done
+                                                                                                                                else
+                                                                                                                                    echo since is a not a failed resource we are not proceeding
+                                                                                                                                fi
+                                                                                                                            else
+                                                                                                                                echo since it is not on our channel we are not proceeding
                                                                                                                             fi
-                                                                                                                            read -r PAYLOAD
-                                                                                                                            INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                            STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
-                                                                                                                            STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
-                                                                                                                            if [[ 0 != "$STATUS" ]] || [[ -n "$STANDARD_ERROR" ]]
-                                                                                                                            then
-                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure 903ac02e
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/quarantine/$INDEX"
-                                                                                                                                envsubst < ${ resolve } > "/home/${ config.personal.name }/quarantine/$INDEX/resolve"
-                                                                                                                                echo "$PAYLOAD" | yq eval --prettyPrint "." > "/home/${ config.personal.name }/quarantine/$INDEX/log.yaml"
-                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            echo since it is not a message we are not proceeding
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
@@ -1104,38 +1184,83 @@
                                                                                                     runtimeInputs =
                                                                                                         [
                                                                                                             pkgs.coreutils
-                                                                                                            pkgs.findutils
-                                                                                                            pkgs.gnutar
                                                                                                             pkgs.redis
                                                                                                             pkgs.yq-go
                                                                                                             (
-                                                                                                                pkgs.buildFHSUserEnv
+                                                                                                                pkgs.writeShellApplication
                                                                                                                     {
-                                                                                                                        name = "release-application" ;
-                                                                                                                        extraBwrapArgs =
+                                                                                                                        name = "iteration" ;
+                                                                                                                        runtimeInputs =
                                                                                                                             [
-                                                                                                                                "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
-                                                                                                                                "--tmpfs /scratch"
-                                                                                                                            ] ;
-                                                                                                                        runScript =
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                pkgs.coreutils
+                                                                                                                                pkgs.gnutar
+                                                                                                                                pkgs.jq
+                                                                                                                                pkgs.redis
+                                                                                                                                pkgs.yq-go
+                                                                                                                                pkgs.xz
+                                                                                                                                (
+                                                                                                                                    pkgs.buildFHSUserEnv
                                                                                                                                         {
-                                                                                                                                            name = "runScript" ;
-                                                                                                                                            text = "$RELEASE" ;
-                                                                                                                                        } ;
-                                                                                                                                in "${ application }/bin/runScript" ;
+                                                                                                                                            name = "release-application" ;
+                                                                                                                                            extraBwrapArgs =
+                                                                                                                                                [
+                                                                                                                                                    "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
+                                                                                                                                                    "--tmpfs /scratch"
+                                                                                                                                                ] ;
+                                                                                                                                            runScript =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "runScript" ;
+                                                                                                                                                                text = "$RELEASE" ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/runScript" ;
+                                                                                                                                        }
+                                                                                                                                )
+                                                                                                                                ( _failure.implementation "efe4b476" )
+                                                                                                                            ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                PAYLOAD="$1"
+                                                                                                                                ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
+                                                                                                                                tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
+                                                                                                                                export INDEX
+                                                                                                                                while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                                do
+                                                                                                                                    sleep 1
+                                                                                                                                done
+                                                                                                                                HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
+                                                                                                                                RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
+                                                                                                                                export RELEASE
+                                                                                                                                mkdir --parents "/home/${ config.personal.name }/resources/release/$INDEX"
+                                                                                                                                if release-application > "/home/${ config.personal.name }/resources/release/$INDEX/standard-output" 2> "/home/${ config.personal.name }/resources/release/$INDEX/standard-err"
+                                                                                                                                then
+                                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    cd "/home/${ config.personal.name }"
+                                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    JSON="
+                                                                                                                                        $(
+                                                                                                                                            jq \
+                                                                                                                                                --null-input \
+                                                                                                                                                --arg INDEX "$INDEX" \
+                                                                                                                                                --arg STANDARD_ERROR "$STANDARD_ERROR" \
+                                                                                                                                                --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT , "status" : $STATUS type : "fulfillment" }'
+                                                                                                                                        )
+                                                                                                                                    " || failure 4bb7e3d1
+                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
+                                                                                                                                fi
+                                                                                                                            '' ;
                                                                                                                     }
                                                                                                             )
                                                                                                         ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                             redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                             do
-                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                flock 203
                                                                                                                 if [[ "$TYPE" == "message" ]]
                                                                                                                 then
                                                                                                                     read -r CHANNEL
@@ -1144,26 +1269,10 @@
                                                                                                                         failure ea3c1e1c
                                                                                                                     fi
                                                                                                                     read -r PAYLOAD
-                                                                                                                    STATUS="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 428ce3a1
-                                                                                                                    STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure ebc1cb49
-                                                                                                                    if [[ 0 == "$STATUS" ]] && [[ -z "$STANDARD_ERROR" ]]
+                                                                                                                    TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
+                                                                                                                    if [[ "valid" == "$TYPE_" ]]
                                                                                                                     then
-                                                                                                                        ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
-                                                                                                                        tail --follow /dev/null --pid "$ORIGINATOR_PID"
-                                                                                                                        while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
-                                                                                                                        do
-                                                                                                                            sleep 1
-                                                                                                                        done
-                                                                                                                        HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
-                                                                                                                        INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
-                                                                                                                        export INDEX
-                                                                                                                        RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
-                                                                                                                        export RELEASE
-                                                                                                                        release-application
-                                                                                                                        TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                        cd "/home/${ config.personal.name }"
-                                                                                                                        rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                        iteration "$PAYLOAD" &
                                                                                                                     fi
                                                                                                                 fi
                                                                                                             done
@@ -1187,24 +1296,44 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "log-event-listener" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.redis pkgs.yq-go ( _failure.implementation "c5160404" )] ;
+                                                                                                    runtimeInputs =
+                                                                                                        [
+                                                                                                            pkgs.coreutils
+                                                                                                            pkgs.flock
+                                                                                                            pkgs.redis
+                                                                                                            pkgs.yq-go
+                                                                                                            ( _failure.implementation "c5160404" )
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "iteration" ;
+                                                                                                                        runtimeInputs =
+                                                                                                                            [
+                                                                                                                                pkgs.flock
+                                                                                                                            ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                TYPE="$1"
+                                                                                                                                CHANNEL="$2"
+                                                                                                                                PAYLOAD="$3"
+                                                                                                                                TIMESTAMP="$( date +%s )" || failure 9fc28e61
+                                                                                                                                TEMPORARY="$( mktemp )" || failure db44ba4a
+                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" --argjson "$PAYLOAD" '{ "channel" : $CHANNEL , "payload" : $PAYLOAD , "timestamp" : $TIMESTAMP , "type" : $TYPE }' > "$TEMPORARY"
+                                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                flock 203
+                                                                                                                                yq eval --prettyPrint "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                rm "$TEMPORARY"
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                             redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                             do
-                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                flock 203
-                                                                                                                if [[ "$TYPE" == "message" ]]
-                                                                                                                then
-                                                                                                                    read -r CHANNEL
-                                                                                                                    if [[ ${ config.personal.channel } != "$CHANNEL" ]]
-                                                                                                                    then
-                                                                                                                        failure 3aab9086
-                                                                                                                    fi
-                                                                                                                    read -r PAYLOAD
-                                                                                                                    echo "$PAYLOAD" | yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml
-                                                                                                                fi
+                                                                                                                read -r TYPE CHANNEL PAYLOAD
+                                                                                                                iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                             done
                                                                                                         '' ;
                                                                                                 } ;
@@ -1287,7 +1416,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : "${ setup }" ) }
+                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : ''${ setup } "$@"'' ) }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
@@ -1589,7 +1718,8 @@
                                                                 [
                                                                     "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
                                                                 ] ;
-                                                            expected-transient = -1 ;
+                                                        expected-transient = -1 ;
+                                                        expected-type = "valid" ;
                                                         init =
                                                             { mount , pkgs , resources } :
                                                                 let
@@ -1684,6 +1814,7 @@
                                                              "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"
                                                          ] ;
                                                      expected-transient = -1 ;
+                                                     expected-type = "invalid" ;
                                                      init =
                                                          { mount , pkgs , resources } :
                                                              let
