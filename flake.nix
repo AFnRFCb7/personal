@@ -1105,14 +1105,13 @@
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
-                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON" 2> /dev/null
+                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                         echo "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                     redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                                     do
                                                                                                                         if [[ "$TYPE" == "message" ]]
@@ -1185,35 +1184,63 @@
                                                                                                     runtimeInputs =
                                                                                                         [
                                                                                                             pkgs.coreutils
-                                                                                                            pkgs.findutils
-                                                                                                            pkgs.flock
-                                                                                                            pkgs.gnutar
                                                                                                             pkgs.redis
-                                                                                                            pkgs.yq-go
                                                                                                             (
-                                                                                                                pkgs.buildFHSUserEnv
+                                                                                                                pkgs.writeShellApplication
                                                                                                                     {
-                                                                                                                        name = "release-application" ;
-                                                                                                                        extraBwrapArgs =
+                                                                                                                        name = "iteration" ;
+                                                                                                                        runtimeInputs =
                                                                                                                             [
-                                                                                                                                "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
-                                                                                                                                "--tmpfs /scratch"
-                                                                                                                            ] ;
-                                                                                                                        runScript =
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                pkgs.coreutils
+                                                                                                                                pkgs.gnutar
+                                                                                                                                pkgs.yq-go
+                                                                                                                                pkgs.xz
+                                                                                                                                (
+                                                                                                                                    pkgs.buildFHSUserEnv
                                                                                                                                         {
-                                                                                                                                            name = "runScript" ;
-                                                                                                                                            text = "$RELEASE" ;
-                                                                                                                                        } ;
-                                                                                                                                in "${ application }/bin/runScript" ;
+                                                                                                                                            name = "release-application" ;
+                                                                                                                                            extraBwrapArgs =
+                                                                                                                                                [
+                                                                                                                                                    "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
+                                                                                                                                                    "--tmpfs /scratch"
+                                                                                                                                                ] ;
+                                                                                                                                            runScript =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "runScript" ;
+                                                                                                                                                                text = "$RELEASE" ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/runScript" ;
+                                                                                                                                        }
+                                                                                                                                )
+                                                                                                                                ( _failure.implementation "efe4b476" )
+                                                                                                                            ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
+                                                                                                                                tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                                while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                                do
+                                                                                                                                    sleep 1
+                                                                                                                                done
+                                                                                                                                HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
+                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
+                                                                                                                                export INDEX
+                                                                                                                                RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
+                                                                                                                                export RELEASE
+                                                                                                                                release-application
+                                                                                                                                TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
+                                                                                                                                tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                cd "/home/${ config.personal.name }"
+                                                                                                                                rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                            '' ;
                                                                                                                     }
                                                                                                             )
                                                                                                         ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                             redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                             do
                                                                                                                 if [[ "$TYPE" == "message" ]]
@@ -1224,25 +1251,10 @@
                                                                                                                         failure ea3c1e1c
                                                                                                                     fi
                                                                                                                     read -r PAYLOAD
-                                                                                                                    TYPE_="$( yq eval ".type" )" || failure 2ee1309a
+                                                                                                                    TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
                                                                                                                     if [[ "valid" == "$TYPE_" ]]
                                                                                                                     then
-                                                                                                                        ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
-                                                                                                                        tail --follow /dev/null --pid "$ORIGINATOR_PID"
-                                                                                                                        while find /home/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
-                                                                                                                        do
-                                                                                                                            sleep 1
-                                                                                                                        done
-                                                                                                                        HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
-                                                                                                                        INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
-                                                                                                                        export INDEX
-                                                                                                                        RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
-                                                                                                                        export RELEASE
-                                                                                                                        release-application
-                                                                                                                        TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
-                                                                                                                        cd "/home/${ config.personal.name }"
-                                                                                                                        rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" ".gcroot/$INDEX"
+                                                                                                                        iteration &
                                                                                                                     fi
                                                                                                                 fi
                                                                                                             done
