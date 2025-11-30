@@ -65,7 +65,7 @@
                                     {
                                         installPhase = "execute-install $out" ;
                                         name = "identity" ;
-                                        nativeBuild =
+                                        nativeBuildInputs =
                                             [
                                                 (
                                                     pkgs.writeShellApplication
