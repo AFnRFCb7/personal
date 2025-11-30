@@ -224,7 +224,8 @@
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            host-name = "192.0.0.4" ;
+                                                                                            host-name = "192.168.1.192" ;
+                                                                                            # host-name = "192.0.0.4" ;
                                                                                             identity-file = ignore : "secret" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = false ;
