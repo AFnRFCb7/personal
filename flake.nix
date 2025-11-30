@@ -218,7 +218,7 @@
                                                                                         {
                                                                                             host-name = "127.0.0.1" ;
                                                                                             identity-file = ignore : "secret" ;
-                                                                                            strict-host-keys-checking = false ;
+                                                                                            strict-host-key-checking = false ;
                                                                                             user-known-hosts-file = ignore : "secret" ;
                                                                                         } ;
                                                                                     mobile =
