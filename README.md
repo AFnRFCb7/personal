@@ -61,3 +61,10 @@ Below is the recommended workflow.
    2. `git flake-build-vm`
    3. `git flake-test`
 8. `git flake-switch` The switch is now robust to reboot.
+
+## Emergency Procedures
+### Rehoming MOBILE
+Since the source code resides on mobile, if the ip address for mobile changes it can cause problems
+We need to
+* (temporarily) change the ip address in resource
+* change the ip address in config.
