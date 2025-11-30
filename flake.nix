@@ -1399,14 +1399,17 @@
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
-                                                                authorizedKeys =
-                                                                    {
-                                                                        keyFiles = [ "${ identity }/identity.pub" ] ;
-                                                                    } ;
                                                                 description = config.personal.description ;
                                                                 extraGroups = [ "wheel" ] ;
                                                                 isNormalUser = true ;
                                                                 name = config.personal.name ;
+                                                                openssh =
+                                                                    {
+                                                                        authorizedKeys =
+                                                                            {
+                                                                                keyFiles = [ "${ identity }/identity.pub" ] ;
+                                                                            } ;
+                                                                    } ;
                                                                 packages =
                                                                     [
                                                                         pkgs.gh
