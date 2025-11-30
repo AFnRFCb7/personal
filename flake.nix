@@ -60,6 +60,28 @@
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
                             _visitor = visitor.lib { } ;
+                            identity =
+                                pkgs.stdenv.mkDerivation
+                                    {
+                                        installPhase = "execute-install $out" ;
+                                        name = "identity" ;
+                                        nativeBuild =
+                                            [
+                                                (
+                                                    pkgs.writeShellApplication
+                                                        {
+                                                            name = "execute-install" ;
+                                                            text =
+                                                                ''
+                                                                    OUT="$1"
+                                                                    mkdir --parents "$OUT"
+                                                                    ssh-keygen -f "$OUT/identity" -P "" -C "nixos store key"
+                                                                '' ;
+                                                        }
+                                                )
+                                            ] ;
+                                        src = ./. ;
+                                    } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
@@ -152,6 +174,25 @@
                                                         } ;
                                                     production =
                                                         {
+                                                            alpha =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { mount , pkgs , resources } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        touch /mount/secret
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                        targets = [ "secret" ] ;
+                                                                    } ;
                                                             dot-gnupg =
                                                                 ignore :
                                                                     _dot-gnupg.implementation
@@ -173,12 +214,19 @@
                                                                                             user-known-hosts-file = ignore : "secret" ;
                                                                                             user = "git" ;
                                                                                         } ;
+                                                                                    laptop =
+                                                                                        {
+                                                                                            host-name = "127.0.0.1" ;
+                                                                                            identity-file = ignore : "secret" ;
+                                                                                            strict-host-keys-checking = false ;
+                                                                                            user-known-hosts-file = ignore : "secret" ;
+                                                                                        } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            host-name = "192.168.1.192" ;
+                                                                                            host-name = "192.0.0.4" ;
                                                                                             identity-file = ignore : "secret" ;
                                                                                             port = 8022 ;
-                                                                                            strict-host-key-checking = true ;
+                                                                                            strict-host-key-checking = false ;
                                                                                             user-known-hosts-file = ignore : "secret" ;
                                                                                         } ;
                                                                                 } ;
@@ -188,6 +236,11 @@
                                                                                         {
                                                                                             identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ;
                                                                                             user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ;
+                                                                                        } ;
+                                                                                    laptop =
+                                                                                        {
+                                                                                            identity-file = { mount , pkgs , resources } : "${ identity }/identity" ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.alpha ( setup : setup ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
@@ -1346,6 +1399,10 @@
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
+                                                                authorizedKeys =
+                                                                    {
+                                                                        keyFiles = [ "${ identity }/identity.pub" ] ;
+                                                                    } ;
                                                                 description = config.personal.description ;
                                                                 extraGroups = [ "wheel" ] ;
                                                                 isNormalUser = true ;
