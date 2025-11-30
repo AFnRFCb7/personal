@@ -71,6 +71,7 @@
                                                     pkgs.writeShellApplication
                                                         {
                                                             name = "execute-install" ;
+                                                            runtimeInputs = [ pkgs.openssh ] ;
                                                             text =
                                                                 ''
                                                                     OUT="$1"
