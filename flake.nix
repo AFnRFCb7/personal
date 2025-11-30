@@ -214,8 +214,6 @@
                                                                                             strict-host-key-checking = true ;
                                                                                             user-known-hosts-file = ignore : "secret" ;
                                                                                             user = "git" ;
-                                                                                            user = "git" ;
-                                                                                            user = "git" ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
