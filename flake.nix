@@ -251,29 +251,30 @@
                                                                                 } ;
                                                                         } ;
                                                             fixture =
-                                                                laptop =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { mount , pkgs , resources } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                cat ${ identity }/identity > /mount/identity
-                                                                                                                cat ${ identity }/identity.pub > /mount/identity.pub
-                                                                                                                chmod 0400 /mount/identity /mount/identity.pub
-                                                                                                                touch /mount/known-hosts
-                                                                                                                chmod 0600 /mount/known-hosts
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "identity" "identity.pub" "known-hosts" ] ;
-                                                                            } ;
+                                                                {
+                                                                    laptop =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { mount , pkgs , resources } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cat ${ identity }/identity > /mount/identity
+                                                                                                                    cat ${ identity }/identity.pub > /mount/identity.pub
+                                                                                                                    chmod 0400 /mount/identity /mount/identity.pub
+                                                                                                                    touch /mount/known-hosts
+                                                                                                                    chmod 0600 /mount/known-hosts
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ "identity" "identity.pub" "known-hosts" ] ;
+                                                                                } ;
                                                                 } ;
                                                             flake =
                                                                 {
