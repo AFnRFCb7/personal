@@ -240,8 +240,8 @@
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources } : resources.production.fixture ( setup : setup ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.fixture ( setup : setup ) ;
+                                                                                            identity-file = { mount , pkgs , resources } : resources.production.fixture.laptop ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.fixture.laptop ( setup : setup ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
