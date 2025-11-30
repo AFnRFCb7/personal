@@ -65,7 +65,6 @@
                                     {
                                         installPhase = "execute-install $out" ;
                                         name = "identity" ;
-                                        name = "identity" ;
                                         nativeBuildInputs =
                                             [
                                                 (
@@ -214,6 +213,8 @@
                                                                                             identity-file = ignore : "secret" ;
                                                                                             strict-host-key-checking = true ;
                                                                                             user-known-hosts-file = ignore : "secret" ;
+                                                                                            user = "git" ;
+                                                                                            user = "git" ;
                                                                                             user = "git" ;
                                                                                         } ;
                                                                                     laptop =
