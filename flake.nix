@@ -65,6 +65,7 @@
                                     {
                                         installPhase = "execute-install $out" ;
                                         name = "identity" ;
+                                        name = "identity" ;
                                         nativeBuildInputs =
                                             [
                                                 (
@@ -218,9 +219,9 @@
                                                                                     laptop =
                                                                                         {
                                                                                             host-name = "127.0.0.1" ;
-                                                                                            identity-file = ignore : "secret" ;
+                                                                                            identity-file = ignore : "identity" ;
                                                                                             strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "secret" ;
+                                                                                            user-known-hosts-file = ignore : "known-hosts" ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
@@ -240,8 +241,8 @@
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources } : "${ identity }/identity" ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.alpha ( setup : setup ) ;
+                                                                                            identity-file = { mount , pkgs , resources } : resources.production.fixture ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.fixture ( setup : setup ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
@@ -250,6 +251,31 @@
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
+                                                            fixture =
+                                                                laptop =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { mount , pkgs , resources } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                cat ${ identity }/identity > /mount/identity
+                                                                                                                cat ${ identity }/identity.pub > /mount/identity.pub
+                                                                                                                chmod 0400 /mount/identity /mount/identity.pub
+                                                                                                                touch /mount/known-hosts
+                                                                                                                chmod 0600 /mount/known-hosts
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "identity" "identity.pub" "known-hosts" ] ;
+                                                                            } ;
+                                                                } ;
                                                             flake =
                                                                 {
                                                                     build-vm =
