@@ -146,9 +146,12 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( _failure.implementation "b9d858ef" ) ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        if [[ "$#" -gt 0 ]]
+                                                                                                        if [[ 2 -eq "$#" ]]
                                                                                                         then
-                                                                                                            failure b9a218e1
+                                                                                                            if [[ true == "$1" ]]
+                                                                                                            then
+                                                                                                                failure b9a218e1
+                                                                                                            fi
                                                                                                         fi
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         root-resource "$DOT_GNUPG"
@@ -1203,7 +1206,7 @@
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                     MODE=automatic RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                     yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                                     do
                                                                                                                                         export MODE=manual
