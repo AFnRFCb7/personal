@@ -182,6 +182,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
+                                                                        release = "true" ;
                                                                         resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
