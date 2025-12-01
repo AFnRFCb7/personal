@@ -146,13 +146,26 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( _failure.implementation "b9d858ef" ) ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        INIT=false
+                                                                                                        RELEASE=false
                                                                                                         if [[ 2 -eq "$#" ]]
                                                                                                         then
                                                                                                             if [[ true == "$1" ]]
                                                                                                             then
-                                                                                                                failure b9a218e1
+                                                                                                                INIT=true
+                                                                                                            fi
+                                                                                                            if [[ true == "$2" ]]
+                                                                                                            then
+                                                                                                                RELEASE=true
                                                                                                             fi
                                                                                                         fi
+                                                                                                        if "$INIT"
+                                                                                                        then
+                                                                                                            failure b9a218e1
+                                                                                                        fi
+                                                                                                        echo "$INIT" > /mount/init
+                                                                                                        echo "$RELEASE" > /mount/release
+                                                                                                        chmod 0400 /mount/init /mount/release
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         root-resource "$DOT_GNUPG"
                                                                                                         root-store ${ pkgs.gnupg }
@@ -170,7 +183,7 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
                                                                         resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { } ;
