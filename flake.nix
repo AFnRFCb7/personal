@@ -1415,6 +1415,9 @@
                                                                                                                                 PAYLOAD="$3"
                                                                                                                                 TIMESTAMP="$( date +%s )" || failure 9fc28e61
                                                                                                                                 TEMPORARY="$( mktemp )" || failure db44ba4a
+                                                                                                                                echo
+                                                                                                                                echo PAYLOAD=
+                                                                                                                                echo "$PAYLOAD"
                                                                                                                                 jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" --argjson "$PAYLOAD" '{ "channel" : $CHANNEL , "payload" : $PAYLOAD , "timestamp" : $TIMESTAMP , "type" : $TYPE }' > "$TEMPORARY"
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
