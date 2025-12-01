@@ -1396,6 +1396,7 @@
                                                                                                         [
                                                                                                             pkgs.coreutils
                                                                                                             pkgs.flock
+                                                                                                            pkgs.jq
                                                                                                             pkgs.redis
                                                                                                             pkgs.yq-go
                                                                                                             ( _failure.implementation "c5160404" )
