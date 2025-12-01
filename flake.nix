@@ -166,7 +166,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        resolutions = [ "alpha" "beta" "gamma" ] ;
+                                                                        resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
@@ -1149,13 +1149,6 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        cd
-                                                                                                                                        # shellcheck disable=SC2034
-                                                                                                                                        TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure 25926564
-                                                                                                                                        tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
-                                                                                                                                        cd "/home/${ config.personal.name }"
-                                                                                                                                        rm --recursive --force "resources/links/$INDEX" "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
-                                                                                                                                        # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS=( "$@" )
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
@@ -1182,12 +1175,12 @@
                                                                                                                                                         "mode" : "$MODE" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
-                                                                                                                                                        "type" : "resolution"
+                                                                                                                                                        "type" : "resolve-init"
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        echo "$JSON"
+                                                                                                                                        yq eval --prettyPrint "." <<< "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
@@ -1208,31 +1201,19 @@
                                                                                                                                 then
                                                                                                                                     echo since it is invalid we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                                    STANDARD_ERROR="$( echo "$PAYLOAD" | yq eval ".standard-error" - )" || failure 3f6b3691
-                                                                                                                                    STATUS="$( echo "$PAYLOAD" | yq eval ".status" - )" || failure 66df1408
-                                                                                                                                    echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
-                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX"
-                                                                                                                                    export TEMPORARY="\$TEMPORARY"
-                                                                                                                                    export INDEX
-                                                                                                                                    export ARGUMENTS="\$ARGUMENTS"
-                                                                                                                                    export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
-                                                                                                                                    export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
-                                                                                                                                    export STANDARD_INPUT="\$STANDARD_INPUT"
-                                                                                                                                    export JSON="\$JSON"
-                                                                                                                                    MODE=automatic RESOLUTION=automatic envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve.sh"
-                                                                                                                                    jq --null-input --arg INDEX "$INDEX" --arg STANDARD_ERROR "$STANDARD_ERROR" --arg STATUS "$STATUS" '{ "index" : $INDEX , "standard-error" : $STANDARD_ERROR , "status" : $STATUS }' | yq eval --prettyPrint "." > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
-                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log.yaml"
-                                                                                                                                    envsubst < ${ log } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/log"
-                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve"
-                                                                                                                                    yq eval '.description.secondary.seed.resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                                    MODE=automatic RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh
+                                                                                                                                    yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                                     do
                                                                                                                                         export MODE=manual
                                                                                                                                         export RESOLUTION
-                                                                                                                                        envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
-                                                                                                                                        chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/resolve/$RESOLUTION"
+                                                                                                                                        envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
+                                                                                                                                        chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
                                                                                                                                     done
+                                                                                                                                    yq eval --prettyPrint '.' - <<< "$PAYLOAD > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml
+                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml
+                                                                                                                                    jq --null-input --arg TYPE '{ "index" : .index , "release" : .description.seed.secondary.release , "resolutions" : description.seed.secondary.resolutions.release , "type" : $TYPE }' <<< "$PAYLOAD" | redis-cli PUBLISH
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
                                                                                                                                 fi
@@ -1253,7 +1234,7 @@
                                                                 resources-log-cleaner =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
+                                                                        enable = false ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
@@ -1303,21 +1284,31 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                PAYLOAD="$1"
-                                                                                                                                ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
-                                                                                                                                tail --follow /dev/null --pid "$ORIGINATOR_PID"
-                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
-                                                                                                                                export INDEX
-                                                                                                                                while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
-                                                                                                                                do
-                                                                                                                                    sleep 1
-                                                                                                                                done
-                                                                                                                                HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
+                                                                                                                                TYPE="$1"
+                                                                                                                                PAYLOAD="$2"
+                                                                                                                                if [[ "valid" == "$TYPE" ]]
+                                                                                                                                then
+                                                                                                                                    ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
+                                                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
+                                                                                                                                    export INDEX
+                                                                                                                                    while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                                    do
+                                                                                                                                        sleep 1
+                                                                                                                                    done
+                                                                                                                                fi
                                                                                                                                 RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
                                                                                                                                 export RELEASE
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/resources/release/$INDEX"
-                                                                                                                                if release-application > "/home/${ config.personal.name }/resources/release/$INDEX/standard-output" 2> "/home/${ config.personal.name }/resources/release/$INDEX/standard-err"
+                                                                                                                                if release-application > "/home/${ config.personal.name }/resources/release/$INDEX/standard-output" 2> "/home/${ config.personal.name }/resources/release/$INDEX/standard-error"
                                                                                                                                 then
+                                                                                                                                    STATUS="$?"
+                                                                                                                                else
+                                                                                                                                    STATUS="$?"
+                                                                                                                                fi
+                                                                                                                                if [[ 0 == "$STATUS" ]] && [[ -s "/home/${ config.personal.name }/resources/release/$INDEX/standard-error" ]]
+                                                                                                                                then
+                                                                                                                                    HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
                                                                                                                                     TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
                                                                                                                                     tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
                                                                                                                                     cd "/home/${ config.personal.name }"
@@ -1333,6 +1324,11 @@
                                                                                                                                         )
                                                                                                                                     " || failure 4bb7e3d1
                                                                                                                                     redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
+                                                                                                                                else
+                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
+                                                                                                                                    JSON="
+                                                                                                                                    " || failure 472fe660
+                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                 fi
                                                                                                                             '' ;
                                                                                                                     }
@@ -1345,15 +1341,17 @@
                                                                                                                 if [[ "$TYPE" == "message" ]]
                                                                                                                 then
                                                                                                                     read -r CHANNEL
-                                                                                                                    if [[ ${ config.personal.channel } != "$CHANNEL" ]]
+                                                                                                                    if [[ ${ config.personal.channel } == "$CHANNEL" ]]
                                                                                                                     then
-                                                                                                                        failure ea3c1e1c
-                                                                                                                    fi
-                                                                                                                    read -r PAYLOAD
-                                                                                                                    TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
-                                                                                                                    if [[ "valid" == "$TYPE_" ]]
-                                                                                                                    then
-                                                                                                                        iteration "$PAYLOAD" &
+                                                                                                                        read -r PAYLOAD
+                                                                                                                        TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
+                                                                                                                        if [[ "valid" == "$TYPE_" ]]
+                                                                                                                        then
+                                                                                                                            iteration-valid "$PAYLOAD" &
+                                                                                                                        else if [[ "resolve-init" == "$TYPE_" ]]
+                                                                                                                        then
+                                                                                                                            iteration-resolve "$PAYLOAD" &
+                                                                                                                        fi
                                                                                                                     fi
                                                                                                                 fi
                                                                                                             done
