@@ -1229,7 +1229,7 @@
                                                                                                                                         chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
                                                                                                                                     done
                                                                                                                                     yq eval --prettyPrint '.' - <<< "$PAYLOAD > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml
-                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml
+                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
                                                                                                                                     jq --null-input --arg TYPE '{ "index" : .index , "release" : .description.seed.secondary.release , "resolutions" : description.seed.secondary.resolutions.release , "type" : $TYPE }' <<< "$PAYLOAD" | redis-cli PUBLISH
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
