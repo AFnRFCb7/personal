@@ -1166,6 +1166,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        export RELEASE="$1"
                                                                                                                                         ARGUMENTS=( "$@" )
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
@@ -1179,17 +1180,22 @@
                                                                                                                                         fi
                                                                                                                                         export HAS_STANDARD_INPUT
                                                                                                                                         export STANDARD_INPUT
+                                                                                                                                        export RELEASE
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --arg ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
+                                                                                                                                                --arg INDEX "$INDEX" \
+                                                                                                                                                --arg RELEASE "$RELEASE" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : $ARGUMENTS ,
                                                                                                                                                         "has-standard-input" : $HAS_STANDARD_INPUT ,
+                                                                                                                                                        "index" : $INDEX ,
                                                                                                                                                         "mode" : "$MODE" ,
+                                                                                                                                                        "release" : "$RELEASE" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
                                                                                                                                                         "type" : "resolve-init"
@@ -1198,6 +1204,7 @@
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         printf '%s' "$JSON" redis-cli PUBLISH -x ${ config.personal.channel } > /dev/null
                                                                                                                                         yq eval --prettyPrint "." <<< "$JSON"
+                                                                                                                                        rm --recursive "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
@@ -1218,6 +1225,7 @@
                                                                                                                                 then
                                                                                                                                     echo since it is invalid we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
+                                                                                                                                    export INDEX
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                     export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                     export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
