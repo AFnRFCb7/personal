@@ -1449,17 +1449,18 @@
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 CHANNEL="$1"
-                                                                                                                                PAYLOAD="$2"
-                                                                                                                                if [[ -n "$PAYLOAD" ]]
-                                                                                                                                then
-                                                                                                                                    TIMESTAMP="$( date +%s )" || failure 9fc28e61
-                                                                                                                                    TEMPORARY="$( mktemp )" || failure db44ba4a
-                                                                                                                                    echo "$PAYLOAD" | jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP }' > "$TEMPORARY"
-                                                                                                                                    exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                                    flock 203
-                                                                                                                                    yq eval --prettyPrint '.' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
-                                                                                                                                    rm "$TEMPORARY"
-                                                                                                                                fi
+                                                                                                                                PAYLOAD="$2
+                                                                                                                                TIMESTAMP="$( date +%s )" || failure 9fc28e61
+                                                                                                                                TEMPORARY="$( mktemp )" || failure db44ba4a
+                                                                                                                                echo
+                                                                                                                                echo IS PAYLOAD JSON?
+                                                                                                                                echo "$PAYLOAD"
+                                                                                                                                echo
+                                                                                                                                echo "$PAYLOAD" | jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP }' > "$TEMPORARY"
+                                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
+                                                                                                                                flock 203
+                                                                                                                                yq eval --prettyPrint '.' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                rm "$TEMPORARY"
                                                                                                                             '' ;
                                                                                                                     }
                                                                                                             )
