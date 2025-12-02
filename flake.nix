@@ -1449,7 +1449,7 @@
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 CHANNEL="$1"
-                                                                                                                                PAYLOAD="$2
+                                                                                                                                PAYLOAD="$2"
                                                                                                                                 TIMESTAMP="$( date +%s )" || failure 9fc28e61
                                                                                                                                 TEMPORARY="$( mktemp )" || failure db44ba4a
                                                                                                                                 echo
