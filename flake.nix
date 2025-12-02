@@ -1364,7 +1364,10 @@
                                                                                                                         TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
                                                                                                                         if [[ "valid" == "$TYPE_" ]]
                                                                                                                         then
-                                                                                                                            iteration-valid "$PAYLOAD" &
+                                                                                                                            INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure d79eee6f
+                                                                                                                            HASH="$( yq eval ".hash" - <<< "$PAYLOAD" )" || failure 7753e2d6
+                                                                                                                            RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 784a6c15
+                                                                                                                            iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" &
                                                                                                                         else if [[ "resolve-init" == "$TYPE_" ]]
                                                                                                                         then
                                                                                                                             iteration-resolve "$PAYLOAD" &
@@ -1432,10 +1435,10 @@
                                                                                                                 then
                                                                                                                     read -r CHANNEL
                                                                                                                     read -r PAYLOAD
-                                                                                                                    export ARGUMENTS "\$ARGUMENTS"
-                                                                                                                    export ARGUMENTS_JSON "\$ARGUMENTS_JSON"
-                                                                                                                    export HAS_STANDARD_INPUT "\$HAS_STANDARD_INPUT"
-                                                                                                                    export JSON "\$JSON"
+                                                                                                                    export ARGUMENTS="\$ARGUMENTS"
+                                                                                                                    export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                    export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                    export JSON="\$JSON"
                                                                                                                     iteration "$CHANNEL" "$PAYLOAD" &
                                                                                                                 fi
                                                                                                             done
