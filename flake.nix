@@ -1418,7 +1418,7 @@
                                                                                                                                 echo
                                                                                                                                 echo PAYLOAD=
                                                                                                                                 echo "$PAYLOAD"
-                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" --argjson PAYLOAD "$PAYLOAD" '{ "channel" : $CHANNEL , "payload" : $PAYLOAD , "timestamp" : $TIMESTAMP , "type" : $TYPE }' > "$TEMPORARY"
+                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP , "type" : $TYPE }'  > "$TEMPORARY"
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
                                                                                                                                 yq eval --prettyPrint "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
