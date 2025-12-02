@@ -1230,7 +1230,9 @@
                                                                                                                                     done
                                                                                                                                     yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
                                                                                                                                     chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
+                                                                                                                                    echo 6d93555e
                                                                                                                                     jq --arg TYPE "resolve-init" '{ "index" : .index , "release" : .description.seed.secondary.release , "resolutions" : description.seed.secondary.resolutions.release , "type" : $TYPE }' <<< "$PAYLOAD" | redis-cli PUBLISH > /dev/null
+                                                                                                                                    echo b6b03fb1
                                                                                                                                 else
                                                                                                                                     echo since is a not a failed resource we are not proceeding
                                                                                                                                 fi
@@ -1301,6 +1303,34 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
+                                                                                                                                while [[ "$#" -gt 0 ]]
+                                                                                                                                do
+                                                                                                                                    case "$1" in
+                                                                                                                                        --index
+                                                                                                                                            INDEX="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --hash
+                                                                                                                                            HASH="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --originator-pid
+                                                                                                                                            ORIGINATOR_PID="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --release
+                                                                                                                                            RELEASE="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        *)
+                                                                                                                                            failure 464417ef
+                                                                                                                                            ;;
+                                                                                                                                    esac
+                                                                                                                                done
+                                                                                                                                if [[ -n "$ORIGINATOR_PID" ]]
+                                                                                                                                then
+                                                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                                                fi
                                                                                                                                 TYPE="$1"
                                                                                                                                 PAYLOAD="$2"
                                                                                                                                 if [[ "valid" == "$TYPE" ]]
