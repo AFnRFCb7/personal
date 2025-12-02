@@ -1219,6 +1219,11 @@
                                                                                                                                     echo since it is invalid we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                                    ARGUMENTS="\$ARGUMENTS"
+                                                                                                                                    ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                                    JSON="\$JSON"
+                                                                                                                                    HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                                    STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                     MODE=automatic RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                     yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
