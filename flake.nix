@@ -1432,6 +1432,10 @@
                                                                                                                 then
                                                                                                                     read -r CHANNEL
                                                                                                                     read -r PAYLOAD
+                                                                                                                    export ARGUMENTS "\$ARGUMENTS"
+                                                                                                                    export ARGUMENTS_JSON "\$ARGUMENTS_JSON"
+                                                                                                                    export HAS_STANDARD_INPUT "\$HAS_STANDARD_INPUT"
+                                                                                                                    export JSON "\$JSON"
                                                                                                                     iteration "$CHANNEL" "$PAYLOAD" &
                                                                                                                 fi
                                                                                                             done
