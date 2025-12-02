@@ -1432,7 +1432,8 @@
                                                                                                                 then
                                                                                                                     read -r CHANNEL
                                                                                                                     read -r PAYLOAD
-                                                                                                                iteration "$CHANNEL" "$PAYLOAD" &
+                                                                                                                    iteration "$CHANNEL" "$PAYLOAD" &
+                                                                                                                fi
                                                                                                             done
                                                                                                         '' ;
                                                                                                 } ;
