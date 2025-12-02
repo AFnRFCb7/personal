@@ -1196,7 +1196,7 @@
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
-                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
+                                                                                                                                        printf '%s' "$JSON" redis-cli PUBLISH -x ${ config.personal.channel } > /dev/null
                                                                                                                                         yq eval --prettyPrint "." <<< "$JSON"
                                                                                                                                     '' ;
                                                                                                                             } ;
