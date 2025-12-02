@@ -182,7 +182,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        release = "true" ;
+                                                                        release = "if mount/release ; then exit 99 ; fi" ;
                                                                         resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
@@ -1418,7 +1418,7 @@
                                                                                                                                 echo
                                                                                                                                 echo PAYLOAD=
                                                                                                                                 echo "$PAYLOAD"
-                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" --argjson "$PAYLOAD" '{ "channel" : $CHANNEL , "payload" : $PAYLOAD , "timestamp" : $TIMESTAMP , "type" : $TYPE }' > "$TEMPORARY"
+                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" --argjson PAYLOAD "$PAYLOAD" '{ "channel" : $CHANNEL , "payload" : $PAYLOAD , "timestamp" : $TIMESTAMP , "type" : $TYPE }' > "$TEMPORARY"
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
                                                                                                                                 yq eval --prettyPrint "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
