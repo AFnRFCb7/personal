@@ -1202,9 +1202,9 @@
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
-                                                                                                                                        printf '%s' "$JSON" redis-cli PUBLISH -x ${ config.personal.channel } > /dev/null
+                                                                                                                                        printf '%s' "$JSON" | redis-cli PUBLISH -x ${ config.personal.channel } > /dev/null
                                                                                                                                         yq eval --prettyPrint "." <<< "$JSON"
-                                                                                                                                        rm --recursive "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
+                                                                                                                                        rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
