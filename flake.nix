@@ -1452,7 +1452,7 @@
                                                                                                                                 PAYLOAD="$2"
                                                                                                                                 TIMESTAMP="$( date +%s )" || failure 9fc28e61
                                                                                                                                 TEMPORARY="$( mktemp )" || failure db44ba4a
-                                                                                                                                jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP }' <<< "$PAYLOAD" > "$TEMPORARY"
+                                                                                                                                echo "$PAYLOAD" | jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP }' > "$TEMPORARY"
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
                                                                                                                                 yq eval --prettyPrint '.' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
