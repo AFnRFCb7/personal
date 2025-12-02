@@ -1475,6 +1475,8 @@
                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                             redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                             do
+                                                                                                                echo
+                                                                                                                echo "TYPE=$TYPE"
                                                                                                                 if [[ "message" == "$TYPE" ]]
                                                                                                                 then
                                                                                                                     read -r CHANNEL
