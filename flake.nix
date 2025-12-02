@@ -1410,18 +1410,14 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                TYPE="$1"
-                                                                                                                                CHANNEL="$2"
-                                                                                                                                PAYLOAD="$3"
+                                                                                                                                CHANNEL="$1"
+                                                                                                                                PAYLOAD="$2"
                                                                                                                                 TIMESTAMP="$( date +%s )" || failure 9fc28e61
                                                                                                                                 TEMPORARY="$( mktemp )" || failure db44ba4a
-                                                                                                                                echo
-                                                                                                                                echo PAYLOAD=
-                                                                                                                                echo "$PAYLOAD"
-                                                                                                                                jq --null-input --arg TIMESTAMP "$TIMESTAMP" --arg TYPE "$TYPE" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP , "type" : $TYPE }'  > "$TEMPORARY"
+                                                                                                                                jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP , }' <<< "$PAYLOAD" > "$TEMPORARY"
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
-                                                                                                                                yq eval --prettyPrint "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                yq eval --prettyPrint '.' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                                                 rm "$TEMPORARY"
                                                                                                                             '' ;
                                                                                                                     }
@@ -1432,8 +1428,11 @@
                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                             redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
                                                                                                             do
-                                                                                                                read -r TYPE CHANNEL PAYLOAD
-                                                                                                                iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
+                                                                                                                if [[ "message" == "$TYPE" ]]
+                                                                                                                then
+                                                                                                                    read -r CHANNEL
+                                                                                                                    read -r PAYLOAD
+                                                                                                                iteration "$CHANNEL" "$PAYLOAD" &
                                                                                                             done
                                                                                                         '' ;
                                                                                                 } ;
