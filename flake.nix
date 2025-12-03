@@ -1238,7 +1238,7 @@
                                                                                                                         read -r CHANNEL || failure 9f93effe
                                                                                                                         echo 6fb08fe6
                                                                                                                         read -r PAYLOAD || failure ff164dbc
-                                                                                                                        echo "e408e833 PAYLOAD=$PAYLOAD"
+                                                                                                                        echo "e408e833 TYPE=$TYPE CHANNEL=$CHANNEL PAYLOAD=$PAYLOAD"
                                                                                                                         TYPE_="$( jq --raw-output ".type" - <<< "$PAYLOAD" )" || failure 36088760
                                                                                                                         echo ab0ae211
                                                                                                                         if [[ "$TYPE" == "message" ]] && [[ "${ config.personal.channel }" == "$CHANNEL" ]] && [[ "invalid" == "$TYPE_" ]]
