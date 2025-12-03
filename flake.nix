@@ -1450,6 +1450,7 @@
                                                                                                                                 echo "$PAYLOAD"
                                                                                                                                 echo
                                                                                                                                 echo "$PAYLOAD" | jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP }' > "$TEMPORARY"
+                                                                                                                                mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
                                                                                                                                 yq eval --prettyPrint '.' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
