@@ -1166,21 +1166,35 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        echo 71648964
                                                                                                                                         export RELEASE="$1"
+                                                                                                                                        echo fda812a1
                                                                                                                                         ARGUMENTS=( "$@" )
+                                                                                                                                        echo 4cda64fe
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
+                                                                                                                                        echo 980784ca
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
+                                                                                                                                            echo 57e2e440
                                                                                                                                             HAS_STANDARD_INPUT=false
+                                                                                                                                            echo 83a3b711
                                                                                                                                             STANDARD_INPUT=""
+                                                                                                                                            echo 5b6c50e8
                                                                                                                                         else
+                                                                                                                                            echo f73980f8
                                                                                                                                             HAS_STANDARD_INPUT=true
+                                                                                                                                            echo a15468cf
                                                                                                                                             STANDARD_INPUT="$( cat )" || failure b78f1b75
+                                                                                                                                            echo 1eb8d6e7
                                                                                                                                         fi
+                                                                                                                                        echo cf752187
                                                                                                                                         export HAS_STANDARD_INPUT
+                                                                                                                                        echo b5c4f5e6
                                                                                                                                         export STANDARD_INPUT
+                                                                                                                                        echo e3a77969
                                                                                                                                         export RELEASE
+                                                                                                                                        echo 872c7257
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
@@ -1202,22 +1216,33 @@
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
+                                                                                                                                        echo be5e05d4
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        yq eval --prettyPrint --output=json "." <<< "$JSON"
+                                                                                                                                        echo 6472214d
+                                                                                                                                        yq eval --prettyPrint - <<< "$JSON"
+                                                                                                                                        echo bb8eedca
                                                                                                                                         rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
+                                                                                                                                        echo f5108bb9
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
                                                                                                             in
                                                                                                                 ''
+                                                                                                                    echo ae7d04a8
                                                                                                                     redis-cli SUBSCRIBE ${ config.personal.channel } | while true
                                                                                                                     do
+                                                                                                                        echo 9d6b95bb
                                                                                                                         read -r TYPE || failure 06eacbb5
+                                                                                                                        echo 34796223
                                                                                                                         read -r CHANNEL || failure 9f93effe
+                                                                                                                        echo 6fb08fe6
                                                                                                                         read -r PAYLOAD || failure ff164dbc
+                                                                                                                        echo e408e833
                                                                                                                         TYPE_="$( yq eval ".type" - <<< "$PAYLOAD" )" || failure 36088760
+                                                                                                                        echo ab0ae211
                                                                                                                         if [[ "$TYPE" == "message" ]] && [[ "${ config.personal.channel }" == "$CHANNEL" ]] && [[ "invalid" == "$TYPE_" ]]
                                                                                                                         then
+                                                                                                                            echo 7edc572f
                                                                                                                             INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
                                                                                                                             export INDEX
                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
