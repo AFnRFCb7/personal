@@ -1238,7 +1238,7 @@
                                                                                                                         echo 6fb08fe6
                                                                                                                         read -r PAYLOAD || failure ff164dbc
                                                                                                                         echo e408e833
-                                                                                                                        TYPE_="$( yq eval --from-json ".type" - <<< "$PAYLOAD" )" || failure 36088760
+                                                                                                                        TYPE_="$( jq --raw-output ".type" - <<< "$PAYLOAD" )" || failure 36088760
                                                                                                                         echo ab0ae211
                                                                                                                         if [[ "$TYPE" == "message" ]] && [[ "${ config.personal.channel }" == "$CHANNEL" ]] && [[ "invalid" == "$TYPE_" ]]
                                                                                                                         then
