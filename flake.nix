@@ -1345,7 +1345,7 @@
                                                                                                                                     flock -x 203
                                                                                                                                 fi
                                                                                                                                 export RELEASE
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/resources/release/$INDEX"
+                                                                                                                                STANDARD_OUTPUT_FILE="$( mktemp )" || failure
                                                                                                                                 if release-application > "/home/${ config.personal.name }/resources/release/$INDEX/standard-output" 2> "/home/${ config.personal.name }/resources/release/$INDEX/standard-error"
                                                                                                                                 then
                                                                                                                                     STATUS="$?"
@@ -1358,33 +1358,7 @@
                                                                                                                                     cd "/home/${ config.personal.name }"
                                                                                                                                     tar --create --file "$TEMPORARY" --xz "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                     rm --recursive --force "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
-                                                                                                                                    JSON=$(
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --compact-output \
-                                                                                                                                            --arg INDEX "$INDEX"
-                                                                                                                                            --arg RELEASE "$RELEASE"
-                                                                                                                                            {
-                                                                                                                                                "index" : "$INDEX" ,
-                                                                                                                                                "release" : $RELEASE ,
-                                                                                                                                                "type" : "successz"
-                                                                                                                                            }
-                                                                                                                                    ) || failure 7348c9ba
-                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                                 else
-                                                                                                                                    JSON=$(
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --compact-output \
-                                                                                                                                            --arg INDEX "$INDEX"
-                                                                                                                                            --arg RELEASE "$RELEASE"
-                                                                                                                                            {
-                                                                                                                                                "index" : $INDEX ,
-                                                                                                                                                "release" : $RELEASE ,
-                                                                                                                                                "type" : "failurez"
-                                                                                                                                            }
-                                                                                                                                    ) || failure 7348c9ba
-                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                                 fi
                                                                                                                             '' ;
                                                                                                                     }
