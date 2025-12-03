@@ -1210,50 +1210,35 @@
                                                                                                                     in "${ application }/bin/resolve" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
+                                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while true
                                                                                                                     do
-                                                                                                                        if [[ "$TYPE" == "message" ]]
+                                                                                                                        read -r TYPE || failure 06eacbb5
+                                                                                                                        read -r CHANNEL || failure 9f93effe
+                                                                                                                        read -r PAYLOAD || failure ff164dbc
+                                                                                                                        TYPE_="$( yq eval ".type" - <<< "$PAYLOAD" )" || failure 36088760
+                                                                                                                        if [[ "$TYPE" == "message" ]] && [[ "${ config.personal.channel }" == "$CHANNEL" ]] && [[ "invalid" == "$TYPE_" ]]
                                                                                                                         then
-                                                                                                                            echo since it is a message we are proceeding
-                                                                                                                            read -r CHANNEL
-                                                                                                                            if [[ ${ config.personal.channel } == "$CHANNEL" ]]
-                                                                                                                            then
-                                                                                                                                echo since it is on our channel we are proceeding
-                                                                                                                                read -r PAYLOAD
-                                                                                                                                TYPE_="$( yq eval ".type" - <<< "$PAYLOAD" )" || failure 36088760
-                                                                                                                                if [[ "invalid" == "$TYPE_" ]]
-                                                                                                                                then
-                                                                                                                                    echo since it is invalid we are proceeding
-                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
-                                                                                                                                    export INDEX
-                                                                                                                                    echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
-                                                                                                                                    echo BEFORE
-                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
-                                                                                                                                    echo AFTER
-                                                                                                                                    export ARGUMENTS="\$ARGUMENTS"
-                                                                                                                                    export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
-                                                                                                                                    export JSON="\$JSON"
-                                                                                                                                    export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
-                                                                                                                                    export STANDARD_INPUT="\$STANDARD_INPUT"
-                                                                                                                                    MODE=automatic RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
-                                                                                                                                    yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
-                                                                                                                                    do
-                                                                                                                                        export MODE=manual
-                                                                                                                                        export RESOLUTION
-                                                                                                                                        envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
-                                                                                                                                        chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
-                                                                                                                                    done
-                                                                                                                                    yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
-                                                                                                                                    chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
-                                                                                                                                else
-                                                                                                                                    echo since is a not a failed resource we are not proceeding
-                                                                                                                                fi
-                                                                                                                            else
-                                                                                                                                echo since it is not on our channel we are not proceeding
-                                                                                                                            fi
+                                                                                                                            INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
+                                                                                                                            export INDEX
+                                                                                                                            mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                            export ARGUMENTS="\$ARGUMENTS"
+                                                                                                                            export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                            export JSON="\$JSON"
+                                                                                                                            export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                            export STANDARD_INPUT="\$STANDARD_INPUT"
+                                                                                                                            MODE=automatic RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
+                                                                                                                            chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
+                                                                                                                            yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                            do
+                                                                                                                                export MODE=manual
+                                                                                                                                export RESOLUTION
+                                                                                                                                envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
+                                                                                                                                chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
+                                                                                                                            done
+                                                                                                                            yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
+                                                                                                                            chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
                                                                                                                         else
-                                                                                                                            echo since it is not a message we are not proceeding
+                                                                                                                            echo we are ignorning it
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
@@ -1475,15 +1460,13 @@
                                                                                                         ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                            redis-cli SUBSCRIBE ${ config.personal.channel } | while read -r TYPE
+                                                                                                            redis-cli SUBSCRIBE "${ config.personal.channel }" | while true
                                                                                                             do
-                                                                                                                echo
-                                                                                                                echo "TYPE=$TYPE"
+                                                                                                                read -r TYPE || failure 0b15dfb6
+                                                                                                                read -r CHANNEL || failure 6fc3955c
+                                                                                                                read -r PAYLOAD || failure ef9e9b75
                                                                                                                 if [[ "message" == "$TYPE" ]]
                                                                                                                 then
-                                                                                                                    read -r CHANNEL
-                                                                                                                    read -r PAYLOAD
                                                                                                                     export ARGUMENTS="\$ARGUMENTS"
                                                                                                                     export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                     export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
