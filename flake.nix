@@ -1139,7 +1139,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "ExecStart" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.jq pkgs.redis pkgs.yq-go ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.jq pkgs.redis pkgs.yq-go ( _failure.implementation "8dc4f9ef" ) ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             log =
