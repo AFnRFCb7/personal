@@ -1166,21 +1166,14 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        echo 71648964
                                                                                                                                         export RELEASE="$1"
-                                                                                                                                        echo fda812a1
                                                                                                                                         ARGUMENTS=( "$@" )
-                                                                                                                                        echo 4cda64fe
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
-                                                                                                                                        echo 980784ca
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
-                                                                                                                                            echo 57e2e440
                                                                                                                                             HAS_STANDARD_INPUT=false
-                                                                                                                                            echo 83a3b711
                                                                                                                                             STANDARD_INPUT=""
-                                                                                                                                            echo 5b6c50e8
                                                                                                                                         else
                                                                                                                                             HAS_STANDARD_INPUT=true
                                                                                                                                             STANDARD_INPUT="$( cat )" || failure b78f1b75
@@ -1260,7 +1253,7 @@
                                                                 resources-log-cleaner =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
-                                                                        enable = false ;
+                                                                        enable = true ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
@@ -1313,20 +1306,24 @@
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
-                                                                                                                                        --index
+                                                                                                                                        --index)
                                                                                                                                             INDEX="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
-                                                                                                                                        --hash
+                                                                                                                                        --hash)
                                                                                                                                             HASH="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
-                                                                                                                                        --originator-pid
+                                                                                                                                        --originator-pid)
                                                                                                                                             ORIGINATOR_PID="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
-                                                                                                                                        --release
+                                                                                                                                        --release)
                                                                                                                                             RELEASE="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --resolution)
+                                                                                                                                            RESOLUTIONS+=("$2")
                                                                                                                                             shift 2
                                                                                                                                             ;;
                                                                                                                                         *)
@@ -1338,20 +1335,15 @@
                                                                                                                                 then
                                                                                                                                     tail --follow /dev/null --pid "$ORIGINATOR_PID"
                                                                                                                                 fi
-                                                                                                                                TYPE="$1"
-                                                                                                                                PAYLOAD="$2"
-                                                                                                                                if [[ "valid" == "$TYPE" ]]
+                                                                                                                                while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                                do
+                                                                                                                                    sleep 1
+                                                                                                                                done
+                                                                                                                                if [[ -n "$HASH" ]]
                                                                                                                                 then
-                                                                                                                                    ORIGINATOR_PID="$( echo "$PAYLOAD" | yq eval ".originator-pid" - )" || failure e4143383
-                                                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
-                                                                                                                                    INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure a61b0039
-                                                                                                                                    export INDEX
-                                                                                                                                    while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
-                                                                                                                                    do
-                                                                                                                                        sleep 1
-                                                                                                                                    done
+                                                                                                                                    exec 203> "/home/${ config.personal.name }/resources/locks/$HASH.lock"
+                                                                                                                                    flock -x 203
                                                                                                                                 fi
-                                                                                                                                RELEASE="$( echo "PAYLOAD" | yq eval ".seed.release" - )" || failure 81daf915
                                                                                                                                 export RELEASE
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/resources/release/$INDEX"
                                                                                                                                 if release-application > "/home/${ config.personal.name }/resources/release/$INDEX/standard-output" 2> "/home/${ config.personal.name }/resources/release/$INDEX/standard-error"
@@ -1360,29 +1352,39 @@
                                                                                                                                 else
                                                                                                                                     STATUS="$?"
                                                                                                                                 fi
-                                                                                                                                if [[ 0 == "$STATUS" ]] && [[ -s "/home/${ config.personal.name }/resources/release/$INDEX/standard-error" ]]
+                                                                                                                                if [[ 0 == "$STATUS" ]] && [[ -n "/home/${ config.personal.name }/resources/release/$INDEX/standard-error" ]]
                                                                                                                                 then
-                                                                                                                                    HASH="$( echo "$PAYLOAD" | yq eval ".hash" - )" || failure 4d272512
-                                                                                                                                    TEMPORARY="$( mktemp --dry-run --suffix='.tar.xz' )" || failure c08185da
-                                                                                                                                    tar --create --xz --file "$TEMPORARY" --directory "/home/${ config.personal.name }" "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
+                                                                                                                                    TEMPORARY="$( mktemp --suffix .xz.tar )" || failure 1e7a248a
                                                                                                                                     cd "/home/${ config.personal.name }"
-                                                                                                                                    rm --recursive --force "resources/canonical/$HASH" "resources/links/$INDEX" "resources/locks/$INDEX" "resources/locks/$HASH" "resources/mounts/$INDEX" "resources/release/$INDEX" ".gcroot/$INDEX"
-                                                                                                                                    JSON="
-                                                                                                                                        $(
-                                                                                                                                            jq \
-                                                                                                                                                --null-input \
-                                                                                                                                                --arg INDEX "$INDEX" \
-                                                                                                                                                --arg STANDARD_ERROR "$STANDARD_ERROR" \
-                                                                                                                                                --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                '{ index : $INDEX , standard-error : $STANDARD_ERROR , standard-output : $STANDARD_OUTPUT , "status" : $STATUS type : "fulfillment" }'
-                                                                                                                                        )
-                                                                                                                                    " || failure 4bb7e3d1
-                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
+                                                                                                                                    tar --create --file "$TEMPORARY" --xz "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
+                                                                                                                                    rm --recursive --force "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
+                                                                                                                                    JSON=$(
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --compact-output \
+                                                                                                                                            --arg INDEX "$INDEX"
+                                                                                                                                            --arg RELEASE "$RELEASE"
+                                                                                                                                            {
+                                                                                                                                                "index" : "$INDEX" ,
+                                                                                                                                                "release" : $RELEASE ,
+                                                                                                                                                "type" : "successz"
+                                                                                                                                            }
+                                                                                                                                    ) || failure 7348c9ba
+                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                                 else
-                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
-                                                                                                                                    JSON="
-                                                                                                                                    " || failure 472fe660
-                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
+                                                                                                                                    JSON=$(
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --compact-output \
+                                                                                                                                            --arg INDEX "$INDEX"
+                                                                                                                                            --arg RELEASE "$RELEASE"
+                                                                                                                                            {
+                                                                                                                                                "index" : $INDEX ,
+                                                                                                                                                "release" : $RELEASE ,
+                                                                                                                                                "type" : "failurez"
+                                                                                                                                            }
+                                                                                                                                    ) || failure 7348c9ba
+                                                                                                                                    redis-cli PUBLISH ${ config.personal.channel } "$JSON"
                                                                                                                                 fi
                                                                                                                             '' ;
                                                                                                                     }
@@ -1404,10 +1406,22 @@
                                                                                                                             INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure d79eee6f
                                                                                                                             HASH="$( yq eval ".hash" - <<< "$PAYLOAD" )" || failure 7753e2d6
                                                                                                                             RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 784a6c15
-                                                                                                                            iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" &
+                                                                                                                            RESOLUTIONS=()
+                                                                                                                            yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                            do
+                                                                                                                                RESOLUTIONS+=("--resolution $RESOLUTION")
+                                                                                                                            done
+                                                                                                                            iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
                                                                                                                         else if [[ "resolve-init" == "$TYPE_" ]]
                                                                                                                         then
-                                                                                                                            iteration-resolve "$PAYLOAD" &
+                                                                                                                            INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure f3c64901
+                                                                                                                            RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
+                                                                                                                            RESOLUTIONS=()
+                                                                                                                            yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                            do
+                                                                                                                                RESOLUTIONS+=("--resolution $RESOLUTION")
+                                                                                                                            done
+                                                                                                                            iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
                                                                                                                         fi
                                                                                                                     fi
                                                                                                                 fi
