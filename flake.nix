@@ -1226,7 +1226,10 @@
                                                                                                                                     echo since it is invalid we are proceeding
                                                                                                                                     INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
                                                                                                                                     export INDEX
+                                                                                                                                    echo mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                                    echo BEFORE
                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                                    echo AFTER
                                                                                                                                     export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                     export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                                     export JSON="\$JSON"
