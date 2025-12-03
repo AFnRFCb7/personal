@@ -1182,19 +1182,12 @@
                                                                                                                                             STANDARD_INPUT=""
                                                                                                                                             echo 5b6c50e8
                                                                                                                                         else
-                                                                                                                                            echo f73980f8
                                                                                                                                             HAS_STANDARD_INPUT=true
-                                                                                                                                            echo a15468cf
                                                                                                                                             STANDARD_INPUT="$( cat )" || failure b78f1b75
-                                                                                                                                            echo 1eb8d6e7
                                                                                                                                         fi
-                                                                                                                                        echo cf752187
                                                                                                                                         export HAS_STANDARD_INPUT
-                                                                                                                                        echo b5c4f5e6
                                                                                                                                         export STANDARD_INPUT
-                                                                                                                                        echo e3a77969
                                                                                                                                         export RELEASE
-                                                                                                                                        echo 872c7257
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
@@ -1217,19 +1210,14 @@
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
-                                                                                                                                        echo be5e05d4
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        echo 6472214d
                                                                                                                                         yq eval --prettyPrint - <<< "$JSON"
-                                                                                                                                        echo bb8eedca
                                                                                                                                         rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
-                                                                                                                                        echo f5108bb9
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    echo ae7d04a8
                                                                                                                     redis-cli SUBSCRIBE ${ config.personal.channel } | while true
                                                                                                                     do
                                                                                                                         read -r TYPE || failure 06eacbb5
@@ -1474,7 +1462,7 @@
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/logs/lock
                                                                                                                                 flock 203
-                                                                                                                                yq eval --prettyPrint '.' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                                yq eval --prettyPrint '[.]' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                                                 rm "$TEMPORARY"
                                                                                                                             '' ;
                                                                                                                     }
