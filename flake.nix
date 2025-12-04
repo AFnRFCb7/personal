@@ -1289,7 +1289,7 @@
                                                                                                                                             name = "release-application" ;
                                                                                                                                             extraBwrapArgs =
                                                                                                                                                 [
-                                                                                                                                                    "--bind-ro /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
+                                                                                                                                                    "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount:ro"
                                                                                                                                                     "--tmpfs /scratch"
                                                                                                                                                 ] ;
                                                                                                                                             runScript =
