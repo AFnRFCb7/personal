@@ -1179,7 +1179,7 @@
                                                                                                                                                         "arguments" : $ARGUMENTS ,
                                                                                                                                                         "has-standard-input" : $HAS_STANDARD_INPUT ,
                                                                                                                                                         "index" : "$INDEX" ,
-                                                                                                                                                        "mode" : "$MODE" ,
+                                                                                                                                                        "mode" : ( "$MODE" | test("true") ) ,
                                                                                                                                                         "release" : "$RELEASE" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
@@ -1209,24 +1209,24 @@
                                                                                                                                 INDEX="$( yq eval ".index | tostring " - <<< "$PAYLOAD" )" || failure d4682955
                                                                                                                                 export INDEX
                                                                                                                                 echo "00775d3c INDEX=$INDEX"
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                                mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
                                                                                                                                 export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                 export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
-                                                                                                                                MODE=false RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
-                                                                                                                                chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
+                                                                                                                                MODE=false RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
+                                                                                                                                chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
                                                                                                                                 yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                                 do
                                                                                                                                     export MODE=true
                                                                                                                                     export RESOLUTION
-                                                                                                                                    envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve/$RESOLUTION"
+                                                                                                                                    envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/$RESOLUTION"
+                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/$RESOLUTION"
                                                                                                                                 done
-                                                                                                                                yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
-                                                                                                                                chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/log.yaml"
+                                                                                                                                yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
+                                                                                                                                chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     done
