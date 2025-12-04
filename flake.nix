@@ -1228,6 +1228,7 @@
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                 RELEASE="$( yq eval ".description.seed.secondary.release" - <<< "$PAYLOAD" )" || failure 574def49
+                                                                                                                                export RELEASE
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
                                                                                                                                 yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
