@@ -1142,21 +1142,6 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.jq pkgs.redis pkgs.yq-go ( _failure.implementation "8dc4f9ef" ) ] ;
                                                                                                     text =
                                                                                                         let
-                                                                                                            log =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "log" ;
-                                                                                                                                runtimeInputs = [ pkgs.flock pkgs.yq-go ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                                        flock -s 203
-                                                                                                                                        yq eval ".[] | select(.index == \"$INDEX\")" "/home/${ config.personal.name }/resources/logs/log.yaml"
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/log" ;
                                                                                                             resolve =
                                                                                                                 let
                                                                                                                     application =
@@ -1204,7 +1189,7 @@
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        yq eval --prettyPrint - <<< "$JSON"
+                                                                                                                                        yq eval --prettyPrint "." - <<< "$JSON"
                                                                                                                                         rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                         rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                     '' ;
@@ -1222,10 +1207,8 @@
                                                                                                                             TYPE_="$( jq --raw-output ".type" - <<< "$PAYLOAD" )" || failure 36088760
                                                                                                                             if [[ "invalid" == "$TYPE_" ]]
                                                                                                                             then
-                                                                                                                                INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
+                                                                                                                                INDEX="$( yq eval ".index | tostring " - <<< "$PAYLOAD" )" || failure d4682955
                                                                                                                                 export INDEX
-                                                                                                                                echo "8becd758 INDEX=$INDEX"
-                                                                                                                                echo "e7d2572b PAYLOAD=$PAYLOAD"
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                 export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                 export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
@@ -1349,7 +1332,7 @@
                                                                                                                                                                     '
                                                                                                                                                             )" || failure e6780fa1
                                                                                                                                                             redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                                            yq eval --prettyPrint - <<< "$JSON"
+                                                                                                                                                            yq eval --prettyPrint "." - <<< "$JSON"
                                                                                                                                                             rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve.sh"
                                                                                                                                                             rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve"
                                                                                                                                                         '' ;
@@ -1453,9 +1436,9 @@
                                                                                                                         TYPE_="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
                                                                                                                         if [[ "valid" == "$TYPE_" ]]
                                                                                                                         then
-                                                                                                                            INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure d79eee6f
-                                                                                                                            HASH="$( yq eval ".hash" - <<< "$PAYLOAD" )" || failure 7753e2d6
-                                                                                                                            RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 784a6c15
+                                                                                                                            INDEX="$( yq eval ".index | tostring" - <<< "$PAYLOAD" )" || failure d79eee6f
+                                                                                                                            HASH="$( yq eval ".hash | tostring" - <<< "$PAYLOAD" )" || failure 7753e2d6
+                                                                                                                            RELEASE="$( yq eval ".description.secondary.seed.release | tostring" - <<< "$PAYLOAD" )" || failure 784a6c15
                                                                                                                             RESOLUTIONS=()
                                                                                                                             yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
@@ -1464,7 +1447,7 @@
                                                                                                                             iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
                                                                                                                         elif [[ "resolve-init" == "$TYPE_" ]]
                                                                                                                         then
-                                                                                                                            INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure f3c64901
+                                                                                                                            INDEX="$( yq eval ".index | tostring" - <<< "$PAYLOAD" )" || failure f3c64901
                                                                                                                             echo "588d0f7b INDEX=$INDEX"
                                                                                                                             echo
                                                                                                                             echo "21818743 PAYLOAD=$PAYLOAD"
