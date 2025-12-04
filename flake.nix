@@ -1179,9 +1179,9 @@
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : $ARGUMENTS ,
-                                                                                                                                                        "has-standard-input" : ( $HAS_STANDARD_INPUT | test("true") ) ,
+                                                                                                                                                        "has-standard-input" : $HAS_STANDARD_INPUT ) ,
                                                                                                                                                         "index" : ( $INDEX | tostring ) ,
-                                                                                                                                                        "mode" : ( $MODE | test("true") ) ,
+                                                                                                                                                        "mode" : $MODE ) ,
                                                                                                                                                         "release" : "$RELEASE" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
