@@ -1425,6 +1425,7 @@
                                                                                                                                                 --arg HASH "$HASH" \
                                                                                                                                                 --arg INDEX "$INDEX" \
                                                                                                                                                 --arg ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                                                                --arg RELEASE "$RELEASE" \
                                                                                                                                                 --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                                 --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                 --arg STATUS "$STATUS" \
