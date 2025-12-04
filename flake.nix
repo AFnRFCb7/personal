@@ -191,8 +191,11 @@
                                                                                             runtimeInputs = [ ( _failure.implementation "f99f6e39" ) ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    ls -lah /
-                                                                                                    exit 98
+                                                                                                    RELEASE="$( cat /mount/release )" || failure "6e02a8fe"
+                                                                                                    if $RELEASE
+                                                                                                    then
+                                                                                                        failure "e82ab2c6"
+                                                                                                    fi
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/release" ;
