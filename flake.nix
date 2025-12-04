@@ -1225,6 +1225,7 @@
                                                                                                                                 INDEX="$( echo "$PAYLOAD" | yq eval ".index" - )" || failure d4682955
                                                                                                                                 export INDEX
                                                                                                                                 echo "8becd758 INDEX=$INDEX"
+                                                                                                                                echo "e7d2572b PAYLOAD=$PAYLOAD"
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                 export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                 export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
