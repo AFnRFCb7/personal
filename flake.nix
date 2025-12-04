@@ -1174,18 +1174,21 @@
                                                                                                                                                 --arg ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
                                                                                                                                                 --arg INDEX "$INDEX" \
+                                                                                                                                                --arg MODE "$MODE" \
                                                                                                                                                 --arg RELEASE "$RELEASE" \
+                                                                                                                                                --arg RESOLUTION "$RESOLUTION" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                                                                --arg TYPE "resolve-init" \
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : $ARGUMENTS ,
-                                                                                                                                                        "has-standard-input" : $HAS_STANDARD_INPUT ,
+                                                                                                                                                        "has-standard-input" : ( $HAS_STANDARD_INPUT | test("true") ) ,
                                                                                                                                                         "index" : ( $INDEX | tostring ) ,
-                                                                                                                                                        "mode" : "$MODE" ,
-                                                                                                                                                        "release" : "$RELEASE" ,
-                                                                                                                                                        "resolution" : "$RESOLUTION" ,
+                                                                                                                                                        "mode" : $MODE ,
+                                                                                                                                                        "release" : $RELEASE ,
+                                                                                                                                                        "resolution" : $RESOLUTION ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
-                                                                                                                                                        "type" : "resolve-init"
+                                                                                                                                                        "type" : $TYPE
                                                                                                                                                     }
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
@@ -1217,6 +1220,7 @@
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
+                                                                                                                                export TYPE="resolve-init"
                                                                                                                                 MODE=automatic RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                 chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                 yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
