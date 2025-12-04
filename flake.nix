@@ -182,7 +182,23 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        release = "if mount/release ; then exit 99 ; fi" ;
+                                                                        release =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ ( _failure.implementation "f99f6e39" ) ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    RELEASE="$( cat /mount/release )" || failure cd544f8e
+                                                                                                    if $RELEASE
+                                                                                                    then
+                                                                                                        exit 99
+                                                                                                    fi
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/release" ;
                                                                         resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
@@ -1416,6 +1432,7 @@
                                                                                                                                                     "hash" : $HASH ,
                                                                                                                                                     "index" : $INDEX ,
                                                                                                                                                     "originator-pid" : $ORIGINATOR_PID ,
+                                                                                                                                                    "release" : $RELEASE ,
                                                                                                                                                     "standard-error" : $STANDARD_ERROR ,
                                                                                                                                                     "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                     "status" : $STATUS
