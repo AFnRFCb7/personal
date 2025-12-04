@@ -1455,7 +1455,7 @@
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
                                                                                                                             done
                                                                                                                             iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
-                                                                                                                        else if [[ "resolve-init" == "$TYPE_" ]]
+                                                                                                                        elif [[ "resolve-init" == "$TYPE_" ]]
                                                                                                                         then
                                                                                                                             INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure f3c64901
                                                                                                                             RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
