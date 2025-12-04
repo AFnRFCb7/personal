@@ -1167,7 +1167,6 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        export RELEASE="$1"
                                                                                                                                         ARGUMENTS=( "$@" )
                                                                                                                                         # shellcheck disable=SC2034
                                                                                                                                         ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
@@ -1228,6 +1227,7 @@
                                                                                                                                 export INDEX
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                                RELEASE="$( yq eval ".description.seed.secondary.release" - <<< "$PAYLOAD" )" || failure 574def49
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
                                                                                                                                 yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
