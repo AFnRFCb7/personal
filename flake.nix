@@ -1391,7 +1391,7 @@
                                                                                                                                         then
                                                                                                                                             tail --follow /dev/null --pid "$ORIGINATOR_PID"
                                                                                                                                         fi
-                                                                                                                                        while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type L -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                                                        while find /home/${ config.personal.name }/resources/links -mindepth 2 -maxdepth 2 -type l -exec readlink -f {} \; | grep --quiet "/home/${ config.personal.name }/resources/mounts/$INDEX"
                                                                                                                                         do
                                                                                                                                             sleep 1
                                                                                                                                         done
