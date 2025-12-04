@@ -1465,6 +1465,9 @@
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
                                                                                                                             done
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
+                                                                                                                        elif [[ "resolve-release" == "$TYPE_" ]]
+                                                                                                                        then
+                                                                                                                            tre
                                                                                                                         fi
                                                                                                                     fi
                                                                                                                 fi
