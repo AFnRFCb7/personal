@@ -1233,7 +1233,7 @@
                                                                                                                                 export TYPE="resolve-init"
                                                                                                                                 yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
                                                                                                                                 chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
-                                                                                                                                MODE=false RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
+                                                                                                                                MODE=false RESOLUTION=init envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
                                                                                                                                 chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
                                                                                                                                 yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                                 do
@@ -1276,6 +1276,7 @@
                                                                                                                         runtimeInputs =
                                                                                                                             [
                                                                                                                                 pkgs.coreutils
+                                                                                                                                pkgs.gettext
                                                                                                                                 pkgs.gnutar
                                                                                                                                 pkgs.jq
                                                                                                                                 pkgs.redis
