@@ -1462,6 +1462,7 @@
                                                                                                                             iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
                                                                                                                         elif [[ "resolve-init" == "$TYPE_" ]]
                                                                                                                         then
+                                                                                                                            echo " 588d0f7b INDEX=$INDEX"
                                                                                                                             INDEX="$( yq eval ".index" - <<< "$PAYLOAD" )" || failure f3c64901
                                                                                                                             RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
                                                                                                                             RESOLUTIONS=()
