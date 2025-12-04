@@ -1181,7 +1181,7 @@
                                                                                                                                                         "arguments" : $ARGUMENTS ,
                                                                                                                                                         "has-standard-input" : $HAS_STANDARD_INPUT ,
                                                                                                                                                         "index" : ( $INDEX | tostring ) ,
-                                                                                                                                                        "mode" : $MODE ) ,
+                                                                                                                                                        "mode" : $MODE ,
                                                                                                                                                         "release" : "$RELEASE" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
