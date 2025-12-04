@@ -1179,7 +1179,7 @@
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : $ARGUMENTS ,
-                                                                                                                                                        "has-standard-input" : $HAS_STANDARD_INPUT ) ,
+                                                                                                                                                        "has-standard-input" : $HAS_STANDARD_INPUT ,
                                                                                                                                                         "index" : ( $INDEX | tostring ) ,
                                                                                                                                                         "mode" : $MODE ) ,
                                                                                                                                                         "release" : "$RELEASE" ,
