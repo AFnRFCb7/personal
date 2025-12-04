@@ -1166,7 +1166,6 @@
                                                                                                                                         export HAS_STANDARD_INPUT
                                                                                                                                         export STANDARD_INPUT
                                                                                                                                         export RELEASE
-                                                                                                                                        echo "23ded232 INDEX=$INDEX"
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
@@ -1177,7 +1176,7 @@
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : $ARGUMENTS ,
-                                                                                                                                                        "has-standard-input" : $HAS_STANDARD_INPUT ,
+                                                                                                                                                        "has-standard-input" : ( $HAS_STANDARD_INPUT | test("true") ) ,
                                                                                                                                                         "index" : "$INDEX" ,
                                                                                                                                                         "mode" : ( "$MODE" | test("true") ) ,
                                                                                                                                                         "release" : "$RELEASE" ,
@@ -1189,8 +1188,8 @@
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                         yq eval --prettyPrint "." - <<< "$JSON"
-                                                                                                                                        rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
-                                                                                                                                        rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
+                                                                                                                                        rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
+                                                                                                                                        rm --recursive --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/resolve" ;
@@ -1207,15 +1206,16 @@
                                                                                                                             if [[ "invalid" == "$TYPE_" ]]
                                                                                                                             then
                                                                                                                                 INDEX="$( yq eval ".index | tostring " - <<< "$PAYLOAD" )" || failure d4682955
-                                                                                                                                export INDEX
-                                                                                                                                echo "00775d3c INDEX=$INDEX"
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
                                                                                                                                 export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                 export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                                export INDEX
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
+                                                                                                                                yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
+                                                                                                                                chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
                                                                                                                                 MODE=false RESOLUTION=init  envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
                                                                                                                                 chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
                                                                                                                                 yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
@@ -1225,8 +1225,6 @@
                                                                                                                                     envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/$RESOLUTION"
                                                                                                                                     chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/$RESOLUTION"
                                                                                                                                 done
-                                                                                                                                yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
-                                                                                                                                chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     done
@@ -1318,14 +1316,13 @@
                                                                                                                                                                     --compact-output \
                                                                                                                                                                     --arg ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                                     --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
-                                                                                                                                                                    --arg INDEX "$INDEX" \
                                                                                                                                                                     --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                                     '
                                                                                                                                                                         {
                                                                                                                                                                             "arguments" : $ARGUMENTS ,
-                                                                                                                                                                            "has-standard-input" : $HAS_STANDARD_INPUT ,
-                                                                                                                                                                            "index" : $INDEX ,
-                                                                                                                                                                            "mode" : "$MODE" ,
+                                                                                                                                                                            "has-standard-input" : ( $HAS_STANDARD_INPUT | test("true") ) ,
+                                                                                                                                                                            "index" : ( "$INDEX" | tostring ) ,
+                                                                                                                                                                            "mode" : ( "$MODE" | test("true") ) ,
                                                                                                                                                                             "resolution" : "$RESOLUTION" ,
                                                                                                                                                                             "standard-input" : $STANDARD_INPUT ,
                                                                                                                                                                             "type" : "resolve-release"
@@ -1334,8 +1331,8 @@
                                                                                                                                                             )" || failure e6780fa1
                                                                                                                                                             redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                                             yq eval --prettyPrint "." - <<< "$JSON"
-                                                                                                                                                            rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve.sh"
-                                                                                                                                                            rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve"
+                                                                                                                                                            rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
+                                                                                                                                                            rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
                                                                                                                                             in "${ application }/bin/resolve" ;
@@ -1382,6 +1379,7 @@
                                                                                                                                         do
                                                                                                                                             sleep 1
                                                                                                                                         done
+                                                                                                                                        export HASH
                                                                                                                                         if [[ -n "$HASH" ]]
                                                                                                                                         then
                                                                                                                                             exec 203> "/home/${ config.personal.name }/resources/locks/$HASH.lock"
@@ -1403,16 +1401,34 @@
                                                                                                                                             tar --create --file "$TEMPORARY" --xz "resources/locks/$INDEX" "resources/mounts/$INDEX" "resources/quarantine/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                             rm --recursive --force "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         else
-                                                                                                                                            mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve"
+                                                                                                                                            mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
+                                                                                                                                            STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
+                                                                                                                                            STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE )" || failure 83137e6b
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
+                                                                                                                                                --arg HASH "$HASH" \
                                                                                                                                                 --arg INDEX "$INDEX" \
                                                                                                                                                 --arg ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                                                                --arg STANDARD_ERROR "$STANDARD_ERROR" \
+                                                                                                                                                --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                --arg STATUS "$STATUS"
                                                                                                                                                 '{
-                                                                                                                                                    "hash" : "$HASH" ,
-                                                                                                                                                    "index" : "$INDEX" ,
-                                                                                                                                                    "originator-pid" : "$ORIGINATOR_PID" ,
-                                                                                                                                                }' | yq eval --prettyPrint '.' - > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/release.yaml"
+                                                                                                                                                    "hash" : $HASH ,
+                                                                                                                                                    "index" : $INDEX ,
+                                                                                                                                                    "originator-pid" : $ORIGINATOR_PID ,
+                                                                                                                                                    "standard-error" : $STANDARD_ERROR ,
+                                                                                                                                                    "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                    "status" : $STATUS
+                                                                                                                                                }' | yq eval --prettyPrint '.' - > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.yaml"
+                                                                                                                                            chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.yaml"
+                                                                                                                                            export ARGUMENTS="\$ARGUMENTS"
+                                                                                                                                            export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
+                                                                                                                                            export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                                            export INDEX
+                                                                                                                                            export STANDARD_INPUT="\$STANDARD_INPUT"
+                                                                                                                                            export TYPE="resolve-release"
+                                                                                                                                            MODE=false RESOLUTION=release envsubst ${ resolve } "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
+                                                                                                                                            chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
                                                                                                                                             for RESOLUTION in "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                                             do
                                                                                                                                                 envsubst ${ resolve } "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
