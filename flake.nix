@@ -1467,7 +1467,7 @@
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
                                                                                                                         elif [[ "resolve-release" == "$TYPE_" ]]
                                                                                                                         then
-                                                                                                                            tre
+                                                                                                                            true
                                                                                                                         fi
                                                                                                                     fi
                                                                                                                 fi
