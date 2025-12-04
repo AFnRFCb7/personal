@@ -1355,6 +1355,10 @@
                                                                                                                                             in "${ application }/bin/resolve" ;
                                                                                                                                 in
                                                                                                                                     ''
+                                                                                                                                        INDEX=
+                                                                                                                                        HASH=
+                                                                                                                                        ORIGINATOR_PID=
+                                                                                                                                        RELEASE=
                                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                                         do
                                                                                                                                             case "$1" in
