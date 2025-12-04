@@ -1173,15 +1173,13 @@
                                                                                                                                                 --compact-output \
                                                                                                                                                 --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
-                                                                                                                                                --arg INDEX "$INDEX" \
-                                                                                                                                                --arg MODE "$MODE" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
                                                                                                                                                         "arguments" : $ARGUMENTS ,
                                                                                                                                                         "has-standard-input" : $HAS_STANDARD_INPUT ,
-                                                                                                                                                        "index" : ( $INDEX | tostring ) ,
-                                                                                                                                                        "mode" : $MODE ,
+                                                                                                                                                        "index" : "$INDEX" ,
+                                                                                                                                                        "mode" : "$MODE" ,
                                                                                                                                                         "release" : "$RELEASE" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
