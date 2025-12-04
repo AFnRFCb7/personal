@@ -1486,10 +1486,7 @@
                                                                                                                         elif [[ "resolve-init" == "$TYPE_" ]]
                                                                                                                         then
                                                                                                                             INDEX="$( yq eval ".index | tostring" - <<< "$PAYLOAD" )" || failure f3c64901
-                                                                                                                            echo "588d0f7b INDEX=$INDEX"
-                                                                                                                            echo
-                                                                                                                            echo "21818743 PAYLOAD=$PAYLOAD"
-                                                                                                                            RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
+                                                                                                                            RELEASE="$( yq eval ".release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
                                                                                                                             RESOLUTIONS=()
                                                                                                                             yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
