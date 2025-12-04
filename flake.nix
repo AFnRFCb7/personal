@@ -188,9 +188,10 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "release" ;
-                                                                                            runtimeInputs = [ ( _failure.implementation "f99f6e39" ) ] ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ( _failure.implementation "f99f6e39" ) ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    ls -lah /mount
                                                                                                     RELEASE="$( cat /mount/release )" || failure "6e02a8fe"
                                                                                                     if $RELEASE
                                                                                                     then
