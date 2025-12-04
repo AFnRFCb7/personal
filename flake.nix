@@ -1171,7 +1171,7 @@
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --compact-output \
-                                                                                                                                                --arg ARGUMENTS "$ARGUMENTS_JSON" \
+                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
                                                                                                                                                 --arg INDEX "$INDEX" \
                                                                                                                                                 --arg MODE "$MODE" \
