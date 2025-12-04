@@ -191,6 +191,7 @@
                                                                                             runtimeInputs = [ ( _failure.implementation "f99f6e39" ) ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    find /mount
                                                                                                     RELEASE="$( cat /mount/release )" || failure cd544f8e
                                                                                                     if $RELEASE
                                                                                                     then
