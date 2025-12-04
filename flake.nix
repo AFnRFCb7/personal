@@ -1447,8 +1447,11 @@
                                                                                                                                             export INDEX
                                                                                                                                             export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                             export TYPE="resolve-release"
+                                                                                                                                            echo bda7721c
                                                                                                                                             MODE=false RESOLUTION=release envsubst ${ resolve } "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
+                                                                                                                                            echo b5ed86ee
                                                                                                                                             chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
+                                                                                                                                            echo a8fb4cbf
                                                                                                                                             for RESOLUTION in "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                                             do
                                                                                                                                                 envsubst ${ resolve } "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
