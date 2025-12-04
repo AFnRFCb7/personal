@@ -1166,6 +1166,7 @@
                                                                                                                                         export HAS_STANDARD_INPUT
                                                                                                                                         export STANDARD_INPUT
                                                                                                                                         export RELEASE
+                                                                                                                                        echo "23ded232 INDEX=$INDEX"
                                                                                                                                         JSON="$(
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
@@ -1209,6 +1210,7 @@
                                                                                                                             then
                                                                                                                                 INDEX="$( yq eval ".index | tostring " - <<< "$PAYLOAD" )" || failure d4682955
                                                                                                                                 export INDEX
+                                                                                                                                echo "00775d3c INDEX=$INDEX"
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
                                                                                                                                 export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                 export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
