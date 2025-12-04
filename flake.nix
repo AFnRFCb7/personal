@@ -1289,7 +1289,7 @@
                                                                                                                                             name = "release-application" ;
                                                                                                                                             extraBwrapArgs =
                                                                                                                                                 [
-                                                                                                                                                    "--bind /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
+                                                                                                                                                    "--bind-ro /home/${ config.personal.name }/resources/mounts/$INDEX /mount"
                                                                                                                                                     "--tmpfs /scratch"
                                                                                                                                                 ] ;
                                                                                                                                             runScript =
@@ -1404,6 +1404,7 @@
                                                                                                                                             exec 203> "/home/${ config.personal.name }/resources/locks/$HASH.lock"
                                                                                                                                             flock -x 203
                                                                                                                                         fi
+                                                                                                                                        export INDEX
                                                                                                                                         export RELEASE
                                                                                                                                         STANDARD_OUTPUT_FILE="$( mktemp )" || failure 5e6fd302
                                                                                                                                         STANDARD_ERROR_FILE="$( mktemp )" || failure da84a50d
