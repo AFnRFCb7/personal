@@ -1383,6 +1383,7 @@
                                                                                                                                                     ;;
                                                                                                                                             esac
                                                                                                                                         done
+                                                                                                                                        export ORIGINATOR_PID
                                                                                                                                         if [[ -n "$ORIGINATOR_PID" ]]
                                                                                                                                         then
                                                                                                                                             tail --follow /dev/null --pid "$ORIGINATOR_PID"
@@ -1465,9 +1466,6 @@
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
                                                                                                                             done
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
-                                                                                                                        elif [[ "resolve-release" == "$TYPE_" ]]
-                                                                                                                        then
-                                                                                                                            true
                                                                                                                         fi
                                                                                                                     fi
                                                                                                                 fi
