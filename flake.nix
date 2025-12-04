@@ -1411,7 +1411,7 @@
                                                                                                                                                 --arg ORIGINATOR_PID "$ORIGINATOR_PID" \
                                                                                                                                                 --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                                 --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                --arg STATUS "$STATUS"
+                                                                                                                                                --arg STATUS "$STATUS" \
                                                                                                                                                 '{
                                                                                                                                                     "hash" : $HASH ,
                                                                                                                                                     "index" : $INDEX ,
