@@ -1227,7 +1227,7 @@
                                                                                                                                 export INDEX
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
-                                                                                                                                RELEASE="$( yq eval ".description.seed.secondary.release" - <<< "$PAYLOAD" )" || failure 574def49
+                                                                                                                                RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 574def49
                                                                                                                                 export RELEASE
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
