@@ -1413,6 +1413,15 @@
                                                                                                                                             rm --recursive --force "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         else
                                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve"
+                                                                                                                                            jq \
+                                                                                                                                                --null-input \
+                                                                                                                                                --arg INDEX "$INDEX" \
+                                                                                                                                                --arg ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                                                                '{
+                                                                                                                                                    "hash" : "$HASH" ,
+                                                                                                                                                    "index" : "$INDEX" ,
+                                                                                                                                                    "originator-pid" : "$ORIGINATOR_PID" ,
+                                                                                                                                                }' | yq eval --prettyPrint '.' - > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/release.yaml"
                                                                                                                                             for RESOLUTION in "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                                             do
                                                                                                                                                 envsubst ${ resolve } "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
