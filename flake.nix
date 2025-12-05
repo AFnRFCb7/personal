@@ -1432,7 +1432,7 @@
                                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
                                                                                                                                             STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
                                                                                                                                             STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure 83137e6b
-                                                                                                                                            echo 45357e98
+                                                                                                                                            echo "45357e98 RESOLUTIONS=${ builtins.concatStringsSep ""  [ "$" "{" "REVOLUTIONS[@]" "}" ] }"
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --arg HASH "$HASH" \
@@ -1491,9 +1491,11 @@
                                                                                                                             INDEX="$( yq eval ".index | tostring" - <<< "$PAYLOAD" )" || failure d79eee6f
                                                                                                                             HASH="$( yq eval ".hash | tostring" - <<< "$PAYLOAD" )" || failure 7753e2d6
                                                                                                                             RELEASE="$( yq eval ".description.secondary.seed.release | tostring" - <<< "$PAYLOAD" )" || failure 784a6c15
+                                                                                                                            echo 90cb3d8f
                                                                                                                             RESOLUTIONS=()
                                                                                                                             yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
+                                                                                                                                echo "ff0dd5e9 RESOLUTION=$RESOLUTION"
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
                                                                                                                             done
                                                                                                                             iteration --hash "$HASH" --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
@@ -1501,9 +1503,11 @@
                                                                                                                         then
                                                                                                                             INDEX="$( yq eval ".index | tostring" - <<< "$PAYLOAD" )" || failure f3c64901
                                                                                                                             RELEASE="$( yq eval ".release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
+                                                                                                                            echo d7476562
                                                                                                                             RESOLUTIONS=()
                                                                                                                             yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
+                                                                                                                                echo "d89f3e51 RESOLUTION=$RESOLUTION"
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
                                                                                                                             done
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
