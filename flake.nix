@@ -1205,7 +1205,7 @@
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        echo "754f873b RELEASE_REVOLUTIONS=$RELEASE_REVOLUTIONS_JSON"
+                                                                                                                                        echo "754f873b RELEASE_REVOLUTIONS_JSON=$RELEASE_REVOLUTIONS_JSON"
                                                                                                                                         yq eval --prettyPrint "." - <<< "$JSON"
                                                                                                                                         rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                         rm --recursive --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
@@ -1235,6 +1235,7 @@
                                                                                                                                 export RELEASE
                                                                                                                                 export RELEASE_RESOLUTIONS="\$RELEASE_RESOLUTIONS"
                                                                                                                                 RELEASE_RESOLUTIONS_JSON="$( yq eval --output-format=json '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
+                                                                                                                                echo "ae6e666b RELEASE_RESOLUTIONS_JSON=$RELEASE_RESOLUTIONS_JSON"
                                                                                                                                 export RELEASE_RESOLUTIONS_JSON
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
