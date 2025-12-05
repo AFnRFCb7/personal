@@ -1358,8 +1358,8 @@
                                                                                                                                                             redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                                             yq eval --prettyPrint "." - <<< "$JSON"
                                                                                                                                                             echo "$0"
-                                                                                                                                                            rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
-                                                                                                                                                            rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
+                                                                                                                                                            # rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
+                                                                                                                                                            # rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
                                                                                                                                             in "${ application }/bin/resolve" ;
