@@ -1233,7 +1233,7 @@
                                                                                                                                 RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 574def49
                                                                                                                                 export RELEASE
                                                                                                                                 export RELEASE_RESOLUTIONS="\$RELEASE_RESOLUTIONS"
-                                                                                                                                RELEASE_RESOLUTIONS_JSON="$( yq --output-format=json --indent=0 eval '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
+                                                                                                                                RELEASE_RESOLUTIONS_JSON="$( yq eval --output-format=json '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
                                                                                                                                 export RELEASE_RESOLUTIONS_JSON
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
