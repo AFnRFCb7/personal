@@ -1512,7 +1512,7 @@
                                                                                                                             yq eval '.release-resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
                                                                                                                                 echo "d89f3e51 RESOLUTION=$RESOLUTION"
-                                                                                                                                RESOLUTIONS+=("--resolution $RESOLUTION")
+                                                                                                                                RESOLUTIONS+=("--resolution" "$RESOLUTION")
                                                                                                                             done
                                                                                                                             echo ce48139f
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
