@@ -1205,7 +1205,7 @@
                                                                                                                                                 '
                                                                                                                                         )" || failure 32dfb4b0
                                                                                                                                         redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        echo "754f873b RELEASE_REVOLUTIONS=$RELEASE_REVOLUTIONS"
+                                                                                                                                        echo "754f873b RELEASE_REVOLUTIONS=$RELEASE_REVOLUTIONS_JSON"
                                                                                                                                         yq eval --prettyPrint "." - <<< "$JSON"
                                                                                                                                         rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
                                                                                                                                         rm --recursive --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
