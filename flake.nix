@@ -1430,6 +1430,7 @@
                                                                                                                                             rm --recursive --force "resources/locks/$INDEX" "resources/mounts/$INDEX" ".gc-roots/$INDEX"
                                                                                                                                         else
                                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
+                                                                                                                                            RELEASE_RESOLUTIONS_JSON="$( printf '"%s",'  "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]}" "}" ] }" )" || failure 456dd0ed
                                                                                                                                             STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
                                                                                                                                             STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure 83137e6b
                                                                                                                                             echo "45357e98 RESOLUTIONS="
@@ -1439,6 +1440,7 @@
                                                                                                                                                 --arg INDEX "$INDEX" \
                                                                                                                                                 --arg ORIGINATOR_PID "$ORIGINATOR_PID" \
                                                                                                                                                 --arg RELEASE "$RELEASE" \
+                                                                                                                                                --argjson RELEASE_RESOLUTIONS "$RELEASE_REVOLUTIONS_JSON"
                                                                                                                                                 --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                                 --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                 --arg STATUS "$STATUS" \
@@ -1447,11 +1449,12 @@
                                                                                                                                                     "index" : $INDEX ,
                                                                                                                                                     "originator-pid" : $ORIGINATOR_PID ,
                                                                                                                                                     "release" : $RELEASE ,
+                                                                                                                                                    "release-resolutions" : $RELEASE_RESOLUTIONS ,
                                                                                                                                                     "standard-error" : $STANDARD_ERROR ,
                                                                                                                                                     "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                     "status" : $STATUS
                                                                                                                                                 }' | yq eval --prettyPrint '.' - > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.yaml"
-                                                                                                                                            echo 85c476c6
+                                                                                                                                            echo "85c476c6 $0"
                                                                                                                                             chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.yaml"
                                                                                                                                             echo 00207140
                                                                                                                                             export ARGUMENTS="\$ARGUMENTS"
@@ -1510,6 +1513,7 @@
                                                                                                                                 echo "d89f3e51 RESOLUTION=$RESOLUTION"
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
                                                                                                                             done
+                                                                                                                            echo ce48139f
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
                                                                                                                         fi
                                                                                                                     fi
