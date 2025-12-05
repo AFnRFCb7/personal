@@ -1505,7 +1505,7 @@
                                                                                                                             RELEASE="$( yq eval ".release" - <<< "$PAYLOAD" )" || failure 3ae6bdb4
                                                                                                                             echo d7476562
                                                                                                                             RESOLUTIONS=()
-                                                                                                                            yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
+                                                                                                                            yq eval '.release-resolutions. // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
                                                                                                                                 echo "d89f3e51 RESOLUTION=$RESOLUTION"
                                                                                                                                 RESOLUTIONS+=("--resolution $RESOLUTION")
