@@ -1197,7 +1197,7 @@
                                                                                                                                                         "index" : "$INDEX" ,
                                                                                                                                                         "mode" : ( "$MODE" | test("true") ) ,
                                                                                                                                                         "release" : "$RELEASE" ,
-                                                                                                                                                        "release-resolutions" : "$RELEASE_RESOLUTIONS" ,
+                                                                                                                                                        "release-resolutions" : $RELEASE_RESOLUTIONS ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
                                                                                                                                                         "type" : "$TYPE"
