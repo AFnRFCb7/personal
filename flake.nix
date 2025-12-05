@@ -1229,6 +1229,8 @@
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                 RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 574def49
+                                                                                                                                RELEASE_RESOLUTIONS="$( yq eval '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
+                                                                                                                                export RELEASE_RESOLUTIONS
                                                                                                                                 export RELEASE
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
