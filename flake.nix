@@ -196,6 +196,8 @@
                                                                                                     if $RELEASE
                                                                                                     then
                                                                                                         failure "e82ab2c6"
+                                                                                                    else
+                                                                                                        failure 116221cb
                                                                                                     fi
                                                                                                 '' ;
                                                                                         } ;
@@ -1410,9 +1412,6 @@
                                                                                                                                         export RELEASE
                                                                                                                                         STANDARD_OUTPUT_FILE="$( mktemp )" || failure 5e6fd302
                                                                                                                                         STANDARD_ERROR_FILE="$( mktemp )" || failure da84a50d
-                                                                                                                                        echo "271693df INDEX=$INDEX"
-                                                                                                                                        echo "/home/${ config.personal.name }/resources/mounts/$INDEX"
-                                                                                                                                        ls -lah "/home/${ config.personal.name }/resources/mounts/$INDEX"
                                                                                                                                         if release-application > "$STANDARD_OUTPUT_FILE" 2> "$STANDARD_ERROR_FILE"
                                                                                                                                         then
                                                                                                                                             STATUS="$?"
