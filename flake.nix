@@ -1417,11 +1417,16 @@
                                                                                                                                         export RELEASE
                                                                                                                                         STANDARD_OUTPUT_FILE="$( mktemp )" || failure 5e6fd302
                                                                                                                                         STANDARD_ERROR_FILE="$( mktemp )" || failure da84a50d
-                                                                                                                                        if release-application > "$STANDARD_OUTPUT_FILE" 2> "$STANDARD_ERROR_FILE"
+                                                                                                                                        if [[ -n "$RELEASE" ]]
                                                                                                                                         then
-                                                                                                                                            STATUS="$?"
+                                                                                                                                            if release-application > "$STANDARD_OUTPUT_FILE" 2> "$STANDARD_ERROR_FILE"
+                                                                                                                                            then
+                                                                                                                                                STATUS="$?"
+                                                                                                                                            else
+                                                                                                                                                STATUS="$?"
+                                                                                                                                            fi
                                                                                                                                         else
-                                                                                                                                            STATUS="$?"
+                                                                                                                                            STATUS=0
                                                                                                                                         fi
                                                                                                                                         if [[ 0 == "$STATUS" ]] && [[ -n "$STANDARD_ERROR_FILE" ]]
                                                                                                                                         then
@@ -1521,6 +1526,10 @@
                                                                                                                             echo "ce48139f $0"
                                                                                                                             echo e196c7c2 iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }" &
+                                                                                                                        elif [[ "resolve-release" == "$TYPE_" ]]
+                                                                                                                        then
+                                                                                                                            INDEX="$( yq eval ".index | tostring" - <<< "$PAYLOAD" )" || failure 182712c3
+                                                                                                                            iteration --index "$INDEX"
                                                                                                                         fi
                                                                                                                     fi
                                                                                                                 fi
