@@ -1388,6 +1388,7 @@
                                                                                                                                                     shift 2
                                                                                                                                                     ;;
                                                                                                                                                 --resolution)
+                                                                                                                                                    echo "1de00768 RESOLUTION=$2"
                                                                                                                                                     RESOLUTIONS+=("$2")
                                                                                                                                                     shift 2
                                                                                                                                                     ;;
