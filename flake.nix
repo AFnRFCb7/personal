@@ -191,13 +191,11 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ( _failure.implementation "f99f6e39" ) ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    ls -lah /mount
+                                                                                                    echo d9ee4b5f
                                                                                                     RELEASE="$( cat /mount/release )" || failure "6e02a8fe"
                                                                                                     if $RELEASE
                                                                                                     then
-                                                                                                        failure "e82ab2c6"
-                                                                                                    else
-                                                                                                        failure 116221cb
+                                                                                                        failure e82ab2c6
                                                                                                     fi
                                                                                                 '' ;
                                                                                         } ;
@@ -1190,6 +1188,7 @@
                                                                                                                                                 --compact-output \
                                                                                                                                                 --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
+                                                                                                                                                --argjson RELEASE_RESOLUTIONS "$RELEASE_RESOLUTIONS_JSON" \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
@@ -1198,6 +1197,7 @@
                                                                                                                                                         "index" : "$INDEX" ,
                                                                                                                                                         "mode" : ( "$MODE" | test("true") ) ,
                                                                                                                                                         "release" : "$RELEASE" ,
+                                                                                                                                                        "release-resolutions" : "$RELEASE_RESOLUTIONS" ,
                                                                                                                                                         "resolution" : "$RESOLUTION" ,
                                                                                                                                                         "standard-input" : $STANDARD_INPUT ,
                                                                                                                                                         "type" : "$TYPE"
@@ -1231,9 +1231,10 @@
                                                                                                                                 export JSON="\$JSON"
                                                                                                                                 export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
                                                                                                                                 RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 574def49
-                                                                                                                                RELEASE_RESOLUTIONS="$( yq eval '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
-                                                                                                                                export RELEASE_RESOLUTIONS
                                                                                                                                 export RELEASE
+                                                                                                                                export RELEASE_RESOLUTIONS="\$RELEASE_RESOLUTIONS"
+                                                                                                                                RELEASE_RESOLUTIONS_JSON="$( yq --output-format=json --indent=0 eval '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
+                                                                                                                                export RELEASE_RESOLUTIONS_JSON
                                                                                                                                 export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                 export TYPE="resolve-init"
                                                                                                                                 yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
