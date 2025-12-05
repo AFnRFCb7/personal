@@ -1447,7 +1447,9 @@
                                                                                                                                                     "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                     "status" : $STATUS
                                                                                                                                                 }' | yq eval --prettyPrint '.' - > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.yaml"
+                                                                                                                                            echo 85c476c6
                                                                                                                                             chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.yaml"
+                                                                                                                                            echo 00207140
                                                                                                                                             export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                             export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                                             export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
@@ -1456,8 +1458,10 @@
                                                                                                                                             export TYPE="resolve-release"
                                                                                                                                             MODE=false RESOLUTION=release envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
                                                                                                                                             chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
+                                                                                                                                            echo 095f62ae
                                                                                                                                             for RESOLUTION in "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                                             do
+                                                                                                                                                echo "f23220ba $RESOLUTION"
                                                                                                                                                 envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
                                                                                                                                                 chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
                                                                                                                                             done
