@@ -1432,7 +1432,8 @@
                                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
                                                                                                                                             STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
                                                                                                                                             STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure 83137e6b
-                                                                                                                                            echo "45357e98 RESOLUTIONS=${ builtins.concatStringsSep ""  [ "$" "{" "REVOLUTIONS[@]" "}" ] }"
+                                                                                                                                            echo "45357e98 RESOLUTIONS="
+                                                                                                                                            echo "${ builtins.concatStringsSep ""  [ "$" "{" "REVOLUTIONS[@]" "}" ] }"
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --arg HASH "$HASH" \
