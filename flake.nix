@@ -1326,10 +1326,10 @@
                                                                                                                                                             if [[ -t 0 ]]
                                                                                                                                                             then
                                                                                                                                                                 HAS_STANDARD_INPUT=false
-                                                                                                                                                                STANDARD_INPUT="$( cat )" || failure 3010bde7
+                                                                                                                                                                STANDARD_INPUT=
                                                                                                                                                             else
                                                                                                                                                                 HAS_STANDARD_INPUT=true
-                                                                                                                                                                STANDARD_INPUT=
+                                                                                                                                                                STANDARD_INPUT="$( cat )" || failure 3010bde7
                                                                                                                                                             fi
                                                                                                                                                             ARGUMENTS=( "$@" )
                                                                                                                                                             ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure 93afac56
