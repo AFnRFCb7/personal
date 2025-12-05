@@ -1428,6 +1428,7 @@
                                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
                                                                                                                                             STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
                                                                                                                                             STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure 83137e6b
+                                                                                                                                            echo 45357e98
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --arg HASH "$HASH" \
@@ -1453,7 +1454,6 @@
                                                                                                                                             export INDEX
                                                                                                                                             export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                             export TYPE="resolve-release"
-                                                                                                                                            echo bda7721c
                                                                                                                                             MODE=false RESOLUTION=release envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
                                                                                                                                             chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
                                                                                                                                             for RESOLUTION in "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
