@@ -1441,7 +1441,7 @@
                                                                                                                                                 --arg INDEX "$INDEX" \
                                                                                                                                                 --arg ORIGINATOR_PID "$ORIGINATOR_PID" \
                                                                                                                                                 --arg RELEASE "$RELEASE" \
-                                                                                                                                                --argjson RELEASE_RESOLUTIONS "$RELEASE_RESOLUTIONS_JSON"
+                                                                                                                                                --argjson RELEASE_RESOLUTIONS "$RELEASE_RESOLUTIONS_JSON" \
                                                                                                                                                 --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                                 --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                 --arg STATUS "$STATUS" \
