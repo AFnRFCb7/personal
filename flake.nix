@@ -161,6 +161,10 @@
                                                                                                         fi
                                                                                                         echo "$INIT" > /mount/init
                                                                                                         echo "$RELEASE" > /mount/release
+                                                                                                        if "$INIT"
+                                                                                                        then
+                                                                                                            failure b9a218e1
+                                                                                                        fi
                                                                                                         chmod 0400 /mount/init /mount/release
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
                                                                                                         root-resource "$DOT_GNUPG"
@@ -175,10 +179,6 @@
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         root-resource "$SECRET"
                                                                                                         ln --symbolic "$SECRET/secret" /mount
-                                                                                                        if "$INIT"
-                                                                                                        then
-                                                                                                            failure b9a218e1
-                                                                                                        fi
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
