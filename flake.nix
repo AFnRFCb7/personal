@@ -1434,7 +1434,8 @@
                                                                                                                                             RELEASE_RESOLUTIONS_JSON="[${ builtins.concatStringsSep "" [ "$" "{" "RELEASE_RESOLUTIONS_JSON_1" "}" ] }]"
                                                                                                                                             STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
                                                                                                                                             STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure 83137e6b
-                                                                                                                                            echo "45357e98 $0 RESOLUTIONS=$RELEASE_RESOLUTIONS_JSON"
+                                                                                                                                            echo "45357e98 $0"
+                                                                                                                                            echo "78cf9402 RESOLUTIONS=$RELEASE_RESOLUTIONS_JSON"
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --arg HASH "$HASH" \
@@ -1515,7 +1516,7 @@
                                                                                                                                 RESOLUTIONS+=( "--resolution" )
                                                                                                                                 RESOLUTIONS+=( "$RESOLUTION" )
                                                                                                                             done
-                                                                                                                            echo ce48139f
+                                                                                                                            echo "ce48139f $0"
                                                                                                                             echo e196c7c2 iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                             iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }" &
                                                                                                                         fi
