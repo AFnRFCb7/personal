@@ -1434,7 +1434,7 @@
                                                                                                                                             RELEASE_RESOLUTIONS_JSON="[${ builtins.concatStringsSep "" [ "$" "{" "RELEASE_RESOLUTIONS_JSON_1," "}" ] }]"
                                                                                                                                             STANDARD_ERROR="$( cat "$STANDARD_ERROR_FILE" )" || failure be48c573
                                                                                                                                             STANDARD_OUTPUT="$( cat "$STANDARD_OUTPUT_FILE" )" || failure 83137e6b
-                                                                                                                                            echo "45357e98 RESOLUTIONS=$RELEASE_RESOLUTIONS_JSON"
+                                                                                                                                            echo "45357e98 $0 RESOLUTIONS=$RELEASE_RESOLUTIONS_JSON"
                                                                                                                                             jq \
                                                                                                                                                 --null-input \
                                                                                                                                                 --arg HASH "$HASH" \
