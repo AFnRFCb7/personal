@@ -1512,11 +1512,12 @@
                                                                                                                             yq eval '.release-resolutions // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
                                                                                                                             do
                                                                                                                                 echo "d89f3e51 RESOLUTION=$RESOLUTION"
-                                                                                                                                RESOLUTIONS+=("--resolution")
-                                                                                                                                RESOLUTIONS+=("$RESOLUTION")
+                                                                                                                                RESOLUTIONS+=( "--resolution" )
+                                                                                                                                RESOLUTIONS+=( "$RESOLUTION" )
                                                                                                                             done
                                                                                                                             echo ce48139f
-                                                                                                                            iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTION[@]" "}" ] }" &
+                                                                                                                            echo e196c7c2 iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
+                                                                                                                            iteration --index "$INDEX" --release "$RELEASE" "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }" &
                                                                                                                         fi
                                                                                                                     fi
                                                                                                                 fi
