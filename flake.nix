@@ -1357,6 +1357,7 @@
                                                                                                                                                             )" || failure e6780fa1
                                                                                                                                                             redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
                                                                                                                                                             yq eval --prettyPrint "." - <<< "$JSON"
+                                                                                                                                                            echo "$0"
                                                                                                                                                             rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/release.sh"
                                                                                                                                                             rm --recursive --force  "/home/${ config.personal.name }/resources/quarantine/$INDEX/release"
                                                                                                                                                         '' ;
