@@ -1471,8 +1471,8 @@
                                                                                                                                             for RESOLUTION in "${ builtins.concatStringsSep "" [ "$" "{" "RESOLUTIONS[@]" "}" ] }"
                                                                                                                                             do
                                                                                                                                                 echo "f23220ba $RESOLUTION"
-                                                                                                                                                envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
-                                                                                                                                                chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/resolve/$RESOLUTION"
+                                                                                                                                                envsubst < ${ resolve } > "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/$RESOLUTION"
+                                                                                                                                                chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/release/$RESOLUTION"
                                                                                                                                             done
                                                                                                                                         fi
                                                                                                                                         rm "$STANDARD_OUTPUT_FILE" "$STANDARD_ERROR_FILE"
