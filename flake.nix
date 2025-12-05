@@ -1340,7 +1340,7 @@
                                                                                                                                                                 jq \
                                                                                                                                                                     --null-input \
                                                                                                                                                                     --compact-output \
-                                                                                                                                                                    --arg ARGUMENTS "$ARGUMENTS_JSON" \
+                                                                                                                                                                    --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                                     --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
                                                                                                                                                                     --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                                     '
@@ -1463,6 +1463,7 @@
                                                                                                                                             export ARGUMENTS="\$ARGUMENTS"
                                                                                                                                             export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
                                                                                                                                             export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
+                                                                                                                                            export JSON="\$JSON"
                                                                                                                                             export INDEX
                                                                                                                                             export STANDARD_INPUT="\$STANDARD_INPUT"
                                                                                                                                             export TYPE="resolve-release"
