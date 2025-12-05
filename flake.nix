@@ -1188,7 +1188,7 @@
                                                                                                                                                 --compact-output \
                                                                                                                                                 --argjson ARGUMENTS "$ARGUMENTS_JSON" \
                                                                                                                                                 --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
-                                                                                                                                                --argjson RELEASE_RESOLUTIONS "$RELEASE_RESOLUTIONS_JSON" \
+                                                                                                                                                --argjson RELEASE_RESOLUTIONS '$RELEASE_RESOLUTIONS_JSON' \
                                                                                                                                                 --arg STANDARD_INPUT "$STANDARD_INPUT" \
                                                                                                                                                 '
                                                                                                                                                     {
