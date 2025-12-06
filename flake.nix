@@ -1147,7 +1147,7 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "activation" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.mount pkgs.util-linux ] ;
+                                                                                            runtimeInputs = [ pkgs.btrfs-progs pkgs.coreutils pkgs.mount pkgs.util-linux ] ;
                                                                                             text  =
                                                                                                 ''
                                                                                                     if [ ! -e /tmp/fake-btrfs.img ]
