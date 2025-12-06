@@ -640,6 +640,8 @@
                                                                                             "inputs/git-repository".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "inputs/personal".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "inputs/resource".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/resource-logger".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
+                                                                                            "inputs/resource-resolver".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "inputs/secret".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "inputs/secrets".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
                                                                                             "inputs/string".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
@@ -942,6 +944,8 @@
                                                                                             "inputs/git-repository".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "inputs/personal".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "inputs/resource".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
+                                                                                            "inputs/resource-logger".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
+                                                                                            "inputs/resource-resolver".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "inputs/secret".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "inputs/secrets".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "inputs/string".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
