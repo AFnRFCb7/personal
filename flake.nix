@@ -398,7 +398,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
                                                                                                             text =
                                                                                                                 let
 												                                                                    flake-build-vm =
@@ -582,6 +582,14 @@
                                                                                                                                     in "${ application }/bin/scratch" ;
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                            do
+                                                                                                                                cd "$INPUT"
+                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                            done
                                                                                                                             make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
                                                                                                                             make-wrapper ${ flake-build-vm-with-bootloader } /mount/stage/flake-build-vm-with-bootloader "${ mount }"
                                                                                                                             make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
@@ -631,22 +639,6 @@
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
-                                                                                    submodules =
-                                                                                        {
-                                                                                            "inputs/dot-gnupg".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/dot-ssh".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/failure".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/fixture".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/git-repository".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/personal".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/resource".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/resource-logger".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/resource-resolver".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/secret".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/secrets".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/string".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/visitor".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                        } ;
 			                                                                    } ;
                                                                     studio =
                                                                         ignore :
@@ -670,7 +662,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     mutable-nurse =
@@ -864,6 +856,14 @@
                                                                                                                                 in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read INPUT
+                                                                                                                            do
+                                                                                                                                cd "$INPUT"
+                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                git config user.email "${ config.personal.repostiory.private.email }"
+                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                            done
                                                                                                                             make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
                                                                                                                             make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
@@ -929,22 +929,6 @@
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
-                                                                                    submodules =
-                                                                                        {
-                                                                                            "inputs/dot-gnupg".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/dot-ssh".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/failure".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/fixture".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/git-repository".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/personal".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/resource".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/resource-logger".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/resource-resolver".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/secret".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/secrets".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/string".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/visitor".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                        } ;
                                                                                 } ;
                                                                 } ;
                                                             secrets =
