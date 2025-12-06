@@ -1543,7 +1543,7 @@
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
-                                                                resources-logger =
+                                                                resource-logger =
                                                                    {
                                                                         after = [ "network.target" "redis.service" ] ;
                                                                         enable = true ;
@@ -1551,7 +1551,7 @@
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
-                                                                                    _resources-logger.implementation
+                                                                                    _resource-logger.implementation
                                                                                         {
                                                                                             channel = config.personal.channel ;
                                                                                             log-directory = "/home/${ config.personal.name }/resources/log" ;
