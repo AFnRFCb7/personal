@@ -2095,7 +2095,7 @@
                                                            ] ;
                                                        transient = false ;
                                                  } ;
-                                         resource-logger = _resource-logger.check { expected = "/nix/store/wbf0g0l0xgpg98vajsj5ccnz695kawzn-resource-logger/bin/resource-logger" ; } ;
+                                         resource-logger = _resource-logger.check { expected = "/nix/store/sc2ylr62fxk2l66zb685h7212fnwbqpj-resource-logger/bin/resource-logger" ; } ;
                                         secret =
                                             _secret.check
                                                 {
