@@ -856,7 +856,7 @@
                                                                                                                                 in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read INPUT
+                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                             do
                                                                                                                                 cd "$INPUT"
                                                                                                                                 git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
