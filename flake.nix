@@ -15,6 +15,7 @@
                         nixpkgs ,
                         private ,
                         resource ,
+                        resource-logger ,
                         secret ,
                         secrets ,
                         string ,
@@ -57,6 +58,7 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
+                            _resource-logger = resource-logger.lib { failure = _failure.implementation "2aedf93a" ; pkgs = pkgs ; } ;
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
                             _visitor = visitor.lib { } ;
@@ -1541,7 +1543,7 @@
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
-                                                                resources-log-listener =
+                                                                resources-logger =
                                                                    {
                                                                         after = [ "network.target" "redis.service" ] ;
                                                                         enable = true ;
@@ -1549,66 +1551,11 @@
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "log-event-listener" ;
-                                                                                                    runtimeInputs =
-                                                                                                        [
-                                                                                                            pkgs.coreutils
-                                                                                                            pkgs.flock
-                                                                                                            pkgs.jq
-                                                                                                            pkgs.redis
-                                                                                                            pkgs.yq-go
-                                                                                                            ( _failure.implementation "c5160404" )
-                                                                                                            (
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "iteration" ;
-                                                                                                                        runtimeInputs =
-                                                                                                                            [
-                                                                                                                                pkgs.flock
-                                                                                                                            ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                CHANNEL="$1"
-                                                                                                                                PAYLOAD="$2"
-                                                                                                                                TIMESTAMP="$( date +%s )" || failure 9fc28e61
-                                                                                                                                TEMPORARY="$( mktemp )" || failure db44ba4a
-                                                                                                                                echo
-                                                                                                                                echo IS PAYLOAD JSON?
-                                                                                                                                echo "$PAYLOAD"
-                                                                                                                                echo
-                                                                                                                                echo "$PAYLOAD" | jq --arg TIMESTAMP "$TIMESTAMP" --arg CHANNEL "$CHANNEL" '{ "channel" : $CHANNEL , "payload" : . , "timestamp" : $TIMESTAMP }' > "$TEMPORARY"
-                                                                                                                                mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                                exec 203> /home/${ config.personal.name }/resources/logs/lock
-                                                                                                                                flock 203
-                                                                                                                                yq eval --prettyPrint '[.]' "$TEMPORARY" >> /home/${ config.personal.name }/resources/logs/log.yaml
-                                                                                                                                rm "$TEMPORARY"
-                                                                                                                            '' ;
-                                                                                                                    }
-                                                                                                            )
-                                                                                                        ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            redis-cli SUBSCRIBE "${ config.personal.channel }" | while true
-                                                                                                            do
-                                                                                                                read -r TYPE || failure 0b15dfb6
-                                                                                                                read -r CHANNEL || failure 6fc3955c
-                                                                                                                read -r PAYLOAD || failure ef9e9b75
-                                                                                                                if [[ "message" == "$TYPE" ]]
-                                                                                                                then
-                                                                                                                    export ARGUMENTS="\$ARGUMENTS"
-                                                                                                                    export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
-                                                                                                                    export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
-                                                                                                                    export JSON="\$JSON"
-                                                                                                                    iteration "$CHANNEL" "$PAYLOAD" &
-                                                                                                                fi
-                                                                                                            done
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/log-event-listener" ;
+                                                                                    _resources-logger.implementation
+                                                                                        {
+                                                                                            channel = config.personal.channel ;
+                                                                                            log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                        } ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
@@ -2148,6 +2095,15 @@
                                                            ] ;
                                                        transient = false ;
                                                  } ;
+                                         resource-logger =
+                                            _resource-logger.check
+                                                {
+                                                    channel = "48950186" ;
+                                                    expected = "" ;
+                                                    log-directory = "87d087a1" ;
+                                                    log-file = "c9f433d1" ;
+                                                    log-lock = "00e970a8" ;
+                                                } ;
                                         secret =
                                             _secret.check
                                                 {
