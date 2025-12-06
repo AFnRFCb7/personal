@@ -861,7 +861,7 @@
                                                                                                                                 cd "$INPUT"
                                                                                                                                 git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                git config user.email "${ config.personal.repostiory.private.email }"
+                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
                                                                                                                             make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
