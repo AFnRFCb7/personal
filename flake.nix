@@ -1265,7 +1265,7 @@
                                                                 resources-log-cleaner =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
+                                                                        enable = false ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
