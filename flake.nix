@@ -2038,7 +2038,7 @@
                                                        transient = false ;
                                                  } ;
                                          resource-logger = _resource-logger.check { expected = "/nix/store/sc2ylr62fxk2l66zb685h7212fnwbqpj-resource-logger/bin/resource-logger" ; } ;
-                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/a2hlizy46p4gvkzjmci45aa3zb5j2shn-resource-resolver/bin/resource-resolver" ; } ;
+                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/yr0if1dki3in5mnrm879szawlisvbjv6-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
                                             _secret.check
                                                 {
