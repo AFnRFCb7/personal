@@ -684,27 +684,21 @@
                                                                                                                                             ''
                                                                                                                                                 INPUT="$1"
                                                                                                                                                 USER_NAME="$2"
-                                                                                                                                                REPO_NAME="$2"
-                                                                                                                                                mkdir --parents "$MOUNT/repository/nursery/$INPUT"
-                                                                                                                                                cd "$MOUNT/repository/nursery/$INPUT"
-                                                                                                                                                git init
-                                                                                                                                                git config core.sshCommand "!$MOUNT/stage/ssh"
-                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                git checkout -b main
-                                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                REPO_NAME="$3"
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                 gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                 gh auth logout
-                                                                                                                                                git push origin HEAD
-                                                                                                                                                git checkout -b scratch/$RANDOM
-                                                                                                                                                cd "$MOUNT/repository"
-                                                                                                                                                git submodule add "$INPUT" "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                cd "$MOUNT/repository/inputs/$NAME"
-                                                                                                                                                git config core.sshCommand "!$MOUNT/stage/ssh"
+                                                                                                                                                git submodule init "git@github.com:$USER_NAME/$REPO_NAME.git" "$MOUNT/repository/inputs/$INPUT"
+                                                                                                                                                cd "$MOUNT/repository/input/$INPUT"
+                                                                                                                                                git config alias.mutable-scratch "!$MOUNT/alias/mutable-scratch" ;
+                                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                git checkout -b main
+                                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                git push origin HEAD
+                                                                                                                                                git checkout scratch
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-nurse" ;
