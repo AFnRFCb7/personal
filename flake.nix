@@ -2099,7 +2099,7 @@
                                             _resource-logger.check
                                                 {
                                                     channel = "48950186" ;
-                                                    expected = "40546df7" ;
+                                                    expected = "/nix/store/wbf0g0l0xgpg98vajsj5ccnz695kawzn-resource-logger/bin/resource-logger" ;
                                                     log-directory = "87d087a1" ;
                                                     log-file = "c9f433d1" ;
                                                     log-lock = "00e970a8" ;
