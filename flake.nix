@@ -1190,7 +1190,12 @@
                                                                         enable = true ;
                                                                         serviceConfig =
                                                                             {
-                                                                                ExecStart = _resource-resolver.implementation { channel = config.personal.channel ; quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ;
+                                                                                ExecStart =
+                                                                                    _resource-resolver.implementation
+                                                                                        {
+                                                                                            channel = config.personal.channel ;
+                                                                                            quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                        } ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
