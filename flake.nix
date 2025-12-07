@@ -404,6 +404,7 @@
 						                                                                    "alias.scratch" = stage : "!${ stage }/scratch" ;
 					                                                                    } ;
                                                                                     email = config.personal.repository.private.email ;
+                                                                                    follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
@@ -668,6 +669,7 @@
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
                                                                                     email = config.personal.repository.private.email ;
+                                                                                    follow-parent = follow-parent ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
