@@ -1155,8 +1155,9 @@
                                                                                                         echo "Creating temporary Btrfs image for VM..."
                                                                                                         truncate -s 1G /tmp/fake-btrfs.img
                                                                                                         mkfs.btrfs /tmp/fake-btrfs.img
-                                                                                                        mkdir -p /home/${config.personal.name}/resources
-                                                                                                        mount -o subvol=resources /tmp/fake-btrfs.img /home/${config.personal.name}/resources
+                                                                                                        mkdir --parents /home/${ config.personal.name }/resources
+                                                                                                        chown -R ${ config.personal.name } /home/${ config.personal.name }/resources
+                                                                                                        mount -o subvol=resources /tmp/fake-btrfs.img /home/${ config.personal.name }/resources
                                                                                                     fi
                                                                                                 '' ;
                                                                                         } ;
