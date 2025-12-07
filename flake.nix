@@ -16,6 +16,7 @@
                         private ,
                         resource ,
                         resource-logger ,
+                        resource-resolver ,
                         secret ,
                         secrets ,
                         string ,
@@ -59,6 +60,7 @@
                                             yq-go = pkgs.yq-go ;
                                         } ;
                             _resource-logger = resource-logger.lib { failure = _failure.implementation "2aedf93a" ; pkgs = pkgs ; } ;
+                            _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
                             _visitor = visitor.lib { } ;
@@ -396,7 +398,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
                                                                                                             text =
                                                                                                                 let
 												                                                                    flake-build-vm =
@@ -580,6 +582,14 @@
                                                                                                                                     in "${ application }/bin/scratch" ;
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                            do
+                                                                                                                                cd "$INPUT"
+                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                            done
                                                                                                                             make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
                                                                                                                             make-wrapper ${ flake-build-vm-with-bootloader } /mount/stage/flake-build-vm-with-bootloader "${ mount }"
                                                                                                                             make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
@@ -629,20 +639,6 @@
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
-                                                                                    submodules =
-                                                                                        {
-                                                                                            "inputs/dot-gnupg".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/dot-ssh".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/failure".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/fixture".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/git-repository".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/personal".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/resource".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/secret".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/secrets".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/string".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                            "inputs/visitor".configs."alias.scratch" = stage : "!${ stage }/scratch" ;
-                                                                                        } ;
 			                                                                    } ;
                                                                     studio =
                                                                         ignore :
@@ -653,6 +649,7 @@
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
+                                                                                            "alias.mutable-nurse" = stage : "!${ stage }/mutable-nurse" ;
                                                                                             "alias.mutable-snapshot" = stage : "!${ stage }/mutable-snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
@@ -665,9 +662,38 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
                                                                                                             text =
                                                                                                                 let
+                                                                                                                    mutable-nurse =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-nurse" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                INPUT="$1"
+                                                                                                                                                USER_NAME="$2"
+                                                                                                                                                REPO_NAME="$3"
+                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                gh repo create "$USER_NAME/$REPO_NAME" --public
+                                                                                                                                                gh auth logout
+                                                                                                                                                git submodule init "git@github.com:$USER_NAME/$REPO_NAME.git" "$MOUNT/repository/inputs/$INPUT"
+                                                                                                                                                cd "$MOUNT/repository/input/$INPUT"
+                                                                                                                                                git config alias.mutable-scratch "!$MOUNT/alias/mutable-scratch" ;
+                                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                git checkout -b main
+                                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                git push origin HEAD
+                                                                                                                                                git checkout scratch
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-nurse" ;
                                                                                                                     mutable-rebase =
                                                                                                                         let
                                                                                                                             application =
@@ -830,6 +856,14 @@
                                                                                                                                 in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                            do
+                                                                                                                                cd "$INPUT"
+                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                            done
                                                                                                                             make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
                                                                                                                             make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
@@ -895,20 +929,6 @@
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
-                                                                                    submodules =
-                                                                                        {
-                                                                                            "inputs/dot-gnupg".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/dot-ssh".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/failure".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/fixture".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/git-repository".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/personal".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/resource".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/secret".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/secrets".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/string".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                            "inputs/visitor".configs."alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                        } ;
                                                                                 } ;
                                                                 } ;
                                                             secrets =
@@ -1127,7 +1147,7 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "activation" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.mount pkgs.util-linux ] ;
+                                                                                            runtimeInputs = [ pkgs.btrfs-progs pkgs.coreutils pkgs.mount pkgs.util-linux ] ;
                                                                                             text  =
                                                                                                 ''
                                                                                                     if [ ! -e /tmp/fake-btrfs.img ]
@@ -1135,8 +1155,9 @@
                                                                                                         echo "Creating temporary Btrfs image for VM..."
                                                                                                         truncate -s 1G /tmp/fake-btrfs.img
                                                                                                         mkfs.btrfs /tmp/fake-btrfs.img
-                                                                                                        mkdir -p /home/${config.personal.name}/resources
-                                                                                                        mount -o subvol=resources /tmp/fake-btrfs.img /home/${config.personal.name}/resources
+                                                                                                        mkdir --parents /home/${ config.personal.name }/resources
+                                                                                                        chown -R ${ config.personal.name } /home/${ config.personal.name }/resources
+                                                                                                        mount -o subvol=resources /tmp/fake-btrfs.img /home/${ config.personal.name }/resources
                                                                                                     fi
                                                                                                 '' ;
                                                                                         } ;
@@ -1146,118 +1167,18 @@
                                                             } ;
                                                         systemd.services =
                                                             {
-                                                                resources-log-error =
+                                                                resource-resolver =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
                                                                         enable = true ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "ExecStart" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.gettext pkgs.gnutar pkgs.jq pkgs.redis pkgs.yq-go ( _failure.implementation "8dc4f9ef" ) ] ;
-                                                                                                    text =
-                                                                                                        let
-                                                                                                            resolve =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "resolve" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.gzip pkgs.jq pkgs.xz ( _failure.implementation "7a2359f4" ) ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        ARGUMENTS=( "$@" )
-                                                                                                                                        # shellcheck disable=SC2034
-                                                                                                                                        ARGUMENTS_JSON="$( printf '%s\n' "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" | jq -R . | jq -s . )" || failure c4af4aef
-                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                        then
-                                                                                                                                            HAS_STANDARD_INPUT=false
-                                                                                                                                            STANDARD_INPUT=""
-                                                                                                                                        else
-                                                                                                                                            HAS_STANDARD_INPUT=true
-                                                                                                                                            STANDARD_INPUT="$( cat )" || failure b78f1b75
-                                                                                                                                        fi
-                                                                                                                                        export HAS_STANDARD_INPUT
-                                                                                                                                        export STANDARD_INPUT
-                                                                                                                                        export RELEASE
-                                                                                                                                        JSON="$(
-                                                                                                                                            jq \
-                                                                                                                                                --null-input \
-                                                                                                                                                --compact-output \
-                                                                                                                                                --argjson ARGUMENTS "$ARGUMENTS_JSON" \
-                                                                                                                                                --arg HAS_STANDARD_INPUT "$HAS_STANDARD_INPUT" \
-                                                                                                                                                --argjson RELEASE_RESOLUTIONS '$RELEASE_RESOLUTIONS_JSON' \
-                                                                                                                                                --arg STANDARD_INPUT "$STANDARD_INPUT" \
-                                                                                                                                                '
-                                                                                                                                                    {
-                                                                                                                                                        "arguments" : $ARGUMENTS ,
-                                                                                                                                                        "has-standard-input" : ( $HAS_STANDARD_INPUT | test("true") ) ,
-                                                                                                                                                        "index" : "$INDEX" ,
-                                                                                                                                                        "mode" : ( "$MODE" | test("true") ) ,
-                                                                                                                                                        "release" : "$RELEASE" ,
-                                                                                                                                                        "release-resolutions" : $RELEASE_RESOLUTIONS ,
-                                                                                                                                                        "resolution" : "$RESOLUTION" ,
-                                                                                                                                                        "standard-input" : $STANDARD_INPUT ,
-                                                                                                                                                        "type" : "$TYPE"
-                                                                                                                                                    }
-                                                                                                                                                '
-                                                                                                                                        )" || failure 32dfb4b0
-                                                                                                                                        redis-cli PUBLISH ${ config.personal.channel } "$JSON" > /dev/null
-                                                                                                                                        echo "754f873b RELEASE_REVOLUTIONS_JSON=$RELEASE_REVOLUTIONS_JSON"
-                                                                                                                                        yq eval --prettyPrint "." - <<< "$JSON"
-                                                                                                                                        rm --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve.sh"
-                                                                                                                                        rm --recursive --force "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/resolve"
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/resolve" ;
-                                                                                                            in
-                                                                                                                ''
-                                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while true
-                                                                                                                    do
-                                                                                                                        read -r TYPE || failure 06eacbb5
-                                                                                                                        read -r CHANNEL || failure 9f93effe
-                                                                                                                        read -r PAYLOAD || failure ff164dbc
-                                                                                                                        if [[ "$TYPE" == "message" ]] && [[ "${ config.personal.channel }" == "$CHANNEL" ]]
-                                                                                                                        then
-                                                                                                                            TYPE_="$( jq --raw-output ".type" - <<< "$PAYLOAD" )" || failure 36088760
-                                                                                                                            if [[ "invalid" == "$TYPE_" ]]
-                                                                                                                            then
-                                                                                                                                INDEX="$( yq eval ".index | tostring " - <<< "$PAYLOAD" )" || failure d4682955
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/resources/quarantine/$INDEX/init"
-                                                                                                                                export ARGUMENTS="\$ARGUMENTS"
-                                                                                                                                export ARGUMENTS_JSON="\$ARGUMENTS_JSON"
-                                                                                                                                export INDEX
-                                                                                                                                export JSON="\$JSON"
-                                                                                                                                export HAS_STANDARD_INPUT="\$HAS_STANDARD_INPUT"
-                                                                                                                                RELEASE="$( yq eval ".description.secondary.seed.release" - <<< "$PAYLOAD" )" || failure 574def49
-                                                                                                                                export RELEASE
-                                                                                                                                export RELEASE_RESOLUTIONS="\$RELEASE_RESOLUTIONS"
-                                                                                                                                RELEASE_RESOLUTIONS_JSON="$( yq eval --output-format=json '.description.secondary.seed.resolutions.release // []' - <<< "$PAYLOAD" )" || failure 91a6337c
-                                                                                                                                echo "ae6e666b RELEASE_RESOLUTIONS_JSON=$RELEASE_RESOLUTIONS_JSON"
-                                                                                                                                export RELEASE_RESOLUTIONS_JSON
-                                                                                                                                export STANDARD_INPUT="\$STANDARD_INPUT"
-                                                                                                                                export TYPE="resolve-init"
-                                                                                                                                yq eval --prettyPrint '.' - <<< "$PAYLOAD" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
-                                                                                                                                chmod 0400 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.yaml"
-                                                                                                                                MODE=false RESOLUTION=init envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
-                                                                                                                                chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init.sh"
-                                                                                                                                yq eval '.description.secondary.seed.resolutions.init // [] | .[]' - <<< "$PAYLOAD" | while IFS= read -r RESOLUTION
-                                                                                                                                do
-                                                                                                                                    export MODE=true
-                                                                                                                                    export RESOLUTION
-                                                                                                                                    envsubst < "${ resolve }" > "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/$RESOLUTION"
-                                                                                                                                    chmod 0500 "/home/${ config.personal.name }/resources/quarantine/$INDEX/init/$RESOLUTION"
-                                                                                                                                done
-                                                                                                                            fi
-                                                                                                                        fi
-                                                                                                                    done
-                                                                                                                '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/ExecStart" ;
+                                                                                    _resource-resolver.implementation
+                                                                                        {
+                                                                                            channel = config.personal.channel ;
+                                                                                            quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                        } ;
                                                                                 User = config.personal.name ;
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
@@ -2095,7 +2016,8 @@
                                                            ] ;
                                                        transient = false ;
                                                  } ;
-                                         resource-logger = _resource-logger.check { expected = "/nix/store/sc2ylr62fxk2l66zb685h7212fnwbqpj-resource-logger/bin/resource-logger" ; } ;
+                                         resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
+                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
                                             _secret.check
                                                 {
