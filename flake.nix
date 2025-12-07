@@ -600,7 +600,8 @@
                                                                                                                             find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                             do
                                                                                                                                 cd "$INPUT"
-                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                git config alias.scratch "!$MOUNT/stage/scratch"
+                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/scratch"
                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
@@ -706,7 +707,7 @@
                                                                                                                                                 git checkout -b main
                                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                 git push origin HEAD
-                                                                                                                                                git checkout scratch
+                                                                                                                                                git mutable-scratch
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-nurse" ;
