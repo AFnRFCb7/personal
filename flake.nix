@@ -186,7 +186,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        follows-parent = true ;
+                                                                        follow-parent = true ;
                                                                         release =
                                                                             let
                                                                                 application =
