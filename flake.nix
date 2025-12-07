@@ -880,6 +880,7 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
+                                                                                                                            make-wrapper ${ mutable-nurse } /mount/stage/mutable-nurse "${ mount }"
                                                                                                                             make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
                                                                                                                             make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
