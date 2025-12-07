@@ -669,7 +669,7 @@
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
                                                                                     email = config.personal.repository.private.email ;
-                                                                                    follow-parent = follow-parent ;
+                                                                                    follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
