@@ -106,7 +106,20 @@
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
-                                                                    in r.implementation { init = point.init or null ; seed = { path = path ; release = point.release or null ; resolutions = point.resolutions or [ ] ; } ; targets = point.targets or [ ] ; transient = point.transient or false ; } ;
+                                                                    in
+                                                                        r.implementation
+                                                                            {
+                                                                                follow-parent = point.follow-parent or false ;
+                                                                                init = point.init or null ;
+                                                                                seed =
+                                                                                    {
+                                                                                        path = path ;
+                                                                                        release = point.release or null ;
+                                                                                        resolutions = point.resolutions or [ ] ;
+                                                                                    } ;
+                                                                                targets = point.targets or [ ] ;
+                                                                                transient = point.transient or false ;
+                                                                            } ;
                                                 }
                                                 {
                                                     foobar =
@@ -186,6 +199,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
+                                                                        follow-parent = true ;
                                                                         release =
                                                                             let
                                                                                 application =
@@ -390,6 +404,7 @@
 						                                                                    "alias.scratch" = stage : "!${ stage }/scratch" ;
 					                                                                    } ;
                                                                                     email = config.personal.repository.private.email ;
+                                                                                    follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
@@ -585,7 +600,8 @@
                                                                                                                             find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                             do
                                                                                                                                 cd "$INPUT"
-                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                git config alias.scratch "!$MOUNT/stage/scratch"
+                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/scratch"
                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
@@ -654,6 +670,7 @@
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
                                                                                     email = config.personal.repository.private.email ;
+                                                                                    follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
@@ -690,7 +707,7 @@
                                                                                                                                                 git checkout -b main
                                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                 git push origin HEAD
-                                                                                                                                                git checkout scratch
+                                                                                                                                                git mutable-scratch
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-nurse" ;
@@ -864,6 +881,7 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
+                                                                                                                            make-wrapper ${ mutable-nurse } /mount/stage/mutable-nurse "${ mount }"
                                                                                                                             make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
                                                                                                                             make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
                                                                                                                             make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
