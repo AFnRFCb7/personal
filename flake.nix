@@ -704,8 +704,8 @@
                                                                                                                                                 cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
                                                                                                                                                 git init
                                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                                git config user.email "${ config.user.repository.private.email }"
-                                                                                                                                                git config user.name "${ config.user.repository.private.name }"
+                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 git checkout -b main
                                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                 git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
