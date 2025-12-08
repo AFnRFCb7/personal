@@ -1790,7 +1790,7 @@
                                                        transient = false ;
                                                  } ;
                                          resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
-                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/1s6kbs6v822rlb468yb1xxlpvx51idr9-resource-releaser/bin/resource-releaser" ; } ;
+                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/5msrfcnsikkvkg1cbiw2x5q0chxdnbki-resource-releaser/bin/resource-releaser" ; } ;
                                          resource-reporter = _resource-reporter.check { } ;
                                          resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
