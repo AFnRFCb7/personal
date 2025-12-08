@@ -17,6 +17,7 @@
                         resource ,
                         resource-logger ,
                         resource-releaser ,
+                        resource-reporter ,
                         resource-resolver ,
                         secret ,
                         secrets ,
@@ -61,6 +62,7 @@
                                             yq-go = pkgs.yq-go ;
                                         } ;
                             _resource-logger = resource-logger.lib { failure = _failure.implementation "2aedf93a" ; pkgs = pkgs ; } ;
+                            _resource-reporter = resource-reporter.lib { failure = _failure.implementation "029cbc4c" ; pkgs = pkgs ; } ;
                             _resource-releaser = resource-releaser.lib { failure = _failure.implementation "6dd07d42" ; pkgs = pkgs ; } ;
                             _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
@@ -702,7 +704,7 @@
                                                                                                                                                 REPO_NAME="$3"
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                gh repo create "$USER_NAME/$REPO_NAME" --public --add-topic script-generated-input-flake-repository
+                                                                                                                                                gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                 gh auth logout
                                                                                                                                                 mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
                                                                                                                                                 cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
@@ -1789,6 +1791,7 @@
                                                  } ;
                                          resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
                                          resource-releaser = _resource-releaser.check { expected = "/nix/store/1s6kbs6v822rlb468yb1xxlpvx51idr9-resource-releaser/bin/resource-releaser" ; } ;
+                                         resource-reporter = _resource-reporter.check { } ;
                                          resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
                                             _secret.check
