@@ -1219,7 +1219,6 @@
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
                                                                         enable = true ;
-                                                                        enable = true ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
