@@ -117,7 +117,11 @@
                                                                                     {
                                                                                         path = path ;
                                                                                         release = point.release or null ;
-                                                                                        resolutions = point.resolutions or [ ] ;
+                                                                                        resolutions =
+                                                                                            {
+                                                                                                init = point.resolutions.init or [ ] ;
+                                                                                                release = point.resolutions.release or [ ] ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 targets = point.targets or [ ] ;
                                                                                 transient = point.transient or false ;
@@ -1214,6 +1218,7 @@
                                                                 resource-releaser =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
+                                                                        enable = true ;
                                                                         enable = true ;
                                                                         serviceConfig =
                                                                             {
