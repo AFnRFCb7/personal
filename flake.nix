@@ -1211,10 +1211,10 @@
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
-                                                                resources-releaser =
+                                                                resource-releaser =
                                                                     {
                                                                         after = [ "network.target" "redis.service" ] ;
-                                                                        enable = false ;
+                                                                        enable = true ;
                                                                         serviceConfig =
                                                                             {
                                                                                 ExecStart =
