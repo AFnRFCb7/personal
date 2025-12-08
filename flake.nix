@@ -1221,9 +1221,10 @@
                                                                                     _resource-releaser.implementation
                                                                                         {
                                                                                             channel = config.personal.channel ;
-                                                                                            link-directory = "/home/${ config.personal.name }/resources/links" ;
-                                                                                            lock-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                            mount-directory = "/home/${ config.personal.name }/resources/mount" ;
+                                                                                            gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                            links-directory = "/home/${ config.personal.name }/resources/links" ;
+                                                                                            locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                            mounts-directory = "/home/${ config.personal.name }/resources/mount" ;
                                                                                             quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
                                                                                         } ;
                                                                                 User = config.personal.name ;
