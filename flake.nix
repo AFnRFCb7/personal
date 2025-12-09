@@ -408,7 +408,6 @@
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
-
                                                                                     email = config.personal.repository.private.repository.email ;
                                                                                     name = config.personal.repository.private.repository.name ;
                                                                                     remotes.origin = "mobile:private" ;
