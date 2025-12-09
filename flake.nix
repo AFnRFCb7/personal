@@ -962,6 +962,7 @@
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
+                                                                                    resolutions = [ "failure" "personal" ] ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
                                                                                 } ;
                                                                 } ;
