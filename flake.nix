@@ -1286,7 +1286,17 @@
                                                                         } ;
                                                                 in
                                                                     {
-                                                                        private-reporter = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.private ( setup : setup ) ; resolution = "private" ; } ;
+                                                                        private-reporter =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ];
+                                                                                enable = true ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.private ( setup : setup ) ; resolution = "private" ; } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-resolver =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
