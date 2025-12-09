@@ -1250,7 +1250,7 @@
                                                                                             organization = config.personal.repository.personal.organization ;
                                                                                             repository = config.personal.repository.personal.repository ;
                                                                                             resolution = "personal" ;
-                                                                                            token = resources.production.secrets.token ( setup : setup ) ;
+                                                                                            token = resources__.production.secrets.token ( setup : setup ) ;
                                                                                         } ;
                                                                                 User = config.personal.name ;
                                                                             } ;
