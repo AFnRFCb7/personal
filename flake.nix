@@ -17,6 +17,7 @@
                         resource ,
                         resource-logger ,
                         resource-releaser ,
+                        resource-reporter ,
                         resource-resolver ,
                         secret ,
                         secrets ,
@@ -61,6 +62,7 @@
                                             yq-go = pkgs.yq-go ;
                                         } ;
                             _resource-logger = resource-logger.lib { failure = _failure.implementation "2aedf93a" ; pkgs = pkgs ; } ;
+                            _resource-reporter = resource-reporter.lib { failure = _failure.implementation "029cbc4c" ; pkgs = pkgs ; } ;
                             _resource-releaser = resource-releaser.lib { failure = _failure.implementation "6dd07d42" ; pkgs = pkgs ; } ;
                             _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
@@ -114,14 +116,9 @@
                                                                                 follow-parent = point.follow-parent or false ;
                                                                                 init = point.init or null ;
                                                                                 seed =
+                                                                                    ( point.seed or { } ) //
                                                                                     {
                                                                                         path = path ;
-                                                                                        release = point.release or null ;
-                                                                                        resolutions =
-                                                                                            {
-                                                                                                init = point.resolutions.init or [ ] ;
-                                                                                                release = point.resolutions.release or [ ] ;
-                                                                                            } ;
                                                                                     } ;
                                                                                 targets = point.targets or [ ] ;
                                                                                 transient = point.transient or false ;
@@ -224,7 +221,15 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/release" ;
-                                                                        resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
+                                                                        seed =
+                                                                            {
+                                                                                release = "${ pkgs.coreutils }/bin/true" ;
+                                                                                resolutions =
+                                                                                    {
+                                                                                        init = [ "alpha" "beta" ] ;
+                                                                                        release = [ "gamma" "delta" ] ;
+                                                                                    } ;
+                                                                            } ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
@@ -702,7 +707,7 @@
                                                                                                                                                 REPO_NAME="$3"
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                gh repo create "$USER_NAME/$REPO_NAME" --public --add-topic script-generated-input-flake-repository
+                                                                                                                                                gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                 gh auth logout
                                                                                                                                                 mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
                                                                                                                                                 cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
@@ -715,7 +720,7 @@
                                                                                                                                                 git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "$MOUNT/repository/inputs/$INPUT"
+                                                                                                                                                git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
                                                                                                                                                 cd "$MOUNT/repository/inputs/$INPUT"
                                                                                                                                                 git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
                                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
@@ -960,6 +965,7 @@
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
+                                                                                    resolutions = [ "dot-gnupg" "dot-ssh" "failure" "fixture" "no-op" "personal" "private" "resource" "resource-logger" "resource-releaser" "resource-reporter" "secret" "secrets" "string" "visitor"] ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
                                                                                 } ;
                                                                 } ;
@@ -1198,61 +1204,98 @@
                                                                 stateVersion = "23.05" ;
                                                             } ;
                                                         systemd.services =
-                                                            {
-                                                                resource-resolver =
+                                                            let
+                                                                resource-reporter =
+                                                                    organization : repository : resolution :
+                                                                        {
+                                                                            after = [ "network.target" "redis.service" ] ;
+                                                                            enable = true ;
+                                                                            serviceConfig =
+                                                                                {
+                                                                                    ExecStart =
+                                                                                        _resource-reporter.implementation
+                                                                                            {
+                                                                                                channel = config.personal.channel ;
+                                                                                                organization = organization ;
+                                                                                                repository = repository ;
+                                                                                                resolution = resolution ;
+                                                                                                token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                            } ;
+                                                                                    User = config.personal.name ;
+                                                                                } ;
+                                                                            wantedBy = [ "multi-user.target" ] ;
+                                                                        } ;
+                                                                in
                                                                     {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        serviceConfig =
+                                                                        resource-resolver =
                                                                             {
-                                                                                ExecStart =
-                                                                                    _resource-resolver.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                enable = true ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-resolver.implementation
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
-                                                                resource-releaser =
-                                                                    {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        serviceConfig =
+                                                                        resource-logger =
+                                                                           {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                enable = true ;
+                                                                                requires = [ "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-logger.implementation
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resource-releaser =
                                                                             {
-                                                                                ExecStart =
-                                                                                    _resource-releaser.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                            links-directory = "/home/${ config.personal.name }/resources/links" ;
-                                                                                            locks-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                            mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
-                                                                                            quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                enable = true ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-releaser.implementation
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                    links-directory = "/home/${ config.personal.name }/resources/links" ;
+                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                        resource-reporter-dot-gnupg = resource-reporter config.personal.repository.dot-gnupg.organization config.personal.repository.dot-gnupg.repository "dot-gnupg" ;
+                                                                        resource-reporter-dot-ssh = resource-reporter config.personal.repository.dot-ssh.organization config.personal.repository.dot-ssh.repository "dot-ssh" ;
+                                                                        resource-reporter-failure = resource-reporter config.personal.repository.failure.organization config.personal.repository.failure.repository "failure" ;
+                                                                        resource-reporter-fixture = resource-reporter config.personal.repository.fixture.organization config.personal.repository.fixture.repository "fixture" ;
+                                                                        resource-reporter-git-repository = resource-reporter config.personal.repository.git-repository.organization config.personal.repository.git-repository.repository "git-repository" ;
+                                                                        resource-reporter-personal = resource-reporter config.personal.repository.personal.organization config.personal.repository.personal.repository "personal" ;
+                                                                        resource-reporter-resource = resource-reporter config.personal.repository.resource.organization config.personal.repository.resource.repository "resource" ;
+                                                                        resource-reporter-resource-logger = resource-reporter config.personal.repository.resource-logger.organization config.personal.repository.resource-logger.repository "resource-logger" ;
+                                                                        resource-reporter-resource-releaser = resource-reporter config.personal.repository.resource-releaser.organization config.personal.repository.resource-releaser.repository "resource-releaser" ;
+                                                                        resource-reporter-resource-reporter = resource-reporter config.personal.repository.resource-reporter.organization config.personal.repository.resource-reporter.repository "resource-reporter" ;
+                                                                        resource-reporter-resource-resolver = resource-reporter config.personal.repository.resource-resolver.organization config.personal.repository.resource-resolver.repository "resource-resolver" ;
+                                                                        resource-reporter-secret = resource-reporter config.personal.repository.secret.organization config.personal.repository.secret.repository "secret" ;
+                                                                        resource-reporter-secrets = resource-reporter config.personal.repository.secrets.organization config.personal.repository.secrets.repository "secrets" ;
+                                                                        resource-reporter-string = resource-reporter config.personal.repository.string.organization config.personal.repository.string.repository "string" ;
+                                                                        resource-reporter-visitor = resource-reporter config.personal.repository.visitor.organization config.personal.repository.visitor.repository "visitor" ;
                                                                     } ;
-                                                                resource-logger =
-                                                                   {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        requires = [ "redis.service" ] ;
-                                                                        serviceConfig =
-                                                                            {
-                                                                                ExecStart =
-                                                                                    _resource-logger.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            log-directory = "/home/${ config.personal.name }/resources/log" ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
-                                                                            } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
-                                                            } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
@@ -1399,19 +1442,35 @@
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
-                                                                        applications =
+                                                                        dot-gnupg =
                                                                             {
-                                                                                user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/applications" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "dot-gnupg" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        dot-ssh =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "dot-ssh" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         failure =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/failure.git" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "failure" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        fixture =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "fixture" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        git-repository =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "git-repository" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         pass =
                                                                             {
@@ -1423,44 +1482,70 @@
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/personal.git" ; type = lib.types.str ; } ;
-                                                                                repo = lib.mkOption { default = "personal.git" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "personal" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         private =
                                                                             {
-                                                                                user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
-                                                                                ssh-config = lib.mkOption { default = resources : resources.dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
                                                                             } ;
-                                                                        resources =
+                                                                        resource =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resources.git" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource" ; type = lib.types.str ; } ;
                                                                            } ;
+                                                                        resource-logger =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-logger" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        resource-releaser =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-releaser" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        resource-reporter =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-reporter" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        resource-resolver =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-resolver" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        secret =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         secrets =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                            } ;
-                                                                        temporary =
+                                                                        string =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/temporary" ; type = lib.types.str ; } ;
-                                                                           } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "string" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         visitor =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/visitor" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
                                                                 wifi =
@@ -1788,7 +1873,8 @@
                                                        transient = false ;
                                                  } ;
                                          resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
-                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/1s6kbs6v822rlb468yb1xxlpvx51idr9-resource-releaser/bin/resource-releaser" ; } ;
+                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/2sirdi3c4mzdnphsxmgqyqgqk2i5ybsz-resource-releaser/bin/resource-releaser" ; } ;
+                                         resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
                                          resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
                                             _secret.check
