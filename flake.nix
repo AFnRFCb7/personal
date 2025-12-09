@@ -116,14 +116,9 @@
                                                                                 follow-parent = point.follow-parent or false ;
                                                                                 init = point.init or null ;
                                                                                 seed =
+                                                                                    point.seed //
                                                                                     {
                                                                                         path = path ;
-                                                                                        release = point.release or null ;
-                                                                                        resolutions =
-                                                                                            {
-                                                                                                init = point.resolutions.init or [ ] ;
-                                                                                                release = point.resolutions.release or [ ] ;
-                                                                                            } ;
                                                                                     } ;
                                                                                 targets = point.targets or [ ] ;
                                                                                 transient = point.transient or false ;
@@ -226,7 +221,15 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/release" ;
-                                                                        resolutions = { init = [ "alpha" "beta" ] ; release = [ "gamma" "delta" ] ; } ;
+                                                                        seed =
+                                                                            {
+                                                                                release = "${ pkgs.coreutils }/bin/true" ;
+                                                                                resolutions =
+                                                                                    {
+                                                                                        init = [ "alpha" "beta" ] ;
+                                                                                        release = [ "gamma" "delta" ] ;
+                                                                                    } ;
+                                                                            } ;
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
@@ -962,7 +965,7 @@
                                                                                         {
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
-                                                                                    resolutions = [ "failure" "personal" ] ;
+                                                                                    resolutions = [ "dot-gnupg" "dot-ssh" "failure" "fixture" "no-op" "personal" "private" "resource" "resource-logger" "resource-releaser" "resource-reporter" "secret" "secrets" "string" "visitor"] ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
                                                                                 } ;
                                                                 } ;
