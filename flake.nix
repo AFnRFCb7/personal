@@ -404,6 +404,30 @@
                                                                 } ;
                                                             repository =
                                                                 {
+                                                                    private =
+                                                                        ignore :
+                                                                            _git-repository.implementation
+                                                                                {
+                                                                                    email = config.personal.private.repository.email ;
+                                                                                    name = config.personal.private.repository.name ;
+                                                                                    remotes.origin = "mobile:private" ;
+                                                                                    ssh = stage : "!${ stage }/ssh" ;
+                                                                                    post-setup =
+                                                                                        { mount , pkgs , resources } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "post-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    git fetch origin main
+                                                                                                                    git checkout origin/main
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/post-setup" ;
+                                                                                } ;
                                                                     snapshot =
 	                                                                    ignore :
 		                                                                    _git-repository.implementation
@@ -1230,6 +1254,7 @@
                                                                         } ;
                                                                 in
                                                                     {
+                                                                        private-reporter = _private-reporter.implementation { channel = config.personal.channel ; private = resources.productions.repository.private ( setup : setup ) ; resolution = "private" ; } ;
                                                                         resource-resolver =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
