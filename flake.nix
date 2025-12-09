@@ -1280,7 +1280,11 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        resource-reporter-dot-gnupg = resource-reporter config.personal.repository.dot-gnupg.organization config.personal.repository.dot-gnupg.repository "dot-gnupg" ;
+                                                                        resource-reporter-dot-ssh = resource-reporter config.personal.repository.dot-ssh.organization config.personal.repository.dot-ssh.repository "dot-ssh" ;
                                                                         resource-reporter-failure = resource-reporter config.personal.repository.failure.organization config.personal.repository.failure.repository "failure" ;
+                                                                        resource-reporter-fixture = resource-reporter config.personal.repository.fixture.organization config.personal.repository.fixture.repository "fixture" ;
+                                                                        resource-reporter-git-repository = resource-reporter config.personal.repository.git-repository.organization config.personal.repository.git-repository.repository "git-repository" ;
                                                                         resource-reporter-personal = resource-reporter config.personal.repository.personal.organization config.personal.repository.personal.repository "personal" ;
                                                                     } ;
                                                         time.timeZone = "America/New_York" ;
@@ -1478,7 +1482,7 @@
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "private:mobile" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         resource =
                                                                             {
