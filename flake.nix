@@ -116,7 +116,7 @@
                                                                                 follow-parent = point.follow-parent or false ;
                                                                                 init = point.init or null ;
                                                                                 seed =
-                                                                                    point.seed //
+                                                                                    ( point.seed or { } ) //
                                                                                     {
                                                                                         path = path ;
                                                                                     } ;
@@ -1429,11 +1429,29 @@
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
+                                                                        dot-gnupg =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "dot-gnupg" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        dot-ssh =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "dot-ssh" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         failure =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "failure" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        fixture =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "fixture" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         pass =
                                                                             {
