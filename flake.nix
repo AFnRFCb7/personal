@@ -1200,80 +1200,85 @@
                                                                 stateVersion = "23.05" ;
                                                             } ;
                                                         systemd.services =
-                                                            {
-                                                                resource-resolver =
-                                                                    {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        serviceConfig =
-                                                                            {
-                                                                                ExecStart =
-                                                                                    _resource-resolver.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
-                                                                            } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
-                                                                resource-releaser =
-                                                                    {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        serviceConfig =
-                                                                            {
-                                                                                ExecStart =
-                                                                                    _resource-releaser.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                            links-directory = "/home/${ config.personal.name }/resources/links" ;
-                                                                                            locks-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                            mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
-                                                                                            quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
-                                                                            } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
+                                                            let
                                                                 resource-reporter =
+                                                                    organization : repository : resolution :
+                                                                        {
+                                                                            after = [ "network.target" "redis.service" ] ;
+                                                                            enable = true ;
+                                                                            serviceConfig =
+                                                                                {
+                                                                                    ExecStart =
+                                                                                        _resource-reporter.implementation
+                                                                                            {
+                                                                                                channel = config.personal.channel ;
+                                                                                                organization = organization ;
+                                                                                                repository = repository ;
+                                                                                                resolution = resolution ;
+                                                                                                token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                            } ;
+                                                                                    User = config.personal.name ;
+                                                                                } ;
+                                                                            wantedBy = [ "multi-user.target" ] ;
+                                                                        } ;
+                                                                in
                                                                     {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        serviceConfig =
+                                                                        resource-resolver =
                                                                             {
-                                                                                ExecStart =
-                                                                                    _resource-reporter.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            organization = config.personal.repository.personal.organization ;
-                                                                                            repository = config.personal.repository.personal.repository ;
-                                                                                            resolution = "personal" ;
-                                                                                            token = resources__.production.secrets.token ( setup : setup ) ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                enable = true ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-resolver.implementation
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
-                                                                    } ;
-                                                                resource-logger =
-                                                                   {
-                                                                        after = [ "network.target" "redis.service" ] ;
-                                                                        enable = true ;
-                                                                        requires = [ "redis.service" ] ;
-                                                                        serviceConfig =
+                                                                        resource-logger =
+                                                                           {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                enable = true ;
+                                                                                requires = [ "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-logger.implementation
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resource-releaser =
                                                                             {
-                                                                                ExecStart =
-                                                                                    _resource-logger.implementation
-                                                                                        {
-                                                                                            channel = config.personal.channel ;
-                                                                                            log-directory = "/home/${ config.personal.name }/resources/log" ;
-                                                                                        } ;
-                                                                                User = config.personal.name ;
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                enable = true ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-releaser.implementation
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                    links-directory = "/home/${ config.personal.name }/resources/links" ;
+                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                        resource-reporter-failure = resource-reporter config.personal.repository.failure.organization config.personal.repository.failure.repository "failure" ;
+                                                                        resource-reporter-personal = resource-reporter config.personal.repository.personal.organization config.personal.repository.personal.repository "personal" ;
                                                                     } ;
-                                                            } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
