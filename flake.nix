@@ -1453,6 +1453,12 @@
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "fixture" ; type = lib.types.str ; } ;
                                                                             } ;
+                                                                        git-repository =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "git-repository" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         pass =
                                                                             {
                                                                                 branch = lib.mkOption { default = "scratch/8060776f-fa8d-443e-9902-118cf4634d9e" ; type = lib.types.str ; } ;
@@ -1469,38 +1475,58 @@
                                                                             } ;
                                                                         private =
                                                                             {
-                                                                                user = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "mobile:private" ; type = lib.types.str ; } ;
-                                                                                ssh-config = lib.mkOption { default = resources : resources.dot-ssh.mobile ; type = lib.types.funcTo lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "private:mobile" ; type = lib.types.str ; } ;
                                                                             } ;
-                                                                        resources =
+                                                                        resource =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/resources.git" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource" ; type = lib.types.str ; } ;
                                                                            } ;
+                                                                        resource-logger =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-logger" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        resource-reporter =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-reporter" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        resource-resolver =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "resource-resolver" ; type = lib.types.str ; } ;
+                                                                            } ;
+                                                                        secret =
+                                                                            {
+                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         secrets =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                            } ;
-                                                                        temporary =
+                                                                        string =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/temporary" ; type = lib.types.str ; } ;
-                                                                           } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "string" ; type = lib.types.str ; } ;
+                                                                            } ;
                                                                         visitor =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
-                                                                                name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/visitor" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
                                                                 wifi =
