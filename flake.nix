@@ -1444,9 +1444,9 @@
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                                owner = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 remote = lib.mkOption { default = "git@github.com:AFnRFCb7/personal.git" ; type = lib.types.str ; } ;
-                                                                                repo = lib.mkOption { default = "personal.git" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "personal.git" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         private =
                                                                             {
