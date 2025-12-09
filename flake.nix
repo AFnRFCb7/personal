@@ -408,8 +408,8 @@
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
-                                                                                    email = config.personal.repository.private.repository.email ;
-                                                                                    name = config.personal.repository.private.repository.name ;
+                                                                                    email = config.personal.repository.private.email ;
+                                                                                    name = config.personal.repository.private.name ;
                                                                                     remotes.origin = "mobile:private" ;
                                                                                     ssh = stage : "!${ stage }/ssh" ;
                                                                                     pre-setup =
