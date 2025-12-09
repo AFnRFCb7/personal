@@ -1732,7 +1732,7 @@
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                             } ;
-                                    private-reporter = _private-reporter.check { expected = "/nix/store/2qp3q9vkgnid9y97zfin4wd946x12xss-private/bin/private-reporter" ; } ;
+                                    private-reporter = _private-reporter.check { expected = "/nix/store/jpbp14585f0z5bl3s8vg60j0rxiqhwsq-private-reporter/bin/private-reporter" ; } ;
                                     resource-happy =
                                         let
                                             factory =
