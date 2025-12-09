@@ -1254,7 +1254,7 @@
                                                                         } ;
                                                                 in
                                                                     {
-                                                                        private-reporter = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.productions.repository.private ( setup : setup ) ; resolution = "private" ; } ;
+                                                                        private-reporter = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.private ( setup : setup ) ; resolution = "private" ; } ;
                                                                         resource-resolver =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
