@@ -443,6 +443,7 @@
                                                                                                                             makeWrapper "${ ssh } "$MOUNT/stage/ssh" "$MOUNT"
                                                                                                                         '' ;
                                                                                                         } ;
+                                                                                                in "${ application }/bin/pre-setup" ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
                                                                                             let
