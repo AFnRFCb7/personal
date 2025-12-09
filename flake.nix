@@ -720,7 +720,7 @@
                                                                                                                                                 git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "$MOUNT/repository/inputs/$INPUT"
+                                                                                                                                                git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
                                                                                                                                                 cd "$MOUNT/repository/inputs/$INPUT"
                                                                                                                                                 git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
                                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
