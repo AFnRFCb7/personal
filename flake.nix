@@ -408,10 +408,41 @@
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
-                                                                                    email = config.personal.private.repository.email ;
-                                                                                    name = config.personal.private.repository.name ;
+                                                                                    email = config.personal.repository.private.repository.email ;
+                                                                                    name = config.personal.repository.private.repository.name ;
                                                                                     remotes.origin = "mobile:private" ;
                                                                                     ssh = stage : "!${ stage }/ssh" ;
+                                                                                    pre-setup =
+                                                                                        { mount , pkgs , resources } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "pre-setup" ;
+                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    ssh =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                ssh -F "$MOUNT/config" "$@"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/ssh" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root-resource "$DOT_SSH"
+                                                                                                                            ln --symbolic "$DOT_SSH/config "$MOUNT/stage/config"
+                                                                                                                            makeWrapper "${ ssh } "$MOUNT/stage/ssh" "$MOUNT"
+                                                                                                                        '' ;
+                                                                                                        } ;
                                                                                     post-setup =
                                                                                         { mount , pkgs , resources } :
                                                                                             let
