@@ -1237,6 +1237,25 @@
                                                                             } ;
                                                                         wantedBy = [ "multi-user.target" ] ;
                                                                     } ;
+                                                                resource-reporter =
+                                                                    {
+                                                                        after = [ "network.target" "redis.service" ] ;
+                                                                        enable = true ;
+                                                                        serviceConfig =
+                                                                            {
+                                                                                ExecStart =
+                                                                                    _resource-reporter.implementation
+                                                                                        {
+                                                                                            channel = config.personal.channel ;
+                                                                                            organization = config.personal.repository.personal.organization ;
+                                                                                            repository = config.personal.repository.personal.repository ;
+                                                                                            resolution = "personal" ;
+                                                                                            token = resources.production.secrets.token ( setup : setup ) ;
+                                                                                        } ;
+                                                                                User = config.personal.name ;
+                                                                            } ;
+                                                                        wantedBy = [ "multi-user.target" ] ;
+                                                                    } ;
                                                                 resource-logger =
                                                                    {
                                                                         after = [ "network.target" "redis.service" ] ;
