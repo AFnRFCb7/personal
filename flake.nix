@@ -1286,6 +1286,15 @@
                                                                         resource-reporter-fixture = resource-reporter config.personal.repository.fixture.organization config.personal.repository.fixture.repository "fixture" ;
                                                                         resource-reporter-git-repository = resource-reporter config.personal.repository.git-repository.organization config.personal.repository.git-repository.repository "git-repository" ;
                                                                         resource-reporter-personal = resource-reporter config.personal.repository.personal.organization config.personal.repository.personal.repository "personal" ;
+                                                                        resource-reporter-resource = resource-reporter config.personal.repository.resource.organization config.personal.repository.resource.repository "resource" ;
+                                                                        resource-reporter-resource-logger = resource-reporter config.personal.repository.resource-logger.organization config.personal.repository.resource-logger.repository "resource-logger" ;
+                                                                        resource-reporter-resource-releaser = resource-reporter config.personal.repository.resource-releaser.organization config.personal.repository.resource-releaser.repository "resource-releaser" ;
+                                                                        resource-reporter-resource-reporter = resource-reporter config.personal.repository.resource-reporter.organization config.personal.repository.resource-reporter.repository "resource-reporter" ;
+                                                                        resource-reporter-resource-resolver = resource-reporter config.personal.repository.resource-resolver.organization config.personal.repository.resource-resolver.repository "resource-resolver" ;
+                                                                        resource-reporter-secret = resource-reporter config.personal.repository.secret.organization config.personal.repository.secret.repository "secret" ;
+                                                                        resource-reporter-secrets = resource-reporter config.personal.repository.secrets.organization config.personal.repository.secrets.repository "secrets" ;
+                                                                        resource-reporter-string = resource-reporter config.personal.repository.string.organization config.personal.repository.string.repository "string" ;
+                                                                        resource-reporter-visitor = resource-reporter config.personal.repository.visitor.organization config.personal.repository.visitor.repository "visitor" ;
                                                                     } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
