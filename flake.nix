@@ -440,7 +440,7 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root-resource "$DOT_SSH"
                                                                                                                             ln --symbolic "$DOT_SSH/config" "$MOUNT/stage/config"
-                                                                                                                            makeWrapper "${ ssh } "$MOUNT/stage/ssh" "$MOUNT"
+                                                                                                                            makeWrapper "${ ssh }" "$MOUNT/stage/ssh" "$MOUNT"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
