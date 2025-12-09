@@ -14,6 +14,7 @@
                         git-repository ,
                         nixpkgs ,
                         private ,
+                        private-reporter ,
                         resource ,
                         resource-logger ,
                         resource-releaser ,
@@ -31,6 +32,7 @@
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
+                            _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
                             _resource =
                                 {
                                     channel ,
@@ -1663,6 +1665,7 @@
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                             } ;
+                                    private-reporter = _private-reporter.check { } ;
                                     resource-happy =
                                         let
                                             factory =
