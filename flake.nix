@@ -675,12 +675,12 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            wrap ${ flake-build-vm } stage/flake-build-vm --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm } stage/flake-build-vm --executable --literal VM --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader --literal VM --literal --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-check } stage/flake-check --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-switch } stage/flake-switch --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-switch } stage/flake-switch --executable --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-test } stage/flake-test --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ scratch } stage/scratch --executable --set MOUNT
+                                                                                                                            wrap ${ scratch } stage/scratch --executable --literal BRANCH --literal UUID --set MOUNT
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -862,6 +862,21 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-rebase" ;
+                                                                                                                    mutable-scratch =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-scratch" ;
+                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 73096040
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
+                                                                                                                                                git checkout -b "$BRANCH" 2>&1
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                                in "${ application }/bin/mutable-scratch" ;
                                                                                                                     mutable-snapshot =
                                                                                                                         let
                                                                                                                             application =
@@ -934,21 +949,6 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-snapshot" ;
-                                                                                                                    mutable-scratch =
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "mutable-scratch" ;
-                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 73096040
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
-                                                                                                                                                git checkout -b "$BRANCH" 2>&1
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                                in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
@@ -959,10 +959,10 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            wrap ${ mutable-nurse } stage/mutable-nurse --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-rebase } stage/mutable-rebase --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-scratch } stage/mutable-scratch --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-nurse } stage/mutable-nurse --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-rebase } stage/mutable-rebase --executable --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-scratch } stage/mutable-scratch --executable --literal BRANCH --literal UUID --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot --executable --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
