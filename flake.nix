@@ -418,7 +418,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "pre-setup" ;
-                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     ssh =
@@ -482,7 +482,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils wrap ] ;
                                                                                                             text =
                                                                                                                 let
 												                                                                    flake-build-vm =
@@ -691,6 +691,7 @@
 								                                                                    pkgs.writeShellApplication
 									                                                                    {
 										                                                                    name = "setup" ;
+										                                                                    runtimeInputs = [ pkgs.coreutils wrap ] ;
 										                                                                    text =
 											                                                                    let
                                                                                                                         ssh =
@@ -748,7 +749,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     mutable-nurse =
@@ -972,7 +973,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     mutable-hydrate =
