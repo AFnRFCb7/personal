@@ -438,8 +438,8 @@
                                                                                                                         ''
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root-resource "$DOT_SSH"
-                                                                                                                            ln --symbolic "$DOT_SSH/config" "$MOUNT/stage/config"
-                                                                                                                            makeWrapper "${ ssh }" "$MOUNT/stage/ssh" "$MOUNT"
+                                                                                                                            ln --symbolic "$DOT_SSH/config" "/mount/stage/config"
+                                                                                                                            wrap "${ ssh }" stage/ssh --executable --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
@@ -675,12 +675,12 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
-                                                                                                                            make-wrapper ${ flake-build-vm-with-bootloader } /mount/stage/flake-build-vm-with-bootloader "${ mount }"
-                                                                                                                            make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
-                                                                                                                            make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
-                                                                                                                            make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
-                                                                                                                            make-wrapper ${ scratch } /mount/stage/scratch "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm } stage/flake-build-vm --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-check } stage/flake-check --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-switch } stage/flake-switch --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-test } stage/flake-test --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ scratch } stage/scratch --executable --set MOUNT
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -711,7 +711,7 @@
                                                                                                                                 STUDIO="$1"
                                                                                                                                 COMMIT="$2"
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
-                                                                                                                                make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+                                                                                                                                wrap ${ ssh } stage/ssh --executable --set MOUNT "${ mount }"
                                                                                                                                 root-resource "$DOT_SSH"
                                                                                                                                 ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
                                                                                                                                 git fetch "$STUDIO/repository" "$COMMIT" 2>&1
@@ -958,10 +958,10 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            make-wrapper ${ mutable-nurse } /mount/stage/mutable-nurse "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
+                                                                                                                            wrap ${ mutable-nurse } stage/mutable-nurse --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-rebase } stage/mutable-rebase --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-scratch } stage/mutable-scratch --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot --executable --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -1013,8 +1013,8 @@
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
                                                                                                                         ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                         root-resource "$DOT_SSH"
-                                                                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
-                                                                                                                        make-wrapper ${ mutable-hydrate } /mount/stage/mutable-hydrate "${ mount }"
+                                                                                                                        wrap ${ ssh } stage/ssh --executable --set MOUNT "${ mount }"
+                                                                                                                        wrap ${ mutable-hydrate } stage/mutable-hydrate --executable --set MOUNT "${ mount }"
                                                                                                                         git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
