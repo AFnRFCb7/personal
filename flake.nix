@@ -985,14 +985,11 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( _failure.implementation "" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                echo dc3a0c23
                                                                                                                                                 BRANCH="$1"
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                echo 96561a1b "0=$0" "BRANCH=$BRANCH"
                                                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                                                echo c3ab8b04
                                                                                                                                                 git checkout "origin/$BRANCH" 2>&1
                                                                                                                                                 git submodule sync 2>&1
                                                                                                                                                 git submodule update --init --recursive 2>&1
@@ -1008,19 +1005,17 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/config" "$@"
+                                                                                                                                                ssh -F "$MOUNT/stage/config" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        echo 4c3b7a84
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                        ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                         root-resource "$DOT_SSH"
+                                                                                                                        ln --symbolic "$DOT_SSH/config" /mount/stage/config
                                                                                                                         wrap ${ ssh } stage/ssh --executable --set MOUNT "${ mount }"
                                                                                                                         wrap ${ mutable-hydrate } stage/mutable-hydrate --executable --literal BRANCH --set MOUNT "${ mount }"
-                                                                                                                        echo 8c2d1f45
                                                                                                                         git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
