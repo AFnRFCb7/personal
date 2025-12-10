@@ -985,7 +985,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( _failure.implementation "" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                echo 3c1913c4
+                                                                                                                                                echo dc3a0c23
                                                                                                                                                 BRANCH="$1"
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
@@ -1012,6 +1012,7 @@
                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                 in
                                                                                                                     ''
+                                                                                                                        echo 4c3b7a84
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
                                                                                                                         ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                         root-resource "$DOT_SSH"
