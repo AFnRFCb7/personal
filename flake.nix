@@ -985,6 +985,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( _failure.implementation "" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                echo 3c1913c4
                                                                                                                                                 BRANCH="$1"
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
@@ -1016,7 +1017,9 @@
                                                                                                                         root-resource "$DOT_SSH"
                                                                                                                         wrap ${ ssh } stage/ssh --executable --set MOUNT "${ mount }"
                                                                                                                         wrap ${ mutable-hydrate } stage/mutable-hydrate --executable --set MOUNT "${ mount }"
+                                                                                                                        echo 8c2d1f45
                                                                                                                         git mutable-hydrate main
+                                                                                                                        e3e47bf8
                                                                                                                     '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
