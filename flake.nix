@@ -990,7 +990,9 @@
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                                 cd "$MOUNT/repository"
+                                                                                                                                                echo 96561a1b "$BRANCH"
                                                                                                                                                 git fetch origin "$BRANCH" 2>&1
+                                                                                                                                                echo c3ab8b04
                                                                                                                                                 git checkout "origin/$BRANCH" 2>&1
                                                                                                                                                 git submodule sync 2>&1
                                                                                                                                                 git submodule update --init --recursive 2>&1
