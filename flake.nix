@@ -476,7 +476,6 @@
                                                                                     follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-
                                                                                         { mount , pkgs , resources , wrap } :
                                                                                             let
                                                                                                 application =
