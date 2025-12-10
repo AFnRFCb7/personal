@@ -1022,7 +1022,6 @@
                                                                                                                         wrap ${ mutable-hydrate } stage/mutable-hydrate --executable --literal BRANCH --set MOUNT "${ mount }"
                                                                                                                         echo 8c2d1f45
                                                                                                                         git mutable-hydrate main
-                                                                                                                        e3e47bf8
                                                                                                                     '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
