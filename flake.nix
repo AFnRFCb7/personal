@@ -260,7 +260,6 @@
                                                                         targets = [ "secret" ] ;
                                                                     } ;
                                                             dot-gnupg =
-
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
