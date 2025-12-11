@@ -1779,8 +1779,6 @@
                                                     {
                                                         arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                         diffutils = pkgs.diffutils ;
-                                                        expected-resource-dependencies = [ "f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ] ;
-                                                        expected-store-dependencies = [ "bjb2xx943rkfl0r6x7wgp2069zym5wwi-cowsay-3.8.3" ] ;
                                                         expected-index = "0000000311691948" ;
                                                         expected-originator-pid = 45 ;
                                                         expected-provenance = "new" ;
