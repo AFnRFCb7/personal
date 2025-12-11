@@ -688,7 +688,7 @@
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
                                                                                                                             wrap ${ flake-build-vm } stage/flake-build-vm 0500 --literal VM --literal STATUS --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader 0500 --literal VM --literal --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader 0500 --literal VM_WITH_BOOTLOADER --literal STATUS --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-check } stage/flake-check 0500 --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-switch } stage/flake-switch 0500 --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-test } stage/flake-test 0500 --set MOUNT "${ mount }"
