@@ -692,7 +692,7 @@
                                                                                                                             wrap ${ flake-check } stage/flake-check 0500 --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-switch } stage/flake-switch 0500 --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-test } stage/flake-test 0500 --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ scratch } stage/scratch 0500 --literal BRANCH --literal UUID --set MOUNT
+                                                                                                                            wrap ${ scratch } stage/scratch 0500 --literal BRANCH --literal UUID --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
