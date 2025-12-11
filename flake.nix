@@ -1,3 +1,4 @@
+
 {
     inputs =
         {
@@ -616,7 +617,6 @@
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
-
                                                                                                                                                     export MOUNT="$MOUNT"
                                                                                                                                                     echo starting
                                                                                                                                                     if ! nix flake check "$MOUNT/repository"
@@ -939,6 +939,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                export MOUNT="$MOUNT"
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                                 STATUS=${ resources.production.temporary ( setup : setup ) }
@@ -1699,7 +1700,7 @@
                                                                 host-name = "eedaca3e" ;
                                                             } ;
                                                     } ;
-                                                expected = "/nix/store/iflzzyzrlm9qy68gn6bay3v3vx9c04j4-init/bin/init" ;
+                                                expected = "/nix/store/js23hk297bdhp8l418widxp1ynhx0bys-init/bin/init" ;
                                                 mount = "271a376c" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
