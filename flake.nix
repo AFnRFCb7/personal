@@ -939,7 +939,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                MOUNT="$MOUNT"
+                                                                                                                                                export MOUNT="$MOUNT"
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                                 STATUS=${ resources.production.temporary ( setup : setup ) }
