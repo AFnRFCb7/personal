@@ -14,6 +14,7 @@
                         git-repository ,
                         nixpkgs ,
                         private ,
+                        private-reporter ,
                         resource ,
                         resource-logger ,
                         resource-releaser ,
@@ -31,6 +32,7 @@
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
+                            _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
                             _resource =
                                 {
                                     channel ,
@@ -131,8 +133,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys-fun = { mount , pkgs , resources } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            ownertrust-fun = { mount , pkgs , resources , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys-fun = { mount , pkgs , resources , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -157,7 +159,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources } :
+                                                                            { mount , pkgs , resources , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -242,7 +244,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources } :
+                                                                            { mount , pkgs , resources , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -261,8 +263,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources } : resources.production.secrets.ownertrust ;
-                                                                            secret-keys-fun = { mount , pkgs , resources } : resources.production.secrets.secret-keys ;
+                                                                            ownertrust-fun = { mount , pkgs , resources , wrap } : resources.production.secrets.ownertrust ;
+                                                                            secret-keys-fun = { mount , pkgs , resources , wrap } : resources.production.secrets.secret-keys ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -299,18 +301,18 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ;
+                                                                                            identity-file = { mount , pkgs , resources , wrap } : resources.production.secrets.dot-ssh.github.identity-file ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : setup ) ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources } : resources.production.fixture.laptop ( setup : setup ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.fixture.laptop ( setup : setup ) ;
+                                                                                            identity-file = { mount , pkgs , resources , wrap } : resources.production.fixture.laptop ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources , wrap } : resources.production.fixture.laptop ( setup : setup ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources } : resources.production.fixture.laptop ( setup : setup ) ;
+                                                                                            identity-file = { mount , pkgs , resources , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : setup ) ;
+                                                                                            user-known-hosts-file = { mount , pkgs , resources , wrap } : resources.production.fixture.laptop ( setup : setup ) ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -320,7 +322,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        { mount , pkgs , resources } :
+                                                                                        { mount , pkgs , resources , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -346,7 +348,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources } :
+                                                                                    { mount , pkgs , resources , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -374,7 +376,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources } :
+                                                                                    { mount , pkgs , resources , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -401,6 +403,62 @@
                                                                 } ;
                                                             repository =
                                                                 {
+                                                                    private =
+                                                                        ignore :
+                                                                            _git-repository.implementation
+                                                                                {
+                                                                                    email = config.personal.repository.private.email ;
+                                                                                    name = config.personal.repository.private.name ;
+                                                                                    remotes.origin = "mobile:private" ;
+                                                                                    ssh = stage : "!${ stage }/ssh" ;
+                                                                                    pre-setup =
+                                                                                        { mount , pkgs , resources , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "pre-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils wrap ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    ssh =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                ssh -F "$MOUNT/config" "$@"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/ssh" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root-resource "$DOT_SSH"
+                                                                                                                            ln --symbolic "$DOT_SSH/config" "/mount/stage/config"
+                                                                                                                            wrap "${ ssh }" stage/ssh 0500 --set MOUNT "${ mount }"
+                                                                                                                        '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/pre-setup" ;
+                                                                                    post-setup =
+                                                                                        { mount , pkgs , resources , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "post-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    git fetch origin main
+                                                                                                                    git checkout origin/main
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/post-setup" ;
+                                                                                } ;
                                                                     snapshot =
 	                                                                    ignore :
 		                                                                    _git-repository.implementation
@@ -418,13 +476,13 @@
                                                                                     follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-                                                                                        { mount , pkgs , resources } :
+                                                                                        { mount , pkgs , resources , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils wrap ] ;
                                                                                                             text =
                                                                                                                 let
 												                                                                    flake-build-vm =
@@ -523,20 +581,32 @@
                                                                                                                                                                             git push origin HEAD
                                                                                                                                                                             echo "squashed the scratch $INPUT"
                                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 92c1bf82
+                                                                                                                                                                            echo "we are working on branch $BRANCH"
                                                                                                                                                                             TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            echo "we are using github TOKEN $TOKEN/secret"
                                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                            echo "we logged into gh with the token"
                                                                                                                                                                             if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                             then
+                                                                                                                                                                                echo "the label does not exist"
                                                                                                                                                                                 gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
+                                                                                                                                                                                echo "we created the label"
                                                                                                                                                                             fi
                                                                                                                                                                             gh pr create --base main --head "$BRANCH" --label "snapshot"
+                                                                                                                                                                            echo "we created the PR"
                                                                                                                                                                             URL="$( gh pr view --json url --jq .url )" || failure 15f039fa
+                                                                                                                                                                            echo "the URL for the PR is $URL"
                                                                                                                                                                             gh pr merge "$URL" --rebase
+                                                                                                                                                                            echo "we merged the PR"
+                                                                                                                                                                            gh auth logout
+                                                                                                                                                                            echo "we logged out of gh"
                                                                                                                                                                             INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
+                                                                                                                                                                            echo "The input is $INPUT_NAME"
                                                                                                                                                                             cd "$MOUNT/repository"
                                                                                                                                                                             nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
-                                                                                                                                                                            gh auth logout
-                                                                                                                                                                            echo "PRed $INPUT"
+                                                                                                                                                                            echo "We updated the flake accordingly"
+                                                                                                                                                                            echo "We are done with $INPUT"
+                                                                                                                                                                            echo
                                                                                                                                                                         else
                                                                                                                                                                             echo "there is no difference in $INPUT"
                                                                                                                                                                         fi
@@ -617,22 +687,23 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            make-wrapper ${ flake-build-vm } /mount/stage/flake-build-vm "${ mount }"
-                                                                                                                            make-wrapper ${ flake-build-vm-with-bootloader } /mount/stage/flake-build-vm-with-bootloader "${ mount }"
-                                                                                                                            make-wrapper ${ flake-check } /mount/stage/flake-check "${ mount }"
-                                                                                                                            make-wrapper ${ flake-switch } /mount/stage/flake-switch "${ mount }"
-                                                                                                                            make-wrapper ${ flake-test } /mount/stage/flake-test "${ mount }"
-                                                                                                                            make-wrapper ${ scratch } /mount/stage/scratch "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm } stage/flake-build-vm 0500 --literal VM --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader 0500 --literal VM --literal --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-check } stage/flake-check 0500 --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-switch } stage/flake-switch 0500 --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-test } stage/flake-test 0500 --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ scratch } stage/scratch 0500 --literal BRANCH --literal UUID --set MOUNT
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
-					                                                                    { mount , pkgs , resources } :
+					                                                                    { mount , pkgs , resources , wrap } :
 						                                                                    let
 							                                                                    application =
 								                                                                    pkgs.writeShellApplication
 									                                                                    {
 										                                                                    name = "setup" ;
+										                                                                    runtimeInputs = [ pkgs.coreutils wrap ] ;
 										                                                                    text =
 											                                                                    let
                                                                                                                         ssh =
@@ -653,7 +724,7 @@
                                                                                                                                 STUDIO="$1"
                                                                                                                                 COMMIT="$2"
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
-                                                                                                                                make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
+                                                                                                                                wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                                 root-resource "$DOT_SSH"
                                                                                                                                 ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
                                                                                                                                 git fetch "$STUDIO/repository" "$COMMIT" 2>&1
@@ -684,13 +755,13 @@
                                                                                     follow-parent = true ;
                                                                                     name = config.personal.repository.private.name ;
                                                                                     post-setup =
-                                                                                        { mount , pkgs , resources } :
+                                                                                        { mount , pkgs , resources , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     mutable-nurse =
@@ -803,6 +874,21 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-rebase" ;
+                                                                                                                    mutable-scratch =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-scratch" ;
+                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 73096040
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
+                                                                                                                                                git checkout -b "$BRANCH" 2>&1
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                                in "${ application }/bin/mutable-scratch" ;
                                                                                                                     mutable-snapshot =
                                                                                                                         let
                                                                                                                             application =
@@ -875,21 +961,6 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-snapshot" ;
-                                                                                                                    mutable-scratch =
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "mutable-scratch" ;
-                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 73096040
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
-                                                                                                                                                git checkout -b "$BRANCH" 2>&1
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                                in "${ application }/bin/mutable-scratch" ;
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
@@ -900,21 +971,21 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            make-wrapper ${ mutable-nurse } /mount/stage/mutable-nurse "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-rebase } /mount/stage/mutable-rebase "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-scratch } /mount/stage/mutable-scratch "${ mount }"
-                                                                                                                            make-wrapper ${ mutable-snapshot } /mount/stage/mutable-snapshot "${ mount }"
+                                                                                                                            wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-scratch } stage/mutable-scratch 0500 --literal BRANCH --literal UUID --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot 0500 --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
-                                                                                        { mount , pkgs , resources } :
+                                                                                        { mount , pkgs , resources , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     mutable-hydrate =
@@ -946,17 +1017,17 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ssh -F "$MOUNT/stage/dot-ssh/config" "$@"
+                                                                                                                                                ssh -F "$MOUNT/stage/config" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                        ln --symbolic "$DOT_SSH" /mount/stage/dot-ssh
                                                                                                                         root-resource "$DOT_SSH"
-                                                                                                                        make-wrapper ${ ssh } /mount/stage/ssh "${ mount }"
-                                                                                                                        make-wrapper ${ mutable-hydrate } /mount/stage/mutable-hydrate "${ mount }"
+                                                                                                                        ln --symbolic "$DOT_SSH/config" /mount/stage/config
+                                                                                                                        wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
+                                                                                                                        wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --set MOUNT "${ mount }"
                                                                                                                         git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
@@ -991,7 +1062,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { mount , pkgs , resources } : "" ;
+                                                                        init = { mount , pkgs , resources , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
@@ -1227,6 +1298,17 @@
                                                                         } ;
                                                                 in
                                                                     {
+                                                                        private-reporter =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ];
+                                                                                enable = true ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.private ( setup : setup ) ; resolution = "private" ; } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-resolver =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -1263,7 +1345,7 @@
                                                                         resource-releaser =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -1589,8 +1671,8 @@
                                             {
                                                 expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
-                                                secret-keys-fun = { mount , pkgs , resources } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
+                                                ownertrust-fun = { mount , pkgs , resources , wrap } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
+                                                secret-keys-fun = { mount , pkgs , resources , wrap } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
                                             } ;
                                     dot-ssh =
                                         _dot-ssh.check
@@ -1622,16 +1704,16 @@
                                                     {
                                                         cb8e09cf =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { mount , pkgs , resources , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         f5d69296 =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { mount , pkgs , resources , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         b8b6ddc8 =
                                                             {
-                                                                strict-host-key-checking = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
-                                                                user-known-hosts-file = { mount , pkgs , resources } : builtins.toString pkgs.coreutils ;
+                                                                strict-host-key-checking = { mount , pkgs , resources , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { mount , pkgs , resources , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                     } ;
                                             } ;
@@ -1663,6 +1745,7 @@
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                             } ;
+                                    private-reporter = _private-reporter.check { expected = "/nix/store/jpbp14585f0z5bl3s8vg60j0rxiqhwsq-private-reporter/bin/private-reporter" ; } ;
                                     resource-happy =
                                         let
                                             factory =
@@ -1723,7 +1806,7 @@
                                                         expected-transient = -1 ;
                                                         expected-type = "valid" ;
                                                         init =
-                                                            { mount , pkgs , resources } :
+                                                            { mount , pkgs , resources , wrap } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -1818,7 +1901,7 @@
                                                      expected-transient = -1 ;
                                                      expected-type = "invalid" ;
                                                      init =
-                                                         { mount , pkgs , resources } :
+                                                         { mount , pkgs , resources , wrap } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
@@ -1873,7 +1956,7 @@
                                                        transient = false ;
                                                  } ;
                                          resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
-                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/2sirdi3c4mzdnphsxmgqyqgqk2i5ybsz-resource-releaser/bin/resource-releaser" ; } ;
+                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/nady4v43fjph4m69zixjj5i01y9qmcpf-resource-releaser/bin/resource-releaser" ; } ;
                                          resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
                                          resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
