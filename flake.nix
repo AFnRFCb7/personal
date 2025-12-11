@@ -439,7 +439,7 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root-resource "$DOT_SSH"
                                                                                                                             ln --symbolic "$DOT_SSH/config" "/mount/stage/config"
-                                                                                                                            wrap "${ ssh }" stage/ssh --executable --set MOUNT "${ mount }"
+                                                                                                                            wrap "${ ssh }" stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
@@ -675,12 +675,12 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            wrap ${ flake-build-vm } stage/flake-build-vm --executable --literal VM --literal STATUS --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader --literal VM --literal --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-check } stage/flake-check --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-switch } stage/flake-switch --executable --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ flake-test } stage/flake-test --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ scratch } stage/scratch --executable --literal BRANCH --literal UUID --set MOUNT
+                                                                                                                            wrap ${ flake-build-vm } stage/flake-build-vm 0500 --literal VM --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-build-vm-with-bootloader } stage/flake-build-vm-with-bootloader 0500 --literal VM --literal --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-check } stage/flake-check 0500 --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-switch } stage/flake-switch 0500 --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ flake-test } stage/flake-test 0500 --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ scratch } stage/scratch 0500 --literal BRANCH --literal UUID --set MOUNT
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -712,7 +712,7 @@
                                                                                                                                 STUDIO="$1"
                                                                                                                                 COMMIT="$2"
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
-                                                                                                                                wrap ${ ssh } stage/ssh --executable --set MOUNT "${ mount }"
+                                                                                                                                wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                                 root-resource "$DOT_SSH"
                                                                                                                                 ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
                                                                                                                                 git fetch "$STUDIO/repository" "$COMMIT" 2>&1
@@ -959,10 +959,10 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            wrap ${ mutable-nurse } stage/mutable-nurse --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --executable --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-rebase } stage/mutable-rebase --executable --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-scratch } stage/mutable-scratch --executable --literal BRANCH --literal UUID --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot --executable --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-nurse } stage/mutable-nurse --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME 0500 --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-scratch } stage/mutable-scratch 0500 --literal BRANCH --literal UUID --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot 0500 --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -1014,8 +1014,8 @@
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
                                                                                                                         root-resource "$DOT_SSH"
                                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/stage/config
-                                                                                                                        wrap ${ ssh } stage/ssh --executable --set MOUNT "${ mount }"
-                                                                                                                        wrap ${ mutable-hydrate } stage/mutable-hydrate --executable --literal BRANCH --set MOUNT "${ mount }"
+                                                                                                                        wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
+                                                                                                                        wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --set MOUNT "${ mount }"
                                                                                                                         git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
