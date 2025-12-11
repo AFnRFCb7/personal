@@ -616,6 +616,7 @@
                                                                                                                                                 ] ;
 																	                                                                        text =
                                                                                                                                                 ''
+                                                                                                                                                    export MOUNT="$MOUNT"
                                                                                                                                                     echo starting
                                                                                                                                                     if ! nix flake check "$MOUNT/repository"
                                                                                                                                                     then
