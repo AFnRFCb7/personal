@@ -461,6 +461,49 @@
                                                                                                 in "${ application }/bin/post-setup" ;
                                                                                 } ;
                                                                     snapshot =
+                                                                        ignore :
+                                                                            _git-repository.implementation
+                                                                                {
+                                                                                    email = config.personal.repository.private.email ;
+                                                                                    name = config.personal.repository.private.name ;
+                                                                                    pre-setup =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "pre-setup" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                ssh =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                           pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "ssh" ;
+                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            ssh -F "$MOUNT/.ssh/config" "$@"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/ssh" ;
+
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        root "${ pkgs.openssh }"
+                                                                                                                        DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                        root "$DOT_SSH"
+                                                                                                                        mkdir --parents ${ mount }/.ssh
+                                                                                                                        ln --symbolic "$DOT_SSH/config ${ mount }/.ssh/config
+                                                                                                                        mkdir --parents ${ mount }/bin
+                                                                                                                        wrap ssh bin/ssh --set MOUNT "${ mount }"
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/pre-setup" ;
+                                                                                    ssh = { stage } : "${ stage }/bin/ssh" ;
+                                                                                } ;
+                                                                    snapshot-prime =
 	                                                                    ignore :
 		                                                                    _git-repository.implementation
                                                                                 {
@@ -746,7 +789,7 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
-                                                                                            "alias.mutable-check" = stage : "!${ stage }/mutable-check" ;
+                                                                                            "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
@@ -773,8 +816,24 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-check" ;
+                                                                                                                                        runtimeInputs = [ "$MOUNT" failure ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                nix flake check "$SNAPSHOT"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-check" ;
+                                                                                                                    mutable-snapshot =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-snapshot" ;
                                                                                                                                         runtimeInputs =
                                                                                                                                             [
+                                                                                                                                                pkgs.coreutils
+                                                                                                                                                pkgs.git
                                                                                                                                                 pkgs.findutils
                                                                                                                                                 (
                                                                                                                                                     pkgs.writeShellApplication
@@ -813,10 +872,10 @@
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
+                                                                                                                                                failure
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                export MOUNT="$MOUNT"
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \;
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \;
                                                                                                                                                 cd "$MOUNT/repository"
@@ -830,11 +889,13 @@
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure a41ef3ab
-                                                                                                                                                SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$COMMIT"'' ) }
-                                                                                                                                                nix flake check "$SNAPSHOT"
+                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : setup ) }
+                                                                                                                                                echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                            in "${ application }/bin/mutable-check" ;
+                                                                                                                                in "${ application }/bin/mutable-snapshot" ;
+
+
                                                                                                                     mutable-nurse =
                                                                                                                         let
                                                                                                                             application =
@@ -960,7 +1021,7 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-scratch" ;
-                                                                                                                    mutable-snapshot =
+                                                                                                                    mutable-snapshot-prime =
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
@@ -1028,7 +1089,7 @@
                                                                                                                                                     git push origin HEAD
                                                                                                                                                 fi
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure ae181cdd
-                                                                                                                                                SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
+                                                                                                                                                SNAPSHOT=${ resources.production.repository.snapshot-prime ( setup : ''${ setup } "$MOUNT" "$COMMIT"'' ) }
                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1043,12 +1104,13 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
+                                                                                                                            wrap ${ mutable-check } stage/bin/mutable-check 0500 --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --set MOUT "${ mount }"
 
-                                                                                                                            wrap ${ mutable-check } stage/mutable-check 0500 --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-scratch } stage/mutable-scratch 0500 --literal BRANCH --literal UUID --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot } stage/mutable-snapshot 0500 --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot-prime } stage/mutable-snapshot 0500 --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
