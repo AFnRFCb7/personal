@@ -819,7 +819,7 @@
                                                                                                                                                 export MOUNT="$MOUNT"
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \;
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \;
-                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                cd "$MOUNT/repository"
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
                                                                                                                                                     git mutable-scratch
