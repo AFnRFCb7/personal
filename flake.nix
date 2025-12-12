@@ -485,7 +485,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ssh -F "$MOUNT/.ssh/config" "$@"
+                                                                                                                                                ssh -F "$MOUNT/stage/.ssh/config" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/ssh" ;
@@ -495,8 +495,8 @@
                                                                                                                             root ${ pkgs.openssh }
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
-                                                                                                                            mkdir --parents "${ mount }/.ssh"
-                                                                                                                            ln --symbolic "$DOT_SSH/config" "${ mount }/.ssh/config"
+                                                                                                                            mkdir --parents "${ mount }/stage/.ssh"
+                                                                                                                            ln --symbolic "$DOT_SSH/config" "${ mount }/stage/.ssh/config"
                                                                                                                             wrap ${ ssh } bin/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
@@ -793,6 +793,7 @@
                                                                                             "alias.mutable-build-vm" = stage : "!${ stage }/bin/mutable-build-vm" ;
                                                                                             "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                             "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
+                                                                                            "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
                                                                                             "alias.mutable-test" = stage : "!${ stage }/bin/test" ;
                                                                                             "alias.mutable-switch" = stage : "!${ stage }/bin/switch" ;
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
