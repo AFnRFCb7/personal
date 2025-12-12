@@ -495,9 +495,8 @@
                                                                                                                             root ${ pkgs.openssh }
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
-                                                                                                                            mkdir --parents ${ mount }/.ssh
+                                                                                                                            mkdir --parents "${ mount }/.ssh"
                                                                                                                             ln --symbolic "$DOT_SSH/config" ${ mount }/.ssh/config
-                                                                                                                            mkdir --parents ${ mount }/bin
                                                                                                                             wrap ssh bin/ssh --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
