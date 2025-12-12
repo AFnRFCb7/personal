@@ -497,7 +497,7 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             mkdir --parents "${ mount }/.ssh"
                                                                                                                             ln --symbolic "$DOT_SSH/config" "${ mount }/.ssh/config"
-                                                                                                                            wrap ${ ssh } bin/ssh --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ ssh } 0500 bin/ssh --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
