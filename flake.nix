@@ -497,7 +497,7 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             mkdir --parents "${ mount }/.ssh"
                                                                                                                             ln --symbolic "$DOT_SSH/config" "${ mount }/.ssh/config"
-                                                                                                                            wrap ${ ssh } 0500 bin/ssh --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ ssh } bin/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
@@ -790,7 +790,11 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.mutable-build-vm" = stage : "!${ stage }/bin/mutable-build-vm" ;
+                                                                                            "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                             "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
+                                                                                            "alias.mutable-test" = stage : "!${ stage }/bin/test" ;
+                                                                                            "alias.mutable-switch" = stage : "!${ stage }/bin/switch" ;
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
