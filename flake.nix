@@ -502,7 +502,7 @@
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
-                                                                                    ssh = { stage } : "${ stage }/bin/ssh" ;
+                                                                                    ssh = stage : "${ stage }/bin/ssh" ;
                                                                                 } ;
                                                                     snapshot-prime =
 	                                                                    ignore :
