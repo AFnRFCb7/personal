@@ -817,10 +817,10 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-check" ;
-                                                                                                                                        runtimeInputs = [ "$MOUNT" failure ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.nix failure ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                MUTABLE_SNAPSHOT="$( "$MOUNT/stage/bin/mutable-snapshot )" || failure 58b7b4c0
                                                                                                                                                 nix flake check "$SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
