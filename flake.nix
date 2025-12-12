@@ -468,40 +468,40 @@
                                                                                     name = config.personal.repository.private.name ;
                                                                                     pre-setup =
                                                                                         { mount , pkgs , resources , root , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "pre-setup" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                ssh =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                           pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "ssh" ;
-                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            ssh -F "$MOUNT/.ssh/config" "$@"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/ssh" ;
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "pre-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    ssh =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                               pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                ssh -F "$MOUNT/.ssh/config" "$@"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/ssh" ;
 
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        root "${ pkgs.openssh }"
-                                                                                                                        DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                        root "$DOT_SSH"
-                                                                                                                        mkdir --parents ${ mount }/.ssh
-                                                                                                                        ln --symbolic "$DOT_SSH/config ${ mount }/.ssh/config
-                                                                                                                        mkdir --parents ${ mount }/bin
-                                                                                                                        wrap ssh bin/ssh --set MOUNT "${ mount }"
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/pre-setup" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            root "${ pkgs.openssh }"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root "$DOT_SSH"
+                                                                                                                            mkdir --parents ${ mount }/.ssh
+                                                                                                                            ln --symbolic "$DOT_SSH/config ${ mount }/.ssh/config
+                                                                                                                            mkdir --parents ${ mount }/bin
+                                                                                                                            wrap ssh bin/ssh --set MOUNT "${ mount }"
+                                                                                                                        '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/pre-setup" ;
                                                                                     ssh = { stage } : "${ stage }/bin/ssh" ;
                                                                                 } ;
                                                                     snapshot-prime =
