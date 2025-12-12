@@ -746,6 +746,7 @@
                                                                                 {
                                                                                     configs =
                                                                                         {
+                                                                                            "alias.mutable-check" = stage : "!${ stage }/mutable-check" ;
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
@@ -766,6 +767,74 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git wrap ] ;
                                                                                                             text =
                                                                                                                 let
+                                                                                                                    mutable-check =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-check" ;
+                                                                                                                                        runtimeInputs =
+                                                                                                                                            [
+                                                                                                                                                pkgs.findutils
+                                                                                                                                                (
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "input-commit" ;
+                                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    INPUT="$1"
+                                                                                                                                                                    cd "$INPUT"
+                                                                                                                                                                    git mutable-scratch
+                                                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                    then
+                                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        }
+                                                                                                                                                )
+                                                                                                                                                (
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "input-check" ;
+                                                                                                                                                            runtimeInputs = [ pkgs.git failure ] ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    INPUT="$1"
+                                                                                                                                                                    cd "$INPUT"
+                                                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 9aff5897
+                                                                                                                                                                    fi
+                                                                                                                                                                    if ! git push origin HEAD
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 8941ea19
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        }
+                                                                                                                                                )
+                                                                                                                                            ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                export MOUNT="$MOUNT"
+                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \;
+                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \;
+                                                                                                                                                cd $MOUNT
+                                                                                                                                                git mutable-scratch
+                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                then
+                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                fi
+                                                                                                                                                if ! git push origin HEAD
+                                                                                                                                                then
+                                                                                                                                                    failure 07691db9
+                                                                                                                                                fi
+                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure a41ef3ab
+                                                                                                                                                SNAPSHOT=${ resources.production.snapshot ( setup : ''${ setup } "$COMMIT"'' ) }
+                                                                                                                                                nix flake check "$SNAPSHOT"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-check" ;
                                                                                                                     mutable-nurse =
                                                                                                                         let
                                                                                                                             application =
