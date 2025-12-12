@@ -785,9 +785,9 @@
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
                                                                                                                                                                     cd "$INPUT"
-                                                                                                                                                                    git mutable-scratch
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
+                                                                                                                                                                        git mutable-scratch
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
@@ -806,7 +806,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 9aff5897
                                                                                                                                                                     fi
-                                                                                                                                                                    if ! git push origin HEAD
+                                                                                                                                                                    if git symbolic-ref -q HEAD && ! git push origin HEAD
                                                                                                                                                                     then
                                                                                                                                                                         failure 8941ea19
                                                                                                                                                                     fi
@@ -820,17 +820,17 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \;
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \;
                                                                                                                                                 cd $MOUNT
-                                                                                                                                                git mutable-scratch
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
+                                                                                                                                                    git mutable-scratch
                                                                                                                                                     git commit -a --verbose
                                                                                                                                                 fi
-                                                                                                                                                if ! git push origin HEAD
+                                                                                                                                                if git symbolic-ref -q HEAD && ! git push origin HEAD
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure a41ef3ab
-                                                                                                                                                SNAPSHOT=${ resources.production.snapshot ( setup : ''${ setup } "$COMMIT"'' ) }
+                                                                                                                                                SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$COMMIT"'' ) }
                                                                                                                                                 nix flake check "$SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
