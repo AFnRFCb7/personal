@@ -1109,9 +1109,7 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            echo c9f718d1
-                                                                                                                            wrap ${ mutable-check } stage/bin/mutable-check 0500 --set MOUNT "${ mount }"
-                                                                                                                            echo 371c2ab0
+                                                                                                                            wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal "MUTABLE_SNAPSHOT" --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --set MOUT "${ mount }"
 
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
