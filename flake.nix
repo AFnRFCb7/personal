@@ -820,7 +820,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.nix failure ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                MUTABLE_SNAPSHOT="$( "$MOUNT/stage/bin/mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                MUTABLE_SNAPSHOT="$( "$MOUNT/stage/bin/mutable-snapshot" )" || failure 58b7b4c0
                                                                                                                                                 nix flake check "$SNAPSHOT/repository" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
