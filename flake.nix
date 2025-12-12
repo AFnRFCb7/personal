@@ -889,7 +889,7 @@
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure a41ef3ab
-                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : setup ) }
+                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$COMMIT"'' ) }
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
