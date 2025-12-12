@@ -473,7 +473,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "pre-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils root wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     ssh =
