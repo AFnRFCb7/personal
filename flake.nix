@@ -166,7 +166,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( _failure.implementation "b9d858ef" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg root ( _failure.implementation "b9d858ef" ) ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         INIT=false
@@ -190,17 +190,17 @@
                                                                                                         fi
                                                                                                         chmod 0400 /mount/init /mount/release
                                                                                                         DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
-                                                                                                        root-resource "$DOT_GNUPG"
-                                                                                                        root-store ${ pkgs.gnupg }
+                                                                                                        root "$DOT_GNUPG"
+                                                                                                        root ${ pkgs.gnupg }
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
-                                                                                                        root-resource "$DOT_SSH"
+                                                                                                        root "$DOT_SSH"
                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
-                                                                                                        root-resource "$GIT_REPOSITORY"
+                                                                                                        root "$GIT_REPOSITORY"
                                                                                                         ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
-                                                                                                        root-resource "$SECRET"
+                                                                                                        root "$SECRET"
                                                                                                         ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
@@ -419,7 +419,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "pre-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils wrap ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils root wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     ssh =
@@ -438,7 +438,7 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                            root-resource "$DOT_SSH"
+                                                                                                                            root "$DOT_SSH"
                                                                                                                             ln --symbolic "$DOT_SSH/config" "/mount/stage/config"
                                                                                                                             wrap "${ ssh }" stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         '' ;
@@ -705,7 +705,7 @@
 								                                                                    pkgs.writeShellApplication
 									                                                                    {
 										                                                                    name = "setup" ;
-										                                                                    runtimeInputs = [ pkgs.coreutils wrap ] ;
+										                                                                    runtimeInputs = [ pkgs.coreutils root wrap ] ;
 										                                                                    text =
 											                                                                    let
                                                                                                                         ssh =
@@ -727,7 +727,7 @@
                                                                                                                                 COMMIT="$2"
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( self : self ) }
                                                                                                                                 wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
-                                                                                                                                root-resource "$DOT_SSH"
+                                                                                                                                root "$DOT_SSH"
                                                                                                                                 ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
                                                                                                                                 git fetch "$STUDIO/repository" "$COMMIT" 2>&1
                                                                                                                                 git checkout "$COMMIT" 2>&1
@@ -988,7 +988,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git root wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     mutable-hydrate =
@@ -1027,7 +1027,7 @@
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                        root-resource "$DOT_SSH"
+                                                                                                                        root "$DOT_SSH"
                                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/stage/config
                                                                                                                         wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --set MOUNT "${ mount }"
@@ -1700,7 +1700,7 @@
                                                                 host-name = "eedaca3e" ;
                                                             } ;
                                                     } ;
-                                                expected = "/nix/store/js23hk297bdhp8l418widxp1ynhx0bys-init/bin/init" ;
+                                                expected = "/nix/store/pcw7nv6jvc6jsq74r26hq5gk4hmyc6bz-init/bin/init" ;
                                                 mount = "271a376c" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
@@ -1779,8 +1779,6 @@
                                                     {
                                                         arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                         diffutils = pkgs.diffutils ;
-                                                        expected-resource-dependencies = [ "f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ] ;
-                                                        expected-store-dependencies = [ "bjb2xx943rkfl0r6x7wgp2069zym5wwi-cowsay-3.8.3" ] ;
                                                         expected-index = "0000000311691948" ;
                                                         expected-originator-pid = 45 ;
                                                         expected-provenance = "new" ;
@@ -1815,7 +1813,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "init" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
                                                                                 text =
                                                                                     ''
                                                                                         cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
@@ -1823,8 +1821,8 @@
                                                                                         echo "mount = ${ mount }"
                                                                                         echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
-                                                                                        root-resource ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
-                                                                                        root-store ${ pkgs.cowsay }
+                                                                                        root ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                        root ${ pkgs.cowsay }
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
@@ -1874,8 +1872,6 @@
                                                  {
                                                      arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                      diffutils = pkgs.diffutils ;
-                                                     expected-resource-dependencies = [ "5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ] ;
-                                                     expected-store-dependencies = [ ] ;
                                                      expected-index = "0000000437766789" ;
                                                      expected-originator-pid = 45 ;
                                                      expected-provenance = "new" ;
@@ -1910,7 +1906,7 @@
                                                                      pkgs.writeShellApplication
                                                                          {
                                                                              name = "init" ;
-                                                                             runtimeInputs = [ pkgs.coreutils pkgs.cowsay ] ;
+                                                                             runtimeInputs = [ pkgs.coreutils pkgs.cowsay root ] ;
                                                                              text =
                                                                                  ''
                                                                                      cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
@@ -1919,7 +1915,7 @@
                                                                                      echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
                                                                                      echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
                                                                                      echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
-                                                                                     root-resource ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
+                                                                                     root ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
                                                                                      exit 70
                                                                                  '' ;
                                                                          } ;
@@ -1959,7 +1955,7 @@
                                                        transient = false ;
                                                  } ;
                                          resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
-                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/nady4v43fjph4m69zixjj5i01y9qmcpf-resource-releaser/bin/resource-releaser" ; } ;
+                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/5rd2nr2spgdpi5ykz8pd7v2z3lyv1zab-resource-releaser/bin/resource-releaser" ; } ;
                                          resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
                                          resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
