@@ -900,7 +900,7 @@
                                                                                                                                                 then
                                                                                                                                                     git commit -a --verbose >&2
                                                                                                                                                 fi
-                                                                                                                                                if git symbolic-ref -q HEAD && ! git push origin HEAD >&2
+                                                                                                                                                if git symbolic-ref -q HEAD >&2 && ! git push origin HEAD >&2
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
