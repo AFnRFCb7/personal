@@ -888,19 +888,19 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \;
-                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \;
+                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \; >&2
+                                                                                                                                                find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 1aa07f71
                                                                                                                                                 if [[ "$BRANCH" == "HEAD" ]]
                                                                                                                                                 then
-                                                                                                                                                    git mutable-scratch
+                                                                                                                                                    git mutable-scratch >&2
                                                                                                                                                 fi
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
-                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                    git commit -a --verbose >&2
                                                                                                                                                 fi
-                                                                                                                                                if git symbolic-ref -q HEAD && ! git push origin HEAD
+                                                                                                                                                if git symbolic-ref -q HEAD && ! git push origin HEAD >&2
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
