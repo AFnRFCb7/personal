@@ -832,7 +832,8 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/$VM"
+                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/$VM/shared"
+                                                                                                                                                export SHARED_DIR="$MUTABLE_SNAPSHOT/stage/$VM/shared"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/$VM"
                                                                                                                                                 nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 ./result/bin/run-nixos-vm
@@ -1130,14 +1131,6 @@
                                                                                                                                 in "${ application }/bin/mutable-snapshot" ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                            do
-                                                                                                                                cd "$INPUT"
-                                                                                                                                git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
-                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                            done
                                                                                                                             wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm"
                                                                                                                             wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
