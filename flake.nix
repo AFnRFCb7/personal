@@ -822,6 +822,23 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git wrap ] ;
                                                                                                             text =
                                                                                                                 let
+                                                                                                                    mutable-build-vm =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-check" ;
+                                                                                                                                        runtimeInputs = [ pkgs.nixos-rebuild failure "$MOUNT/stage" ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/build-vm"
+                                                                                                                                                cd "$MUTABLE_SNAPSHOT/stage/build-vm"
+                                                                                                                                                nixos-rebuild build-vm --flake "$MUTABLE_SNAPSHOT/repository" --show-trace
+                                                                                                                                                ./result/bin/run-nixos-vm
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-check" ;
                                                                                                                     mutable-check =
                                                                                                                         let
                                                                                                                             application =
@@ -1121,6 +1138,7 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
+                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --set MOUNT "${ mount }"
 
