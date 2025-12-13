@@ -828,7 +828,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-build-vm" ;
-                                                                                                                                        runtimeInputs = [ pkgs.nixos-rebuild failure "$MOUNT/stage" ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
@@ -929,7 +929,23 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-snapshot" ;
-
+                                                                                                                    mutable-test =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-test" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild failure "$MOUNT/stage" ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                cd "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                ./result/bin/run-nixos-vm
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-build-vm" ;
 
                                                                                                                     mutable-nurse =
                                                                                                                         let
