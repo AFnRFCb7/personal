@@ -909,9 +909,13 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \;
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \;
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 1aa07f71
+                                                                                                                                                if [[ "$BRANCH" == "HEAD" ]]
                                                                                                                                                 then
                                                                                                                                                     git mutable-scratch
+                                                                                                                                                fi
+                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                then
                                                                                                                                                     git commit -a --verbose
                                                                                                                                                 fi
                                                                                                                                                 if git symbolic-ref -q HEAD && ! git push origin HEAD
