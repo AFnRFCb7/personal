@@ -827,18 +827,18 @@
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "mutable-check" ;
+                                                                                                                                        name = "mutable-build-vm" ;
                                                                                                                                         runtimeInputs = [ pkgs.nixos-rebuild failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/build-vm"
-                                                                                                                                                cd "$MUTABLE_SNAPSHOT/stage/build-vm"
-                                                                                                                                                nixos-rebuild build-vm --flake "$MUTABLE_SNAPSHOT/repository" --show-trace
+                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/$VM"
+                                                                                                                                                cd "$MUTABLE_SNAPSHOT/stage/$VM"
+                                                                                                                                                nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 ./result/bin/run-nixos-vm
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                            in "${ application }/bin/mutable-check" ;
+                                                                                                                            in "${ application }/bin/mutable-build-vm" ;
                                                                                                                     mutable-check =
                                                                                                                         let
                                                                                                                             application =
@@ -1138,7 +1138,8 @@
                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
-                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm"
+                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --set MOUNT "${ mount }"
 
