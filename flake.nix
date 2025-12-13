@@ -524,6 +524,7 @@
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
+                                                                                    remotes.origin = config.personal.repository.private.remote ;
                                                                                     ssh = stage : "${ stage }/bin/ssh" ;
                                                                                 } ;
                                                                     snapshot-prime =
@@ -1192,8 +1193,8 @@
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
                                                                                                                         root "$DOT_SSH"
                                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/stage/config
-                                                                                                                        wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --literal COMMIT --set MOUNT "${ mount }"
+                                                                                                                        wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                         git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
