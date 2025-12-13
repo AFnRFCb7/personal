@@ -466,22 +466,6 @@
                                                                                 {
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
-                                                                                    post-setup =
-                                                                                        { mount , pkgs , resources , root , wrap } :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    COMMIT="$1"
-                                                                                                                    git fetch origin "$COMMIT"
-                                                                                                                    git checkout "origin/$COMMIT"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
                                                                                         { mount , pkgs , resources , root , wrap } :
                                                                                             let
@@ -517,12 +501,8 @@
                                                                                                                             ln --symbolic "$DOT_SSH/config" "${ mount }/stage/.ssh/config"
                                                                                                                             wrap ${ ssh } stage/bin/ssh 0500 --set MOUNT "${ mount }"
                                                                                                                             export GIT_SSH_COMMAND="${ ssh }"
-                                                                                                                            echo 7bd5f7ba >&2
                                                                                                                             git fetch origin "$BRANCH" 2>&1
-                                                                                                                            echo 67282795 >&2
                                                                                                                             git checkout "$COMMIT" 2>&1
-                                                                                                                            git submodule sync 2>&1
-                                                                                                                            git submodule update --init --recursive 2>&1
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
