@@ -466,6 +466,22 @@
                                                                                 {
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
+                                                                                    post-setup =
+                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "post-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    COMMIT="$1"
+                                                                                                                    git fetch origin "$COMMIT"
+                                                                                                                    git checkout "origin/$COMMIT"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
                                                                                         { mount , pkgs , resources , root , wrap } :
                                                                                             let
@@ -492,12 +508,19 @@
 
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            BRANCH="$1"
+                                                                                                                            COMMIT="$2"
                                                                                                                             root ${ pkgs.openssh }
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             mkdir --parents "${ mount }/stage/.ssh"
                                                                                                                             ln --symbolic "$DOT_SSH/config" "${ mount }/stage/.ssh/config"
                                                                                                                             wrap ${ ssh } stage/bin/ssh 0500 --set MOUNT "${ mount }"
+                                                                                                                            export GIT_SSH_COMMAND="${ ssh }"
+                                                                                                                            git fetch origin "$BRANCH" 2>&1
+                                                                                                                            git checkout "$COMMIT" 2>&1
+                                                                                                                            git submodule sync 2>&1
+                                                                                                                            git submodule update --init --recursive 2>&1
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
@@ -894,7 +917,9 @@
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
-                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$COMMIT"'' ) }
+                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 895858ee
+                                                                                                                                                COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
+                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1168,7 +1193,7 @@
                                                                                                                         root "$DOT_SSH"
                                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/stage/config
                                                                                                                         wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
-                                                                                                                        wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --set MOUNT "${ mount }"
+                                                                                                                        wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --literal COMMIT --set MOUNT "${ mount }"
                                                                                                                         git mutable-hydrate main
                                                                                                                     '' ;
                                                                                                         } ;
