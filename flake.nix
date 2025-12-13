@@ -828,10 +828,10 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-check" ;
-                                                                                                                                        runtimeInputs = [ pkgs.nix failure ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.nix failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                MUTABLE_SNAPSHOT="$( "$MOUNT/stage/bin/mutable-snapshot" )" || failure 58b7b4c0
+                                                                                                                                                MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
                                                                                                                                                 nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
