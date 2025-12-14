@@ -935,12 +935,81 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-test" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
+                                                                                                                                        runtimeInputs =
+                                                                                                                                            [
+                                                                                                                                                pkgs.coreutils
+                                                                                                                                                pkgs.findutils
+                                                                                                                                                pkgs.git
+                                                                                                                                                pkgs.libuuid
+                                                                                                                                                (
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "switch-input" ;
+                                                                                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.libuuid ( _failure.implementation "cd25bae1" ) ] ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    INPUT="$1"
+                                                                                                                                                                    cd "$INPUT"
+                                                                                                                                                                    git fetch origin main
+                                                                                                                                                                    if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                    then
+                                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 88274fbd
+                                                                                                                                                                        BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 45efcd76
+                                                                                                                                                                        git checkout -b "$BRANCH"
+                                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                        if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
+                                                                                                                                                                        then
+                                                                                                                                                                            gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
+                                                                                                                                                                        fi
+                                                                                                                                                                        gh pr create --base main --head "$BRANCH" --label "snapshot"
+                                                                                                                                                                        URL="$( gh pr view --json url --jq .url )" || failure 15f039fa
+                                                                                                                                                                        gh pr merge "$URL" --rebase
+                                                                                                                                                                        gh auth logout
+                                                                                                                                                                        INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
+                                                                                                                                                                        cd "$MOUNT/repository"
+                                                                                                                                                                        nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        }
+                                                                                                                                                )
+                                                                                                                                                ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
+                                                                                                                                                failure
+                                                                                                                                                "$MOUNT/stage"
+                                                                                                                                            ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                git -C "$MUTABLE_SNAPSHOT/directory" submodule foreach '
-                                                                                                                                                '
+                                                                                                                                                find "$MUTABLE_SNAPSHOT/repository/input" -mindepth 1 -maxdepth 1 -type d -exec switch-input {} \;
+                                                                                                                                                find "$MUTABLE_SNAPSHOT/repository/input -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                                do
+                                                                                                                                                    cd "$INPUT"
+                                                                                                                                                    git fetch origin main
+                                                                                                                                                    if ! git --quiet origin/main || ! git --quiet --cached origin/main
+                                                                                                                                                    then
+                                                                                                                                                        failure 0681c812 "$INPUT" "We were expecting that $INPUT would be merged into main"
+                                                                                                                                                    fi
+                                                                                                                                                done
+                                                                                                                                                cd "$MUTABLE_SNAPSHOT/repository"
+                                                                                                                                                git fetch origin main
+                                                                                                                                                if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                then
+                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure cda8ea15
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1851292e
+                                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                                    git reset --soft origin/main
+                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    git checkout main
+                                                                                                                                                    git rebase "$BRANCH"
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure cda8ea15
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1851292e
+                                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                                fi
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                 nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
