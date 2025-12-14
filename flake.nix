@@ -2011,7 +2011,7 @@
                                     git-repository =
                                         _git-repository.check
                                             {
-                                                expected = "/nix/store/gf11gi6mfy31zmivdkjghadycsr02pxr-init/bin/init" ;
+                                                expected = "/nix/store/vagahxd3ri9y2vjzzi3sqbl76k7g65l8-init/bin/init" ;
                                                 failure = _failure.implementation "8a8f3b60" ;
                                                 pkgs = pkgs ;
                                             } ;
