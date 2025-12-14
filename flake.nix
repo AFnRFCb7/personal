@@ -999,7 +999,7 @@
                                                                                                                                                                     if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
                                                                                                                                                                     then
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure 88274fbd
-                                                                                                                                                                        BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 45efcd76
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 45efcd76
                                                                                                                                                                         git checkout -b "$BRANCH"
                                                                                                                                                                         git reset --soft origin/main
                                                                                                                                                                         git commit -a --verbose
