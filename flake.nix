@@ -935,7 +935,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-test" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( passwordless-wrap pkgs.nixos-rebuild "nixos-rebuild" ) nixos-rebuild failure "$MOUNT/stage" ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) nixos-rebuild failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
