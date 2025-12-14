@@ -800,8 +800,8 @@
                                                                                             "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                             "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                             "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
-                                                                                            "alias.mutable-test" = stage : "!${ stage }/bin/test" ;
-                                                                                            "alias.mutable-switch" = stage : "!${ stage }/bin/switch" ;
+                                                                                            "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
+                                                                                            "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
@@ -929,6 +929,22 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                    mutable-switch =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-test" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                mkdir --parents "$MUTABLE_SNAPSHOT/stage/switch"
+                                                                                                                                                cd "$MUTABLE_SNAPSHOT/stage/switch"
+                                                                                                                                                nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-test" ;
                                                                                                                     mutable-test =
                                                                                                                         let
                                                                                                                             application =
@@ -942,7 +958,6 @@
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/test"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/test"
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                ./result/bin/run-nixos-vm
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-test" ;
