@@ -922,10 +922,6 @@
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
-                                                                                                                                                if git symbolic-ref -q HEAD >&2 && ! git push laptop HEAD >&2
-                                                                                                                                                then
-                                                                                                                                                    failure 6a0bffc1
-                                                                                                                                                fi
                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 895858ee
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
