@@ -1151,6 +1151,7 @@
                                                                                                                             wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
 
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
