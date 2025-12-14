@@ -922,6 +922,10 @@
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
+                                                                                                                                                if git symbolic-ref -q HEAD >&2 && ! git push laptop HEAD >&2
+                                                                                                                                                then
+                                                                                                                                                    failure 6a0bffc1
+                                                                                                                                                fi
                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 895858ee
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
@@ -1209,12 +1213,13 @@
                                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/stage/config
                                                                                                                         wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --literal COMMIT --set MOUNT "${ mount }"
                                                                                                                         wrap ${ ssh } stage/ssh 0500 --set MOUNT "${ mount }"
-                                                                                                                        git mutable-hydrate main
+                                                                                                                        git mutable-hydrate ${ config.personal.repository.private.branch }
                                                                                                                     '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
                                                                                     remotes =
                                                                                         {
+                                                                                            laptop = config.personal.repository.private.alternate ;
                                                                                             origin = config.personal.repository.private.remote ;
                                                                                         } ;
                                                                                     resolutions = [ "dot-gnupg" "dot-ssh" "failure" "fixture" "no-op" "personal" "private" "resource" "resource-logger" "resource-releaser" "resource-reporter" "secret" "secrets" "string" "visitor"] ;
@@ -1751,6 +1756,7 @@
                                                                             } ;
                                                                         private =
                                                                             {
+                                                                                alternate = lib.mkOption { default = "laptop:private.git" ; type = lib.types.str ; } ;
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                                 name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
