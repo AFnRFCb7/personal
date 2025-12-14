@@ -854,6 +854,51 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-check" ;
+                                                                                                                    mutable-converge =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-converge" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid "$MOUNT/stage" ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                mutable-check
+                                                                                                                                                mutable-test
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure bb3aa1c9
+                                                                                                                                                STUDIO=${ resources.production.studio ( setup : "$UUID" ) }
+                                                                                                                                                cd "$STUDIO"
+                                                                                                                                                git mutable-check
+                                                                                                                                                git mutable-build-vm
+                                                                                                                                                read -r -p "IS IT OKAY? [y/N] " VM_ANSWER
+                                                                                                                                                case "$VM_ANSWER" in
+                                                                                                                                                    [Yy]|[Yy][Ee][Ss])
+                                                                                                                                                        VM_IS_OK=true
+                                                                                                                                                        ;;
+                                                                                                                                                    *)
+                                                                                                                                                        VM_IS_OK=false
+                                                                                                                                                        ;;
+                                                                                                                                                esac
+                                                                                                                                                if [[ "$VM_IS_OK" == true ]]
+                                                                                                                                                then
+                                                                                                                                                    git mutable-test
+                                                                                                                                                    read -r -p "IS IT OKAY? [y/N] " TEST_ANSWER
+                                                                                                                                                    case "$TEST_ANSWER" in
+                                                                                                                                                        [Yy]|[Yy][Ee][Ss])
+                                                                                                                                                            TEST_IS_OK=true
+                                                                                                                                                            ;;
+                                                                                                                                                        *)
+                                                                                                                                                            TEST_IS_OK=false
+                                                                                                                                                            ;;
+                                                                                                                                                    esac
+                                                                                                                                                    if [[ "$TEST_IS_OK" == true ]]
+                                                                                                                                                    then
+                                                                                                                                                        git mutable-switch
+                                                                                                                                                    fi
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-converge" ;
                                                                                                                     mutable-snapshot =
                                                                                                                         let
                                                                                                                             application =
@@ -1234,9 +1279,11 @@
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm"
-                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"
+                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"                                                                                                                                                                                                                                                        wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-converge } /bin/mutable-mutable-converge 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
 
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
