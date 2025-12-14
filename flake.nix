@@ -866,7 +866,7 @@
                                                                                                                                                 mutable-check
                                                                                                                                                 mutable-test
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure bb3aa1c9
-                                                                                                                                                STUDIO=${ resources.production.studio ( setup : "$UUID" ) }
+                                                                                                                                                STUDIO=${ resources.production.repository.studio ( setup : "$UUID" ) }
                                                                                                                                                 cd "$STUDIO"
                                                                                                                                                 git mutable-check
                                                                                                                                                 git mutable-build-vm
