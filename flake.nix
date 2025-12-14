@@ -935,10 +935,12 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-test" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                git -C "$MUTABLE_SNAPSHOT/directory" submodule foreach '
+                                                                                                                                                '
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                 nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
