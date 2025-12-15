@@ -1075,7 +1075,7 @@
                                                                                                                                                 nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                            in "${ application }/bin/mutable-test" ;
+                                                                                                                            in "${ application }/bin/mutable-switch" ;
                                                                                                                     mutable-test =
                                                                                                                         let
                                                                                                                             application =
