@@ -860,41 +860,56 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-converge" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid "$MOUNT/stage" ] ;
+                                                                                                                                        runtimeInputs =
+                                                                                                                                            [
+                                                                                                                                                pkgs.coreutils
+                                                                                                                                                pkgs.git
+                                                                                                                                                (
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "dialog" ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    PROMPT="$1"
+                                                                                                                                                                    read -r -r "$PROMPT" ANSWER
+                                                                                                                                                                    LOWER_CASE="${ builtins.concaStringsSep "" [ "$" "{" "ANSWER,," "}" ] }"
+                                                                                                                                                                    TRIM_LEAD="${ builtins.concatStringsSep "" [ "$" "{" "LOWER_CASE## " "}" ] }"
+                                                                                                                                                                    TRIM_TAIL="${ builtins.concatStringsSep "" [ "$" "{" "TRIM_LEAD%% " "}" ] }"
+                                                                                                                                                                    case "$TRIM_TAIL" in
+                                                                                                                                                                        y|yes)
+                                                                                                                                                                            exit 0
+                                                                                                                                                                            ;;
+                                                                                                                                                                        *)
+                                                                                                                                                                            exit 64
+                                                                                                                                                                            ;;
+                                                                                                                                                                    esac
+                                                                                                                                                                '' ;
+                                                                                                                                                        }
+                                                                                                                                                )
+                                                                                                                                                "$MOUNT/stage"
+                                                                                                                                            ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 mutable-check
                                                                                                                                                 mutable-test
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure bb3aa1c9
+                                                                                                                                                UUID="$( uuidgen )" || failure bb3aa1c9
                                                                                                                                                 STUDIO=${ resources.production.repository.studio ( setup : "$UUID" ) }
+                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 1b8fad39
                                                                                                                                                 cd "$STUDIO"
+                                                                                                                                                git mutable-hydrate "$BRANCH"
                                                                                                                                                 git mutable-check
                                                                                                                                                 git mutable-build-vm
-                                                                                                                                                read -r -p "IS IT OKAY? [y/N] " VM_ANSWER
-                                                                                                                                                case "$VM_ANSWER" in
-                                                                                                                                                    [Yy]|[Yy][Ee][Ss])
-                                                                                                                                                        VM_IS_OK=true
-                                                                                                                                                        ;;
-                                                                                                                                                    *)
-                                                                                                                                                        VM_IS_OK=false
-                                                                                                                                                        ;;
-                                                                                                                                                esac
-                                                                                                                                                if [[ "$VM_IS_OK" == true ]]
+                                                                                                                                                if dialog "VM IS OK? "
                                                                                                                                                 then
                                                                                                                                                     git mutable-test
-                                                                                                                                                    read -r -p "IS IT OKAY? [y/N] " TEST_ANSWER
-                                                                                                                                                    case "$TEST_ANSWER" in
-                                                                                                                                                        [Yy]|[Yy][Ee][Ss])
-                                                                                                                                                            TEST_IS_OK=true
-                                                                                                                                                            ;;
-                                                                                                                                                        *)
-                                                                                                                                                            TEST_IS_OK=false
-                                                                                                                                                            ;;
-                                                                                                                                                    esac
-                                                                                                                                                    if [[ "$TEST_IS_OK" == true ]]
+                                                                                                                                                    if dialog "TEST IS OK? "
                                                                                                                                                     then
                                                                                                                                                         git mutable-switch
+                                                                                                                                                    else
+                                                                                                                                                        failure c523dd66 "SWITCH ABORTED BECAUSE TEST IS NOT OK"
                                                                                                                                                     fi
+                                                                                                                                                else
+                                                                                                                                                    failure b3e6e6a0 "SWITCH ABORTED BECAUSE VM IS NOT OK"
                                                                                                                                                 fi
                                                                                                                                             '' ;
                                                                                                                                     } ;
