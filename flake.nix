@@ -865,9 +865,6 @@
                                                                                                                                                 pkgs.coreutils
                                                                                                                                                 pkgs.git
                                                                                                                                                 (
-
-
-
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "dialog" ;
