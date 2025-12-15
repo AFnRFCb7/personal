@@ -994,7 +994,7 @@
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "mutable-test" ;
+                                                                                                                                        name = "mutable-switch" ;
                                                                                                                                         runtimeInputs =
                                                                                                                                             [
                                                                                                                                                 pkgs.coreutils
@@ -1044,7 +1044,7 @@
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
                                                                                                                                                 find "$MUTABLE_SNAPSHOT/repository/input" -mindepth 1 -maxdepth 1 -type d -exec switch-input {} \;
-                                                                                                                                                find "$MUTABLE_SNAPSHOT/repository/input -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
+                                                                                                                                                find "$MUTABLE_SNAPSHOT/repository/input" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
                                                                                                                                                 do
                                                                                                                                                     cd "$INPUT"
                                                                                                                                                     git fetch origin main
