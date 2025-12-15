@@ -872,7 +872,7 @@
                                                                                                                                                                 ''
                                                                                                                                                                     PROMPT="$1"
                                                                                                                                                                     read -r -r "$PROMPT" ANSWER
-                                                                                                                                                                    LOWER_CASE="${ builtins.concaStringsSep "" [ "$" "{" "ANSWER,," "}" ] }"
+                                                                                                                                                                    LOWER_CASE="${ builtins.concatStringsSep "" [ "$" "{" "ANSWER,," "}" ] }"
                                                                                                                                                                     TRIM_LEAD="${ builtins.concatStringsSep "" [ "$" "{" "LOWER_CASE## " "}" ] }"
                                                                                                                                                                     TRIM_TAIL="${ builtins.concatStringsSep "" [ "$" "{" "TRIM_LEAD%% " "}" ] }"
                                                                                                                                                                     case "$TRIM_TAIL" in
