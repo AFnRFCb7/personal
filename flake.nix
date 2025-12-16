@@ -938,7 +938,7 @@
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
                                                                                                                                                                     cd "$INPUT"
-                                                                                                                                                                    UUID="$( uuidgen | sha512sum )" | failure 1eb7886e
+                                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure 1eb7886e
                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure d9c088e3
                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
