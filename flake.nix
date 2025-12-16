@@ -1048,7 +1048,7 @@
                                                                                                                                                 do
                                                                                                                                                     cd "$INPUT"
                                                                                                                                                     git fetch origin main
-                                                                                                                                                    if ! git --quiet origin/main || ! git --quiet --cached origin/main
+                                                                                                                                                    if ! git diff --quiet origin/main || ! git --quiet --cached origin/main
                                                                                                                                                     then
                                                                                                                                                         failure 0681c812 "$INPUT" "We were expecting that $INPUT would be merged into main"
                                                                                                                                                     fi
