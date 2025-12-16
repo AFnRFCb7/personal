@@ -943,6 +943,10 @@
                                                                                                                                                                         git mutable-scratch
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                     fi
+                                                                                                                                                                    if git symbolic-ref -q HEAD && ! git push origin HEAD
+                                                                                                                                                                    then
+                                                                                                                                                                        failure bd86e33d
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
@@ -1089,7 +1093,6 @@
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-
                                                                                                                                         name = "mutable-test" ;
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
