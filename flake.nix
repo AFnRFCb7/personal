@@ -1104,9 +1104,11 @@
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/test"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/test"
-                                                                                                                                                echo 2a823cc7
+                                                                                                                                                echo 6a311d22
                                                                                                                                                 echo nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                echo e9c1b1d7
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                echo d1ae9195
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-test" ;
