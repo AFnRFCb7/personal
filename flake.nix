@@ -1109,7 +1109,7 @@
                                                                                                                                                 echo e9c1b1d7 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
                                                                                                                                                 git -C "$MUTABLE_SNAPSHOT/repository" config --get core.sshCommand
                                                                                                                                                 echo 8329ca96
-                                                                                                                                                cat "$MUTABLE_SNAPSHOT/bin/ssh"
+                                                                                                                                                cat "$MUTABLE_SNAPSHOT/stage/bin/ssh"
                                                                                                                                                 echo ae629986
                                                                                                                                                 cat "$MUTABLE_SNAPSHOT/stage/.ssh/config"
                                                                                                                                                 echo 3098d2de
