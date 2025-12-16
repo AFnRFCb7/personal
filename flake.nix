@@ -1104,11 +1104,11 @@
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/test"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/test"
-                                                                                                                                                echo 6a311d22
+                                                                                                                                                echo 6a311d22 "MUTABLE_SNAPSHOT="$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                echo e9c1b1d7
+                                                                                                                                                echo e9c1b1d7 "MUTABLE_SNAPSHOT="$MUTABLE_SNAPSHOT"
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                echo d1ae9195
+                                                                                                                                                echo d1ae9195 "MUTABLE_SNAPSHOT="$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-test" ;
