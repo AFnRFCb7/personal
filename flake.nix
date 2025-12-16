@@ -982,7 +982,7 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure f32d1269
-                                                                                                                                                BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 38ae47bb
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 38ae47bb
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
