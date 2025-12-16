@@ -837,6 +837,7 @@
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/$VM"
                                                                                                                                                 echo 6e3f00cb "$VM"
                                                                                                                                                 echo nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                export GIT_SSH_COMMAND="$MOUNT/stage/bin/ssh"
                                                                                                                                                 nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 ./result/bin/run-nixos-vm
                                                                                                                                             '' ;
@@ -1085,6 +1086,7 @@
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                 echo 51be1f9f
                                                                                                                                                 echo nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                export GIT_SSH_COMMAND="$MOUNT/stage/bin/ssh"
                                                                                                                                                 nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1112,6 +1114,7 @@
                                                                                                                                                 cat "$MUTABLE_SNAPSHOT/stage/.ssh/config"
                                                                                                                                                 echo
                                                                                                                                                 echo 3098d2de
+                                                                                                                                                export GIT_SSH_COMMAND="$MOUNT/stage/bin/ssh"
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo d1ae9195 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
@@ -1318,13 +1321,13 @@
                                                                                                                                 in "${ application }/bin/mutable-snapshot" ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm"
+                                                                                                                            wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm"
                                                                                                                             wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"
                                                                                                                             wrap ${ mutable-converge } stage/bin/mutable-converge 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal "UUID" --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
 
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
@@ -1372,7 +1375,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                ssh -F "$MOUNT/stage/config"
+                                                                                                                                                ssh -F "$MOUNT/stage/config" "$@"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/ssh" ;
