@@ -835,6 +835,8 @@
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/$VM/shared"
                                                                                                                                                 export SHARED_DIR="$MUTABLE_SNAPSHOT/stage/$VM/shared"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/$VM"
+                                                                                                                                                echo 6e3f00cb "$VM"
+                                                                                                                                                echo nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 ./result/bin/run-nixos-vm
                                                                                                                                             '' ;
@@ -850,6 +852,8 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
+                                                                                                                                                echo 7da6d4b4
+                                                                                                                                                echo nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
                                                                                                                                                 nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1031,6 +1035,8 @@
                                                                                                                                                                         gh auth logout
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
                                                                                                                                                                         cd "$MOUNT/repository"
+                                                                                                                                                                        echo ac4aa778
+                                                                                                                                                                        echo nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                         nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
@@ -1072,6 +1078,8 @@
                                                                                                                                                 fi
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/switch"
+                                                                                                                                                echo 51be1f9f
+                                                                                                                                                echo nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1088,6 +1096,8 @@
                                                                                                                                                 MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
                                                                                                                                                 mkdir --parents "$MUTABLE_SNAPSHOT/stage/test"
                                                                                                                                                 cd "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                echo 2a823cc7
+                                                                                                                                                echo nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
