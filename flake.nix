@@ -933,23 +933,22 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "input-commit" ;
-                                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
                                                                                                                                                                     cd "$INPUT"
+                                                                                                                                                                    UUID="$( uuidgen | sha512sum )" | failure 1eb7886e
+                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure d9c088e3
+                                                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
-                                                                                                                                                                        git mutable-scratch
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                     fi
                                                                                                                                                                     if git symbolic-ref -q HEAD && ! git push origin HEAD
                                                                                                                                                                     then
                                                                                                                                                                         failure bd86e33d
                                                                                                                                                                     fi
-                                                                                                                                                                    # KLUDGE
-                                                                                                                                                                    git push origin HEAD
-                                                                                                                                                                    git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
@@ -957,7 +956,7 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "input-check" ;
-                                                                                                                                                            runtimeInputs = [ pkgs.git failure ] ;
+                                                                                                                                                            runtimeInputs = [ pkgs.git ( _failure.implementation "2242987d" ) ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
@@ -971,7 +970,6 @@
                                                                                                                                                                         failure 8941ea19
                                                                                                                                                                     fi
                                                                                                                                                                     # KLUDGE
-                                                                                                                                                                    git push origin HEAD
                                                                                                                                                                     git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
@@ -983,11 +981,9 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \; >&2
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 1aa07f71
-                                                                                                                                                if [[ "$BRANCH" == "HEAD" ]]
-                                                                                                                                                then
-                                                                                                                                                    git mutable-scratch >&2
-                                                                                                                                                fi
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure f32d1269
+                                                                                                                                                BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 38ae47bb
+                                                                                                                                                git checkout -b "$BRANCH"
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
                                                                                                                                                     git commit -a --verbose >&2
@@ -996,7 +992,6 @@
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
-                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 895858ee
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
@@ -1327,7 +1322,7 @@
                                                                                                                             wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }" --set VM "build-vm-with-bootloader"
                                                                                                                             wrap ${ mutable-converge } stage/bin/mutable-converge 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal "UUID" --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
 
