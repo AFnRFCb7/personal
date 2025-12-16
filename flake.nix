@@ -1107,6 +1107,12 @@
                                                                                                                                                 echo 6a311d22 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo e9c1b1d7 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
+                                                                                                                                                git -C "$MUTABLE_SNAPSHOT/repository" get core.sshCommand
+                                                                                                                                                echo 8329ca96
+                                                                                                                                                cat "$MUTABLE_SNAPSHOT/bin/ssh"
+                                                                                                                                                echo ae629986
+                                                                                                                                                cat "$MUTABLE_SNAPSHOT/stage/.ssh/config"
+                                                                                                                                                echo 3098d2de
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo d1ae9195 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
