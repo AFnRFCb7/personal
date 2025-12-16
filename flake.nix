@@ -1107,7 +1107,7 @@
                                                                                                                                                 echo 6a311d22 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo e9c1b1d7 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
-                                                                                                                                                git -C "$MUTABLE_SNAPSHOT/repository" get core.sshCommand
+                                                                                                                                                git -C "$MUTABLE_SNAPSHOT/repository" config --get core.sshCommand
                                                                                                                                                 echo 8329ca96
                                                                                                                                                 cat "$MUTABLE_SNAPSHOT/bin/ssh"
                                                                                                                                                 echo ae629986
