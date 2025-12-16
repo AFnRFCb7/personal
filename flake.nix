@@ -948,6 +948,7 @@
                                                                                                                                                                         failure bd86e33d
                                                                                                                                                                     fi
                                                                                                                                                                     # KLUDGE
+                                                                                                                                                                    git push origin HEAD
                                                                                                                                                                     git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
@@ -970,6 +971,7 @@
                                                                                                                                                                         failure 8941ea19
                                                                                                                                                                     fi
                                                                                                                                                                     # KLUDGE
+                                                                                                                                                                    git push origin HEAD
                                                                                                                                                                     git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
@@ -1110,8 +1112,10 @@
                                                                                                                                                 git -C "$MUTABLE_SNAPSHOT/repository" config --get core.sshCommand
                                                                                                                                                 echo 8329ca96
                                                                                                                                                 cat "$MUTABLE_SNAPSHOT/stage/bin/ssh"
+                                                                                                                                                echo
                                                                                                                                                 echo ae629986
                                                                                                                                                 cat "$MUTABLE_SNAPSHOT/stage/.ssh/config"
+                                                                                                                                                echo
                                                                                                                                                 echo 3098d2de
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo d1ae9195 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
