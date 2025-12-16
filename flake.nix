@@ -1089,6 +1089,7 @@
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
+
                                                                                                                                         name = "mutable-test" ;
                                                                                                                                         runtimeInputs = [ pkgs.coreutils ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
                                                                                                                                         text =
