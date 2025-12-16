@@ -947,6 +947,8 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure bd86e33d
                                                                                                                                                                     fi
+                                                                                                                                                                    # KLUDGE
+                                                                                                                                                                    git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
@@ -967,7 +969,8 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 8941ea19
                                                                                                                                                                     fi
-
+                                                                                                                                                                    # KLUDGE
+                                                                                                                                                                    git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
