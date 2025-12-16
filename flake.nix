@@ -1114,7 +1114,6 @@
                                                                                                                                                 cat "$MUTABLE_SNAPSHOT/stage/.ssh/config"
                                                                                                                                                 echo
                                                                                                                                                 echo 3098d2de
-                                                                                                                                                export GIT_SSH_COMMAND="$MOUNT/stage/bin/ssh"
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo d1ae9195 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
