@@ -1158,14 +1158,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.age ( _failure.implementation "cdb68625" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                if [ -t 0 ]
-                                                                                                                                                then
-                                                                                                                                                    read -s -p "TOKEN:  " -r TOKEN
-                                                                                                                                                else
-                                                                                                                                                    TOKEN="$( cat )" || failure 70f59771
-                                                                                                                                                fi
-                                                                                                                                                RECEIPIENTS=${ resources.production.age.public ( setup : setup ) }
-                                                                                                                                                age --encrypt --recipient "$RECEIPIENTS/public" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
+
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-token ;
