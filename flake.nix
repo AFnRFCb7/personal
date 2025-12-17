@@ -1379,7 +1379,8 @@
                                                                                                                             wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal STAMP --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal RECIPIENTS --set MOUNT "${ mount }"
-                                                                                                                            ln --symbolic ${ root } "${ mount }/stage/bin/root"
+                                                                                                                            ln --symbolic ${ root }/bin/root "${ mount }/stage/bin/root"
+                                                                                                                            ln --symbolic ${ wrap }/bin/wrap "${ mount }/stage/bin/wrap"
 
 
 
