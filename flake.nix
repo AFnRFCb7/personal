@@ -241,6 +241,29 @@
                                                         } ;
                                                     production =
                                                         {
+                                                            age =
+                                                                {
+                                                                    public-key =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.age ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                age-keygen -y ${ config.personal.agenix } > /mount/public
+                                                                                                                chmod 0400 /mount/public
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init " ;
+                                                                                targets = [ "public" ] ;
+                                                                            } ;
+                                                                } ;
                                                             alpha =
                                                                 ignore :
                                                                     {
@@ -800,8 +823,10 @@
                                                                                             "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                             "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                             "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
-                                                                                            "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
                                                                                             "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
+                                                                                            "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
+                                                                                            "alias.mutable-token" = stage : "!${ stage }/bin/mutable-token" ;
+
                                                                                             "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
@@ -934,7 +959,7 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "input-commit" ;
-                                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) ] ;
+                                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) "$MOUNT/stage" ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
@@ -995,6 +1020,7 @@
                                                                                                                                                 fi
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                wrap "$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1029,7 +1055,8 @@
                                                                                                                                                                         git reset --soft origin/main
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                         git push origin HEAD
-                                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                        STAMP="$( date +%G%V )" || failure 61a67fa4
+                                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : ''${ setup } "$STAMP"'' ) }
                                                                                                                                                                         gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                         if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                         then
@@ -1122,6 +1149,26 @@
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-test" ;
+                                                                                                                    mutable-token =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "mutable-token" ;
+                                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "cdb68625" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                if [ -t 0 ]
+                                                                                                                                                then
+                                                                                                                                                    read -s -p "TOKEN:  " -r TOKEN
+                                                                                                                                                else
+                                                                                                                                                    TOKEN="$( cat )" || failure 70f59771
+                                                                                                                                                fi
+                                                                                                                                                RECEIPIENTS=${ resources.production.age.public ( setup : setup ) }
+                                                                                                                                                age --encrypt --recipient "$RECEIPIENTS/public" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/mutable-token ;
 
                                                                                                                     mutable-nurse =
                                                                                                                         let
@@ -1328,8 +1375,10 @@
                                                                                                                             wrap ${ mutable-converge } stage/bin/mutable-converge 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal "UUID" --set MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal STAMP --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --set MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal RECIPIENTS --set MOUNT "${ mount }"
+                                                                                                                            ln --symbolic ${ wrap } "{ mount }/bin/wrap"
 
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
