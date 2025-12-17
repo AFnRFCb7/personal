@@ -1382,6 +1382,7 @@
                                                                                                                             ln --symbolic ${ root } "${ mount }/stage/bin/root"
 
 
+
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-scratch } stage/mutable-scratch 0500 --literal BRANCH --literal UUID --set MOUNT "${ mount }"
