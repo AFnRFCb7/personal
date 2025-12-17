@@ -243,7 +243,7 @@
                                                         {
                                                             age =
                                                                 {
-                                                                    public-key =
+                                                                    public =
                                                                         ignore :
                                                                             {
                                                                                 init =
