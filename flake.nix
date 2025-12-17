@@ -260,7 +260,7 @@
                                                                                                                 chmod 0400 /mount/public
                                                                                                             '' ;
                                                                                                     } ;
-                                                                                            in "${ application }/bin/init " ;
+                                                                                            in "${ application }/bin/init" ;
                                                                                 targets = [ "public" ] ;
                                                                             } ;
                                                                 } ;
@@ -959,7 +959,7 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "input-commit" ;
-                                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) "$MOUNT/stage" ] ;
+                                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
@@ -1001,6 +1001,7 @@
                                                                                                                                                         }
                                                                                                                                                 )
                                                                                                                                                 failure
+                                                                                                                                                "$MOUNT/stage"
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
@@ -1020,7 +1021,7 @@
                                                                                                                                                 fi
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
-                                                                                                                                                wrap "$MUTABLE_SNAPSHOT"
+                                                                                                                                                root "$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1158,10 +1159,17 @@
                                                                                                                                         runtimeInputs = [ pkgs.age ( _failure.implementation "cdb68625" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-
+                                                                                                                                                if [ -t 0 ]
+                                                                                                                                                then
+                                                                                                                                                    read -s -p "TOKEN:  " -r TOKEN
+                                                                                                                                                else
+                                                                                                                                                    TOKEN="$( cat )" || failure 70f59771
+                                                                                                                                                fi
+                                                                                                                                                RECIPIENTS=${ resources.production.age.public ( setup : setup ) }
+                                                                                                                                                age --encrypt --recipient "$RECIPIENTS/public" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
                                                                                                                                             '' ;
                                                                                                                                     } ;
-                                                                                                                            in "${ application }/bin/mutable-token ;
+                                                                                                                            in "${ application }/bin/mutable-token" ;
 
                                                                                                                     mutable-nurse =
                                                                                                                         let
