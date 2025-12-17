@@ -1380,6 +1380,7 @@
                                                                                                                             wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal RECIPIENTS --set MOUNT "${ mount }"
                                                                                                                             ln --symbolic ${ wrap } "{ mount }/bin/wrap"
 
+
                                                                                                                             wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-scratch } stage/mutable-scratch 0500 --literal BRANCH --literal UUID --set MOUNT "${ mount }"
