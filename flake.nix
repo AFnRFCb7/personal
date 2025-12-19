@@ -823,6 +823,7 @@
                                                                                             "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                             "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                             "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
+                                                                                            "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                             "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
                                                                                             "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
                                                                                             "alias.mutable-token" = stage : "!${ stage }/bin/mutable-token" ;
@@ -831,7 +832,6 @@
                                                                                             "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
                                                                                             "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
                                                                                             "alias.mutable-nurse" = stage : "!${ stage }/mutable-nurse" ;
-                                                                                            "alias.mutable-snapshot" = stage : "!${ stage }/mutable-snapshot" ;
                                                                                             "core.sshCommand" = stage : "${ stage }/ssh" ;
                                                                                         } ;
                                                                                     email = config.personal.repository.private.email ;
