@@ -524,7 +524,12 @@
                                                                                                                             ln --symbolic "$DOT_SSH/config" "${ mount }/stage/.ssh/config"
                                                                                                                             wrap ${ ssh } stage/bin/ssh 0500 --set-plain MOUNT "${ mount }"
                                                                                                                             export GIT_SSH_COMMAND="${ ssh }"
-                                                                                                                            git fetch origin "$BRANCH" 2>&1
+                                                                                                                            if [[ "HEAD" == "$BRANCH" ]]
+                                                                                                                            then
+                                                                                                                                git fetch origin
+                                                                                                                            else
+                                                                                                                                git fetch origin "$BRANCH" 2>&1
+                                                                                                                            fi
                                                                                                                             git checkout "$COMMIT" 2>&1
                                                                                                                         '' ;
                                                                                                         } ;
@@ -1017,6 +1022,7 @@
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
+                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure c4041044
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
