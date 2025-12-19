@@ -1033,7 +1033,7 @@
                                                                                                                                                 echo 20db4d0f
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
                                                                                                                                                 echo 5903463a
-                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''echo | ${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo 96e1508e
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
