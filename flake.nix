@@ -1165,7 +1165,6 @@
                                                                                                                                                 else
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
-
                                                                                                                                                 RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
                                                                                                                                                 RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 25fc396f
                                                                                                                                                 age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
@@ -1330,7 +1329,9 @@
                                                                                                                                                                     cd "$INPUT"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
-                                                                                                                                                                        git mutable-scratch
+                                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 4e271d0e
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 40a34ce4
+                                                                                                                                                                        git checkout -b "$BRANCH"
                                                                                                                                                                         git commit -a --verbose --allow-empty-message
                                                                                                                                                                         INPUT_NAME="$( basename "$INPUT" )" || failure 4cf69f5f
                                                                                                                                                                         cd "$MOUNT/repository"
