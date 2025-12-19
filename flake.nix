@@ -1165,8 +1165,9 @@
                                                                                                                                                 else
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
-                                                                                                                                                RECIPIENTS=${ resources.production.age.public ( setup : setup ) }
-                                                                                                                                                age --encrypt --recipient "$RECIPIENTS/public" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
+                                                                                                                                                RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
+                                                                                                                                                RECIPIENTS="$( cat "RECIPIENTS_FILE/public" )" || fail 25fc396f
+                                                                                                                                                age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-token" ;
@@ -1379,7 +1380,7 @@
                                                                                                                             echo b100b366 "$0" wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal PATH --literal "UUID" --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --literal STAMP --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal PATH --literal RECIPIENTS --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal PATH --literal RECIPIENTS --literal RECIPIENTS_FILE --set-plain MOUNT "${ mount }"
                                                                                                                             ln --symbolic ${ root }/bin/root "${ mount }/stage/bin/root"
                                                                                                                             ln --symbolic ${ wrap }/bin/wrap "${ mount }/stage/bin/wrap"
 
