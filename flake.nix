@@ -1035,7 +1035,7 @@
                                                                                                                                                 echo 5903463a
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                96e1508e
+                                                                                                                                                echo 96e1508e
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
