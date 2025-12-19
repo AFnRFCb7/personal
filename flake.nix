@@ -515,7 +515,6 @@
 
                                                                                                                     in
                                                                                                                         ''
-
                                                                                                                             BRANCH="$1"
                                                                                                                             COMMIT="$2"
                                                                                                                             root ${ pkgs.openssh }
@@ -764,7 +763,7 @@
                                                                                                                                 git config alias.scratch "!$MOUNT/stage/scratch"
                                                                                                                                 git config alias.mutable-scratch "!$MOUNT/stage/scratch"
                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                git config user.email "${ config.personal.repository.private./home/emory/resources/mounts/0000000000003868/repositoryemail }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
                                                                                                                             wrap ${ flake-build-vm } stage/flake-build-vm 0500 --literal VM --literal STATUS --set-plain MOUNT "${ mount }"
@@ -773,6 +772,7 @@
                                                                                                                             wrap ${ flake-switch } stage/flake-switch 0500 --literal COMMIT --literal FAILURE --literal STATUS --literal TOKEN --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ flake-test } stage/flake-test 0500 --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ scratch } stage/scratch 0500 --literal BRANCH --literal UUID --set-plain MOUNT "${ mount }"
+                                                                                                                            root ${ pkgs.openssh }
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/post-setup" ;
@@ -1009,9 +1009,13 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                echo 97005458
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \; >&2
+                                                                                                                                                echo fd486e77
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
+                                                                                                                                                echo d928877c
                                                                                                                                                 cd "$MOUNT/repository"
+                                                                                                                                                echo eb7998a5
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
                                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure f32d1269
@@ -1019,14 +1023,19 @@
                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                     git commit -a --verbose >&2
                                                                                                                                                 fi
+                                                                                                                                                echo 9c98df70
                                                                                                                                                 if git symbolic-ref -q HEAD >&2 && ! git push origin HEAD >&2
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
+                                                                                                                                                echo 97d5951d
                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure c4041044
+                                                                                                                                                echo 20db4d0f
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
+                                                                                                                                                echo 5903463a
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                96e1508e
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
@@ -1152,6 +1161,7 @@
                                                                                                                                                 echo ed0771c6
                                                                                                                                                 nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                 echo d1ae9195 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
+                                                                                                                                                root "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-test" ;
@@ -1211,6 +1221,8 @@
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 git mutable-scratch
+                                                                                                                                                root ${ pkgs.git }
+                                                                                                                                                root ${ pkgs.openssh }
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-nurse" ;
