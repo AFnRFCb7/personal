@@ -515,7 +515,7 @@
 
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            echo 696084d3 > ${ mount }/stage/debug
+                                                                                                                            echo 696084d3 > "${ mount }/stage/debug"
                                                                                                                             BRANCH="$1"
                                                                                                                             echo 506ac2f3 >> "${ mount }/stage/debug"
                                                                                                                             COMMIT="$2"
