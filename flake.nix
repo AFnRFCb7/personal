@@ -763,7 +763,7 @@
                                                                                                                                 git config alias.scratch "!$MOUNT/stage/scratch"
                                                                                                                                 git config alias.mutable-scratch "!$MOUNT/stage/scratch"
                                                                                                                                 git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                git config user.email "${ config.personal.repository.private./home/emory/resources/mounts/0000000000003868/repositoryemail }"
+                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             done
                                                                                                                             wrap ${ flake-build-vm } stage/flake-build-vm 0500 --literal VM --literal STATUS --set-plain MOUNT "${ mount }"
