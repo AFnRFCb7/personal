@@ -1165,6 +1165,7 @@
                                                                                                                                                 else
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
+
                                                                                                                                                 RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
                                                                                                                                                 RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 25fc396f
                                                                                                                                                 age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
