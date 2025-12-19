@@ -526,7 +526,7 @@
                                                                                                                             export GIT_SSH_COMMAND="${ ssh }"
                                                                                                                             if [[ "HEAD" == "$BRANCH" ]]
                                                                                                                             then
-                                                                                                                                git fetch origin
+                                                                                                                                git fetch origin 2>&1
                                                                                                                             else
                                                                                                                                 git fetch origin "$BRANCH" 2>&1
                                                                                                                             fi
