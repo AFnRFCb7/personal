@@ -964,11 +964,11 @@
                                                                                                                                                                 ''
                                                                                                                                                                     INPUT="$1"
                                                                                                                                                                     cd "$INPUT"
-                                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure 1eb7886e
-                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure d9c088e3
-                                                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                     then
+                                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 1eb7886e
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure d9c088e3
+                                                                                                                                                                        git checkout -b "$BRANCH"
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                     fi
                                                                                                                                                                     if git symbolic-ref -q HEAD && ! git push origin HEAD
@@ -995,8 +995,6 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 8941ea19
                                                                                                                                                                     fi
-                                                                                                                                                                    # KLUDGE
-                                                                                                                                                                    git fetch origin
                                                                                                                                                                 '' ;
                                                                                                                                                         }
                                                                                                                                                 )
@@ -1008,11 +1006,11 @@
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \; >&2
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure f32d1269
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 38ae47bb
-                                                                                                                                                git checkout -b "$BRANCH"
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
+                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure f32d1269
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 38ae47bb
+                                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                                     git commit -a --verbose >&2
                                                                                                                                                 fi
                                                                                                                                                 if git symbolic-ref -q HEAD >&2 && ! git push origin HEAD >&2
