@@ -547,6 +547,7 @@
                                                                                                                             echo 339da1b3 >> "${ mount }/stage/debug"
                                                                                                                             git checkout "$COMMIT" 2>&1
                                                                                                                             echo 268d72f2 >> "${ mount }/stage/debug"
+                                                                                                                            echo 91487d7f >> "${ mount }/stage/debug"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
