@@ -1181,13 +1181,19 @@
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 git commit -m "update github token"
                                                                                                                                                 git push origin HEAD
+                                                                                                                                                echo d5dd2f39
                                                                                                                                                 TOKEN_FILE="$( mktemp )" || failure 2d2540b5
+                                                                                                                                                echo 56bbea1d
                                                                                                                                                 cleanup ( ) {
                                                                                                                                                     rm "$TOKEN_FILE"
                                                                                                                                                 }
+                                                                                                                                                echo 1e7cc1e0
                                                                                                                                                 trap cleanup EXIT
+                                                                                                                                                echo c625c6f7
                                                                                                                                                 echo "$TOKEN" > "$TOKEN_FILE"
+                                                                                                                                                echo 308f0d47
                                                                                                                                                 gh auth login --with-token "$TOKEN"
+                                                                                                                                                echo 80067f08
                                                                                                                                                 if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
                                                                                                                                                 then
                                                                                                                                                     gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
