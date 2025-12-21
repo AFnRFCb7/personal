@@ -1192,14 +1192,15 @@
                                                                                                                                                 then
                                                                                                                                                     gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
                                                                                                                                                 fi
-                                                                                                                                                PR_OUTPUT="$( gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." )" || failure 0f9bae9c
-                                                                                                                                                PR_NUMBER="$( echo "$PR_OUTPUT" | grep -oP '(?<=pull/new/)[a-z0-9]+' )" || failure 1b115f43
-                                                                                                                                                if [[ -z "$PR_NUMBER" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure e01d2935
-                                                                                                                                                fi
-                                                                                                                                                gh pr merge "$PR_NUMBER" --rebase
+                                                                                                                                                echo 45f2b483
+                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days."
+                                                                                                                                                echo 468966be
+                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure dce0301b
+                                                                                                                                                echo d7cac073
+                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                echo beb35e54
                                                                                                                                                 gh auth logout
+                                                                                                                                                echo 0911ba57
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-token" ;
