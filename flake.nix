@@ -1181,8 +1181,6 @@
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 git commit -m "update github token"
                                                                                                                                                 git push origin HEAD
-                                                                                                                                                echo c625c6f7
-                                                                                                                                                echo "$TOKEN" > "$TOKEN_FILE"
                                                                                                                                                 echo 308f0d47
                                                                                                                                                 gh auth login --with-token <<< "$TOKEN"
                                                                                                                                                 echo 80067f08
