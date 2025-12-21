@@ -1178,10 +1178,10 @@
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 36997fb8
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 51b0c5b0
                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                git fetch origin main
-                                                                                                                                                git rebase origin/main
-                                                                                                                                                git checkout --ours github-token.asc.age
                                                                                                                                                 git add github-token.asc.age
+                                                                                                                                                git commit -m "update github token"
+                                                                                                                                                git fetch origin main
+                                                                                                                                                git reset --soft origin/main
                                                                                                                                                 git commit -m "update github token"
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 echo 308f0d47
