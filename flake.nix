@@ -538,7 +538,7 @@
                                                                                                                             if [[ "HEAD" == "$BRANCH" ]]
                                                                                                                             then
                                                                                                                                 echo 1908c17a >> "${ mount }/stage/debug"
-                                                                                                                                if git fetch origin > /dev/null 2>&1
+                                                                                                                                if git fetch origin > "${ mount }/stage/debug.out" 2> "${ mount }/stage/debug.err"
                                                                                                                                 then
                                                                                                                                     echo 9a48fb2b "$?" >> "${ mount }/stage/debug"
                                                                                                                                 else
