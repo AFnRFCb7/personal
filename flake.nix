@@ -515,11 +515,11 @@
 
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            # echo 696084d3 > "${ mount }/stage/debug"
-                                                                                                                            # BRANCH="$1"
-                                                                                                                            # echo 506ac2f3 >> "${ mount }/stage/debug"
-                                                                                                                            # COMMIT="$2"
-                                                                                                                            # echo 68e4431b >> "${ mount }/stage/debug"
+                                                                                                                            echo 696084d3 > "${ mount }/stage/debug"
+                                                                                                                            BRANCH="$1"
+                                                                                                                            echo 506ac2f3 >> "${ mount }/stage/debug"
+                                                                                                                            COMMIT="$2"
+                                                                                                                            echo 68e4431b >> "${ mount }/stage/debug"
                                                                                                                             # root ${ pkgs.openssh }
                                                                                                                             # echo 219bed9e >> "${ mount }/stage/debug"
                                                                                                                             # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
@@ -1026,13 +1026,9 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                echo 97005458
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \; >&2
-                                                                                                                                                echo fd486e77
                                                                                                                                                 find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
-                                                                                                                                                echo d928877c
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                echo eb7998a5
                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                 then
                                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure f32d1269
@@ -1040,20 +1036,14 @@
                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                     git commit -a --verbose >&2
                                                                                                                                                 fi
-                                                                                                                                                echo 9c98df70
                                                                                                                                                 if git symbolic-ref -q HEAD >&2 && ! git push origin HEAD >&2
                                                                                                                                                 then
                                                                                                                                                     failure 07691db9
                                                                                                                                                 fi
-                                                                                                                                                echo 97d5951d
                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure c4041044
-                                                                                                                                                echo 20db4d0f
                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
-                                                                                                                                                echo 5903463a "0=$0" "BRANCH=$BRANCH" "COMMIT=$COMMIT"
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''echo | ${ setup } "$BRANCH" "$COMMIT"'' ) }
-                                                                                                                                                echo e12ec8d5
                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                echo 96e1508e
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
                                                                                                                                     } ;
