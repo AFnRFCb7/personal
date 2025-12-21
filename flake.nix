@@ -1162,7 +1162,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-token" ;
-                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.gh pkgs.git ( _failure.implementation "cdb68625" ) ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.gh pkgs.git pkgs.gnugrep pkgs.gnused ( _failure.implementation "cdb68625" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 if [ -t 0 ]
@@ -1192,7 +1192,8 @@
                                                                                                                                                 then
                                                                                                                                                     gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
                                                                                                                                                 fi
-                                                                                                                                                PR_NUMBER="$( gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." )" || failure 0f9bae9c
+                                                                                                                                                PR_OUTPUT="$( gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." )" || failure 0f9bae9c
+                                                                                                                                                PR_NUMBER="$( echo "$PR_OUTPUT" | grep -oP '(?<=pull/new/)[a-z0-9]+' )" || failure 1b115f43
                                                                                                                                                 if [[ -z "$PR_NUMBER" ]]
                                                                                                                                                 then
                                                                                                                                                     failure e01d2935
@@ -1415,7 +1416,7 @@
                                                                                                                             echo b100b366 "$0" wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal PATH --literal "UUID" --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --literal STAMP --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal BRANCH --literal PATH --literal PR_NUMBER --literal RECIPIENTS --literal RECIPIENTS_FILE --literal TOKEN --literal TOKEN_FILE --literal UUID --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal BRANCH --literal PATH --literal PR_OUTPUT --literal PR_NUMBER --literal RECIPIENTS --literal RECIPIENTS_FILE --literal TOKEN --literal TOKEN_FILE --literal UUID --set-plain MOUNT "${ mount }"
 
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                             # wrap ${ wrap }/bin/wrap stage/bin/wrap 0500 --inherit --literal '#' --literal 1 --literal 2 --literal 3
