@@ -537,13 +537,9 @@
                                                                                                                             echo 27ecbfca >> "${ mount }/stage/debug"
                                                                                                                             if [[ "HEAD" == "$BRANCH" ]]
                                                                                                                             then
-                                                                                                                                echo 69cf512a >> "${ mount }/stage/debug"
                                                                                                                                 git fetch origin 2>&1
-                                                                                                                                echo 7be62d8a >> "${ mount }/stage/debug"
                                                                                                                             else
-                                                                                                                                echo f2059b08 >> "${ mount }/stage/debug"
-                                                                                                                                 git fetch origin "$BRANCH" 2>&1
-                                                                                                                                echo 73a402aa >> "${ mount }/stage/debug"
+                                                                                                                                git fetch origin "$BRANCH" 2>&1
                                                                                                                             fi
                                                                                                                             # echo 339da1b3 >> "${ mount }/stage/debug"
                                                                                                                             # git checkout "$COMMIT" 2>&1
