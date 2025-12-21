@@ -520,7 +520,7 @@
                                                                                                                             echo 506ac2f3 >> "${ mount }/stage/debug"
                                                                                                                             COMMIT="$2"
                                                                                                                             echo 68e4431b >> "${ mount }/stage/debug"
-                                                                                                                            echo "$BRANCH" "$COMMIT"
+                                                                                                                            echo "BRANCH=$BRANCH" "COMMIT=$COMMIT" >> "${ mount }/stage/debug"
                                                                                                                             root ${ pkgs.openssh }
                                                                                                                             echo 219bed9e >> "${ mount }/stage/debug"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
@@ -537,9 +537,11 @@
                                                                                                                             echo 27ecbfca >> "${ mount }/stage/debug"
                                                                                                                             if [[ "HEAD" == "$BRANCH" ]]
                                                                                                                             then
+                                                                                                                                echo 1908c17a >> "${ mount }/stage/debug"
                                                                                                                                 git fetch origin 2>&1
                                                                                                                             else
-                                                                                                                                git fetch origin "$BRANCH" 2>&1
+                                                                                                                                echo 8e7a0ca0 >> "${ mount }/stage/debug"
+                                                                                                                                # git fetch origin "$BRANCH" 2>&1
                                                                                                                             fi
                                                                                                                             # echo 339da1b3 >> "${ mount }/stage/debug"
                                                                                                                             # git checkout "$COMMIT" 2>&1
