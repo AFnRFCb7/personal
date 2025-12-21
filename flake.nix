@@ -1061,7 +1061,7 @@
                                                                                                                                                                         git reset --soft origin/main
                                                                                                                                                                         git commit -a --verbose
                                                                                                                                                                         git push origin HEAD
-                                                                                                                                                                        STAMP="$( date +%G%V )" || failure 61a67fa4
+                                                                                                                                                                        STAMP="$( date +%s )" || failure 61a67fa4
                                                                                                                                                                         TOKEN=${ resources.production.secrets.token ( setup : ''${ setup } "$STAMP"'' ) }
                                                                                                                                                                         gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                         if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
