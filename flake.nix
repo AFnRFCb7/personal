@@ -1188,12 +1188,11 @@
                                                                                                                                                 trap cleanup EXIT
                                                                                                                                                 echo "$TOKEN" > "$TOKEN_FILE"
                                                                                                                                                 gh auth login --with-token "$TOKEN"
-                                                                                                                                                if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
+                                                                                                                                                if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
                                                                                                                                                 then
                                                                                                                                                     gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
                                                                                                                                                 fi
-                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "token-refresh"
-                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 246706cf
+                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days."                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 13336a13
                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                 gh auth logout
                                                                                                                                             '' ;
