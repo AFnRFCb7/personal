@@ -521,11 +521,11 @@
                                                                                                                             COMMIT="$2"
                                                                                                                             echo 68e4431b >> "${ mount }/stage/debug"
                                                                                                                             echo "$BRANCH" "$COMMIT"
-                                                                                                                            # root ${ pkgs.openssh }
-                                                                                                                            # echo 219bed9e >> "${ mount }/stage/debug"
-                                                                                                                            # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                            # echo a3decd9c >> "${ mount }/stage/debug"
-                                                                                                                            # root "$DOT_SSH"
+                                                                                                                            root ${ pkgs.openssh }
+                                                                                                                            echo 219bed9e >> "${ mount }/stage/debug"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                            echo a3decd9c >> "${ mount }/stage/debug"
+                                                                                                                            root "$DOT_SSH"
                                                                                                                             # echo 5dda70ca >> "${ mount }/stage/debug"
                                                                                                                             # mkdir --parents "${ mount }/stage/.ssh"
                                                                                                                             # echo 2cfb4202 >> "${ mount }/stage/debug"
