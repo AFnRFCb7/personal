@@ -821,7 +821,7 @@
 			                                                                    } ;
                                                                     token =
                                                                         ignore :
-                                                                            _git-repostiory.implementation
+                                                                            _git-repository.implementation
                                                                                 {
                                                                                     email = config.personal.repository.private.email ;
                                                                                     name = config.personal.repository.private.name ;
