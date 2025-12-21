@@ -532,23 +532,23 @@
                                                                                                                             ln --symbolic "$DOT_SSH/config" "${ mount }/stage/.ssh/config"
                                                                                                                             echo 7e703527 >> "${ mount }/stage/debug"
                                                                                                                             wrap ${ ssh } stage/bin/ssh 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                            # echo 38c36fbb >> "${ mount }/stage/debug"
-                                                                                                                            # export GIT_SSH_COMMAND="${ ssh }"
-                                                                                                                            # echo 27ecbfca >> "${ mount }/stage/debug"
-                                                                                                                            # if [[ "HEAD" == "$BRANCH" ]]
-                                                                                                                            # then
-                                                                                                                            #     echo 69cf512a >> "${ mount }/stage/debug"
-                                                                                                                            #     git fetch origin 2>&1
-                                                                                                                            #     echo 7be62d8a >> "${ mount }/stage/debug"
-                                                                                                                            # else
-                                                                                                                            #     echo f2059b08 >> "${ mount }/stage/debug"
-                                                                                                                            #     git fetch origin "$BRANCH" 2>&1
-                                                                                                                            #     echo 73a402aa >> "${ mount }/stage/debug"
-                                                                                                                            # fi
-                                                                                                                            # echo 339da1b3 >> "${ mount }/stage/debug"
-                                                                                                                            # git checkout "$COMMIT" 2>&1
-                                                                                                                            # echo 268d72f2 >> "${ mount }/stage/debug"
-                                                                                                                            # echo 91487d7f >> "${ mount }/stage/debug"
+                                                                                                                            echo 38c36fbb >> "${ mount }/stage/debug"
+                                                                                                                            export GIT_SSH_COMMAND="${ ssh }"
+                                                                                                                            echo 27ecbfca >> "${ mount }/stage/debug"
+                                                                                                                            if [[ "HEAD" == "$BRANCH" ]]
+                                                                                                                            then
+                                                                                                                                echo 69cf512a >> "${ mount }/stage/debug"
+                                                                                                                                git fetch origin 2>&1
+                                                                                                                                echo 7be62d8a >> "${ mount }/stage/debug"
+                                                                                                                            else
+                                                                                                                                echo f2059b08 >> "${ mount }/stage/debug"
+                                                                                                                                 git fetch origin "$BRANCH" 2>&1
+                                                                                                                                echo 73a402aa >> "${ mount }/stage/debug"
+                                                                                                                            fi
+                                                                                                                            echo 339da1b3 >> "${ mount }/stage/debug"
+                                                                                                                            git checkout "$COMMIT" 2>&1
+                                                                                                                            echo 268d72f2 >> "${ mount }/stage/debug"
+                                                                                                                            echo 91487d7f >> "${ mount }/stage/debug"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/pre-setup" ;
