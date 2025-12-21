@@ -1162,7 +1162,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-token" ;
-                                                                                                                                        runtimeInputs = [ pkgs.age ( _failure.implementation "cdb68625" ) ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.gh pkgs.git ( _failure.implementation "cdb68625" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 if [ -t 0 ]
@@ -1171,9 +1171,31 @@
                                                                                                                                                 else
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
+                                                                                                                                                cd "$MOUNT/repository/inputs/secrets"
                                                                                                                                                 RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
                                                                                                                                                 RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 25fc396f
-                                                                                                                                                age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > "$MOUNT/repository/inputs/secrets/github-token.asc.age"
+                                                                                                                                                age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
+                                                                                                                                                git add github-token.asc.age
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 36997fb8
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 51b0c5b0
+                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                git commit -m "update github token"
+                                                                                                                                                git push origin HEAD
+                                                                                                                                                TOKEN_FILE="$( mktemp )" || failure 2d2540b5
+                                                                                                                                                cleanup ( ) {
+                                                                                                                                                    rm "$TOKEN_FILE"
+                                                                                                                                                }
+                                                                                                                                                trap cleanup EXIT
+                                                                                                                                                echo "$TOKEN" > "$TOKEN_FILE"
+                                                                                                                                                gh auth login --with-token "$TOKEN"
+                                                                                                                                                if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
+                                                                                                                                                then
+                                                                                                                                                    gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
+                                                                                                                                                fi
+                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "token-refresh"
+                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 246706cf
+                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                gh auth logout
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-token" ;
