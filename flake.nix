@@ -860,6 +860,7 @@
                                                                                                                     gh auth logout
                                                                                                                 '' ;
                                                                                                         } ;
+                                                                                                in "${ application }/bin/post-setup" ;
                                                                                     pre-setup =
                                                                                         { mount , pkgs , resources , root , wrap } :
                                                                                             let
