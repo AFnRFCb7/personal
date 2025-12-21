@@ -819,6 +819,82 @@
                                                                                         } ;
                                                                                     ssh = stage : "${ stage }/ssh" ;
 			                                                                    } ;
+                                                                    token =
+                                                                        ignore :
+                                                                            _git-repostiory.implementation
+                                                                                {
+                                                                                    email = config.personal.repository.private.email ;
+                                                                                    name = config.personal.repository.private.name ;
+                                                                                    ssh = stage : "${ stage }/bin/ssh" ;
+                                                                                    post-setup =
+                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "post-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "d3a8b70f" )  ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    git fetch origin main 2>&1
+                                                                                                                    git checkout origin/main 2>&1
+                                                                                                                    TOKEN="$( cat )" || failure 35894204
+                                                                                                                    RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
+                                                                                                                    RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 32f8762a
+                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure df33ea1f
+                                                                                                                    BRANCH="$( echo "scratch/$UUID | cut --characters 1-64 )" || failure 9d0723b7
+                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                    age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
+                                                                                                                    git add github-token.asc.age
+                                                                                                                    git commit -am "Automated Token Refresh"
+                                                                                                                    git push origin HEAD
+                                                                                                                    gh auth login --with-token <<< "$TOKEN"
+                                                                                                                    if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
+                                                                                                                    then
+                                                                                                                        gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
+                                                                                                                    fi
+                                                                                                                    echo 45f2b483
+                                                                                                                    gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days."
+                                                                                                                    URL="$( gh pr view --json url --jq .url )" || failure dce0301b
+                                                                                                                    gh pr merge "$URL" --rebase
+                                                                                                                    gh auth logout
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                    pre-setup =
+                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "pre-setup" ;
+                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    ssh =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                ssh -F "$MOUNT" "$@"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/ssh" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            root ${ pkgs.openssh }
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root "$DOT_SSH"
+                                                                                                                            wrap "$DOT_SSH/config" .ssh/config 0400
+                                                                                                                            wrap ${ ssh } bin/ssh
+                                                                                                                        '' ;
+                                                                                                        } ;
+                                                                                                    in "${ application }/bin/pre-setup" ;
+                                                                                    remotes.origin = config.personal.repository.private.remote ;
+                                                                                } ;
                                                                     studio =
                                                                         ignore :
                                                                             _git-repository.implementation
@@ -1171,39 +1247,11 @@
                                                                                                                                                 else
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
-                                                                                                                                                cd "$MOUNT/repository/inputs/secrets"
-                                                                                                                                                RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
-                                                                                                                                                RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 25fc396f
-                                                                                                                                                age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 36997fb8
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 51b0c5b0
-                                                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                                                git add github-token.asc.age
-                                                                                                                                                git commit -m "update github token"
-                                                                                                                                                git fetch origin main
-                                                                                                                                                git reset --soft origin/main
-                                                                                                                                                git commit -m "update github token"
-                                                                                                                                                git push origin HEAD
-                                                                                                                                                echo 308f0d47
-                                                                                                                                                gh auth login --with-token <<< "$TOKEN"
-                                                                                                                                                echo 80067f08
-                                                                                                                                                if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
-                                                                                                                                                then
-                                                                                                                                                    gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
-                                                                                                                                                fi
-                                                                                                                                                echo 45f2b483
-                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days."
-                                                                                                                                                echo 468966be
-                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure dce0301b
-                                                                                                                                                echo d7cac073
-                                                                                                                                                gh pr merge "$URL" --rebase
-                                                                                                                                                echo beb35e54
-                                                                                                                                                gh auth logout
-                                                                                                                                                echo 0911ba57
-                                                                                                                                                cd "$MOUNT/repository"
-                                                                                                                                                echo ddc9e9c9
+                                                                                                                                                SECRETS=${ resources.production.repository.token ( setup : ''echo "$TOKEN" | setup'') }
+                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
+                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets" fetch origin "$BRANCH"
+                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets checkout "$BRANCH" github-token.asc.age
                                                                                                                                                 nix flake update --flake "$MOUNT/repository" --update-input secrets
-                                                                                                                                                echo e97045b4
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-token" ;
