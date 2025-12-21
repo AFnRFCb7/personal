@@ -538,15 +538,11 @@
                                                                                                                             if [[ "HEAD" == "$BRANCH" ]]
                                                                                                                             then
                                                                                                                                 echo 1908c17a >> "${ mount }/stage/debug"
-                                                                                                                                if git fetch origin > "${ mount }/stage/debug.out" 2> "${ mount }/stage/debug.err"
-                                                                                                                                then
-                                                                                                                                    echo 9a48fb2b "$?" >> "${ mount }/stage/debug"
-                                                                                                                                else
-                                                                                                                                    echo a0964365 "$?" >> "${ mount }/stage/debug"
-                                                                                                                                fi
+                                                                                                                                # KLUDGE
+                                                                                                                                git fetch origin 2> /dev/null
                                                                                                                             else
                                                                                                                                 echo 8e7a0ca0 >> "${ mount }/stage/debug"
-                                                                                                                                # git fetch origin "$BRANCH" 2>&1
+                                                                                                                                git fetch origin "$BRANCH" 2>&1
                                                                                                                             fi
                                                                                                                             # echo 339da1b3 >> "${ mount }/stage/debug"
                                                                                                                             # git checkout "$COMMIT" 2>&1
