@@ -1181,18 +1181,10 @@
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 git commit -m "update github token"
                                                                                                                                                 git push origin HEAD
-                                                                                                                                                echo d5dd2f39
-                                                                                                                                                TOKEN_FILE="$( mktemp )" || failure 2d2540b5
-                                                                                                                                                echo 56bbea1d
-                                                                                                                                                cleanup ( ) {
-                                                                                                                                                    rm "$TOKEN_FILE"
-                                                                                                                                                }
-                                                                                                                                                echo 1e7cc1e0
-                                                                                                                                                trap cleanup EXIT
                                                                                                                                                 echo c625c6f7
                                                                                                                                                 echo "$TOKEN" > "$TOKEN_FILE"
                                                                                                                                                 echo 308f0d47
-                                                                                                                                                gh auth login --with-token "$TOKEN_FILE"
+                                                                                                                                                gh auth login --with-token <<< "$TOKEN"
                                                                                                                                                 echo 80067f08
                                                                                                                                                 if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
                                                                                                                                                 then
@@ -1427,7 +1419,7 @@
                                                                                                                             echo b100b366 "$0" wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal PATH --literal "UUID" --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --literal STAMP --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal BRANCH --literal PATH --literal PR_OUTPUT --literal PR_NUMBER --literal RECIPIENTS --literal RECIPIENTS_FILE --literal TOKEN --literal TOKEN_FILE --literal UUID --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal BRANCH --literal PATH --literal PR_OUTPUT --literal PR_NUMBER --literal RECIPIENTS --literal RECIPIENTS_FILE --literal TOKEN --literal UUID --set-plain MOUNT "${ mount }"
 
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                             # wrap ${ wrap }/bin/wrap stage/bin/wrap 0500 --inherit --literal '#' --literal 1 --literal 2 --literal 3
