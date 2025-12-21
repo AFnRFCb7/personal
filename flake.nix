@@ -1249,7 +1249,7 @@
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
                                                                                                                                                 SECRETS=${ resources.production.repository.token ( setup : ''echo "$TOKEN" | setup'') }
-                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
+                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" fetch origin "$BRANCH"
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets checkout "$BRANCH" github-token.asc.age
                                                                                                                                                 nix flake update --flake "$MOUNT/repository" --update-input secrets
