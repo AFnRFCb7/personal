@@ -1420,7 +1420,7 @@
                                                                                                                             wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal PATH --literal RECIPIENTS --literal RECIPIENTS_FILE --set-plain MOUNT "${ mount }"
 
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
-                                                                                                                            wrap ${ wrap }/bin/wrap stage/bin/wrap 0500 --inherit --literal '#' --literal 1 --literal 2 --literal 3
+                                                                                                                            # wrap ${ wrap }/bin/wrap stage/bin/wrap 0500 --inherit --literal '#' --literal 1 --literal 2 --literal 3
 
 
 
