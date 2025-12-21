@@ -1162,7 +1162,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "mutable-token" ;
-                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.gh pkgs.git pkgs.gnugrep pkgs.gnused ( _failure.implementation "cdb68625" ) ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.gh pkgs.git pkgs.gnugrep pkgs.gnused pkgs.nix ( _failure.implementation "cdb68625" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 if [ -t 0 ]
@@ -1192,7 +1192,7 @@
                                                                                                                                                 echo c625c6f7
                                                                                                                                                 echo "$TOKEN" > "$TOKEN_FILE"
                                                                                                                                                 echo 308f0d47
-                                                                                                                                                gh auth login --with-token "$TOKEN"
+                                                                                                                                                gh auth login --with-token "$TOKEN_FILE"
                                                                                                                                                 echo 80067f08
                                                                                                                                                 if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
                                                                                                                                                 then
@@ -1207,6 +1207,10 @@
                                                                                                                                                 echo beb35e54
                                                                                                                                                 gh auth logout
                                                                                                                                                 echo 0911ba57
+                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                echo ddc9e9c9
+                                                                                                                                                nix flake update --flake "$MOUNT/repository" --update-input secrets
+                                                                                                                                                echo e97045b4
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-token" ;
