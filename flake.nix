@@ -1052,7 +1052,7 @@
                                                                                                                                                 echo 5903463a "0=$0" "BRANCH=$BRANCH" "COMMIT=$COMMIT"
                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''echo | ${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                 echo e12ec8d5
-                                                                                                                                                # root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                root "$MUTABLE_SNAPSHOT"
                                                                                                                                                 echo 96e1508e
                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                             '' ;
@@ -1418,8 +1418,9 @@
                                                                                                                             wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --literal STAMP --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal PATH --literal RECIPIENTS --literal RECIPIENTS_FILE --set-plain MOUNT "${ mount }"
-                                                                                                                            ln --symbolic ${ root }/bin/root "${ mount }/stage/bin/root"
-                                                                                                                            ln --symbolic ${ wrap }/bin/wrap "${ mount }/stage/bin/wrap"
+
+                                                                                                                            wrap ${ root }/bin/root stage/bin/root --inherit INDEX
+                                                                                                                            wrap ${ wrap }/bin/wrap stage/bin/wrap --inherit --literal '#' --literal 1 --literal 2 --literal 3
 
 
 
