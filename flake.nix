@@ -1193,6 +1193,10 @@
                                                                                                                                                     gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
                                                                                                                                                 fi
                                                                                                                                                 PR_NUMBER="$( gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." )" || failure 0f9bae9c
+                                                                                                                                                if [[ -z "$PR_NUMBER" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure e01d2935
+                                                                                                                                                fi
                                                                                                                                                 gh pr merge "$PR_NUMBER" --rebase
                                                                                                                                                 gh auth logout
                                                                                                                                             '' ;
