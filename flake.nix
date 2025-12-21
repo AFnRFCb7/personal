@@ -1419,8 +1419,8 @@
                                                                                                                             wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal TOKEN --literal PATH --literal RECIPIENTS --literal RECIPIENTS_FILE --set-plain MOUNT "${ mount }"
 
-                                                                                                                            wrap ${ root }/bin/root stage/bin/root --inherit INDEX
-                                                                                                                            wrap ${ wrap }/bin/wrap stage/bin/wrap --inherit --literal '#' --literal 1 --literal 2 --literal 3
+                                                                                                                            wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
+                                                                                                                            wrap ${ wrap }/bin/wrap stage/bin/wrap 0500 --inherit --literal '#' --literal 1 --literal 2 --literal 3
 
 
 
