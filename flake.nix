@@ -520,6 +520,7 @@
                                                                                                                             echo 506ac2f3 >> "${ mount }/stage/debug"
                                                                                                                             COMMIT="$2"
                                                                                                                             echo 68e4431b >> "${ mount }/stage/debug"
+                                                                                                                            echo "$BRANCH" "$COMMIT"
                                                                                                                             # root ${ pkgs.openssh }
                                                                                                                             # echo 219bed9e >> "${ mount }/stage/debug"
                                                                                                                             # DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
