@@ -558,49 +558,50 @@
                                                                                             ssh = stage : "${ stage }/bin/ssh" ;
                                                                                         } ;
                                                                             snapshot =
-                                                                                _git-repository.implementation
-                                                                                    {
-                                                                                        email = config.personal.repository.private.email ;
-                                                                                        name = config.personal.repository.private.name ;
-                                                                                        pre-setup =
-                                                                                            { mount , pkgs , resources , root , wrap } :
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "pre-setup" ;
-                                                                                                                runtimeInputs = [ ] ;
-                                                                                                                text =
-                                                                                                                    let
-                                                                                                                        ssh =
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "ssh" ;
-                                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                            text =
-                                                                                                                                                ''
-                                                                                                                                                    ssh -F "$MOUNT/stage/.ssh/config" "$@"
-                                                                                                                                                '' ;
-                                                                                                                                        } ;
-                                                                                                                                in "${ application }/bin/ssh" ;
-                                                                                                                        in
-                                                                                                                            ''
-                                                                                                                                BRANCH="$1"
-                                                                                                                                COMMIT="$2"
-                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                                root "$DOT_SSH"
-                                                                                                                                wrap "$DOT_SSH/config" stage/.ssh/config 0400
-                                                                                                                                wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT
-                                                                                                                                git fetch origin "$BRANCH"
-                                                                                                                                git checkout "$COMMIT"
-                                                                                                                            '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/pre-setup" ;
-                                                                                        remotes.origin = config.personal.repository.private.remote ;
-                                                                                        ssh = stage : "${ stage }/bin/ssh" ;
-                                                                                    } ;
+                                                                                ignore :
+                                                                                    _git-repository.implementation
+                                                                                        {
+                                                                                            email = config.personal.repository.private.email ;
+                                                                                            name = config.personal.repository.private.name ;
+                                                                                            pre-setup =
+                                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "pre-setup" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        let
+                                                                                                                            ssh =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "ssh" ;
+                                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        ssh -F "$MOUNT/stage/.ssh/config" "$@"
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/ssh" ;
+                                                                                                                            in
+                                                                                                                                ''
+                                                                                                                                    BRANCH="$1"
+                                                                                                                                    COMMIT="$2"
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                    root "$DOT_SSH"
+                                                                                                                                    wrap "$DOT_SSH/config" stage/.ssh/config 0400
+                                                                                                                                    wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT
+                                                                                                                                    git fetch origin "$BRANCH"
+                                                                                                                                    git checkout "$COMMIT"
+                                                                                                                                '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/pre-setup" ;
+                                                                                            remotes.origin = config.personal.repository.private.remote ;
+                                                                                            ssh = stage : "${ stage }/bin/ssh" ;
+                                                                                        } ;
                                                                         } ;
                                                                 } ;
                                                             secrets =
