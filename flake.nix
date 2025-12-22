@@ -1254,6 +1254,7 @@
                                                                                                                                                     sleep 1s
                                                                                                                                                 done
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" checkout "$BRANCH" github-token.asc.age
+                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets" commit -am "TOKEN REFRESH"
                                                                                                                                                 nix flake update --flake "$MOUNT/repository" --update-input secrets
                                                                                                                                             '' ;
                                                                                                                                     } ;
