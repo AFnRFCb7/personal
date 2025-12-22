@@ -1506,7 +1506,7 @@
                                                                         resource-releaser =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
-                                                                                enable = false ;
+                                                                                enable = true ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -1518,6 +1518,7 @@
                                                                                                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
                                                                                                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
                                                                                                     quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                    trace-directory = "/home/${ config.personal.name }/resources/trace" ;
                                                                                                 } ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
