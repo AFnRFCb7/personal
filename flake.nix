@@ -499,7 +499,7 @@
                                                                                                                                                                         elif ! git diff --quiet --cached
                                                                                                                                                                         then
                                                                                                                                                                             failure a21a1a31
-                                                                                                                                                                        elif ! git push origin HEAD
+                                                                                                                                                                        elif git symbolic-ref -q HEAD && ! git push origin HEAD
                                                                                                                                                                         then
                                                                                                                                                                             failure ec38c4d7
                                                                                                                                                                         fi
