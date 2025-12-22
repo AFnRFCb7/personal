@@ -436,7 +436,7 @@
                                                                                             configs =
                                                                                                 {
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
-                                                                                                }
+                                                                                                } ;
                                                                                             email = config.personal.repository.private.email ;
                                                                                             name = config.personal.repository.private.name ;
                                                                                             post-setup =
