@@ -442,7 +442,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "post-setup" ;
-                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             mutable-snapshot =
@@ -515,7 +515,7 @@
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    root
+                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
