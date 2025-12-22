@@ -838,7 +838,7 @@
                                                                                                                 ''
                                                                                                                     git fetch origin main 2>&1
                                                                                                                     git checkout origin/main 2>&1
-                                                                                                                    TOKEN="$( cat )" || failure 35894204
+                                                                                                                    TOKEN="$1"
                                                                                                                     RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
                                                                                                                     RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 32f8762a
                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure df33ea1f
@@ -1248,7 +1248,7 @@
                                                                                                                                                 else
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
-                                                                                                                                                SECRETS=${ resources.production.repository.token ( setup : ''echo "$TOKEN" | ${ setup }'') }
+                                                                                                                                                SECRETS=${ resources.production.repository.token ( setup : ''${ setup } "$TOKEN"'') }
                                                                                                                                                 BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" fetch origin "$BRANCH"
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" checkout "$BRANCH" github-token.asc.age
