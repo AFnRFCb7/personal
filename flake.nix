@@ -613,8 +613,8 @@
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/.ssh/config 0400
                                                                                                                                     wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
-                                                                                                                                    git fetch origin "$BRANCH"
-                                                                                                                                    git checkout "$COMMIT"
+                                                                                                                                    git fetch origin "$BRANCH" >&2
+                                                                                                                                    git checkout "$COMMIT" >&2
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
