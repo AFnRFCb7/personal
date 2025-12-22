@@ -442,7 +442,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "pre-setup" ;
-                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils root wrap ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             ssh =
