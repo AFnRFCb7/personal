@@ -468,6 +468,9 @@
                                                                                                                                                                             git commit --verbose
                                                                                                                                                                             NAME="$( basename "$name" )" || failure e006c4e7
                                                                                                                                                                             git push origin HEAD
+                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                             nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                                         fi
                                                                                                                                                                     '' ;
@@ -497,8 +500,8 @@
                                                                                                                                                 ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
-                                                                                                                                                    git submodule foreach commit
-                                                                                                                                                    git submodule foreach check
+                                                                                                                                                    git submodule foreach commit >&2
+                                                                                                                                                    git submodule foreach check >&2
                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
