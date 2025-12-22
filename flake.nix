@@ -495,16 +495,14 @@
                                                                                                     "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
+                                                                                                    "alias.mutable-hydrate" = stage : "!${ stage }/bin/mutable-hydrate" ;
+                                                                                                    "alias.mutable-nurse" = stage : "!${ stage }/mutable-nurse" ;
+                                                                                                    "alias.mutable-rebase" = stage : "!${ stage }/bin/mutable-rebase" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                     "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
                                                                                                     "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
                                                                                                     "alias.mutable-token" = stage : "!${ stage }/bin/mutable-token" ;
-
-                                                                                                    "alias.mutable-hydrate" = stage : "!${ stage }/mutable-hydrate" ;
-                                                                                                    "alias.mutable-rebase" = stage : "!${ stage }/mutable-rebase" ;
-                                                                                                    "alias.mutable-scratch" = stage : "!${ stage }/mutable-scratch" ;
-                                                                                                    "alias.mutable-nurse" = stage : "!${ stage }/mutable-nurse" ;
-                                                                                                    "core.sshCommand" = stage : "${ stage }/ssh" ;
+                                                                                                    "core.sshCommand" = stage : "${ stage }/bin/ssh" ;
                                                                                                 } ;
                                                                                             email = config.personal.repository.private.email ;
                                                                                             follow-parent = true ;
@@ -999,21 +997,13 @@
                                                                                                                                     wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }" --set-plain VM "build-vm-with-bootloader"
                                                                                                                                     wrap ${ mutable-converge } stage/bin/mutable-converge 0500 --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-nurse } stage/bin/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-rebase } stage/bin/mutable-rebase 0500 --literal FAILURE --literal STATUS --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal PATH --literal "UUID" --set-plain MOUNT "${ mount }"
-                                                                                                                                    echo b100b366 "$0" wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal PATH --literal "UUID" --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --literal STAMP --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal BRANCH --literal PATH --literal PR_OUTPUT --literal PR_NUMBER --literal RECIPIENTS --literal RECIPIENTS_FILE --literal TOKEN --literal UUID --set-plain MOUNT "${ mount }"
-
                                                                                                                                     wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
-                                                                                                                                    # wrap ${ wrap }/bin/wrap stage/bin/wrap 0500 --inherit --literal '#' --literal 1 --literal 2 --literal 3
-
-
-
-                                                                                                                                    wrap ${ mutable-nurse } stage/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-rebase } stage/mutable-rebase 0500 --literal FAILURE --literal STATUS --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-scratch } stage/mutable-scratch 0500 --literal BRANCH --literal UUID --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-snapshot-prime } stage/mutable-snapshot 0500 --literal COMMIT --literal FAILURE --literal GIT_SSH_COMMAND --literal SNAPSHOT --literal STATUS --set-plain MOUNT "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
@@ -1065,7 +1055,7 @@
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
                                                                                                                                 root "$DOT_SSH"
                                                                                                                                 ln --symbolic "$DOT_SSH/config" /mount/stage/config
-                                                                                                                                wrap ${ mutable-hydrate } stage/mutable-hydrate 0500 --literal BRANCH --literal COMMIT --set-plain MOUNT "${ mount }"
+                                                                                                                                wrap ${ mutable-hydrate } stage/bin/mutable-hydrate 0500 --literal BRANCH --literal COMMIT --set-plain MOUNT "${ mount }"
                                                                                                                                 wrap ${ ssh } stage/ssh 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                 git mutable-hydrate ${ config.personal.repository.private.branch }
                                                                                                                             '' ;
