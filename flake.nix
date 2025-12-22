@@ -843,21 +843,22 @@
                                                                                                                     RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 32f8762a
                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure df33ea1f
                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 9d0723b7
-                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                    git checkout -b "$BRANCH" 2>&1
                                                                                                                     age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
-                                                                                                                    git add github-token.asc.age
-                                                                                                                    git commit -am "Automated Token Refresh"
-                                                                                                                    git push origin HEAD
-                                                                                                                    gh auth login --with-token <<< "$TOKEN"
+                                                                                                                    git add github-token.asc.age 2>&1
+                                                                                                                    git commit -am "Automated Token Refresh" 2>&1
+                                                                                                                    git push origin HEAD 2>&1
+                                                                                                                    gh auth login --with-token <<< "$TOKEN" 2>&1
                                                                                                                     if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
                                                                                                                     then
-                                                                                                                        gh label create token-refresh --color "#ffcc00" --description "Token Refresh"
+                                                                                                                        gh label create token-refresh --color "#ffcc00" --description "Token Refresh" 2>&1
                                                                                                                     fi
-                                                                                                                    echo 45f2b483
-                                                                                                                    gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days."
+                                                                                                                    gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." 2>&1
                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure dce0301b
-                                                                                                                    gh pr merge "$URL" --rebase
-                                                                                                                    gh auth logout
+                                                                                                                    gh pr merge "$URL" --rebase 2>&1
+                                                                                                                    gh auth logout 2>&1
+                                                                                                                    git fetch origin main 2>&1
+                                                                                                                    git rebase origin/main 2>&1
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/post-setup" ;
