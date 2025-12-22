@@ -454,7 +454,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        ssh -F $MOUNT/stage/.ssh/config "$@"
+                                                                                                                                                        ssh -F "$MOUNT/stage/.ssh/config" "$@"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                         in "${ application }/bin/ssh" ;
