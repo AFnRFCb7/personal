@@ -457,6 +457,7 @@
                                                                                                                                             runtimeInputs =
                                                                                                                                                 [
                                                                                                                                                     pkgs.git
+                                                                                                                                                    root
                                                                                                                                                     (
                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                             {
@@ -609,6 +610,7 @@
                                                                                                                                 ''
                                                                                                                                     BRANCH="$1"
                                                                                                                                     COMMIT="$2"
+                                                                                                                                    root ${ pkgs.openssh }
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/.ssh/config 0400
