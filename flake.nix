@@ -680,7 +680,7 @@
                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                 {
                                                                                                                                                                     name = "input-commit" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) ] ;
+                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ( _failure.implementation "21903ae1" ) ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
                                                                                                                                                                             INPUT="$1"
@@ -691,6 +691,8 @@
                                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure d9c088e3
                                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                                 git commit -a --verbose
+                                                                                                                                                                                NAME="$( basename "$INPUT" )" || failure 8647d4b4
+                                                                                                                                                                                nix flake update --flake "$MOUNT/repository" --update-input "$NAME"
                                                                                                                                                                             fi
                                                                                                                                                                             if git symbolic-ref -q HEAD && ! git push origin HEAD
                                                                                                                                                                             then
