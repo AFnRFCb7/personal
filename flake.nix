@@ -462,9 +462,14 @@
                                                                                                                                                                     ''
                                                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                         then
-                                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure d3737ca3
-                                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
-                                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                                            if git symbolic-ref -q HEAD
+                                                                                                                                                                            then
+                                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
+                                                                                                                                                                            else
+                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                            fi
                                                                                                                                                                             git commit --verbose
                                                                                                                                                                             NAME="$( basename "$name" )" || failure e006c4e7
                                                                                                                                                                             git push origin HEAD
@@ -502,8 +507,14 @@
                                                                                                                                                 ''
                                                                                                                                                     git submodule foreach commit >&2
                                                                                                                                                     git submodule foreach check >&2
-                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
-                                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                                    if git symbolic-ref -q HEAD
+                                                                                                                                                    then
+                                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
+                                                                                                                                                    else
+                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure aae710e7
+                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                        git checkout -b "$BRANCH"
+                                                                                                                                                    fi
                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                     then
                                                                                                                                                         git commit --verbose
