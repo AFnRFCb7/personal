@@ -427,6 +427,50 @@
                                                                 } ;
                                                             repository =
                                                                 {
+                                                                    studio =
+                                                                        {
+                                                                            entry =
+                                                                                ignore :
+                                                                                    _git-repository.implementation
+                                                                                        {
+                                                                                            email = config.personal.repository.private.email ;
+                                                                                            name = config.personal.repository.private.name ;
+                                                                                            pre-setup =
+                                                                                                { mount , pkgs , resources , root , package } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "pre-setup" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        let
+                                                                                                                            ssh =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "ssh" ;
+                                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        ssh -F $MOUNT/stage/.ssh/config "$@"
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                        in "${ application }/bin/ssh" ;
+                                                                                                                            in
+                                                                                                                                ''
+                                                                                                                                    root ${ pkgs.openssh }
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                    root "$DOT_SSH"
+                                                                                                                                    wrap "$DOT_SSH/config" .ssh/config
+                                                                                                                                    wrap ${ ssh } bin/ssh --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/pre-setup" ;
+                                                                                            ssh = stage : "${ stage }/bin/ssh" ;
+                                                                                        } ;
+                                                                        } ;
                                                                 } ;
                                                             secrets =
                                                                 {
@@ -719,6 +763,13 @@
                                                                                             else
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
+                                                                                            fi
+                                                                                            STUDIO=${ resources___.production.repository.studio.entry ( setup : ''setup "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
+                                                                                            if $HAS_ARGUMENTS
+                                                                                            then
+                                                                                                idea-community "$STUDIO/repository"
+                                                                                            else
+                                                                                                echo "$STUDIO/repository"
                                                                                             fi
                                                                                         '' ;
                                                                                 }
