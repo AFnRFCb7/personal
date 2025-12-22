@@ -857,8 +857,6 @@
                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure dce0301b
                                                                                                                     gh pr merge "$URL" --rebase 2>&1
                                                                                                                     gh auth logout 2>&1
-                                                                                                                    git fetch origin main 2>&1
-                                                                                                                    git rebase origin/main 2>&1
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/post-setup" ;
