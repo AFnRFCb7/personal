@@ -463,8 +463,8 @@
                                                                                                                                     root ${ pkgs.openssh }
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
-                                                                                                                                    wrap "$DOT_SSH/config" .ssh/config
-                                                                                                                                    wrap ${ ssh } bin/ssh --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap "$DOT_SSH/config" .ssh/config 0400
+                                                                                                                                    wrap ${ ssh } bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
