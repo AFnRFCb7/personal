@@ -890,7 +890,7 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/.ssh/config 0400
-                                                                                                                            wrap ${ ssh } stage/bin/ssh 0500 --set-plain MOUT "${ mount }"
+                                                                                                                            wrap ${ ssh } stage/bin/ssh 0500 --set-plain MOUNT "${ mount }"
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/pre-setup" ;
