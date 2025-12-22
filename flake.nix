@@ -436,7 +436,7 @@
                                                                                             email = config.personal.repository.private.email ;
                                                                                             name = config.personal.repository.private.name ;
                                                                                             pre-setup =
-                                                                                                { mount , pkgs , resources , root , package } :
+                                                                                                { mount , pkgs , resources , root , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
