@@ -842,7 +842,7 @@
                                                                                                                     RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
                                                                                                                     RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 32f8762a
                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure df33ea1f
-                                                                                                                    BRANCH="$( echo "scratch/$UUID | cut --characters 1-64 )" || failure 9d0723b7
+                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 9d0723b7
                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                     age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
                                                                                                                     git add github-token.asc.age
