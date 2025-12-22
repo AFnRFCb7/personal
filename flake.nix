@@ -808,8 +808,8 @@
                                                                                                                                 wrap ${ ssh } stage/ssh 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                 root "$DOT_SSH"
                                                                                                                                 ln --symbolic "$DOT_SSH/config" "${ mount }/stage/dot-ssh"
-                                                                                                                                git fetch "$STUDIO/repository" "$COMMIT" >> /trace
-                                                                                                                                git checkout "$COMMIT" >> /trace
+                                                                                                                                git fetch "$STUDIO/repository" "$COMMIT" > /trace
+                                                                                                                                git checkout "$COMMIT" > /trace
                                                                                                                             '' ;
                                                                                                         } ;
 							                                                                        in "${ application }/bin/setup" ;
@@ -836,27 +836,27 @@
                                                                                                             runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "d3a8b70f" )  ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    git fetch origin main >> /trace
-                                                                                                                    git checkout origin/main >> /trace
+                                                                                                                    git fetch origin main > /trace
+                                                                                                                    git checkout origin/main > /trace
                                                                                                                     TOKEN="$1"
                                                                                                                     RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
                                                                                                                     RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 32f8762a
                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure df33ea1f
                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 9d0723b7
-                                                                                                                    git checkout -b "$BRANCH" >> /trace
+                                                                                                                    git checkout -b "$BRANCH" > /trace
                                                                                                                     age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
-                                                                                                                    git add github-token.asc.age >> /trace
-                                                                                                                    git commit -am "Automated Token Refresh" >> /trace
-                                                                                                                    git push origin HEAD >> /trace
-                                                                                                                    gh auth login --with-token <<< "$TOKEN" >> /trace
+                                                                                                                    git add github-token.asc.age > /trace
+                                                                                                                    git commit -am "Automated Token Refresh" > /trace
+                                                                                                                    git push origin HEAD > /trace
+                                                                                                                    gh auth login --with-token <<< "$TOKEN" > /trace
                                                                                                                     if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
                                                                                                                     then
-                                                                                                                        gh label create token-refresh --color "#ffcc00" --description "Token Refresh" >> /trace
+                                                                                                                        gh label create token-refresh --color "#ffcc00" --description "Token Refresh" > /trace
                                                                                                                     fi
-                                                                                                                    gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." >> /trace
+                                                                                                                    gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." > /trace
                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure dce0301b
-                                                                                                                    gh pr merge "$URL" --rebase >> /trace
-                                                                                                                    gh auth logout >> /trace
+                                                                                                                    gh pr merge "$URL" --rebase > /trace
+                                                                                                                    gh auth logout > /trace
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/post-setup" ;
@@ -1387,7 +1387,7 @@
                                                                                                                                             ''
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 73096040
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
-                                                                                                                                                git checkout -b "$BRANCH" >> /trace
+                                                                                                                                                git checkout -b "$BRANCH" > /trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/mutable-scratch" ;
@@ -1513,10 +1513,10 @@
                                                                                                                                                 GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
                                                                                                                                                 export GIT_SSH_COMMAND
                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                git fetch origin "$BRANCH" >> /trace
-                                                                                                                                                git checkout "origin/$BRANCH" >> /trace
-                                                                                                                                                git submodule sync >> /trace
-                                                                                                                                                git submodule update --init --recursive >> /trace
+                                                                                                                                                git fetch origin "$BRANCH" > /trace
+                                                                                                                                                git checkout "origin/$BRANCH" > /trace
+                                                                                                                                                git submodule sync > /trace
+                                                                                                                                                git submodule update --init --recursive > /trace
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                         in "${ application }/bin/mutable-hydrate" ;
