@@ -1451,7 +1451,7 @@
                                                                                 enable = true ;
                                                                                 serviceConfig =
                                                                                     {
-                                                                                        ExecStart = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.studio.private ( setup : setup ) ; resolution = "private" ; } ;
+                                                                                        ExecStart = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.private ( setup : setup ) ; resolution = "private" ; } ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
