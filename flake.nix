@@ -764,7 +764,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry ( setup : ''setup "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
+                                                                                            STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 idea-community "$STUDIO/repository"
