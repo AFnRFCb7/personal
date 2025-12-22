@@ -534,7 +534,7 @@
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500
+                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
