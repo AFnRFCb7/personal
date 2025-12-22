@@ -496,7 +496,7 @@
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
                                                                                                     "alias.mutable-hydrate" = stage : "!${ stage }/bin/mutable-hydrate" ;
-                                                                                                    "alias.mutable-nurse" = stage : "!${ stage }/mutable-nurse" ;
+                                                                                                    "alias.mutable-nurse" = stage : "!${ stage }/bin/mutable-nurse" ;
                                                                                                     "alias.mutable-rebase" = stage : "!${ stage }/bin/mutable-rebase" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                     "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
@@ -626,6 +626,45 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-converge" ;
+                                                                                                                            mutable-nurse =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-nurse" ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        INPUT="$1"
+                                                                                                                                                        USER_NAME="$2"
+                                                                                                                                                        REPO_NAME="$3"
+                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                        gh repo create "$USER_NAME/$REPO_NAME" --public
+                                                                                                                                                        gh auth logout
+                                                                                                                                                        mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
+                                                                                                                                                        cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
+                                                                                                                                                        git init
+                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                        git checkout -b main
+                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                        git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        cd "$MOUNT/repository"
+                                                                                                                                                        git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
+                                                                                                                                                        cd "$MOUNT/repository/inputs/$INPUT"
+                                                                                                                                                        git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
+                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                        git mutable-scratch
+                                                                                                                                                        root ${ pkgs.git }
+                                                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/mutable-nurse" ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 let
                                                                                                                                     application =
@@ -707,6 +746,79 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                         in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                            mutable-rebase =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-rebase" ;
+                                                                                                                                                runtimeInputs =
+                                                                                                                                                    [
+                                                                                                                                                        pkgs.findutils
+                                                                                                                                                        pkgs.git
+                                                                                                                                                        ( _failure.implementation "000d52f4" )
+                                                                                                                                                        (
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "mutable-rebase-input" ;
+                                                                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            INPUT="$1"
+                                                                                                                                                                            STATUS="$2"
+                                                                                                                                                                            cleanup ( ) {
+                                                                                                                                                                                EXIT_CODE="$?"
+                                                                                                                                                                                if [[ 0 != "$EXIT_CODE" ]]
+                                                                                                                                                                                then
+                                                                                                                                                                                    cat > "$STATUS/FLAG" <<EOF
+                                                                                                                                                                            INPUT="$INPUT"
+                                                                                                                                                                            EXIT_CODE="$EXIT_CODE"
+                                                                                                                                                                            EOF
+                                                                                                                                                                                fi
+                                                                                                                                                                            }
+                                                                                                                                                                            trap cleanup EXIT
+                                                                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                            then
+                                                                                                                                                                                git mutable-scratch
+                                                                                                                                                                                git commit -a --verbose --allow-empty-message
+                                                                                                                                                                                git push origin HEAD
+                                                                                                                                                                            fi
+                                                                                                                                                                            git fetch origin main
+                                                                                                                                                                            if ! git diff --quiet origin/main || ! git diff --quiet --cached
+                                                                                                                                                                            then
+                                                                                                                                                                                git mutable-scratch
+                                                                                                                                                                                git rebase -i origin/main
+                                                                                                                                                                                git push origin HEAD
+                                                                                                                                                                            fi
+                                                                                                                                                                        '' ;
+                                                                                                                                                                }
+                                                                                                                                                        )
+                                                                                                                                                    ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        STATUS=${ resources.production.temporary ( setup : setup ) }
+                                                                                                                                                        find inputs -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
+                                                                                                                                                        if [[ -f "$STATUS/FLAG" ]]
+                                                                                                                                                        then
+                                                                                                                                                            FAILURE="$( cat "$STATUS/FLAG" )" || failure 68f97f84
+                                                                                                                                                            failure 74c899c7 "$FAILURE"
+                                                                                                                                                        fi
+                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                        then
+                                                                                                                                                            git mutable-scratch
+                                                                                                                                                            git commit -a --verbose --allow-empty
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                        fi
+                                                                                                                                                        git fetch origin main
+                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                        then
+                                                                                                                                                            git mutable-scratch
+                                                                                                                                                            git rebase -i origin/main
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                        in "${ application }/bin/mutable-rebase" ;
                                                                                                                             mutable-switch =
                                                                                                                                 let
                                                                                                                                     application =
@@ -863,134 +975,6 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-token" ;
-
-                                                                                                                            mutable-nurse =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-nurse" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        INPUT="$1"
-                                                                                                                                                        USER_NAME="$2"
-                                                                                                                                                        REPO_NAME="$3"
-                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                        gh repo create "$USER_NAME/$REPO_NAME" --public
-                                                                                                                                                        gh auth logout
-                                                                                                                                                        mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
-                                                                                                                                                        cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
-                                                                                                                                                        git init
-                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                        git checkout -b main
-                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                        git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                        git push origin HEAD
-                                                                                                                                                        cd "$MOUNT/repository"
-                                                                                                                                                        git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
-                                                                                                                                                        cd "$MOUNT/repository/inputs/$INPUT"
-                                                                                                                                                        git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
-                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                        git mutable-scratch
-                                                                                                                                                        root ${ pkgs.git }
-                                                                                                                                                        root ${ pkgs.openssh }
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/mutable-nurse" ;
-                                                                                                                            mutable-rebase =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-rebase" ;
-                                                                                                                                                runtimeInputs =
-                                                                                                                                                    [
-                                                                                                                                                        pkgs.findutils
-                                                                                                                                                        pkgs.git
-                                                                                                                                                        ( _failure.implementation "000d52f4" )
-                                                                                                                                                        (
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "mutable-rebase-input" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.git ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            INPUT="$1"
-                                                                                                                                                                            STATUS="$2"
-                                                                                                                                                                            cleanup ( ) {
-                                                                                                                                                                                EXIT_CODE="$?"
-                                                                                                                                                                                if [[ 0 != "$EXIT_CODE" ]]
-                                                                                                                                                                                then
-                                                                                                                                                                                    cat > "$STATUS/FLAG" <<EOF
-                                                                                                                                                                            INPUT="$INPUT"
-                                                                                                                                                                            EXIT_CODE="$EXIT_CODE"
-                                                                                                                                                                            EOF
-                                                                                                                                                                                fi
-                                                                                                                                                                            }
-                                                                                                                                                                            trap cleanup EXIT
-                                                                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                            then
-                                                                                                                                                                                git mutable-scratch
-                                                                                                                                                                                git commit -a --verbose --allow-empty-message
-                                                                                                                                                                                git push origin HEAD
-                                                                                                                                                                            fi
-                                                                                                                                                                            git fetch origin main
-                                                                                                                                                                            if ! git diff --quiet origin/main || ! git diff --quiet --cached
-                                                                                                                                                                            then
-                                                                                                                                                                                git mutable-scratch
-                                                                                                                                                                                git rebase -i origin/main
-                                                                                                                                                                                git push origin HEAD
-                                                                                                                                                                            fi
-                                                                                                                                                                        '' ;
-                                                                                                                                                                }
-                                                                                                                                                        )
-                                                                                                                                                    ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        STATUS=${ resources.production.temporary ( setup : setup ) }
-                                                                                                                                                        find inputs -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
-                                                                                                                                                        if [[ -f "$STATUS/FLAG" ]]
-                                                                                                                                                        then
-                                                                                                                                                            FAILURE="$( cat "$STATUS/FLAG" )" || failure 68f97f84
-                                                                                                                                                            failure 74c899c7 "$FAILURE"
-                                                                                                                                                        fi
-                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-scratch
-                                                                                                                                                            git commit -a --verbose --allow-empty
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                        fi
-                                                                                                                                                        git fetch origin main
-                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-scratch
-                                                                                                                                                            git rebase -i origin/main
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                        in "${ application }/bin/mutable-rebase" ;
-                                                                                                                            mutable-scratch =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-scratch" ;
-                                                                                                                                                runtimeInputs = [ pkgs.git pkgs.libuuid ( _failure.implementation "c12332c6" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 73096040
-                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96d8692e
-                                                                                                                                                        git checkout -b "$BRANCH" > /trace
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                        in "${ application }/bin/mutable-scratch" ;
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }" --set-plain VM "build-vm"
