@@ -894,7 +894,7 @@
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/pre-setup" ;
-                                                                                    remotes.origin = config.personal.repository.private.remote ;
+                                                                                    remotes.origin = config.personal.repository.secrets.remote ;
                                                                                 } ;
                                                                     studio =
                                                                         ignore :
