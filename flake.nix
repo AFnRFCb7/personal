@@ -1255,6 +1255,7 @@
                                                                                                                                                 done
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" checkout "origin/$BRANCH" github-token.asc.age
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" commit -am "TOKEN REFRESH"
+                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets" push origin HEAD
                                                                                                                                                 nix flake update --flake "$MOUNT/repository" --update-input secrets
                                                                                                                                             '' ;
                                                                                                                                     } ;
