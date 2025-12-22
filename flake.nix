@@ -1003,26 +1003,37 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 mutable-check
+                                                                                                                                                mutable-build-vm
+                                                                                                                                                dialog 1rst virtual machine
                                                                                                                                                 mutable-test
+                                                                                                                                                dialog 1rst test
                                                                                                                                                 UUID="$( uuidgen )" || failure bb3aa1c9
-                                                                                                                                                STUDIO=${ resources.production.repository.studio ( setup : "$UUID" ) }
+                                                                                                                                                STUDIO=${ resources.production.repository.studio ( setup : "${ setup } $UUID" ) }
                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 1b8fad39
                                                                                                                                                 cd "$STUDIO"
                                                                                                                                                 git mutable-hydrate "$BRANCH"
-                                                                                                                                                git mutable-check
-                                                                                                                                                git mutable-build-vm
-                                                                                                                                                if dialog "VM IS OK? "
+                                                                                                                                                if ! diff --unified "$MOUNT/repository" "$STUDIO"
+                                                                                                                                                then
+                                                                                                                                                    failure b1044274 "We expect the old and new repository to be exactly the same"
+                                                                                                                                                fi
+                                                                                                                                                PARENT="$( dirname "$STUDIO" )" || failure fe525983
+                                                                                                                                                if ! diff --unified "$MOUNT/stage/bin/mutable-check" "$PARENT/bin/mutable-check"
+                                                                                                                                                then
+                                                                                                                                                    git mutable-check
+                                                                                                                                                fi
+                                                                                                                                                if ! diff --unified "$MOUNT/stage/bin/mutable-build-vm" "$PARENT/bin/mutable-build-vm"
+                                                                                                                                                then
+                                                                                                                                                    git mutable-build-vm
+                                                                                                                                                    dialog 2nd virtual machine
+                                                                                                                                                fi
+                                                                                                                                                if ! diff --unified "$MOUNT/stage/bin/mutable-test" "$PARENT/bin/mutable-test"
                                                                                                                                                 then
                                                                                                                                                     git mutable-test
-                                                                                                                                                    if dialog "TEST IS OK? "
-                                                                                                                                                    then
-                                                                                                                                                        git mutable-switch
-                                                                                                                                                    else
-                                                                                                                                                        failure c523dd66 "SWITCH ABORTED BECAUSE TEST IS NOT OK"
-                                                                                                                                                    fi
-                                                                                                                                                else
-                                                                                                                                                    failure b3e6e6a0 "SWITCH ABORTED BECAUSE VM IS NOT OK"
+                                                                                                                                                    dialog 2nd test
                                                                                                                                                 fi
+                                                                                                                                                git mutable-switch
+                                                                                                                                                echo a01a96e6
+                                                                                                                                                echo ALL DONE
                                                                                                                                             '' ;
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/mutable-converge" ;
