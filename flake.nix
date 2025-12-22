@@ -471,7 +471,7 @@
                                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                             fi
                                                                                                                                                                             git commit --verbose
-                                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "name:?Git submodule foreach must set \$name" "}" ] }"
+                                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?Git submodule foreach must set \$name" "}" ] }"
                                                                                                                                                                             NAME="$( basename "$name" )" || failure e006c4e7
                                                                                                                                                                             git push origin HEAD
                                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
