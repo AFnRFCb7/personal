@@ -465,9 +465,11 @@
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/.ssh/config 0400
                                                                                                                                     wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    git fetch origin main
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
+                                                                                            remotes.origin = config.personal.repository.private.remote ;
                                                                                             ssh = stage : "${ stage }/bin/ssh" ;
                                                                                         } ;
                                                                         } ;
@@ -767,9 +769,9 @@
                                                                                             STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
-                                                                                                idea-community "$STUDIO/repository"
-                                                                                            else
                                                                                                 echo "$STUDIO/repository"
+                                                                                            else
+                                                                                                idea-community "$STUDIO/repository"
                                                                                             fi
                                                                                         '' ;
                                                                                 }
