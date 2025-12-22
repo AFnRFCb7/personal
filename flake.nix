@@ -890,7 +890,7 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" .ssh/config 0400
-                                                                                                                            wrap ${ ssh } bin/ssh
+                                                                                                                            wrap ${ ssh } bin/ssh 0500
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/pre-setup" ;
