@@ -868,7 +868,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "pre-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git root ] ;
+                                                                                                            runtimeInputs = [ pkgs.git root wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     ssh =
