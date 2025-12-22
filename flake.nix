@@ -435,6 +435,90 @@
                                                                                         {
                                                                                             email = config.personal.repository.private.email ;
                                                                                             name = config.personal.repository.private.name ;
+                                                                                            post-setup =
+                                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "post-setup" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        let
+                                                                                                                            mutable-snapshot =
+                                                                                                                                let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-snapshot" ;
+                                                                                                                                            runtimeInputs =
+                                                                                                                                                [
+                                                                                                                                                    pkgs.git
+                                                                                                                                                    (
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "commit" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.git pkgs.nix ( _failure.implementation "0d656d5f" ) ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                        then
+                                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                                            git commit --verbose
+                                                                                                                                                                            NAME="$( basename "$name" )" || failure e006c4e7
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                                        fi
+                                                                                                                                                                    '' ;
+                                                                                                                                                            }
+                                                                                                                                                    )
+                                                                                                                                                    (
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "check" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.git ( _failure.implementation "43f494cd" ) ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        if ! git diff --quiet
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 339c5013
+                                                                                                                                                                        elif ! git diff --quiet --cached
+                                                                                                                                                                        then
+                                                                                                                                                                            failure a21a1a31
+                                                                                                                                                                        elif ! git push origin HEAD
+                                                                                                                                                                        then
+                                                                                                                                                                            failure ec38c4d7
+                                                                                                                                                                        fi
+                                                                                                                                                                    '' ;
+                                                                                                                                                            }
+                                                                                                                                                    )
+                                                                                                                                                    "${ mount }/stage"
+                                                                                                                                                ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    git submodule foreach commit
+                                                                                                                                                    git submodule foreach check
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                    then
+                                                                                                                                                        git commit --verbose
+                                                                                                                                                    fi
+                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
+                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                    root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                    echo "$MUTABLE_SNAPSHOT/repository"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                            in
+                                                                                                                                ''
+                                                                                                                                    root
+                                                                                                                                '' ;
+                                                                                                                } ;
+                                                                                                            in "${ application }/bin/post-setup" ;
                                                                                             pre-setup =
                                                                                                 { mount , pkgs , resources , root , wrap } :
                                                                                                     let
@@ -473,6 +557,50 @@
                                                                                             remotes.origin = config.personal.repository.private.remote ;
                                                                                             ssh = stage : "${ stage }/bin/ssh" ;
                                                                                         } ;
+                                                                            snapshot =
+                                                                                _git-repository.implementation
+                                                                                    {
+                                                                                        email = config.personal.repository.private.email ;
+                                                                                        name = config.personal.repository.private.name ;
+                                                                                        pre-setup =
+                                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "pre-setup" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    let
+                                                                                                                        ssh =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "ssh" ;
+                                                                                                                                            runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    ssh -F "$MOUNT/stage/.ssh/config" "$@"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/ssh" ;
+                                                                                                                        in
+                                                                                                                            ''
+                                                                                                                                BRANCH="$1"
+                                                                                                                                COMMIT="$2"
+                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                root "$DOT_SSH"
+                                                                                                                                wrap "$DOT_SSH/config" stage/.ssh/config 0400
+                                                                                                                                wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT
+                                                                                                                                git fetch origin "$BRANCH"
+                                                                                                                                git checkout "$COMMIT"
+                                                                                                                            '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/pre-setup" ;
+                                                                                        remotes.origin = config.personal.repository.private.remote ;
+                                                                                        ssh = stage : "${ stage }/bin/ssh" ;
+                                                                                    } ;
                                                                         } ;
                                                                 } ;
                                                             secrets =
