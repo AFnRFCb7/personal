@@ -1248,12 +1248,15 @@
                                                                                                                                                     TOKEN="$( cat )" || failure 70f59771
                                                                                                                                                 fi
                                                                                                                                                 SECRETS=${ resources.production.repository.token ( setup : ''${ setup } "$TOKEN"'') }
-                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
-                                                                                                                                                while ! git -C "$MOUNT/repository/inputs/secrets" fetch origin "$BRANCH"
+                                                                                                                                                BRANCH_1="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
+                                                                                                                                                while ! git -C "$MOUNT/repository/inputs/secrets" fetch origin "$BRANCH_1"
                                                                                                                                                 do
                                                                                                                                                     sleep 1s
                                                                                                                                                 done
-                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets" checkout "origin/$BRANCH" github-token.asc.age
+                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets" checkout "origin/$BRANCH_1" github-token.asc.age
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 0402d213
+                                                                                                                                                BRANCH_2="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 4547e6d3
+                                                                                                                                                git -C "$MOUNT/repository/inputs/secrets" checkout -b "$BRANCH_2"
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" commit -am "TOKEN REFRESH"
                                                                                                                                                 git -C "$MOUNT/repository/inputs/secrets" push origin HEAD
                                                                                                                                                 nix flake update --flake "$MOUNT/repository" --update-input secrets
