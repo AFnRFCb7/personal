@@ -605,6 +605,31 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                            mutable-squash =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-squash" ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "5b1cf042" ) ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        UUID_1="$( uuidgen | sha512sum )" || failure 45239811
+                                                                                                                                                        BRANCH_1="$( echo "scratch/$UUID_1" | cut --bytes 1-64 )" || failure 972b3054
+                                                                                                                                                        git checkout -b "$BRANCH_1"                                                                                                                                                        git rev-parse --abbrev-ref HEAD
+                                                                                                                                                        git commit -am "" --allow-empty ""
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        UUID_2="$( uuidgen | sha512sum )" || failure 45239811
+                                                                                                                                                        BRANCH_2="$( echo "scratch/$UUID_2" | cut --bytes 1-64 )" || failure 972b3054
+                                                                                                                                                        git checkout -b "$BRANCH_2"
+                                                                                                                                                        git fetch origin main
+                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/mutable-squash" ;
                                                                                                                             mutable-switch =
                                                                                                                                 let
                                                                                                                                     application =
@@ -647,6 +672,7 @@
                                                                                                                                     wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
                                                                                                                                     wrap ${ mutable-rebase } stage/bin/mutable-rebase 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-squash } stage/bin/mutable-squash 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/bin/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                 '' ;
@@ -684,6 +710,7 @@
                                                                                                                                     wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     git fetch origin main 2>&1
                                                                                                                                     git checkout origin/main 2>&1
+                                                                                                                                    git submodule foreach 'git config alias.mutable-squash \'!$MOUNT/stage/bin/mutable-squash\' '
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
