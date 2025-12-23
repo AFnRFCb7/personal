@@ -516,6 +516,7 @@
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
+                                                                                                                                                    # shellcheck disable=SC2016
                                                                                                                                                     git submodule foreach '
                                                                                                                                                         git fetch origin main
                                                                                                                                                         if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
