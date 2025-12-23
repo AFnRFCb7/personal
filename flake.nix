@@ -465,10 +465,10 @@
                                                                                                                                                         export INDEX="$INDEX"
                                                                                                                                                         export MOUNT="$MOUNT"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/${ vm }"
+                                                                                                                                                        WORKSPACE="$MUTABLE_SNAPSHOT/stage/${ vm }"
+                                                                                                                                                        cd "$WORKSPACE"
                                                                                                                                                         nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT/repository#user"
                                                                                                                                                         export SHARED_DIR="$WORKSPACE/shared"
-                                                                                                                                                        mkdir --parents "$SHARED_DIR"
                                                                                                                                                         "$WORKSPACE/result/bin/run-nixos-vm"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
@@ -484,6 +484,7 @@
                                                                                                                                                     export INDEX="$INDEX"
                                                                                                                                                     export MOUNT="$MOUNT"
                                                                                                                                                     MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                    cd "$MOUNT/stage/check"
                                                                                                                                                     nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
                                                                                                                                                 '' ;
                                                                                                                                         } ;
@@ -661,6 +662,7 @@
                                                                                                                                     wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     git fetch origin "$BRANCH" 2>&1
                                                                                                                                     git checkout "$COMMIT" 2>&1
+                                                                                                                                    mkdir --parents /mount/stage/check
                                                                                                                                     mkdir --parents /mount/stage/build-vm/share
                                                                                                                                     mkdir --parents /mount/stage/build-vm-with-bootloader/share
                                                                                                                                     mkdir --parents /mount/stage/test
