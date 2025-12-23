@@ -506,6 +506,50 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-mirror" ;
+                                                                                                                            mutable-rebase =
+                                                                                                                                let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-rebase" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    export INDEX="$INDEX"
+                                                                                                                                                    git submodule foreach --quiet 'pwd' | while IFS= read -r INPUT || [[ -n "$INPUT" ]]
+                                                                                                                                                    do
+                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                        git fetch origin main
+                                                                                                                                                        if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
+                                                                                                                                                        then
+                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure f192db0b
+                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 54d22bae
+                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                            git rebase -i origin/main
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
+                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 9a285a44
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                        fi
+                                                                                                                                                    done >&2
+                                                                                                                                                    cd "$MOUNT/repository"
+                                                                                                                                                    git fetch origin main
+                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure aae710e7
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
+                                                                                                                                                    git checkout -b "$BRANCH" >&2
+                                                                                                                                                    if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
+                                                                                                                                                    then
+                                                                                                                                                        git rebase -i origin/main
+                                                                                                                                                    fi
+                                                                                                                                                    git push origin HEAD >&2
+                                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure d0633308
+                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                    root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                    echo "$MUTABLE_SNAPSHOT"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-rebase" ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
@@ -564,7 +608,7 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "mutable-switch" ;
-                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
+                                                                                                                                                runtimeInputs = [ pkgs.git ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         export INDEX="$INDEX"
@@ -598,6 +642,7 @@
                                                                                                                                     wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/bin/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
+                                                                                                                                    wrap ${ mutable-rebase } stage/bin/mutable-rebase 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/bin/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
