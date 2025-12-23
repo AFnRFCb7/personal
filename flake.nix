@@ -548,6 +548,7 @@
                                                                                                                                                         prompt "mutable-build-vm 1"
                                                                                                                                                         mutable-test
                                                                                                                                                         prompt "mutable-test 1"
+                                                                                                                                                        UUID="$( uuidgen )" || failure fa8428cb
                                                                                                                                                         STUDIO_2="$( studio "$UUID" )" || failure 9a39c637
                                                                                                                                                         diff --recursive "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                         PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
