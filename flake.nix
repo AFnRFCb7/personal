@@ -459,7 +459,7 @@
                                                                                                                                         application = pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "mutable-vm" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ( _failure.implementation "f1543e16" ) "$MOUNT/stage" ] ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ( _failure.implementation "f1543e16" ) "$MOUNT/stage" "$MUTABLE_SNAPSHOT/result" ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         export INDEX="$INDEX"
@@ -469,7 +469,7 @@
                                                                                                                                                         cd "$WORKSPACE"
                                                                                                                                                         nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT/repository#user"
                                                                                                                                                         export SHARED_DIR="$WORKSPACE/shared"
-                                                                                                                                                        "$WORKSPACE/result/bin/run-nixos-vm"
+                                                                                                                                                        run-nixos-vm
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                         in "${ application }/bin/mutable-vm" ;
