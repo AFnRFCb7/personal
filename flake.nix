@@ -438,6 +438,7 @@
                                                                                                     "alias.mutable-build-vm" = stage : "!${ stage }/bin/mutable-build-vm" ;
                                                                                                     "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
+                                                                                                    "alias.mutable-mirror" = stage : "!${ stage }/bin/mutable-mirror" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                 } ;
                                                                                             email = config.personal.repository.private.email ;
@@ -489,6 +490,17 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-check" ;
+                                                                                                                            mutable-mirror =
+                                                                                                                                let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-mirror" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-mirror" ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
