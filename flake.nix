@@ -541,6 +541,7 @@
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         cd "$STUDIO_1"
+                                                                                                                                                        mutable-check
                                                                                                                                                         mutable-rebase
                                                                                                                                                         mutable-check
                                                                                                                                                         mutable-build-vm
