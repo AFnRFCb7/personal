@@ -601,6 +601,7 @@
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/bin/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
