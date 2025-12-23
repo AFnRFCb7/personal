@@ -539,11 +539,11 @@
                                                                                                                                                     else
                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure aae710e7
                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
-                                                                                                                                                        git checkout -b "$BRANCH"
+                                                                                                                                                        git checkout -b "$BRANCH" >&2
                                                                                                                                                     fi
                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                     then
-                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                        git commit -a --verbose >&2
                                                                                                                                                     fi
                                                                                                                                                     git push origin HEAD >&2
                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
