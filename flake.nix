@@ -531,7 +531,7 @@
                                                                                                                                                             NAME="$( basename "$INPUT" )" || failure 8c4f2fea
                                                                                                                                                             nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                         fi
-                                                                                                                                                    done
+                                                                                                                                                    done >&2
                                                                                                                                                     cd "$MOUNT/repository"
                                                                                                                                                     if git symbolic-ref -q HEAD
                                                                                                                                                     then
