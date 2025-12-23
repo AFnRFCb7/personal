@@ -617,7 +617,7 @@
                                                                                                                                                         export INDEX="$INDEX"
                                                                                                                                                         UUID_1="$( uuidgen | sha512sum )" || failure 45239811
                                                                                                                                                         BRANCH_1="$( echo "scratch/$UUID_1" | cut --bytes 1-64 )" || failure 972b3054
-                                                                                                                                                        git checkout -b "$BRANCH_1"                                                                                                                                                        git rev-parse --abbrev-ref HEAD
+                                                                                                                                                        git checkout -b "$BRANCH_1"
                                                                                                                                                         git commit -am "" --allow-empty ""
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         UUID_2="$( uuidgen | sha512sum )" || failure 45239811
