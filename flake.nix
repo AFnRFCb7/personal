@@ -668,6 +668,7 @@
                                                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                                                 gh auth logout
                                                                                                                                                                                 cd "$MOUNT/repository"
+                                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
                                                                                                                                                                                 NAME="$( basename "$name" )" || failure 368e7b07
                                                                                                                                                                                 nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                                             fi
