@@ -557,7 +557,7 @@
                                                                                                                                     wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/bin/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX
+                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
