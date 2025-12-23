@@ -510,7 +510,7 @@
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
-                                                                                                                                                    git submodule foreach 'pwd' | while IFS= read -r INPUT
+                                                                                                                                                    git submodule foreach --quiet 'pwd' | while IFS= read -r INPUT
                                                                                                                                                     do
                                                                                                                                                         cd "$MOUNT/repository/$INPUT"
                                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
