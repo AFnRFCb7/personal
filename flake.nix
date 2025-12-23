@@ -637,12 +637,14 @@
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                             fi
-                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                            # KLUDGE
+                                                                                                                                                            git commit -a --verbose -m "" --allow-empty-message
                                                                                                                                                             git push origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                             NAME="$( basename "$INPUT" )" || failure 8c4f2fea
+                                                                                                                                                            cd "$MOUNT/repository"
                                                                                                                                                             nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                         fi
                                                                                                                                                     done >&2
