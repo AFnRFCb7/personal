@@ -512,7 +512,7 @@
                                                                                                                                                     export INDEX="$INDEX"
                                                                                                                                                     git submodule foreach --quiet 'pwd' | while IFS= read -r INPUT || [[ -n "$INPUT" ]]
                                                                                                                                                     do
-                                                                                                                                                        cd "$MOUNT/repository/$INPUT"
+                                                                                                                                                        cd "$INPUT"
                                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                         then
                                                                                                                                                             if git symbolic-ref -q HEAD
