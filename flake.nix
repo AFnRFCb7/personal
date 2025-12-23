@@ -561,7 +561,7 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "mutable-test" ;
-                                                                                                                                                runtimeInputs = [ ( passwordless-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
+                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         export INDEX="$INDEX"
