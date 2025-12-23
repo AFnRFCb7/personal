@@ -523,7 +523,7 @@
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                             fi
-                                                                                                                                                            git commit --verbose
+                                                                                                                                                            git commit -a --verbose
                                                                                                                                                             git push origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
@@ -543,9 +543,9 @@
                                                                                                                                                     fi
                                                                                                                                                     if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                     then
-                                                                                                                                                        git commit --verbose
+                                                                                                                                                        git commit -a --verbose
                                                                                                                                                     fi
-                                                                                                                                                    git push origin HEAD
+                                                                                                                                                    git push origin HEAD >&2
                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
                                                                                                                                                     MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                     root "$MUTABLE_SNAPSHOT"
