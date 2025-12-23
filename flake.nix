@@ -439,6 +439,7 @@
                                                                                                     "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-mirror" = stage : "!${ stage }/bin/mutable-mirror" ;
+                                                                                                    "alias.mutable-promote" = stage : "!${ stage }/bin/mutable-promote" ;
                                                                                                     "alias.mutable-rebase" = stage : "!${ stage }/bin/mutable-rebase" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                     "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
@@ -507,6 +508,69 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-mirror" ;
+                                                                                                                            mutable-promote =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-promote" ;
+                                                                                                                                                runtimeInputs =
+                                                                                                                                                    [
+                                                                                                                                                        pkgs.coreutils
+                                                                                                                                                        (
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "prompt" ;
+                                                                                                                                                                    runtimeInputs = [ ( _failure.implementation "47d294b6" )  ] ;
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            PROMPT="$1"
+                                                                                                                                                                            read -p "$PROMPT:  " -r ANSWER
+                                                                                                                                                                            if [[ "$ANSWER" != "y" ]]
+                                                                                                                                                                            then
+                                                                                                                                                                                failure "$ANSWER"
+                                                                                                                                                                            fi
+                                                                                                                                                                        '' ;
+                                                                                                                                                                }
+                                                                                                                                                        )
+                                                                                                                                                        ( _failure.implementation "171dfff6" )
+                                                                                                                                                        "$MOUNT/stage"
+                                                                                                                                                    ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        MOUNT="$MOUNT
+                                                                                                                                                        PARENT_1="$MOUNT"
+                                                                                                                                                        STUDIO_1="$PARENT_1/repository"
+                                                                                                                                                        cd "$STUDIO_1"
+                                                                                                                                                        mutable-rebase
+                                                                                                                                                        mutable-check
+                                                                                                                                                        mutable-build-vm
+                                                                                                                                                        prompt "mutable-build-vm 1"
+                                                                                                                                                        mutable-test
+                                                                                                                                                        prompt "mutable-test 1"
+                                                                                                                                                        STUDIO_2="$( studio "$UUID" )" || failure 9a39c637
+                                                                                                                                                        diff --recursive "$STUDIO_1" "$STUDIO_2"
+                                                                                                                                                        PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
+                                                                                                                                                        cd "$STUDIO_2"
+                                                                                                                                                        git -C "$STUDIO_2" mutable-check
+                                                                                                                                                        if ! diff "$PARENT_1/stage/bin/mutable-build-vm" "$PARENT_2/stage/mutable-build-vm"
+                                                                                                                                                        then
+                                                                                                                                                            git -C "$STUDIO_2" mutable build-vm
+                                                                                                                                                            prompt "mutable-build-vm 2"
+                                                                                                                                                        fi
+                                                                                                                                                        if ! diff "$PARENT_1/stage/bin/mutable-test" "$PARENT_2/stage/mutable-test"
+                                                                                                                                                        then
+                                                                                                                                                            git -C "$STUDIO_2" mutable test
+                                                                                                                                                            prompt "mutable-test 2"
+                                                                                                                                                        fi
+                                                                                                                                                        if ! diff "$PARENT_1/stage/bin/mutable-switch" "$PARENT_2/stage/mutable-switch"
+                                                                                                                                                        then
+                                                                                                                                                            prompt "mutable-switch"
+                                                                                                                                                        fi
+                                                                                                                                                        mutable-switch
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/mutable-promote" ;
                                                                                                                             mutable-rebase =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
@@ -692,6 +756,7 @@
                                                                                                                                                         git -C "$MUTABLE_SNAPSHOT/repository" reset --soft origin/main
                                                                                                                                                         git -C "$MUTABLE_SNAPSHOT/repository" commit -a --verbose
                                                                                                                                                         git -C "$MUTABLE_SNAPSHOT/repository" push origin HEAD
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" checkout main
                                                                                                                                                         git -C "$MUTABLE_SNAPSHOT/repository" rebase "$BRANCH"
                                                                                                                                                         git -C "$MUTABLE_SNAPSHOT/repository" push origin main
                                                                                                                                                         cd "$MUTABLE_SNAPSHOT/stage/switch"
@@ -722,6 +787,7 @@
                                                                                                                                     wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/bin/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
+                                                                                                                                    wrap ${ mutable-promote } stage/bin/mutable-promote 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-rebase } stage/bin/mutable-rebase 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-squash } stage/bin/mutable-squash 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
