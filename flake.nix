@@ -541,12 +541,14 @@
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         cd "$STUDIO_1"
+                                                                                                                                                        mutable-check
                                                                                                                                                         mutable-rebase
                                                                                                                                                         mutable-check
                                                                                                                                                         mutable-build-vm
                                                                                                                                                         prompt "mutable-build-vm 1"
                                                                                                                                                         mutable-test
                                                                                                                                                         prompt "mutable-test 1"
+                                                                                                                                                        UUID="$( uuidgen )" || failure fa8428cb
                                                                                                                                                         STUDIO_2="$( studio "$UUID" )" || failure 9a39c637
                                                                                                                                                         diff --recursive "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                         PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
@@ -1178,6 +1180,31 @@
                                                             } ;
                                                         systemd.services =
                                                             let
+                                                                fun =
+                                                                    text :
+                                                                        {
+                                                                            name = builtins.hashString "sha512" text ;
+                                                                            value =
+                                                                                {
+                                                                                    after = [ "network.target" "redis.service" ] ;
+                                                                                    enable = true ;
+                                                                                    serviceConfig =
+                                                                                        {
+                                                                                            ExecStart =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "ExecStart" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text = text ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                            User = config.personal.name ;
+                                                                                        } ;
+                                                                                    wantedBy = [ "multi-user.target" ] ;
+                                                                                } ;
+                                                                        } ;
                                                                 resource-reporter =
                                                                     organization : repository : resolution :
                                                                         {
@@ -1199,8 +1226,12 @@
                                                                             wantedBy = [ "multi-user.target" ] ;
                                                                         } ;
                                                                 in
-                                                                    {
-                                                                    } ;
+                                                                    builtins.listToAttrs
+                                                                        (
+                                                                            [
+                                                                                ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
+                                                                            ]
+                                                                        ) ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
