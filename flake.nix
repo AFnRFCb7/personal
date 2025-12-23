@@ -427,62 +427,6 @@
                                                                 } ;
                                                             repository =
                                                                 {
-                                                                    private =
-                                                                        ignore :
-                                                                            _git-repository.implementation
-                                                                                {
-                                                                                    email = config.personal.repository.private.email ;
-                                                                                    name = config.personal.repository.private.name ;
-                                                                                    remotes.origin = "mobile:private" ;
-                                                                                    ssh = stage : "!${ stage }/ssh" ;
-                                                                                    pre-setup =
-                                                                                        { mount , pkgs , resources , root , wrap } :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "pre-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils root wrap ] ;
-                                                                                                            text =
-                                                                                                                let
-                                                                                                                    ssh =
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "ssh" ;
-                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                ssh -F "$MOUNT/config" "$@"
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                            in "${ application }/bin/ssh" ;
-                                                                                                                    in
-                                                                                                                        ''
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                            root "$DOT_SSH"
-                                                                                                                            ln --symbolic "$DOT_SSH/config" "/mount/stage/config"
-                                                                                                                            wrap "${ ssh }" stage/ssh 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                        '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/pre-setup" ;
-                                                                                    post-setup =
-                                                                                        { mount , pkgs , resources , root , wrap } :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "post-setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    git fetch origin main
-                                                                                                                    git checkout origin/main
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/post-setup" ;
-                                                                                } ;
                                                                     studio =
                                                                         {
                                                                             entry =
@@ -494,18 +438,13 @@
                                                                                                     "alias.mutable-build-vm" = stage : "!${ stage }/bin/mutable-build-vm" ;
                                                                                                     "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
-                                                                                                    "alias.mutable-converge" = stage : "!${ stage }/bin/mutable-converge" ;
-                                                                                                    "alias.mutable-hydrate" = stage : "!${ stage }/bin/mutable-hydrate" ;
-                                                                                                    "alias.mutable-nurse" = stage : "!${ stage }/bin/mutable-nurse" ;
+                                                                                                    "alias.mutable-mirror" = stage : "!${ stage }/bin/mutable-mirror" ;
                                                                                                     "alias.mutable-rebase" = stage : "!${ stage }/bin/mutable-rebase" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                     "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
                                                                                                     "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
-                                                                                                    "alias.mutable-token" = stage : "!${ stage }/bin/mutable-token" ;
-                                                                                                    "core.sshCommand" = stage : "${ stage }/bin/ssh" ;
                                                                                                 } ;
                                                                                             email = config.personal.repository.private.email ;
-                                                                                            follow-parent = true ;
                                                                                             name = config.personal.repository.private.name ;
                                                                                             post-setup =
                                                                                                 { mount , pkgs , resources , root , wrap } :
@@ -514,311 +453,184 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "post-setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git wrap ] ;
+                                                                                                                    runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             mutable-build-vm =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                vm :
+                                                                                                                                    let
+                                                                                                                                        application = pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                name = "mutable-build-vm" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild failure "$MOUNT/stage" ] ;
+                                                                                                                                                name = "mutable-vm" ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ( _failure.implementation "f1543e16" ) "$MOUNT/stage"  ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                        mkdir --parents "$MUTABLE_SNAPSHOT/stage/$VM/shared"
-                                                                                                                                                        export SHARED_DIR="$MUTABLE_SNAPSHOT/stage/$VM/shared"
-                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/$VM"
-                                                                                                                                                        echo 6e3f00cb "$VM"
-                                                                                                                                                        echo nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/bin/ssh"
-                                                                                                                                                        nixos-rebuild "$VM" --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                        ./result/bin/run-nixos-vm
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        export MOUNT="$MOUNT"
+                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                        WORKSPACE="$MUTABLE_SNAPSHOT/stage/${ vm }"
+                                                                                                                                                        cd "$WORKSPACE"
+                                                                                                                                                        nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT/repository#user"
+                                                                                                                                                        export SHARED_DIR="$WORKSPACE/shared"
+                                                                                                                                                        "$WORKSPACE/result/bin/run-nixos-vm"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/mutable-build-vm" ;
+                                                                                                                                        in "${ application }/bin/mutable-vm" ;
                                                                                                                             mutable-check =
                                                                                                                                 let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-check" ;
-                                                                                                                                                runtimeInputs = [ pkgs.nix failure "$MOUNT/stage" ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                        echo 7da6d4b4
-                                                                                                                                                        echo nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
-                                                                                                                                                        nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-check" ;
+                                                                                                                                            runtimeInputs = [ pkgs.nix ( _failure.implementation "f1543e16" ) "$MOUNT/stage" ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    export INDEX="$INDEX"
+                                                                                                                                                    export MOUNT="$MOUNT"
+                                                                                                                                                    MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                    cd "$MUTABLE_SNAPSHOT/stage/check"
+                                                                                                                                                    nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
                                                                                                                                     in "${ application }/bin/mutable-check" ;
-                                                                                                                            mutable-converge =
+                                                                                                                            mutable-mirror =
                                                                                                                                 let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-converge" ;
-                                                                                                                                                runtimeInputs =
-                                                                                                                                                    [
-                                                                                                                                                        pkgs.coreutils
-                                                                                                                                                        pkgs.git
-                                                                                                                                                        (
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "dialog" ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            PROMPT="$1"
-                                                                                                                                                                            read -r -p "$PROMPT" ANSWER
-                                                                                                                                                                            LOWER_CASE="${ builtins.concatStringsSep "" [ "$" "{" "ANSWER,," "}" ] }"
-                                                                                                                                                                            TRIM_LEAD="${ builtins.concatStringsSep "" [ "$" "{" "LOWER_CASE## " "}" ] }"
-                                                                                                                                                                            TRIM_TAIL="${ builtins.concatStringsSep "" [ "$" "{" "TRIM_LEAD%% " "}" ] }"
-                                                                                                                                                                            case "$TRIM_TAIL" in
-                                                                                                                                                                                y|yes)
-                                                                                                                                                                                    exit 0
-                                                                                                                                                                                    ;;
-                                                                                                                                                                                *)
-                                                                                                                                                                                    exit 64
-                                                                                                                                                                                    ;;
-                                                                                                                                                                            esac
-                                                                                                                                                                        '' ;
-                                                                                                                                                                }
-                                                                                                                                                        )
-                                                                                                                                                        "$MOUNT/stage"
-                                                                                                                                                    ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        mutable-check
-                                                                                                                                                        mutable-build-vm
-                                                                                                                                                        dialog 1rst virtual machine
-                                                                                                                                                        mutable-test
-                                                                                                                                                        dialog 1rst test
-                                                                                                                                                        UUID="$( uuidgen )" || failure bb3aa1c9
-                                                                                                                                                        STUDIO=${ resources.production.repository.studio.entry ( setup : "${ setup } $UUID" ) }
-                                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 1b8fad39
-                                                                                                                                                        cd "$STUDIO"
-                                                                                                                                                        git mutable-hydrate "$BRANCH"
-                                                                                                                                                        if ! diff --unified "$MOUNT/repository" "$STUDIO"
-                                                                                                                                                        then
-                                                                                                                                                            failure b1044274 "We expect the old and new repository to be exactly the same"
-                                                                                                                                                        fi
-                                                                                                                                                        PARENT="$( dirname "$STUDIO" )" || failure fe525983
-                                                                                                                                                        if ! diff --unified "$MOUNT/stage/bin/mutable-check" "$PARENT/bin/mutable-check"
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-check
-                                                                                                                                                        fi
-                                                                                                                                                        if ! diff --unified "$MOUNT/stage/bin/mutable-build-vm" "$PARENT/bin/mutable-build-vm"
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-build-vm
-                                                                                                                                                            dialog 2nd virtual machine
-                                                                                                                                                        fi
-                                                                                                                                                        if ! diff --unified "$MOUNT/stage/bin/mutable-test" "$PARENT/bin/mutable-test"
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-test
-                                                                                                                                                            dialog 2nd test
-                                                                                                                                                        fi
-                                                                                                                                                        git mutable-switch
-                                                                                                                                                        echo a01a96e6
-                                                                                                                                                        echo ALL DONE
-
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/mutable-converge" ;
-                                                                                                                            mutable-nurse =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-nurse" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        INPUT="$1"
-                                                                                                                                                        USER_NAME="$2"
-                                                                                                                                                        REPO_NAME="$3"
-                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                        gh repo create "$USER_NAME/$REPO_NAME" --public
-                                                                                                                                                        gh auth logout
-                                                                                                                                                        mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
-                                                                                                                                                        cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
-                                                                                                                                                        git init
-                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                        git checkout -b main
-                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                        git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                        git push origin HEAD
-                                                                                                                                                        cd "$MOUNT/repository"
-                                                                                                                                                        git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
-                                                                                                                                                        cd "$MOUNT/repository/inputs/$INPUT"
-                                                                                                                                                        git config alias.mutable-scratch "!$MOUNT/stage/mutable-scratch"
-                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
-                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                        git mutable-scratch
-                                                                                                                                                        root ${ pkgs.git }
-                                                                                                                                                        root ${ pkgs.openssh }
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/mutable-nurse" ;
-                                                                                                                            mutable-snapshot =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-snapshot" ;
-                                                                                                                                                runtimeInputs =
-                                                                                                                                                    [
-                                                                                                                                                        pkgs.coreutils
-                                                                                                                                                        pkgs.git
-                                                                                                                                                        pkgs.findutils
-                                                                                                                                                        (
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "input-commit" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "21903ae1" ) ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            INPUT="$1"
-                                                                                                                                                                            cd "$INPUT"
-                                                                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                            then
-                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 1eb7886e
-                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure d9c088e3
-                                                                                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                                                                                git commit -a --verbose
-                                                                                                                                                                            fi
-                                                                                                                                                                            if git symbolic-ref -q HEAD && ! git push origin HEAD
-                                                                                                                                                                            then
-                                                                                                                                                                                failure bd86e33d
-                                                                                                                                                                            fi
-                                                                                                                                                                        '' ;
-                                                                                                                                                                }
-                                                                                                                                                        )
-                                                                                                                                                        (
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "input-check" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.git ( _failure.implementation "2242987d" ) ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            INPUT="$1"
-                                                                                                                                                                            cd "$INPUT"
-                                                                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                            then
-                                                                                                                                                                                failure 9aff5897
-                                                                                                                                                                            fi
-                                                                                                                                                                            if git symbolic-ref -q HEAD && ! git push origin HEAD
-                                                                                                                                                                            then
-                                                                                                                                                                                failure 8941ea19
-                                                                                                                                                                            fi
-                                                                                                                                                                        '' ;
-                                                                                                                                                                }
-                                                                                                                                                        )
-                                                                                                                                                        failure
-                                                                                                                                                        "$MOUNT/stage"
-                                                                                                                                                    ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-commit {} \; >&2
-                                                                                                                                                        find "$MOUNT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec input-check {} \; >&2
-                                                                                                                                                        cd "$MOUNT/repository"
-                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                        then
-                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure f32d1269
-                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 38ae47bb
-                                                                                                                                                            git checkout -b "$BRANCH"
-                                                                                                                                                            git commit -a --verbose >&2
-                                                                                                                                                        fi
-                                                                                                                                                        if git symbolic-ref -q HEAD >&2 && ! git push origin HEAD >&2
-                                                                                                                                                        then
-                                                                                                                                                            failure 07691db9
-                                                                                                                                                        fi
-                                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure c4041044
-                                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure 12e24cf0
-                                                                                                                                                        MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''echo | ${ setup } "$BRANCH" "$COMMIT"'' ) }
-                                                                                                                                                        root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                        echo "$MUTABLE_SNAPSHOT"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                        in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-mirror" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    BRANCH="$1"
+                                                                                                                                                    git fetch origin "$BRANCH"
+                                                                                                                                                    git checkout "origin/$BRANCH"
+                                                                                                                                                    git submodule update --init --recursive
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-mirror" ;
                                                                                                                             mutable-rebase =
                                                                                                                                 let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-rebase" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    export INDEX="$INDEX"
+                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                    git submodule foreach '
+                                                                                                                                                        git fetch origin main
+                                                                                                                                                        if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
+                                                                                                                                                        then
+                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
+                                                                                                                                                            cd "$MOUNT/repository/$name"
+                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure f192db0b
+                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 54d22bae
+                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                            git rebase -i origin/main
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
+                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                            NAME="$( basename "$name" )" || failure 9a285a44
+                                                                                                                                                            cd "$MOUNT/repository"
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                        fi
+                                                                                                                                                    ' >&2
+                                                                                                                                                    cd "$MOUNT/repository"
+                                                                                                                                                    git fetch origin main
+                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure aae710e7
+                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
+                                                                                                                                                    git checkout -b "$BRANCH" >&2
+                                                                                                                                                    git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                    git rebase -i origin/main
+                                                                                                                                                    git push origin HEAD >&2
+                                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure d0633308
+                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                    root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                    echo "$MUTABLE_SNAPSHOT"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-rebase" ;
+                                                                                                                            mutable-snapshot =
+                                                                                                                                let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-snapshot" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    export INDEX="$INDEX"
+                                                                                                                                                    git submodule foreach --quiet 'pwd' | while IFS= read -r INPUT || [[ -n "$INPUT" ]]
+                                                                                                                                                    do
+                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                        then
+                                                                                                                                                            if git symbolic-ref --quiet HEAD
+                                                                                                                                                            then
+                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
+                                                                                                                                                            else
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                            fi
+                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 8c4f2fea
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                        fi
+                                                                                                                                                    done >&2
+                                                                                                                                                    cd "$MOUNT/repository"
+                                                                                                                                                    if git symbolic-ref --quiet HEAD >&2
+                                                                                                                                                    then
+                                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
+                                                                                                                                                    else
+                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure aae710e7
+                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                        git checkout -b "$BRANCH" >&2
+                                                                                                                                                    fi
+                                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                    then
+                                                                                                                                                        git commit -a --verbose >&2
+                                                                                                                                                    fi
+                                                                                                                                                    git push origin HEAD >&2
+                                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
+                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                    root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                    echo "$MUTABLE_SNAPSHOT"
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                            mutable-squash =
+                                                                                                                                let
                                                                                                                                     application =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                name = "mutable-rebase" ;
-                                                                                                                                                runtimeInputs =
-                                                                                                                                                    [
-                                                                                                                                                        pkgs.findutils
-                                                                                                                                                        pkgs.git
-                                                                                                                                                        ( _failure.implementation "000d52f4" )
-                                                                                                                                                        (
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "mutable-rebase-input" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.git ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            INPUT="$1"
-                                                                                                                                                                            STATUS="$2"
-                                                                                                                                                                            cleanup ( ) {
-                                                                                                                                                                                EXIT_CODE="$?"
-                                                                                                                                                                                if [[ 0 != "$EXIT_CODE" ]]
-                                                                                                                                                                                then
-                                                                                                                                                                                    cat > "$STATUS/FLAG" <<EOF
-                                                                                                                                                                            INPUT="$INPUT"
-                                                                                                                                                                            EXIT_CODE="$EXIT_CODE"
-                                                                                                                                                                            EOF
-                                                                                                                                                                                fi
-                                                                                                                                                                            }
-                                                                                                                                                                            trap cleanup EXIT
-                                                                                                                                                                            if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                            then
-                                                                                                                                                                                git mutable-scratch
-                                                                                                                                                                                git commit -a --verbose --allow-empty-message
-                                                                                                                                                                                git push origin HEAD
-                                                                                                                                                                            fi
-                                                                                                                                                                            git fetch origin main
-                                                                                                                                                                            if ! git diff --quiet origin/main || ! git diff --quiet --cached
-                                                                                                                                                                            then
-                                                                                                                                                                                git mutable-scratch
-                                                                                                                                                                                git rebase -i origin/main
-                                                                                                                                                                                git push origin HEAD
-                                                                                                                                                                            fi
-                                                                                                                                                                        '' ;
-                                                                                                                                                                }
-                                                                                                                                                        )
-                                                                                                                                                    ] ;
+                                                                                                                                                name = "mutable-squash" ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "5b1cf042" ) ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        STATUS=${ resources.production.temporary ( setup : setup ) }
-                                                                                                                                                        find inputs -mindepth 1 -maxdepth 1 -type d -exec mutable-rebase-input {} "$STATUS" \;
-                                                                                                                                                        if [[ -f "$STATUS/FLAG" ]]
-                                                                                                                                                        then
-                                                                                                                                                            FAILURE="$( cat "$STATUS/FLAG" )" || failure 68f97f84
-                                                                                                                                                            failure 74c899c7 "$FAILURE"
-                                                                                                                                                        fi
-                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-scratch
-                                                                                                                                                            git commit -a --verbose --allow-empty
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                        fi
+                                                                                                                                                        NAME="$1"
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        UUID_1="$( uuidgen | sha512sum )" || failure 45239811
+                                                                                                                                                        BRANCH_1="$( echo "scratch/$UUID_1" | cut --bytes 1-64 )" || failure 972b3054
+                                                                                                                                                        git checkout -b "$BRANCH_1"
+                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        UUID_2="$( uuidgen | sha512sum )" || failure 45239811
+                                                                                                                                                        BRANCH_2="$( echo "scratch/$UUID_2" | cut --bytes 1-64 )" || failure 972b3054
+                                                                                                                                                        git checkout -b "$BRANCH_2"
                                                                                                                                                         git fetch origin main
-                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
-                                                                                                                                                        then
-                                                                                                                                                            git mutable-scratch
-                                                                                                                                                            git rebase -i origin/main
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                        fi
+                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        cd "$MOUNT/repository"
+                                                                                                                                                        nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                        in "${ application }/bin/mutable-rebase" ;
+                                                                                                                                    in "${ application }/bin/mutable-squash" ;
                                                                                                                             mutable-switch =
                                                                                                                                 let
                                                                                                                                     application =
@@ -828,237 +640,97 @@
                                                                                                                                                 runtimeInputs =
                                                                                                                                                     [
                                                                                                                                                         pkgs.coreutils
-                                                                                                                                                        pkgs.findutils
                                                                                                                                                         pkgs.git
                                                                                                                                                         pkgs.libuuid
+                                                                                                                                                        ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
                                                                                                                                                         (
                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                 {
-                                                                                                                                                                    name = "switch-input" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.gh pkgs.git pkgs.libuuid ( _failure.implementation "cd25bae1" ) ] ;
+                                                                                                                                                                    name = "pull-request" ;
+                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.nix ( _failure.implementation "c0f7e8f6" ) ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
-                                                                                                                                                                            INPUT="$1"
-                                                                                                                                                                            cd "$INPUT"
                                                                                                                                                                             git fetch origin main
-                                                                                                                                                                            if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                            if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
                                                                                                                                                                             then
-                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 88274fbd
-                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 45efcd76
+                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 330deebb
+                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 05b3c1ba
                                                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                                                git reset --soft origin/main
-                                                                                                                                                                                git commit -a --verbose
                                                                                                                                                                                 git push origin HEAD
-                                                                                                                                                                                STAMP="$( date +%s )" || failure 61a67fa4
-                                                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : ''${ setup } "$STAMP"'' ) }
+                                                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                                 if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                                 then
                                                                                                                                                                                     gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
                                                                                                                                                                                 fi
                                                                                                                                                                                 gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 15f039fa
+                                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
                                                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                                                 gh auth logout
-                                                                                                                                                                                INPUT_NAME="$( basename "$INPUT" )" || failure 73ea774d
                                                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                                                echo ac4aa778
-                                                                                                                                                                                echo nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
-                                                                                                                                                                                nix flake update --flake "$MOUNT/repository" --update-input "$INPUT_NAME"
+                                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
+                                                                                                                                                                                NAME="$( basename "$name" )" || failure 368e7b07
+                                                                                                                                                                                nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                                             fi
                                                                                                                                                                         '' ;
                                                                                                                                                                 }
                                                                                                                                                         )
-                                                                                                                                                        ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" )
-                                                                                                                                                        failure
                                                                                                                                                         "$MOUNT/stage"
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                        find "$MUTABLE_SNAPSHOT/repository/inputs" -mindepth 1 -maxdepth 1 -type d -exec switch-input {} \;
-                                                                                                                                                        find "$MUTABLE_SNAPSHOT/repository/inputs" -mindepth 1 -maxdepth 1 -type d | while read -r INPUT
-                                                                                                                                                        do
-                                                                                                                                                            cd "$INPUT"
-                                                                                                                                                            git fetch origin main
-                                                                                                                                                            if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
-                                                                                                                                                            then
-                                                                                                                                                                failure 0681c812 "$INPUT" "We were expecting that $INPUT would be merged into main"
-                                                                                                                                                            fi
-                                                                                                                                                        done
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        export MOUNT="$MOUNT"
+                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 3a3614b1
                                                                                                                                                         cd "$MUTABLE_SNAPSHOT/repository"
-                                                                                                                                                        git fetch origin main
-                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
-                                                                                                                                                        then
-                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure cda8ea15
-                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1851292e
-                                                                                                                                                            git checkout -b "$BRANCH"
-                                                                                                                                                            git reset --soft origin/main
-                                                                                                                                                            git commit -a --verbose
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                            git checkout main
-                                                                                                                                                            git rebase "$BRANCH"
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure cda8ea15
-                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1851292e
-                                                                                                                                                            git checkout -b "$BRANCH"
-                                                                                                                                                        fi
-                                                                                                                                                        mkdir --parents "$MUTABLE_SNAPSHOT/stage/switch"
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" submodule foreach pull-request
+                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 0f1227b6
+                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" checkout -b "$BRANCH"
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" fetch origin main
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" reset --soft origin/main
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" commit -a --verbose
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" push origin HEAD
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" rebase "$BRANCH"
+                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" push origin main
                                                                                                                                                         cd "$MUTABLE_SNAPSHOT/stage/switch"
-                                                                                                                                                        echo 51be1f9f
-                                                                                                                                                        echo nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/bin/ssh"
                                                                                                                                                         nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/mutable-switch" ;
+                                                                                                                                        in "${ application }/bin/mutable-switch" ;
                                                                                                                             mutable-test =
                                                                                                                                 let
                                                                                                                                     application =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "mutable-test" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) failure "$MOUNT/stage" ] ;
+                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure 58b7b4c0
-                                                                                                                                                        mkdir --parents "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        export MOUNT="$MOUNT"
+                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
                                                                                                                                                         cd "$MUTABLE_SNAPSHOT/stage/test"
-                                                                                                                                                        echo 6a311d22 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
-                                                                                                                                                        echo nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                        echo e9c1b1d7 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
-                                                                                                                                                        git -C "$MUTABLE_SNAPSHOT/repository" config --get core.sshCommand
-                                                                                                                                                        echo 8329ca96
-                                                                                                                                                        cat "$MUTABLE_SNAPSHOT/stage/bin/ssh"
-                                                                                                                                                        echo
-                                                                                                                                                        echo ae629986
-                                                                                                                                                        cat "$MUTABLE_SNAPSHOT/stage/.ssh/config"
-                                                                                                                                                        echo
-                                                                                                                                                        echo 3098d2de00adab
-                                                                                                                                                        # unset GIT_SSH_COMMAND
-                                                                                                                                                        # git -C "$MUTABLE_SNAPSHOT/repository" config --unset core.sshCommand
-                                                                                                                                                        echo ed0771c6
                                                                                                                                                         nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
-                                                                                                                                                        echo d1ae9195 "MUTABLE_SNAPSHOT=$MUTABLE_SNAPSHOT"
-                                                                                                                                                        root "$MUTABLE_SNAPSHOT"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/mutable-test" ;
-                                                                                                                            mutable-token =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-token" ;
-                                                                                                                                                runtimeInputs = [ pkgs.age pkgs.gh pkgs.git pkgs.gnugrep pkgs.gnused pkgs.nix ( _failure.implementation "cdb68625" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        if [ -t 0 ]
-                                                                                                                                                        then
-                                                                                                                                                            read -s -p "TOKEN:  " -r TOKEN
-                                                                                                                                                        else
-                                                                                                                                                            TOKEN="$( cat )" || failure 70f59771
-                                                                                                                                                        fi
-                                                                                                                                                        SECRETS=${ resources.production.repository.studio.token ( setup : ''${ setup } "$TOKEN"'') }
-                                                                                                                                                        BRANCH_1="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 721e9e0e
-                                                                                                                                                        while ! git -C "$MOUNT/repository/inputs/secrets" fetch origin "$BRANCH_1"
-                                                                                                                                                        do
-                                                                                                                                                            sleep 1s
-                                                                                                                                                        done
-                                                                                                                                                        git -C "$MOUNT/repository/inputs/secrets" checkout "origin/$BRANCH_1" github-token.asc.age
-                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 0402d213
-                                                                                                                                                        BRANCH_2="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 4547e6d3
-                                                                                                                                                        git -C "$MOUNT/repository/inputs/secrets" checkout -b "$BRANCH_2"
-                                                                                                                                                        git -C "$MOUNT/repository/inputs/secrets" commit -am "TOKEN REFRESH"
-                                                                                                                                                        git -C "$MOUNT/repository/inputs/secrets" push origin HEAD
-                                                                                                                                                        nix flake update --flake "$MOUNT/repository" --update-input secrets
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/mutable-token" ;
+                                                                                                                                        in "${ application }/bin/mutable-test" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    wrap ${ mutable-build-vm } stage/bin/mutable-build-vm 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }" --set-plain VM "build-vm"
-                                                                                                                                    wrap ${ mutable-build-vm } stage/bin/mutable-build-vm-with-bootloader 0500 --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }" --set-plain VM "build-vm-with-bootloader"
-                                                                                                                                    wrap ${ mutable-converge } stage/bin/mutable-converge 0500 --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-check } stage/bin/mutable-check 0500 --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-nurse } stage/bin/mutable-nurse 0500 --literal INPUT --literal COMMIT --literal REPO_NAME --literal USER_NAME --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-rebase } stage/bin/mutable-rebase 0500 --literal FAILURE --literal STATUS --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --literal BRANCH --literal COMMIT --literal "MUTABLE_SNAPSHOT" --literal PATH --literal "UUID" --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --literal STAMP --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-test } stage/bin/mutable-test 0500 --literal GIT_SSH_COMMAND --literal MUTABLE_SNAPSHOT --literal PATH --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-token } stage/bin/mutable-token 0500 --literal BRANCH --literal PATH --literal PR_OUTPUT --literal PR_NUMBER --literal RECIPIENTS --literal RECIPIENTS_FILE --literal TOKEN --literal UUID --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/bin/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
+                                                                                                                                    wrap ${ mutable-rebase } stage/bin/mutable-rebase 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-squash } stage/bin/mutable-squash 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-test } stage/bin/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    git submodule foreach "git config alias.mutable-squash \"!${ mount }/stage/bin/mutable-squash\""
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
-                                                                                            pre-setup =
-                                                                                                { mount , pkgs , resources , root , wrap } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git root wrap ] ;
-                                                                                                                    text =
-                                                                                                                        let
-                                                                                                                            mutable-hydrate =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-hydrate" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils ( _failure.implementation "" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        BRANCH="$1"
-                                                                                                                                                        GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure cbe949dd
-                                                                                                                                                        export GIT_SSH_COMMAND
-                                                                                                                                                        cd "$MOUNT/repository"
-                                                                                                                                                        git fetch origin "$BRANCH" > /trace
-                                                                                                                                                        git checkout "origin/$BRANCH" > /trace
-                                                                                                                                                        git submodule sync > /trace
-                                                                                                                                                        git submodule update --init --recursive > /trace
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                in "${ application }/bin/mutable-hydrate" ;
-                                                                                                                            ssh =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "ssh" ;
-                                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        ssh -F "$MOUNT/stage/config" "$@"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/ssh" ;
-                                                                                                                        in
-                                                                                                                            ''
-                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
-                                                                                                                                root "$DOT_SSH"
-                                                                                                                                ln --symbolic "$DOT_SSH/config" /mount/stage/config
-                                                                                                                                wrap ${ mutable-hydrate } stage/bin/mutable-hydrate 0500 --literal BRANCH --literal COMMIT --set-plain MOUNT "${ mount }"
-                                                                                                                                wrap ${ ssh } stage/ssh 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                git mutable-hydrate ${ config.personal.repository.private.branch }
-                                                                                                                            '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/setup" ;
-                                                                                            remotes =
-                                                                                                {
-                                                                                                    laptop = config.personal.repository.private.alternate ;
-                                                                                                    origin = config.personal.repository.private.remote ;
-                                                                                                } ;
-                                                                                            resolutions = [ "dot-gnupg" "dot-ssh" "failure" "fixture" "no-op" "personal" "private" "resource" "resource-logger" "resource-releaser" "resource-reporter" "secret" "secrets" "string" "visitor"] ;
-                                                                                            ssh = stage : "${ stage }/ssh" ;
-                                                                                        } ;
-                                                                            snapshot =
-                                                                                ignore :
-                                                                                    _git-repository.implementation
-                                                                                        {
-                                                                                            email = config.personal.repository.private.email ;
-                                                                                            name = config.personal.repository.private.name ;
                                                                                             pre-setup =
                                                                                                 { mount , pkgs , resources , root , wrap } :
                                                                                                     let
@@ -1072,7 +744,7 @@
                                                                                                                             ssh =
                                                                                                                                 let
                                                                                                                                     application =
-                                                                                                                                       pkgs.writeShellApplication
+                                                                                                                                        pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "ssh" ;
                                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
@@ -1081,73 +753,28 @@
                                                                                                                                                         ssh -F "$MOUNT/stage/.ssh/config" "$@"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/ssh" ;
-
+                                                                                                                                        in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    BRANCH="$1"
-                                                                                                                                    COMMIT="$2"
                                                                                                                                     root ${ pkgs.openssh }
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
-                                                                                                                                    mkdir --parents "${ mount }/stage/.ssh"
-                                                                                                                                    ln --symbolic "$DOT_SSH/config" "${ mount }/stage/.ssh/config"
-                                                                                                                                    wrap ${ ssh } stage/bin/ssh 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                    export GIT_SSH_COMMAND="${ ssh }"
-                                                                                                                                    if [[ "HEAD" == "$BRANCH" ]]
-                                                                                                                                    then
-                                                                                                                                        git fetch origin 2> "${ mount }/stage/KLUDGE"
-                                                                                                                                    else
-                                                                                                                                        git fetch origin "$BRANCH" 2> "${ mount }/stage/KLUDGE"
-                                                                                                                                    fi
-                                                                                                                                    git checkout "$COMMIT" 2> "${ mount }/stage/KLUDGE"
+                                                                                                                                    wrap "$DOT_SSH/config" stage/.ssh/config 0400
+                                                                                                                                    wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    git fetch origin main 2>&1
+                                                                                                                                    git checkout origin/main 2>&1
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
                                                                                             remotes.origin = config.personal.repository.private.remote ;
                                                                                             ssh = stage : "${ stage }/bin/ssh" ;
                                                                                         } ;
-                                                                            token =
+                                                                            snapshot =
                                                                                 ignore :
                                                                                     _git-repository.implementation
                                                                                         {
                                                                                             email = config.personal.repository.private.email ;
                                                                                             name = config.personal.repository.private.name ;
-                                                                                            ssh = stage : "${ stage }/bin/ssh" ;
-                                                                                            post-setup =
-                                                                                                { mount , pkgs , resources , root , wrap } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "post-setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "d3a8b70f" )  ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            git fetch origin main > /trace
-                                                                                                                            git checkout origin/main > /trace
-                                                                                                                            TOKEN="$1"
-                                                                                                                            RECIPIENTS_FILE=${ resources.production.age.public ( setup : setup ) }
-                                                                                                                            RECIPIENTS="$( cat "$RECIPIENTS_FILE/public" )" || fail 32f8762a
-                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure df33ea1f
-                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 9d0723b7
-                                                                                                                            git checkout -b "$BRANCH" > /trace
-                                                                                                                            age --encrypt --recipient "$RECIPIENTS" <<< "$TOKEN" > github-token.asc.age
-                                                                                                                            git add github-token.asc.age > /trace
-                                                                                                                            git commit -am "Automated Token Refresh" > /trace
-                                                                                                                            git push origin HEAD > /trace
-                                                                                                                            gh auth login --with-token <<< "$TOKEN" > /trace
-                                                                                                                            if ! gh label list --json name --jq '.[].name' | grep -qx token-refresh
-                                                                                                                            then
-                                                                                                                                gh label create token-refresh --color "#ffcc00" --description "Token Refresh" > /trace
-                                                                                                                            fi
-                                                                                                                            gh pr create --base main --head "$BRANCH" --label "token-refresh" --title "Automated Token Refresh" --body "We should do this weekly because the token lasts 28 days." > /trace
-                                                                                                                            URL="$( gh pr view --json url --jq .url )" || failure dce0301b
-                                                                                                                            gh pr merge "$URL" --rebase > /trace
-                                                                                                                            gh auth logout > /trace
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/post-setup" ;
                                                                                             pre-setup =
                                                                                                 { mount , pkgs , resources , root , wrap } :
                                                                                                     let
@@ -1173,17 +800,80 @@
                                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
+                                                                                                                                    BRANCH="$1"
+                                                                                                                                    COMMIT="$2"
                                                                                                                                     root ${ pkgs.openssh }
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/.ssh/config 0400
-                                                                                                                                    wrap ${ ssh } stage/bin/ssh 0500 --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    git fetch origin "$BRANCH" 2>&1
+                                                                                                                                    git checkout "$COMMIT" 2>&1
+                                                                                                                                    mkdir --parents /mount/stage/check
+                                                                                                                                    mkdir --parents /mount/stage/build-vm/shared
+                                                                                                                                    mkdir --parents /mount/stage/build-vm-with-bootloader/shared
+                                                                                                                                    mkdir --parents /mount/stage/test
+                                                                                                                                    mkdir --parents /mount/stage/switch
+                                                                                                                                    mkdir --parents /mount/stage/converge
                                                                                                                                 '' ;
                                                                                                                 } ;
-                                                                                                            in "${ application }/bin/pre-setup" ;
-                                                                                            remotes.origin = config.personal.repository.secrets.remote ;
+                                                                                                        in "${ application }/bin/pre-setup" ;
+                                                                                            remotes.origin = config.personal.repository.private.remote ;
+                                                                                            ssh = stage : "${ stage }/bin/ssh" ;
                                                                                         } ;
                                                                         } ;
+                                                                } ;
+                                                            scripts =
+                                                                {
+                                                                    snapshot =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                snapshot =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "snapshot" ;
+                                                                                                                            runtimeInputs = [ pkgs.git ( _failure.implementation "5afc908c" ) ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                    then
+                                                                                                                                        if git symbolic-ref -q HEAD
+                                                                                                                                        then
+                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
+                                                                                                                                        else
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                        fi
+                                                                                                                                        git commit --verbose
+                                                                                                                                        NAME="$( basename "$name" )" || failure e006c4e7
+                                                                                                                                        git push origin HEAD
+                                                                                                                                        TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                        TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                        export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                        nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                    fi
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/snapshot"
+                                                                                                            ''
+                                                                                                                NAME="$1"
+                                                                                                                wrap ${ snapshot } script 0500 --literal BRANCH --literal UUID --
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "script" ] ;
+                                                                            } ;
                                                                 } ;
                                                             secrets =
                                                                 {
@@ -1443,86 +1133,6 @@
                                                                         } ;
                                                                 in
                                                                     {
-                                                                        private-reporter =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ];
-                                                                                enable = true ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart = _private-reporter.implementation { channel = config.personal.channel ; private = resources__.production.repository.studio.private ( setup : setup ) ; resolution = "private" ; } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-resolver =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-resolver.implementation
-                                                                                                {
-                                                                                                    channel = config.personal.channel ;
-                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                                } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-logger =
-                                                                           {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
-                                                                                requires = [ "redis.service" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-logger.implementation
-                                                                                                {
-                                                                                                    channel = config.personal.channel ;
-                                                                                                    log-directory = "/home/${ config.personal.name }/resources/log" ;
-                                                                                                } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-releaser =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-releaser.implementation
-                                                                                                {
-                                                                                                    channel = config.personal.channel ;
-                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                                    links-directory = "/home/${ config.personal.name }/resources/links" ;
-                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
-                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                                    trace-directory = "/home/${ config.personal.name }/resources/trace" ;
-                                                                                                } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-reporter-dot-gnupg = resource-reporter config.personal.repository.dot-gnupg.organization config.personal.repository.dot-gnupg.repository "dot-gnupg" ;
-                                                                        resource-reporter-dot-ssh = resource-reporter config.personal.repository.dot-ssh.organization config.personal.repository.dot-ssh.repository "dot-ssh" ;
-                                                                        resource-reporter-failure = resource-reporter config.personal.repository.failure.organization config.personal.repository.failure.repository "failure" ;
-                                                                        resource-reporter-fixture = resource-reporter config.personal.repository.fixture.organization config.personal.repository.fixture.repository "fixture" ;
-                                                                        resource-reporter-git-repository = resource-reporter config.personal.repository.git-repository.organization config.personal.repository.git-repository.repository "git-repository" ;
-                                                                        resource-reporter-personal = resource-reporter config.personal.repository.personal.organization config.personal.repository.personal.repository "personal" ;
-                                                                        resource-reporter-resource = resource-reporter config.personal.repository.resource.organization config.personal.repository.resource.repository "resource" ;
-                                                                        resource-reporter-resource-logger = resource-reporter config.personal.repository.resource-logger.organization config.personal.repository.resource-logger.repository "resource-logger" ;
-                                                                        resource-reporter-resource-releaser = resource-reporter config.personal.repository.resource-releaser.organization config.personal.repository.resource-releaser.repository "resource-releaser" ;
-                                                                        resource-reporter-resource-reporter = resource-reporter config.personal.repository.resource-reporter.organization config.personal.repository.resource-reporter.repository "resource-reporter" ;
-                                                                        resource-reporter-resource-resolver = resource-reporter config.personal.repository.resource-resolver.organization config.personal.repository.resource-resolver.repository "resource-resolver" ;
-                                                                        resource-reporter-secret = resource-reporter config.personal.repository.secret.organization config.personal.repository.secret.repository "secret" ;
-                                                                        resource-reporter-secrets = resource-reporter config.personal.repository.secrets.organization config.personal.repository.secrets.repository "secrets" ;
-                                                                        resource-reporter-string = resource-reporter config.personal.repository.string.organization config.personal.repository.string.repository "string" ;
-                                                                        resource-reporter-visitor = resource-reporter config.personal.repository.visitor.organization config.personal.repository.visitor.repository "visitor" ;
                                                                     } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
@@ -1557,8 +1167,8 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$ARGUMENTS"'' ) }
-                                                                                            if "$HAS_ARGUMENTS"
+                                                                                            STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
+                                                                                            if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
                                                                                             else
@@ -1762,7 +1372,8 @@
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;
+                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                         string =
                                                                             {
@@ -2098,10 +1709,10 @@
                                                            ] ;
                                                        transient = false ;
                                                  } ;
-                                         resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
-                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/5rd2nr2spgdpi5ykz8pd7v2z3lyv1zab-resource-releaser/bin/resource-releaser" ; } ;
-                                         resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
-                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
+                                        resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
+                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/b8xr2kiqawqp3gmg1h18zg5q5r7jvzpv-resource-releaser/bin/resource-releaser" ; } ;
+                                        resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
+                                        resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
                                             _secret.check
                                                 {
