@@ -591,7 +591,7 @@
                                                                                                                                                         nixos-rebuild --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                        in "${ application }/bin/test" ;
+                                                                                                                                        in "${ application }/bin/mutable-test" ;
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
