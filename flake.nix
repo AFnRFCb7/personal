@@ -439,6 +439,7 @@
                                                                                                     "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-mirror" = stage : "!${ stage }/bin/mutable-mirror" ;
+                                                                                                    "alias.mutable-rebase" = stage : "!${ stage }/bin/mutable-rebase" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                     "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
                                                                                                     "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
@@ -515,9 +516,7 @@
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
-                                                                                                                                                    git submodule foreach --quiet 'pwd' | while IFS= read -r INPUT || [[ -n "$INPUT" ]]
-                                                                                                                                                    do
-                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                    git submodule foreach '
                                                                                                                                                         git fetch origin main
                                                                                                                                                         if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
                                                                                                                                                         then
@@ -529,10 +528,11 @@
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 9a285a44
+                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
+                                                                                                                                                            NAME="$( basename "$name" )" || failure 9a285a44
                                                                                                                                                             nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                         fi
-                                                                                                                                                    done >&2
+                                                                                                                                                    ' >&2
                                                                                                                                                     cd "$MOUNT/repository"
                                                                                                                                                     git fetch origin main
                                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure aae710e7
