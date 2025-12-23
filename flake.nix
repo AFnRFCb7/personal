@@ -436,6 +436,7 @@
                                                                                             configs =
                                                                                                 {
                                                                                                     "alias.mutable-build-vm" = stage : "!${ stage }/bin/mutable-build-vm" ;
+                                                                                                    "alias.mutable-build-vm-with-bootloader" = stage : "!${ stage }/bin/mutable-build-vm-with-bootloader" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                 } ;
@@ -461,6 +462,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         export INDEX="$INDEX"
+                                                                                                                                                        export MOUNT="$MOUNT"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
                                                                                                                                                         WORKSPACE="$MUTABLE_SNAPSHOT/workspace/${ vm }"
                                                                                                                                                         mkdir --parents "$WORKSPACE"
@@ -481,6 +483,7 @@
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
+                                                                                                                                                    export MOUNT="$MOUNT"
                                                                                                                                                     MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
                                                                                                                                                     nix flake check "$MUTABLE_SNAPSHOT" --show-trace
                                                                                                                                                 '' ;
@@ -573,8 +576,9 @@
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX
-                                                                                                                                    wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/bin/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX
                                                                                                                                 '' ;
                                                                                                                 } ;
