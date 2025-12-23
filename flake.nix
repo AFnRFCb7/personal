@@ -500,7 +500,7 @@
                                                                                                                                                 ''
                                                                                                                                                     BRANCH="$1"
                                                                                                                                                     git fetch origin "$BRANCH"
-                                                                                                                                                    git checkout -b "$BRANCH" "origin/$BRANCH"
+                                                                                                                                                    git checkout "origin/$BRANCH"
                                                                                                                                                     git submodule update --init --recursive
                                                                                                                                                 '' ;
                                                                                                                                         } ;
