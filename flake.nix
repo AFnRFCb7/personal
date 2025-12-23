@@ -462,7 +462,7 @@
                                                                                                                                                     ''
                                                                                                                                                         export INDEX="$INDEX"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                        WORKSPACE="$MUTABLE_SNAPSHOT/workspace/${ vm }
+                                                                                                                                                        WORKSPACE="$MUTABLE_SNAPSHOT/workspace/${ vm }"
                                                                                                                                                         mkdir --parents "$WORKSPACE"
                                                                                                                                                         cd "$WORKSPACE"
                                                                                                                                                         nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT#user"
