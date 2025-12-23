@@ -532,6 +532,7 @@
                                                                                                                                                             nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                         fi
                                                                                                                                                     done
+                                                                                                                                                    cd "$MOUNT/repository"
                                                                                                                                                     if git symbolic-ref -q HEAD
                                                                                                                                                     then
                                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
