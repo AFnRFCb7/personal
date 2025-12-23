@@ -541,6 +541,7 @@
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         cd "$STUDIO_1"
+                                                                                                                                                        mutable-check
                                                                                                                                                         mutable-rebase
                                                                                                                                                         mutable-check
                                                                                                                                                         mutable-build-vm
@@ -1178,6 +1179,31 @@
                                                             } ;
                                                         systemd.services =
                                                             let
+                                                                fun =
+                                                                    text :
+                                                                        {
+                                                                            name = builtins.hashString "sha512" text ;
+                                                                            value =
+                                                                                {
+                                                                                    after = [ "network.target" "redis.service" ] ;
+                                                                                    enable = true ;
+                                                                                    serviceConfig =
+                                                                                        {
+                                                                                            ExecStart =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "ExecStart" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text = text ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                            User = config.personal.name ;
+                                                                                        } ;
+                                                                                    wantedBy = [ "multi-user.target" ] ;
+                                                                                } ;
+                                                                        } ;
                                                                 resource-reporter =
                                                                     organization : repository : resolution :
                                                                         {
@@ -1199,8 +1225,12 @@
                                                                             wantedBy = [ "multi-user.target" ] ;
                                                                         } ;
                                                                 in
-                                                                    {
-                                                                    } ;
+                                                                    builtins.listToAttrs
+                                                                        (
+                                                                            [
+                                                                                ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
+                                                                            ]
+                                                                        ) ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
