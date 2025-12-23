@@ -1227,7 +1227,7 @@
                                                                     builtins.listToAttrs
                                                                         (
                                                                             [
-                                                                                ( fun ( _resource-logger.implementation { } ) )
+                                                                                ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
                                                                             ]
                                                                         ) ;
                                                         time.timeZone = "America/New_York" ;
