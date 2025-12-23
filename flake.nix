@@ -556,12 +556,12 @@
                                                                                                                                                         git -C "$STUDIO_2" mutable-check
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-build-vm" "$PARENT_2/stage/mutable-build-vm"
                                                                                                                                                         then
-                                                                                                                                                            git -C "$STUDIO_2" mutable build-vm
+                                                                                                                                                            git -C "$STUDIO_2" mutable-build-vm
                                                                                                                                                             prompt "mutable-build-vm 2"
                                                                                                                                                         fi
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-test" "$PARENT_2/stage/mutable-test"
                                                                                                                                                         then
-                                                                                                                                                            git -C "$STUDIO_2" mutable test
+                                                                                                                                                            git -C "$STUDIO_2" mutable-test
                                                                                                                                                             prompt "mutable-test 2"
                                                                                                                                                         fi
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-switch" "$PARENT_2/stage/mutable-switch"
