@@ -490,6 +490,21 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-check" ;
+                                                                                                                            mutable-mirror =
+                                                                                                                                let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-mirror" ;
+                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    BRANCH="$1"
+                                                                                                                                                    git fetch origin "$BRANCH"
+                                                                                                                                                    git checkout -b "$BRANCH" "origin/$BRANCH"
+                                                                                                                                                    git submodule update --init --recursive
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-mirror" ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
@@ -547,6 +562,7 @@
                                                                                                                                     wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/bin/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
@@ -561,21 +577,6 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils root wrap ] ;
                                                                                                                     text =
                                                                                                                         let
-                                                                                                                            mutable-mirror =
-                                                                                                                                let
-                                                                                                                                    application = pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "mutable-mirror" ;
-                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                                                                            text =
-                                                                                                                                                ''
-                                                                                                                                                    BRANCH="$1"
-                                                                                                                                                    git fetch origin "$BRANCH"
-                                                                                                                                                    git checkout -b "$BRANCH" "origin/$BRANCH"
-                                                                                                                                                    git submodule update --init --recursive
-                                                                                                                                                '' ;
-                                                                                                                                        } ;
-                                                                                                                                    in "${ application }/bin/mutable-mirror" ;
                                                                                                                             ssh =
                                                                                                                                 let
                                                                                                                                     application =
@@ -595,12 +596,9 @@
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/.ssh/config 0400
-                                                                                                                                    wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
                                                                                                                                     wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
-                                                                                                                                    mutable-mirror main 2>&1
-                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure f97c4e77
-                                                                                                                                    BRANCH="$( echo "$UUID" | cut --bytes 1-64 )" || failure 9651e729
-                                                                                                                                    git checkout -b "$BRANCH" 2>&1
+                                                                                                                                    git fetch origin main 2>&1
+                                                                                                                                    git checkout origin/main 2>&1
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
