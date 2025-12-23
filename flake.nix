@@ -465,9 +465,7 @@
                                                                                                                                                         export INDEX="$INDEX"
                                                                                                                                                         export MOUNT="$MOUNT"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                        WORKSPACE="$MUTABLE_SNAPSHOT/workspace/${ vm }"
-                                                                                                                                                        mkdir --parents "$WORKSPACE"
-                                                                                                                                                        cd "$WORKSPACE"
+                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/${ vm }"
                                                                                                                                                         nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT/repository#user"
                                                                                                                                                         export SHARED_DIR="$WORKSPACE/shared"
                                                                                                                                                         mkdir --parents "$SHARED_DIR"
@@ -557,6 +555,23 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                            mutable-test =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-test" ;
+                                                                                                                                                runtimeInputs = [ ( passwordless-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        export MOUNT="$MOUNT"
+                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                        nixos-rebuild --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                        in "${ application }/bin/test" ;
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
@@ -564,6 +579,11 @@
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    mkdir --parents "${ mount }/stage/build-vm/share"
+                                                                                                                                    mkdir --parents "${ mount }/stage/build-vm-with-bootloader/share"
+                                                                                                                                    mkdir --parents "${ mount }/stage/test"
+                                                                                                                                    mkdir --parents "${ mount }/stage/switch"
+                                                                                                                                    mkdir --parents "${ mount }/stage/converge"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
