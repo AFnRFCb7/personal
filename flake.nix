@@ -525,7 +525,7 @@
                                                                                                                                                                     text =
                                                                                                                                                                         ''
                                                                                                                                                                             PROMPT="$1"
-                                                                                                                                                                            read -p "$PROMPT:  " -r ANSWER
+                                                                                                                                                                            read -s -p "$PROMPT:  " -r ANSWER
                                                                                                                                                                             if [[ "$ANSWER" != "y" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 failure "$ANSWER"
@@ -541,25 +541,27 @@
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         cd "$STUDIO_1"
+                                                                                                                                                        mutable-check
                                                                                                                                                         mutable-rebase
                                                                                                                                                         mutable-check
                                                                                                                                                         mutable-build-vm
                                                                                                                                                         prompt "mutable-build-vm 1"
                                                                                                                                                         mutable-test
                                                                                                                                                         prompt "mutable-test 1"
+                                                                                                                                                        UUID="$( uuidgen )" || failure fa8428cb
                                                                                                                                                         STUDIO_2="$( studio "$UUID" )" || failure 9a39c637
-                                                                                                                                                        diff --recursive "$STUDIO_1" "$STUDIO_2"
+                                                                                                                                                        # diff --recursive "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                         PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
                                                                                                                                                         cd "$STUDIO_2"
                                                                                                                                                         git -C "$STUDIO_2" mutable-check
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-build-vm" "$PARENT_2/stage/mutable-build-vm"
                                                                                                                                                         then
-                                                                                                                                                            git -C "$STUDIO_2" mutable build-vm
+                                                                                                                                                            git -C "$STUDIO_2" mutable-build-vm
                                                                                                                                                             prompt "mutable-build-vm 2"
                                                                                                                                                         fi
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-test" "$PARENT_2/stage/mutable-test"
                                                                                                                                                         then
-                                                                                                                                                            git -C "$STUDIO_2" mutable test
+                                                                                                                                                            git -C "$STUDIO_2" mutable-test
                                                                                                                                                             prompt "mutable-test 2"
                                                                                                                                                         fi
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-switch" "$PARENT_2/stage/mutable-switch"
@@ -1178,6 +1180,31 @@
                                                             } ;
                                                         systemd.services =
                                                             let
+                                                                fun =
+                                                                    text :
+                                                                        {
+                                                                            name = builtins.hashString "sha512" text ;
+                                                                            value =
+                                                                                {
+                                                                                    after = [ "network.target" "redis.service" ] ;
+                                                                                    enable = true ;
+                                                                                    serviceConfig =
+                                                                                        {
+                                                                                            ExecStart =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "ExecStart" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text = text ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                            User = config.personal.name ;
+                                                                                        } ;
+                                                                                    wantedBy = [ "multi-user.target" ] ;
+                                                                                } ;
+                                                                        } ;
                                                                 resource-reporter =
                                                                     organization : repository : resolution :
                                                                         {
@@ -1199,8 +1226,12 @@
                                                                             wantedBy = [ "multi-user.target" ] ;
                                                                         } ;
                                                                 in
-                                                                    {
-                                                                    } ;
+                                                                    builtins.listToAttrs
+                                                                        (
+                                                                            [
+                                                                                ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
+                                                                            ]
+                                                                        ) ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
