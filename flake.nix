@@ -663,8 +663,8 @@
                                                                                                                                     git fetch origin "$BRANCH" 2>&1
                                                                                                                                     git checkout "$COMMIT" 2>&1
                                                                                                                                     mkdir --parents /mount/stage/check
-                                                                                                                                    mkdir --parents /mount/stage/build-vm/share
-                                                                                                                                    mkdir --parents /mount/stage/build-vm-with-bootloader/share
+                                                                                                                                    mkdir --parents /mount/stage/build-vm/shared
+                                                                                                                                    mkdir --parents /mount/stage/build-vm-with-bootloader/shared
                                                                                                                                     mkdir --parents /mount/stage/test
                                                                                                                                     mkdir --parents /mount/stage/switch
                                                                                                                                     mkdir --parents /mount/stage/converge
