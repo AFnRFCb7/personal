@@ -571,7 +571,7 @@
                                                                                                                                                         export MOUNT="$MOUNT"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
                                                                                                                                                         cd "$MUTABLE_SNAPSHOT/stage/test"
-                                                                                                                                                        nixos-rebuild --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                        nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                         in "${ application }/bin/switch" ;
@@ -588,7 +588,7 @@
                                                                                                                                                         export MOUNT="$MOUNT"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
                                                                                                                                                         cd "$MUTABLE_SNAPSHOT/stage/test"
-                                                                                                                                                        nixos-rebuild --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                        nixos-rebuild test --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                         in "${ application }/bin/mutable-test" ;
@@ -599,6 +599,7 @@
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-switch } stage/bin/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/bin/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                 '' ;
                                                                                                                 } ;
