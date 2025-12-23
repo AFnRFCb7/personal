@@ -658,7 +658,7 @@
                                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                                 git push origin HEAD
                                                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                                                gh auth login --with-token < "TOKEN/secret"
+                                                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                                 if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                                 then
                                                                                                                                                                                     gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
