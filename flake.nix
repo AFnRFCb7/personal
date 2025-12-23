@@ -618,7 +618,7 @@
                                                                                                                                                         UUID_1="$( uuidgen | sha512sum )" || failure 45239811
                                                                                                                                                         BRANCH_1="$( echo "scratch/$UUID_1" | cut --bytes 1-64 )" || failure 972b3054
                                                                                                                                                         git checkout -b "$BRANCH_1"
-                                                                                                                                                        git commit -am "" --allow-empty ""
+                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         UUID_2="$( uuidgen | sha512sum )" || failure 45239811
                                                                                                                                                         BRANCH_2="$( echo "scratch/$UUID_2" | cut --bytes 1-64 )" || failure 972b3054
