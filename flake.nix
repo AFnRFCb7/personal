@@ -1178,6 +1178,31 @@
                                                             } ;
                                                         systemd.services =
                                                             let
+                                                                fun =
+                                                                    text :
+                                                                        {
+                                                                            name = builtins.hashString "sha512" text ;
+                                                                            value =
+                                                                                {
+                                                                                    after = [ "network.target" "redis.service" ] ;
+                                                                                    enable = true ;
+                                                                                    serviceConfig =
+                                                                                        {
+                                                                                            ExecStart =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "ExecStart" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text = text ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                            User = config.personal.name ;
+                                                                                        } ;
+                                                                                    wantedBy = [ "multi-user.target" ] ;
+                                                                                } ;
+                                                                        } ;
                                                                 resource-reporter =
                                                                     organization : repository : resolution :
                                                                         {
@@ -1199,8 +1224,12 @@
                                                                             wantedBy = [ "multi-user.target" ] ;
                                                                         } ;
                                                                 in
-                                                                    {
-                                                                    } ;
+                                                                    builtins.listToAttrs
+                                                                        (
+                                                                            [
+                                                                                ( fun ( _resource-logger.implementation { } ) )
+                                                                            ]
+                                                                        ) ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
