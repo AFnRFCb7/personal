@@ -506,7 +506,7 @@
                                                                                                                                     application = pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "mutable-snapshot" ;
-                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" ] ;
+                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
