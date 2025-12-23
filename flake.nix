@@ -580,11 +580,11 @@
                                                                                                                                     wrap ${ mutable-mirror } stage/bin/mutable-mirror 0500 --literal BRANCH
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-build-vm "build-test" } stage/bin/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                                    mkdir --parents /mount/stage/build-vm/share
-                                                                                                                                    mkdir --parents /mount/stage/build-vm-with-bootloader/share
-                                                                                                                                    mkdir --parents /mount/stage/test
-                                                                                                                                    mkdir --parents /mount/stage/switch
-                                                                                                                                    mkdir --parents /mount/stage/converge
+                                                                                                                                    # mkdir --parents /mount/stage/build-vm/share
+                                                                                                                                    # mkdir --parents /mount/stage/build-vm-with-bootloader/share
+                                                                                                                                    # mkdir --parents /mount/stage/test
+                                                                                                                                    # mkdir --parents /mount/stage/switch
+                                                                                                                                    # mkdir --parents /mount/stage/converge
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/post-setup" ;
