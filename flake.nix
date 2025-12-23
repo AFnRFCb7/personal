@@ -529,7 +529,7 @@
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                             NAME="$( basename "$INPUT" )" || failure 8c4f2fea
-                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$INPUT"
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                         fi
                                                                                                                                                     done
                                                                                                                                                     if git symbolic-ref -q HEAD
