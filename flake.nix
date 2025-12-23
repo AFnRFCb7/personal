@@ -486,7 +486,7 @@
                                                                                                                                                     export INDEX="$INDEX"
                                                                                                                                                     export MOUNT="$MOUNT"
                                                                                                                                                     MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                    nix flake check "$MUTABLE_SNAPSHOT" --show-trace
+                                                                                                                                                    nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-check" ;
@@ -549,7 +549,7 @@
                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
                                                                                                                                                     MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                     root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                    echo "$MUTABLE_SNAPSHOT/repository"
+                                                                                                                                                    echo "$MUTABLE_SNAPSHOT"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
