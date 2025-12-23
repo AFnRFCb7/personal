@@ -538,7 +538,7 @@
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        MOUNT="$MOUNT
+                                                                                                                                                        MOUNT="$MOUNT"
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         cd "$STUDIO_1"
