@@ -583,7 +583,7 @@
                                                                                                                                     mkdir --parents /mount/stage/build-vm/share
                                                                                                                                     mkdir --parents /mount/stage/build-vm-with-bootloader/share
                                                                                                                                     mkdir --parents /mount/stage/test
-                                                                                                                                    # mkdir --parents /mount/stage/switch
+                                                                                                                                    mkdir --parents /mount/stage/switch
                                                                                                                                     # mkdir --parents /mount/stage/converge
                                                                                                                                 '' ;
                                                                                                                 } ;
