@@ -515,7 +515,7 @@
                                                                                                                                                         cd "$INPUT"
                                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                         then
-                                                                                                                                                            if git symbolic-ref -q HEAD
+                                                                                                                                                            if git symbolic-ref -q HEAD >&2
                                                                                                                                                             then
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
                                                                                                                                                             else
