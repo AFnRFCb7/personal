@@ -440,6 +440,7 @@
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-mirror" = stage : "!${ stage }/bin/mutable-mirror" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
+                                                                                                    "alias.mutable-switch" = stage : "!${ stage }/bin/mutable-switch" ;
                                                                                                     "alias.mutable-test" = stage : "!${ stage }/bin/mutable-test" ;
                                                                                                 } ;
                                                                                             email = config.personal.repository.private.email ;
@@ -557,6 +558,23 @@
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
+                                                                                                                            mutable-switch =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-switch" ;
+                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) "$MOUNT/stage" ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        export MOUNT="$MOUNT"
+                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                        nixos-rebuild --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                        in "${ application }/bin/switch" ;
                                                                                                                             mutable-test =
                                                                                                                                 let
                                                                                                                                     application =
