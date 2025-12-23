@@ -471,7 +471,7 @@
                                                                                                                                                         "$WORKSPACE/result/bin/run-nixos-vm"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                        in "${ application }/bin/mutable-check" ;
+                                                                                                                                        in "${ application }/bin/mutable-vm" ;
                                                                                                                             mutable-check =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
