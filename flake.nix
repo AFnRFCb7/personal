@@ -435,6 +435,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                 } ;
                                                                                             email = config.personal.repository.private.email ;
@@ -449,6 +450,20 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         let
+                                                                                                                            mutable-check =
+                                                                                                                                let
+                                                                                                                                    application = pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "mutable-check" ;
+                                                                                                                                            runtimeInputs = [ pkgs.nix ( _failure.implementation "f1543e16" ) "$MOUNT/stage" ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    export INDEX="$INDEX"
+                                                                                                                                                    MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                    nix flake check --flake "$MUTABLE_SNAPSHOT" --show-trace
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/mutable-check" ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
@@ -511,6 +526,7 @@
                                                                                                                                                 ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
+                                                                                                                                                    export INDEX="$INDEX"
                                                                                                                                                     git submodule foreach commit >&2
                                                                                                                                                     git submodule foreach check >&2
                                                                                                                                                     if git symbolic-ref -q HEAD
@@ -535,6 +551,7 @@
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
+                                                                                                                                    wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX
                                                                                                                                 '' ;
                                                                                                                 } ;
