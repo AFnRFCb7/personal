@@ -570,11 +570,11 @@
                                                                                                                                                         export INDEX="$INDEX"
                                                                                                                                                         export MOUNT="$MOUNT"
                                                                                                                                                         MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/test"
+                                                                                                                                                        cd "$MUTABLE_SNAPSHOT/stage/switch"
                                                                                                                                                         nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                        in "${ application }/bin/switch" ;
+                                                                                                                                        in "${ application }/bin/mutable-switch" ;
                                                                                                                             mutable-test =
                                                                                                                                 let
                                                                                                                                     application =
