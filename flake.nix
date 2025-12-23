@@ -525,7 +525,7 @@
                                                                                                                                                                     text =
                                                                                                                                                                         ''
                                                                                                                                                                             PROMPT="$1"
-                                                                                                                                                                            read -p "$PROMPT:  " -r ANSWER
+                                                                                                                                                                            read -s -p "$PROMPT:  " -r ANSWER
                                                                                                                                                                             if [[ "$ANSWER" != "y" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 failure "$ANSWER"
