@@ -469,7 +469,7 @@
                                                                                                                                                         cd "$WORKSPACE"
                                                                                                                                                         nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT/repository#user"
                                                                                                                                                         export SHARED_DIR="$WORKSPACE/shared"
-                                                                                                                                                        "$WORKSPACE/result/run-nixos-vm"
+                                                                                                                                                        "$WORKSPACE/result/bin/run-nixos-vm"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                         in "${ application }/bin/mutable-vm" ;
