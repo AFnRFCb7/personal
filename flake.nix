@@ -711,7 +711,7 @@
                                                                                                                                     wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     git fetch origin main 2>&1
                                                                                                                                     git checkout origin/main 2>&1
-                                                                                                                                    git submodule foreach 'git config alias.mutable-squash \'!$MOUNT/stage/bin/mutable-squash\' '
+                                                                                                                                    git submodule foreach 'git config alias.mutable-squash \'!${ mount }/stage/bin/mutable-squash\' '
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/pre-setup" ;
