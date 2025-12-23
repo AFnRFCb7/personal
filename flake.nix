@@ -484,7 +484,7 @@
                                                                                                                                                     export INDEX="$INDEX"
                                                                                                                                                     export MOUNT="$MOUNT"
                                                                                                                                                     MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                    cd "$MOUNT/stage/check"
+                                                                                                                                                    cd "$MUTABLE_SNAPSHOT/stage/check"
                                                                                                                                                     nix flake check "$MUTABLE_SNAPSHOT/repository" --show-trace
                                                                                                                                                 '' ;
                                                                                                                                         } ;
