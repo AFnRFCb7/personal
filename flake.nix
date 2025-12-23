@@ -627,6 +627,7 @@
                                                                                                                                                         git reset --soft origin/main
                                                                                                                                                         git commit -a --verbose
                                                                                                                                                         git push origin HEAD
+                                                                                                                                                        cd "$MOUNT/repository"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-squash" ;
