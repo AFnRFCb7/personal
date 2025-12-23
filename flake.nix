@@ -468,7 +468,7 @@
                                                                                                                                                         WORKSPACE="$MUTABLE_SNAPSHOT/workspace/${ vm }"
                                                                                                                                                         mkdir --parents "$WORKSPACE"
                                                                                                                                                         cd "$WORKSPACE"
-                                                                                                                                                        nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT#user"
+                                                                                                                                                        nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT/repository#user"
                                                                                                                                                         export SHARED_DIR="$WORKSPACE/shared"
                                                                                                                                                         mkdir --parents "$SHARED_DIR"
                                                                                                                                                         "$WORKSPACE/result/bin/run-nixos-vm"
@@ -506,66 +506,32 @@
                                                                                                                                     application = pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "mutable-snapshot" ;
-                                                                                                                                            runtimeInputs =
-                                                                                                                                                [
-                                                                                                                                                    pkgs.git
-                                                                                                                                                    root
-                                                                                                                                                    (
-                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                            {
-                                                                                                                                                                name = "commit" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.git pkgs.nix ( _failure.implementation "0d656d5f" ) ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                        then
-                                                                                                                                                                            if git symbolic-ref -q HEAD
-                                                                                                                                                                            then
-                                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
-                                                                                                                                                                            else
-                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure d3737ca3
-                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
-                                                                                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                                                                            fi
-                                                                                                                                                                            git commit --verbose
-                                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?Git submodule foreach must set name" "}" ] }"
-                                                                                                                                                                            NAME="$( basename "$name" )" || failure e006c4e7
-                                                                                                                                                                            git push origin HEAD
-                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
-                                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
-                                                                                                                                                                        fi
-                                                                                                                                                                    '' ;
-                                                                                                                                                            }
-                                                                                                                                                    )
-                                                                                                                                                    (
-                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                            {
-                                                                                                                                                                name = "check" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.git ( _failure.implementation "43f494cd" ) ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        if ! git diff --quiet
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 339c5013
-                                                                                                                                                                        elif ! git diff --quiet --cached
-                                                                                                                                                                        then
-                                                                                                                                                                            failure a21a1a31
-                                                                                                                                                                        elif git symbolic-ref -q HEAD && ! git push origin HEAD
-                                                                                                                                                                        then
-                                                                                                                                                                            failure ec38c4d7
-                                                                                                                                                                        fi
-                                                                                                                                                                    '' ;
-                                                                                                                                                            }
-                                                                                                                                                    )
-                                                                                                                                                    "${ mount }/stage"
-                                                                                                                                                ] ;
+                                                                                                                                            runtimeInputs = [ pkgs.git  ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
-                                                                                                                                                    git submodule foreach commit >&2
-                                                                                                                                                    git submodule foreach check >&2
+                                                                                                                                                    git submodule foreach 'pwd' | while IFS= read -r INPUT
+                                                                                                                                                    do
+                                                                                                                                                        cd "$MOUNT/repository/$INPUT"
+                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                        then
+                                                                                                                                                            if git symbolic-ref -q HEAD
+                                                                                                                                                            then
+                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
+                                                                                                                                                            else
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                            fi
+                                                                                                                                                            git commit --verbose
+                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 8c4f2fea
+                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$INPUT"
+                                                                                                                                                        fi
+                                                                                                                                                    done
                                                                                                                                                     if git symbolic-ref -q HEAD
                                                                                                                                                     then
                                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
@@ -680,6 +646,58 @@
                                                                                             ssh = stage : "${ stage }/bin/ssh" ;
                                                                                         } ;
                                                                         } ;
+                                                                } ;
+                                                            scripts =
+                                                                {
+                                                                    snapshot =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                snapshot =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "snapshot" ;
+                                                                                                                            runtimeInputs = [ pkgs.git ( _failure.implementation "5afc908c" ) ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                    then
+                                                                                                                                        if git symbolic-ref -q HEAD
+                                                                                                                                        then
+                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
+                                                                                                                                        else
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                        fi
+                                                                                                                                        git commit --verbose
+                                                                                                                                        NAME="$( basename "$name" )" || failure e006c4e7
+                                                                                                                                        git push origin HEAD
+                                                                                                                                        TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                        TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                        export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                        nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                    fi
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/snapshot"
+                                                                                                            ''
+                                                                                                                NAME="$1"
+                                                                                                                wrap ${ snapshot } script 0500 --literal BRANCH --literal UUID --
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "script" ] ;
+                                                                            } ;
                                                                 } ;
                                                             secrets =
                                                                 {
