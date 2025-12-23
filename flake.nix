@@ -521,6 +521,8 @@
                                                                                                                                                         git fetch origin main
                                                                                                                                                         if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
                                                                                                                                                         then
+                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
+                                                                                                                                                            cd "$MOUNT/repository/$name"
                                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure f192db0b
                                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 54d22bae
                                                                                                                                                             git checkout -b "$BRANCH"
@@ -529,8 +531,8 @@
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
                                                                                                                                                             NAME="$( basename "$name" )" || failure 9a285a44
+                                                                                                                                                            cd "$MOUNT/repository"
                                                                                                                                                             nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                                         fi
                                                                                                                                                     ' >&2
