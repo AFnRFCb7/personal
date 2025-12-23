@@ -519,7 +519,7 @@
                                                                                                                                                         cd "$INPUT"
                                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                         then
-                                                                                                                                                            if git symbolic-ref --quiet HEAD >&2
+                                                                                                                                                            if git symbolic-ref --quiet HEAD
                                                                                                                                                             then
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
                                                                                                                                                             else
@@ -537,7 +537,7 @@
                                                                                                                                                         fi
                                                                                                                                                     done >&2
                                                                                                                                                     cd "$MOUNT/repository"
-                                                                                                                                                    if git symbolic-ref -q HEAD
+                                                                                                                                                    if git symbolic-ref --quiet HEAD >&2
                                                                                                                                                     then
                                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
                                                                                                                                                     else
