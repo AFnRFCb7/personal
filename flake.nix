@@ -435,6 +435,7 @@
                                                                                         {
                                                                                             configs =
                                                                                                 {
+                                                                                                    "alias.mutable-build-vm" = stage : "!${ stage }/bin/mutable-build-vm" ;
                                                                                                     "alias.mutable-check" = stage : "!${ stage }/bin/mutable-check" ;
                                                                                                     "alias.mutable-snapshot" = stage : "!${ stage }/bin/mutable-snapshot" ;
                                                                                                 } ;
@@ -450,6 +451,27 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         let
+                                                                                                                            mutable-build-vm =
+                                                                                                                                vm :
+                                                                                                                                    let
+                                                                                                                                        application = pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-vm" ;
+                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.nixos-rebuild ( _failure.implementation "f1543e16" ) "$MOUNT/stage" ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        export INDEX="$INDEX"
+                                                                                                                                                        MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
+                                                                                                                                                        WORKSPACE="$MUTABLE_SNAPSHOT/workspace/${ vm }
+                                                                                                                                                        mkdir --parents "$WORKSPACE"
+                                                                                                                                                        cd "$WORKSPACE"
+                                                                                                                                                        nixos-rebuild ${ vm } --flake "$MUTABLE_SNAPSHOT#user"
+                                                                                                                                                        export SHARED_DIR="$WORKSPACE/shared"
+                                                                                                                                                        mkdir --parents "$SHARED_DIR"
+                                                                                                                                                        "$WORKSPACE/result/bin/run-nixos-vm"
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                        in "${ application }/bin/mutable-check" ;
                                                                                                                             mutable-check =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
@@ -460,7 +482,7 @@
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
                                                                                                                                                     MUTABLE_SNAPSHOT="$( mutable-snapshot )" || failure fe899862
-                                                                                                                                                    nix flake check --flake "$MUTABLE_SNAPSHOT" --show-trace
+                                                                                                                                                    nix flake check "$MUTABLE_SNAPSHOT" --show-trace
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in "${ application }/bin/mutable-check" ;
@@ -551,6 +573,7 @@
                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
                                                                                                                             in
                                                                                                                                 ''
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm" } stage/bin/mutable-build-vm 0500 --inherit INDEX
                                                                                                                                     wrap ${ mutable-check } stage/bin/mutable-check 0500 --inherit INDEX
                                                                                                                                     wrap ${ mutable-snapshot } stage/bin/mutable-snapshot 0500 --inherit INDEX
                                                                                                                                 '' ;
