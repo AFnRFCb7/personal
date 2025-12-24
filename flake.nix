@@ -1277,7 +1277,6 @@
                                                                                         (
                                                                                             _resource-releaser.implementation
                                                                                                 {
-                                                                                                    log-directory = "/home/${ config.personal.name }/resources/log" ;
                                                                                                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                                                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
                                                                                                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
