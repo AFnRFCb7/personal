@@ -525,7 +525,7 @@
                                                                                                                                                                     text =
                                                                                                                                                                         ''
                                                                                                                                                                             PROMPT="$1"
-                                                                                                                                                                            read -s -p "$PROMPT:  " -r ANSWER
+                                                                                                                                                                            read -p "$PROMPT:  " -r ANSWER
                                                                                                                                                                             if [[ "y" == "$ANSWER" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 echo YES
@@ -562,7 +562,7 @@
                                                                                                                                                         prompt "mutable-build-vm 1"
                                                                                                                                                         git -C "$STUDIO_1" mutable-test
                                                                                                                                                         prompt "mutable-test 1"
-                                                                                                                                                        BRANCH="$( git -C "$STUDIO_1" --abbrev-ref HEAD )" || failure 9cc2d040
+                                                                                                                                                        BRANCH="$( git -C "$STUDIO_1" rev-parse --abbrev-ref HEAD )" || failure 9cc2d040
                                                                                                                                                         UUID="$( uuidgen )" || failure fa8428cb
                                                                                                                                                         STUDIO_2="$( studio "$UUID" )" || failure 9a39c637
                                                                                                                                                         PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
