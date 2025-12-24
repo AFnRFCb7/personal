@@ -526,49 +526,91 @@
                                                                                                                                                                         ''
                                                                                                                                                                             PROMPT="$1"
                                                                                                                                                                             read -s -p "$PROMPT:  " -r ANSWER
-                                                                                                                                                                            if [[ "$ANSWER" != "y" ]]
+                                                                                                                                                                            if [[ "y" == "$ANSWER" ]]
                                                                                                                                                                             then
-                                                                                                                                                                                failure "$ANSWER"
+                                                                                                                                                                                echo YES
+                                                                                                                                                                            else
+                                                                                                                                                                                failure f028fc7a NO "$PROMPT" "$ANSWER"
                                                                                                                                                                             fi
                                                                                                                                                                         '' ;
                                                                                                                                                                 }
                                                                                                                                                         )
                                                                                                                                                         ( _failure.implementation "171dfff6" )
-                                                                                                                                                        "$MOUNT/stage"
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
-                                                                                                                                                        cd "$STUDIO_1"
-                                                                                                                                                        mutable-check
-                                                                                                                                                        mutable-rebase
-                                                                                                                                                        mutable-check
-                                                                                                                                                        mutable-build-vm
+                                                                                                                                                        BIN_1="$PARENT_1/stage/bin"
+                                                                                                                                                        git -C "$STUDIO_1" mutable-snapshot
+                                                                                                                                                        if git -C "$STUDIO_1" mutable-check
+                                                                                                                                                        then
+                                                                                                                                                            echo "✅ the zeroth checks passed"
+                                                                                                                                                        else
+                                                                                                                                                            failure 352cc13a "❌ the zeroth checks failed"
+                                                                                                                                                        fi
+                                                                                                                                                        git -C "$STUDIO_1" mutable-snapshot
+                                                                                                                                                        git -C "$STUDIO_1" mutable-rebase
+                                                                                                                                                        git -C "$STUDIO_1" mutable-snapshot
+                                                                                                                                                        if git -C "$STUDIO_1" mutable-check
+                                                                                                                                                        then
+                                                                                                                                                            echo "✅ the first checks passed"
+                                                                                                                                                        else
+                                                                                                                                                            failure f97f7465 "❌ the first checks failed"
+                                                                                                                                                        fi
+                                                                                                                                                        git -C "$STUDIO_1" mutable-build-vm
                                                                                                                                                         prompt "mutable-build-vm 1"
-                                                                                                                                                        mutable-test
+                                                                                                                                                        git -C "$STUDIO_1" mutable-test
                                                                                                                                                         prompt "mutable-test 1"
+                                                                                                                                                        BRANCH="$( git -C "$STUDIO_1" --abbrev-ref HEAD )" || failure 9cc2d040
                                                                                                                                                         UUID="$( uuidgen )" || failure fa8428cb
                                                                                                                                                         STUDIO_2="$( studio "$UUID" )" || failure 9a39c637
-                                                                                                                                                        # diff --recursive "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                         PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
-                                                                                                                                                        cd "$STUDIO_2"
-                                                                                                                                                        git -C "$STUDIO_2" mutable-check
-                                                                                                                                                        if ! diff "$PARENT_1/stage/bin/mutable-build-vm" "$PARENT_2/stage/mutable-build-vm"
+                                                                                                                                                        BIN_2="$PARENT_2/stage/bin"
+                                                                                                                                                        git -C "$STUDIO_2" mutable-mirror "$BRANCH"
+                                                                                                                                                        if diff --recursive --exclude .git "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                         then
+                                                                                                                                                            echo "✅ studio repositories are identical"
+                                                                                                                                                        else
+                                                                                                                                                            failure 79090607 "❌ the studio repositories are NOT identical"
+                                                                                                                                                        fi
+                                                                                                                                                        if git -C "$STUDIO_2" mutable-check
+                                                                                                                                                        then
+                                                                                                                                                            echo "✅ the second checks passed"
+                                                                                                                                                        else
+                                                                                                                                                            failure 49034d7a "❌ the second checks failed"
+                                                                                                                                                        fi
+                                                                                                                                                        if diff "$BIN_1/mutable-build-vm" "$BIN_2/mutable-build-vm"
+                                                                                                                                                        then
+                                                                                                                                                            echo "🔄 We are not testing the mutable-build-vm script because it is already effectively tested"
+                                                                                                                                                        else
+                                                                                                                                                            echo "⚠️ Since we detected a change in the mutable-build-vm script we have to test it again"
                                                                                                                                                             git -C "$STUDIO_2" mutable-build-vm
                                                                                                                                                             prompt "mutable-build-vm 2"
                                                                                                                                                         fi
-                                                                                                                                                        if ! diff "$PARENT_1/stage/bin/mutable-test" "$PARENT_2/stage/mutable-test"
+                                                                                                                                                        if diff "$BIN_1/mutable-test" "$BIN_2/mutable-test"
                                                                                                                                                         then
-                                                                                                                                                            git -C "$STUDIO_2" mutable-  Wtest
+                                                                                                                                                            echo "🔄 We are not testing the mutable-test script because it is already effectively tested"
+                                                                                                                                                        else
+                                                                                                                                                            echo "⚠️ Since we detected a change in the mutable-test script we have to test it again"
+                                                                                                                                                            git -C "$STUDIO_2" mutable-test
                                                                                                                                                             prompt "mutable-test 2"
                                                                                                                                                         fi
-                                                                                                                                                        if ! diff "$PARENT_1/stage/bin/mutable-switch" "$PARENT_2/stage/mutable-switch"
+                                                                                                                                                        if diff "$BIN_1/mutable-switch" "$BIN_2/stage/mutable-switch"
                                                                                                                                                         then
+                                                                                                                                                            echo "🔄 We did not detect a change in the mutable-switch script"
+                                                                                                                                                        else
+                                                                                                                                                            echo "⚠️ Since we detected a change in the mutable-switch script, do you approve the changes?"
                                                                                                                                                             prompt "mutable-switch"
                                                                                                                                                         fi
-                                                                                                                                                        mutable-switch
+                                                                                                                                                        if diff "$BIN_1/mutable-promote" "$BIN_2/stage/mutable-promote"
+                                                                                                                                                        then
+                                                                                                                                                            echo "🔄 We did not detect a change in the mutable-promote script"
+                                                                                                                                                        else
+                                                                                                                                                            echo "⚠️ Since we detected a change in the mutable-promote script, do you approve the changes?"
+                                                                                                                                                            prompt "mutable-promote"
+                                                                                                                                                        fi
+                                                                                                                                                        git -C "$STUDIO_2" mutable-switch
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-promote" ;
@@ -607,7 +649,8 @@
                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
                                                                                                                                                     git checkout -b "$BRANCH" >&2
                                                                                                                                                     git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                    git rebase -i origin/main
+                                                                                                                                                    git reset --soft origin/main
+                                                                                                                                                    git commit -a --verbose
                                                                                                                                                     git push origin HEAD >&2
                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure d0633308
                                                                                                                                                     MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
@@ -637,8 +680,7 @@
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure d3737ca3
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                            fi
-                                                                                                                                                            # KLUDGE
+                                                                                                                                                            f
                                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                                             git push origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
