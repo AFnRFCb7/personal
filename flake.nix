@@ -550,6 +550,7 @@
                                                                                                                                                         else
                                                                                                                                                             failure 352cc13a "❌ the zeroth checks failed"
                                                                                                                                                         fi
+                                                                                                                                                        git -C "$STUDIO_1" mutable-snapshot
                                                                                                                                                         git -C "$STUDIO_1" mutable-rebase
                                                                                                                                                         git -C "$STUDIO_1" mutable-snapshot
                                                                                                                                                         if git -C "$STUDIO_1" mutable-check
