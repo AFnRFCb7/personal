@@ -981,8 +981,7 @@
                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                         fi
-                                                                                                                                        export GIT_EDITOR=${ pkgs.vim }/bin/vim
-                                                                                                                                        git commit --verbose --allow-empty
+                                                                                                                                        git commit --verbose --allow-empty --allow-empty-message
                                                                                                                                         NAME="$( basename "$name" )" || failure e006c4e7
                                                                                                                                         git push origin HEAD
                                                                                                                                         TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
