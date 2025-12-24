@@ -664,33 +664,48 @@
                                                                                                                                     application = pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "mutable-snapshot" ;
-                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
+                                                                                                                                            runtimeInputs =
+                                                                                                                                                [
+                                                                                                                                                    pkgs.git
+                                                                                                                                                    "$MOUNT/stage"
+                                                                                                                                                    (
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "commit" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        MOUNT="$1"
+                                                                                                                                                                        INPUT="$( pwd )" || failure acf70fc3
+                                                                                                                                                                        cd "$INPUT"
+                                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                        then
+                                                                                                                                                                            if git symbolic-ref --quiet HEAD
+                                                                                                                                                                            then
+                                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
+                                                                                                                                                                            else
+                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure d3737ca3
+                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
+                                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                            fi
+                                                                                                                                                                            git commit -a --verbose --allow-empty-message
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 8c4f2fea
+                                                                                                                                                                            cd "$MOUNT/repository"
+                                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                                        fi
+                                                                                                                                                                    '' ;
+                                                                                                                                                            }
+                                                                                                                                                    )
+                                                                                                                                                    root
+                                                                                                                                                ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     export INDEX="$INDEX"
-                                                                                                                                                    git submodule foreach --quiet 'pwd' | while IFS= read -r INPUT || [[ -n "$INPUT" ]]
-                                                                                                                                                    do
-                                                                                                                                                        cd "$INPUT"
-                                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                        then
-                                                                                                                                                            if git symbolic-ref --quiet HEAD
-                                                                                                                                                            then
-                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
-                                                                                                                                                            else
-                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure d3737ca3
-                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
-                                                                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                                                            fi
-                                                                                                                                                            git commit -a --verbose --allow-empty-message
-                                                                                                                                                            git push origin HEAD
-                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
-                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                            NAME="$( basename "$INPUT" )" || failure 8c4f2fea
-                                                                                                                                                            cd "$MOUNT/repository"
-                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
-                                                                                                                                                        fi
-                                                                                                                                                    done >&2
+                                                                                                                                                    git submodule foreach --quiet "commit $MOUNT"
                                                                                                                                                     cd "$MOUNT/repository"
                                                                                                                                                     if git symbolic-ref --quiet HEAD >&2
                                                                                                                                                     then
@@ -966,7 +981,7 @@
                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                         fi
-                                                                                                                                        git commit --verbose
+                                                                                                                                        git commit --verbose --allow-empty --allow-empty-message
                                                                                                                                         NAME="$( basename "$name" )" || failure e006c4e7
                                                                                                                                         git push origin HEAD
                                                                                                                                         TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
@@ -1281,6 +1296,18 @@
                                                                                                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
                                                                                                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
                                                                                                     quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                }
+                                                                                        )
+                                                                                )
+                                                                                (
+                                                                                    fun
+                                                                                        (
+                                                                                            _resource-reporter.implementation
+                                                                                                {
+                                                                                                    organization = config.personal.repository.personal.organization ;
+                                                                                                    repository = config.personal.repository.personal.repository ;
+                                                                                                    resolution = "personal" ;
+                                                                                                    token = resources__.production.secrets.token ( setup : setup ) ;
                                                                                                 }
                                                                                         )
                                                                                 )
