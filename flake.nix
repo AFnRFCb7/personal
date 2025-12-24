@@ -1284,7 +1284,7 @@
                                                                                                 }
                                                                                         )
                                                                                 )
-                                                                                ( fun ( _resource-releaser.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ) )
+                                                                                ( fun ( _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ) )
                                                                             ]
                                                                         ) ;
                                                         time.timeZone = "America/New_York" ;
