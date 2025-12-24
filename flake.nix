@@ -529,7 +529,7 @@
                                                                                                                                                                             if [[ "y" == "$ANSWER" ]]
                                                                                                                                                                             then
                                                                                                                                                                                 echo YES
-                                                                                                                                                                            if [[ "$ANSWER" != "y" ]]
+                                                                                                                                                                            else
                                                                                                                                                                             then
                                                                                                                                                                                 failure f028fc7a NO "$PROMPT" "$ANSWER"
                                                                                                                                                                             fi
@@ -650,7 +650,8 @@
                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
                                                                                                                                                     git checkout -b "$BRANCH" >&2
                                                                                                                                                     git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                    git rebase -i origin/main
+                                                                                                                                                    git reset --soft origin/main
+                                                                                                                                                    git commit -a --verbose
                                                                                                                                                     git push origin HEAD >&2
                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure d0633308
                                                                                                                                                     MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
