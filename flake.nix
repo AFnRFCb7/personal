@@ -1272,6 +1272,19 @@
                                                                         (
                                                                             [
                                                                                 ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
+                                                                                (
+                                                                                    fun
+                                                                                        (
+                                                                                            _resource-releaser.implementation
+                                                                                                {
+                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                }
+                                                                                        )
+                                                                                )
+                                                                                ( fun ( _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ) )
                                                                             ]
                                                                         ) ;
                                                         time.timeZone = "America/New_York" ;
