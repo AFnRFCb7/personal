@@ -680,7 +680,7 @@
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure d3737ca3
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                            f
+                                                                                                                                                            fi
                                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                                             git push origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
