@@ -568,7 +568,7 @@
                                                                                                                                                         PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
                                                                                                                                                         BIN_2="$PARENT_2/stage/bin"
                                                                                                                                                         git -C "$STUDIO_2" mutable-mirror "$BRANCH"
-                                                                                                                                                        if diff --recursive --exclude .git "$STUDIO_1" "$STUDIO_2"
+                                                                                                                                                        if diff --recursive --exclude .git --exclude .idea "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                         then
                                                                                                                                                             echo "✅ studio repositories are identical"
                                                                                                                                                         else
