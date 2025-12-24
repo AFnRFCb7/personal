@@ -561,7 +561,7 @@
                                                                                                                                                         fi
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-test" "$PARENT_2/stage/mutable-test"
                                                                                                                                                         then
-                                                                                                                                                            git -C "$STUDIO_2" mutable-test
+                                                                                                                                                            git -C "$STUDIO_2" mutable-  Wtest
                                                                                                                                                             prompt "mutable-test 2"
                                                                                                                                                         fi
                                                                                                                                                         if ! diff "$PARENT_1/stage/bin/mutable-switch" "$PARENT_2/stage/mutable-switch"
@@ -639,7 +639,7 @@
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                             fi
                                                                                                                                                             # KLUDGE
-                                                                                                                                                            git commit -a --verbose -m "" --allow-empty-message
+                                                                                                                                                            git commit -a --verbose --allow-empty-message
                                                                                                                                                             git push origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
