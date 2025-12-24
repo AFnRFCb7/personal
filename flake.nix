@@ -530,7 +530,6 @@
                                                                                                                                                                             then
                                                                                                                                                                                 echo YES
                                                                                                                                                                             else
-                                                                                                                                                                            then
                                                                                                                                                                                 failure f028fc7a NO "$PROMPT" "$ANSWER"
                                                                                                                                                                             fi
                                                                                                                                                                         '' ;
