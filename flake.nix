@@ -1284,6 +1284,18 @@
                                                                                                 }
                                                                                         )
                                                                                 )
+                                                                                (
+                                                                                    fun
+                                                                                        (
+                                                                                            _resource-reporter.implementation
+                                                                                                {
+                                                                                                    organization = config.personal.repository.personal.organization ;
+                                                                                                    repository = config.personal.repository.personal.repository ;
+                                                                                                    resolution = "personal" ;
+                                                                                                    token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                                }
+                                                                                        )
+                                                                                )
                                                                                 ( fun ( _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ) )
                                                                             ]
                                                                         ) ;
