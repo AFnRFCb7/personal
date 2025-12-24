@@ -966,7 +966,8 @@
                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                         fi
-                                                                                                                                        git commit --verbose
+                                                                                                                                        export GIT_EDITOR=${ pkgs.kate }/bin/kate
+                                                                                                                                        git commit --verbose --allow-empty
                                                                                                                                         NAME="$( basename "$name" )" || failure e006c4e7
                                                                                                                                         git push origin HEAD
                                                                                                                                         TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
