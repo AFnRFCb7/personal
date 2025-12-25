@@ -556,6 +556,7 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
@@ -564,7 +565,6 @@
                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                     NAME="$( basename "$name" )" || failure 8c4f2fea
                                                                                                                                                                     cd "$toplevel"
                                                                                                                                                                     nix flake update --flake "$MOUNT/repository" "$NAME"
