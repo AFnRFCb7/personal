@@ -881,7 +881,7 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "mutable-test" ;
-                                                                                                                                                runtimeInputs = [ ( passwordless-sudo pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
+                                                                                                                                                runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         cd "$MOUNT/stage/artifacts/test"
