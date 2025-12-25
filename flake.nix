@@ -446,6 +446,7 @@
                                                                                                                             pkgs.coreutils
                                                                                                                             pkgs.git
                                                                                                                             pkgs.libuuid
+                                                                                                                            wrap
                                                                                                                             ( _failure.implementation "6e3e1011" )
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
