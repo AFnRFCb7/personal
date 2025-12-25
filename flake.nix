@@ -638,7 +638,7 @@
                                                                                                                             in
                                                                                                                         ''
                                                                                                                             git config alias.mutable-build-vm = "!${ mount }/stage/alias/root/mutable-build-vm"
-                                                                                                                            git config alias.mutable-build-vm-with-bootloader" = "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
+                                                                                                                            git config alias.mutable-build-vm-with-bootloader = "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                             git config alias.mutable-check = "!${ mount }/stage/alias/rootmutable-check" ;
                                                                                                                             git config alias.mutable-mirror = "!${ mount }/stage/alias/rootmutable-mirror" ;
                                                                                                                             git config alias.mutable-promote = "!${ mount }/stage/alias/rootmutable-promote" ;
