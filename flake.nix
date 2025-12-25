@@ -435,9 +435,9 @@
                                                                                             follow-parent = true ;
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                { mount , resources , pkgs , root , wrap } :
+                                                                                                    let
+                                                                                                        application =
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
