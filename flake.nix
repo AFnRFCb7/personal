@@ -633,8 +633,8 @@
                                                                                                                                     in "${ application }/bin/submodule" ;
                                                                                                                             in
                                                                                                                         ''
-                                                                                                                            git config alias.mutable-build-vm = "!${ mount }/stage/alias/rootmutable-build-vm"
-                                                                                                                            git config alias.mutable-build-vm-with-bootloader" = "!${ mount }/stage/alias/rootmutable-build-vm-with-bootloader"
+                                                                                                                            git config alias.mutable-build-vm = "!${ mount }/stage/alias/root/mutable-build-vm"
+                                                                                                                            git config alias.mutable-build-vm-with-bootloader" = "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                             git config alias.mutable-check" = "!${ mount }/stage/alias/rootmutable-check" ;
                                                                                                                             git config alias.mutable-mirror" = "!${ mount }/stage/alias/rootmutable-mirror" ;
                                                                                                                             git config alias.mutable-promote" = "!${ mount }/stage/alias/rootmutable-promote" ;
@@ -939,8 +939,8 @@
                                                                                                                                     wrap ${ mutable-build-vm "build-vm" } stage/alias/root/build-vm 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/build-vm-with-bootloader 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/alias/root/mutable-check 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }:
-                                                                                                                                    wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }
+                                                                                                                                    wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ ssh-command } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
