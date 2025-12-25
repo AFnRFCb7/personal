@@ -662,6 +662,8 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
+                                                                                                                            BRANCH="$( echo "scratch/$UUID" | sha512sum )" || failure 87fa1efd
+                                                                                                                            git checkout -b "$BRANCH"
                                                                                                                             git submodule foreach ${ submodule }
                                                                                                                         '' ;
                                                                                                                 } ;
