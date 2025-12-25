@@ -1287,18 +1287,18 @@
                                                                         (
                                                                             [
                                                                                 ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
-                                                                                (
-                                                                                    fun
-                                                                                        (
-                                                                                            _resource-releaser.implementation
-                                                                                                {
-                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
-                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                                }
-                                                                                        )
-                                                                                )
+                                                                                # (
+                                                                                #     fun
+                                                                                #         (
+                                                                                #             _resource-releaser.implementation
+                                                                                #                 {
+                                                                                #                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                #                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                #                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                #                     quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                #                 }
+                                                                                #         )
+                                                                                # )
                                                                                 (
                                                                                     fun
                                                                                         (
@@ -1890,7 +1890,7 @@
                                                        transient = false ;
                                                  } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/6iyrf556ps24jvigrx7jgfvyi4jvrlmk-resource-logger/bin/resource-logger" ; } ;
-                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/b8xr2kiqawqp3gmg1h18zg5q5r7jvzpv-resource-releaser/bin/resource-releaser" ; } ;
+                                        # resource-releaser = _resource-releaser.check { expected = "/nix/store/b8xr2kiqawqp3gmg1h18zg5q5r7jvzpv-resource-releaser/bin/resource-releaser" ; } ;
                                         resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/qfmq26b2x9x66n3fc4bfqxvm0r1amiag-resource-resolver/bin/resource-resolver" ; } ;
                                         secret =
