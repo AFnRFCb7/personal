@@ -441,7 +441,31 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "6e3e1011" ) ] ;
+                                                                                                                    runtimeInputs =
+                                                                                                                        [
+                                                                                                                            pkgs.coreutils
+                                                                                                                            pkgs.git
+                                                                                                                            pkgs.libuuid
+                                                                                                                            ( _failure.implementation "6e3e1011" )
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "submodule" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "3410b891" ) ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                git config alias.mutable-snapshot "$MOUNT/alias/submodule/mutable-snapshot"
+                                                                                                                                                git config alias.mutable-squash "$MOUNT/alias/submodule/mutable-squash"
+                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                git config core.sshCommand "$MOUNT/ssh/command"
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 48cb787a
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 348ef190
+                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                                )
+                                                                                                                        ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             mutable- =
@@ -611,37 +635,17 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/ssh-command" ;
-                                                                                                                            submodule =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "submodule" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "3410b891" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        git config alias.mutable-snapshot "$MOUNT/alias/submodule/mutable-snapshot"
-                                                                                                                                                        git config alias.mutable-squash "$MOUNT/alias/submodule/mutable-squash"
-                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                        git config core.sshCommand "$MOUNT/ssh/command"
-                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure 48cb787a
-                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 348ef190
-                                                                                                                                                        git checkout -b "$BRANCH"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/submodule" ;
                                                                                                                             in
                                                                                                                         ''
                                                                                                                             git config alias.mutable-build-vm = "!${ mount }/stage/alias/root/mutable-build-vm"
                                                                                                                             git config alias.mutable-build-vm-with-bootloader" = "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
-                                                                                                                            git config alias.mutable-check" = "!${ mount }/stage/alias/rootmutable-check" ;
-                                                                                                                            git config alias.mutable-mirror" = "!${ mount }/stage/alias/rootmutable-mirror" ;
-                                                                                                                            git config alias.mutable-promote" = "!${ mount }/stage/alias/rootmutable-promote" ;
-                                                                                                                            git config alias.mutable-rebase" = "!${ mount }/stage/alias/rootmutable-rebase" ;
-                                                                                                                            git config alias.mutable-snapshot" = "!${ mount }/stage/alias/rootmutable-snapshot" ;
-                                                                                                                            git config alias.mutable-switch" = "!${ mount }/stage/mutable-switch" ;
-                                                                                                                            git config alias.mutable-test" = "!${ mount }/stage/alias/rootmutable-test" ;
+                                                                                                                            git config alias.mutable-check = "!${ mount }/stage/alias/rootmutable-check" ;
+                                                                                                                            git config alias.mutable-mirror = "!${ mount }/stage/alias/rootmutable-mirror" ;
+                                                                                                                            git config alias.mutable-promote = "!${ mount }/stage/alias/rootmutable-promote" ;
+                                                                                                                            git config alias.mutable-rebase = "!${ mount }/stage/alias/rootmutable-rebase" ;
+                                                                                                                            git config alias.mutable-snapshot = "!${ mount }/stage/alias/rootmutable-snapshot" ;
+                                                                                                                            git config alias.mutable-switch = "!${ mount }/stage/mutable-switch" ;
+                                                                                                                            git config alias.mutable-test = "!${ mount }/stage/alias/rootmutable-test" ;
                                                                                                                             git config core.sshCommand = "${ mount }/stage/ssh/command" ;
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
@@ -666,7 +670,7 @@
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | sha512sum )" || failure 87fa1efd
                                                                                                                             git checkout -b "$BRANCH" 2>&1
-                                                                                                                            git submodule foreach ${ submodule }
+                                                                                                                            git submodule foreach submodule
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
