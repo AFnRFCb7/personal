@@ -551,7 +551,7 @@
                                                                                                                                             application =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-                                                                                                                                                        name = "commit" ;
+                                                                                                                                                        name = "mutable-snapshot" ;
                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
@@ -559,7 +559,6 @@
                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
-                                                                                                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
                                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                                     git push origin HEAD
                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
