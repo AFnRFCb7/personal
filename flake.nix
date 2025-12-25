@@ -939,7 +939,7 @@
                                                                                                                                     wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }:
                                                                                                                                     wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }
                                                                                                                                     wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ ssh } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ ssh-command } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/
