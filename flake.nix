@@ -665,7 +665,7 @@
                                                                                                                             wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             echo 3b96335d "$0" >&2
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : "echo | ${ setup }" ) }
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             # DOT_SSH="$( mktemp -d )" || failure d345afcf
                                                                                                                             echo eb135223 >&2
                                                                                                                             root "$DOT_SSH"
