@@ -641,14 +641,14 @@
                                                                                                                         ''
                                                                                                                             git config alias.mutable-build-vm = "!${ mount }/stage/alias/root/mutable-build-vm"
                                                                                                                             git config alias.mutable-build-vm-with-bootloader = "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
-                                                                                                                            git config alias.mutable-check = "!${ mount }/stage/alias/rootmutable-check" ;
-                                                                                                                            git config alias.mutable-mirror = "!${ mount }/stage/alias/rootmutable-mirror" ;
-                                                                                                                            git config alias.mutable-promote = "!${ mount }/stage/alias/rootmutable-promote" ;
-                                                                                                                            git config alias.mutable-rebase = "!${ mount }/stage/alias/rootmutable-rebase" ;
-                                                                                                                            git config alias.mutable-snapshot = "!${ mount }/stage/alias/rootmutable-snapshot" ;
+                                                                                                                            git config alias.mutable-check = "!${ mount }/stage/alias/root/mutable-check" ;
+                                                                                                                            git config alias.mutable-mirror = "!${ mount }/stage/alias/root/mutable-mirror" ;
+                                                                                                                            git config alias.mutable-promote = "!${ mount }/stage/alias/root/mutable-promote" ;
+                                                                                                                            git config alias.mutable-rebase = "!${ mount }/stage/alias/root/mutable-rebase" ;
+                                                                                                                            git config alias.mutable-snapshot = "!${ mount }/stage/alias/root/mutable-snapshot" ;
                                                                                                                             git config alias.mutable-switch = "!${ mount }/stage/mutable-switch" ;
-                                                                                                                            git config alias.mutable-test = "!${ mount }/stage/alias/rootmutable-test" ;
-                                                                                                                            git config core.sshCommand = "${ mount }/stage/ssh/command" ;
+                                                                                                                            git config alias.mutable-test = "!${ mount }/stage/alias/root/mutable-test" ;
+                                                                                                                            git config core.sshCommand = "stage/ssh/command" ;
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             git remote add origin config.personal.repository.private.remote ;
