@@ -668,7 +668,9 @@
                                                                                                                             echo eb135223 >&2
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
+                                                                                                                            echo 0b48679a >&2
                                                                                                                             git fetch origin main 2>&1
+                                                                                                                            echo ac26ae7e >&2
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | sha512sum )" || failure 87fa1efd
