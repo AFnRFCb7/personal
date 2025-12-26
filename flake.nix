@@ -662,8 +662,10 @@
                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias.submodule/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            echo 6d0a09f0 >&2
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            echo eb135223 >&2
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             git fetch origin main 2>&1
