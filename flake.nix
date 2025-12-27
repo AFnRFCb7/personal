@@ -664,12 +664,13 @@
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            echo 3b96335d "$0" >&2
+                                                                                                                            echo 18630073 "$0" >&2
                                                                                                                             # shellcheck disable=SC2016
                                                                                                                             echo 'DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }'
+                                                                                                                            echo
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             # DOT_SSH="$( mktemp -d )" || failure d345afcf
-                                                                                                                            echo eb135223 >&2
+                                                                                                                            echo de299495 >&2
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             echo 02ed5e21 >&2
