@@ -195,9 +195,9 @@
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         root "$DOT_SSH"
                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
-                                                                                                        GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
-                                                                                                        root "$GIT_REPOSITORY"
-                                                                                                        ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
+                                                                                                        # GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
+                                                                                                        # root "$GIT_REPOSITORY"
+                                                                                                        # ln --symbolic "$GIT_REPOSITORY/git-repository" /mount
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         root "$SECRET"
                                                                                                         ln --symbolic "$SECRET/secret" /mount
@@ -232,7 +232,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository = ignore : _git-repository.implementation { follow-parent = false ; resolutions = [ ] ; setup = null ; } ;
