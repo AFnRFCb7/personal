@@ -1277,10 +1277,10 @@
                                                                             value =
                                                                                 {
                                                                                     after = [ "network.target" "redis.service" ] ;
+                                                                                    description = description ;
                                                                                     enable = enable ;
                                                                                     serviceConfig =
                                                                                         {
-                                                                                            Description = description ;
                                                                                             ExecStart =
                                                                                                 let
                                                                                                     application =
