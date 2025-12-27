@@ -978,7 +978,7 @@
                                                                                                                                     git submodule foreach "submodule"
                                                                                                                                 '' ;
                                                                                                                 } ;
-                                                                                                        in "${ application }/bin/pre-setup" ;
+                                                                                                        in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                         } ;
                                                                 } ;
