@@ -666,9 +666,9 @@
                                                                                                                             wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             echo 18630073 "$0" >&2
-                                                                                                                            # shellcheck disable=SC2016
                                                                                                                             TEMPORARY=${ resources.production.temporary ( setup : setup ) }
                                                                                                                             export TEMPORARY
+                                                                                                                            echo 8a76359c >&2
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             # DOT_SSH="$( mktemp -d )" || failure d345afcf
                                                                                                                             echo de299495 >&2
