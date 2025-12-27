@@ -1348,7 +1348,7 @@
                                                                                                     } ;
                                                                                         }
                                                                                 )
-                                                                                ( fun { description = "resolver" ; enable = true ; text = _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ; } )
+                                                                                ( fun { description = "resolver" ; enable = false ; text = _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ; } )
                                                                             ]
                                                                         ) ;
                                                         time.timeZone = "America/New_York" ;
