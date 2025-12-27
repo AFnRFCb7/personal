@@ -1271,7 +1271,7 @@
                                                         systemd.services =
                                                             let
                                                                 fun =
-                                                                    text :
+                                                                    { description , enable , text } :
                                                                         {
                                                                             name = builtins.hashString "sha512" text ;
                                                                             value =
@@ -1319,7 +1319,7 @@
                                                                     builtins.listToAttrs
                                                                         (
                                                                             [
-                                                                                ( fun ( _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ) )
+                                                                                ( fun { description = "logger" ; enable = true ; text = _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ; } )
                                                                                 # (
                                                                                 #     fun
                                                                                 #         (
@@ -1334,17 +1334,20 @@
                                                                                 # )
                                                                                 (
                                                                                     fun
-                                                                                        (
-                                                                                            _resource-reporter.implementation
-                                                                                                {
-                                                                                                    organization = config.personal.repository.personal.organization ;
-                                                                                                    repository = config.personal.repository.personal.repository ;
-                                                                                                    resolution = "personal" ;
-                                                                                                    token = resources__.production.secrets.token ( setup : setup ) ;
-                                                                                                }
-                                                                                        )
+                                                                                        {
+                                                                                            description = "personal reporter" ;
+                                                                                            enable = true ;
+                                                                                            text =
+                                                                                                _resource-reporter.implementation
+                                                                                                    {
+                                                                                                        organization = config.personal.repository.personal.organization ;
+                                                                                                        repository = config.personal.repository.personal.repository ;
+                                                                                                        resolution = "personal" ;
+                                                                                                        token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                                    } ;
+                                                                                        }
                                                                                 )
-                                                                                ( fun ( _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ) )
+                                                                                ( fun { description = "resolver" ; enable = true ; text = _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ; } )
                                                                             ]
                                                                         ) ;
                                                         time.timeZone = "America/New_York" ;
