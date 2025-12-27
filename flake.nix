@@ -1337,7 +1337,7 @@
                                                                                     fun
                                                                                         {
                                                                                             description = "personal reporter" ;
-                                                                                            enable = true ;
+                                                                                            enable = false ;
                                                                                             text =
                                                                                                 _resource-reporter.implementation
                                                                                                     {
