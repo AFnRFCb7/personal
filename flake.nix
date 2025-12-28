@@ -702,6 +702,7 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             echo 02ed5e21 >&2
+                                                                                                                            export GIT_SSH_COMMAND /mount/ssh/command
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             echo ac26ae7e >&2
                                                                                                                             git checkout origin/main 2>&1
