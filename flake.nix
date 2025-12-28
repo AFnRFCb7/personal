@@ -251,7 +251,8 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text = "echo hi" ;
                                                                                                 } ;
-                                                                                        in "${ application }/bin/setup" ;
+                                                                                        # in "${ application }/bin/setup" ;
+                                                                                        in "true" ;
                                                                         } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
