@@ -249,7 +249,10 @@
                                                                                                 {
                                                                                                     name = "setup" ;
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text = "echo hi" ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo hi
+                                                                                                        '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/setup" ;
                                                                         } ;
