@@ -235,7 +235,7 @@
                                                                         targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
-                                                            git-repository = ignore : _git-repository.implementation { follow-parent = false ; resolutions = [ ] ; setup = "true" ; } ;
+                                                            git-repository = ignore : _git-repository.implementation { follow-parent = false ; resolutions = [ ] ; setup = null ; } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
                                                     production =
