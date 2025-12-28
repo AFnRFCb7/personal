@@ -597,7 +597,7 @@
                                                                                                                                                                 echo "$MUTABLE_SNAPSHOT"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                            in "${ application }/bin/mutable-snapshot/repository" ;
+                                                                                                                                            in "${ application }/bin/mutable-snapshot" ;
                                                                                                                                     submodule =
                                                                                                                                         let
                                                                                                                                             application =
