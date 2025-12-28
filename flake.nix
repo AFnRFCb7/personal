@@ -641,7 +641,7 @@
                                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
                                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                                echo "$MUTABLE_SNAPSHOT/snapshot"
+                                                                                                                                                                echo "$MUTABLE_SNAPSHOT/repository"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-snapshot" ;
