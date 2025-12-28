@@ -696,7 +696,7 @@
                                                                                                                             # DOT_SSH="$( mktemp -d )" || failure d345afcf
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                            export GIT_SSH_COMMAND=/mount/ssh/command
+                                                                                                                            export GIT_SSH_COMMAND=/mount/stage/ssh/command
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             # git checkout origin/main 2>&1
                                                                                                                             # UUID="$( uuidgen | sha512sum )" || failure 22985e16
