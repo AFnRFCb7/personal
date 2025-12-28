@@ -1045,7 +1045,6 @@
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
-
                                                                                         } ;
                                                                         } ;
                                                                 } ;
