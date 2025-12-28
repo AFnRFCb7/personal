@@ -243,7 +243,14 @@
                                                                             resolutions = [ ] ;
                                                                             setup =
                                                                                 { mount , pkgs , resources , root , wrap } :
-                                                                                    "echo hi" ;
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "setup" ;
+                                                                                                    text = "echo hi" ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/setup" ;
                                                                         } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
