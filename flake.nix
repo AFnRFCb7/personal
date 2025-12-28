@@ -258,7 +258,25 @@
                                                                                         in "${ application }/bin/setup" ;
                                                                         } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
-                                                            temporary = ignore : { targets = [ ] ; } ;
+                                                            temporary =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir --parents /mount/directory
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "directory" ] ;
+                                                                    } ;
                                                         } ;
                                                     production =
                                                         {
