@@ -482,6 +482,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "3410b891" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                git config alias.mutable-audit "$MOUNT/alias/submodule/mutable-audit"
                                                                                                                                                 git config alias.mutable-snapshot "$MOUNT/alias/submodule/mutable-snapshot"
                                                                                                                                                 git config alias.mutable-squash "$MOUNT/alias/submodule/mutable-squash"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
@@ -711,6 +712,7 @@
                                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                         ''
+                                                                                                                            git config alias.mutable-audit "!${ mount }/stage/alias/root/mutable-audit"
                                                                                                                             git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                             git config alias.mutable-check "!${ mount }/stage/alias/root/mutable-check" ;
