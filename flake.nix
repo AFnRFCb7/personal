@@ -679,7 +679,7 @@
                                                                                                                             git config core.sshCommand "!${ mount }/stage/ssh/command" ;
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                            git remote add origin config.personal.repository.private.remote ;
+                                                                                                                            git remote add origin "${ config.personal.repository.private.remote }"
                                                                                                                             wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
