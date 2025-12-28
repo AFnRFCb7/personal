@@ -749,7 +749,7 @@
                                                                                                                                                         nix flake check "$MOUNT/repository#user"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/mutable-build-vm" ;
+                                                                                                                                    in "${ application }/bin/mutable-check" ;
                                                                                                                             mutable-promote =
                                                                                                                                 let
                                                                                                                                     application =
