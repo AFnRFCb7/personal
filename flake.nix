@@ -197,7 +197,7 @@
                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         root "$GIT_REPOSITORY"
-                                                                                                        ln --symbolic "$GIT_REPOSITORY" /mount
+                                                                                                        # ln --symbolic "$GIT_REPOSITORY" /mount
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         root "$SECRET"
                                                                                                         ln --symbolic "$SECRET/secret" /mount
@@ -251,8 +251,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text = "echo hi" ;
                                                                                                 } ;
-                                                                                        # in "${ application }/bin/setup" ;
-                                                                                        in "true" ;
+                                                                                        in "${ application }/bin/setup" ;
                                                                         } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                         } ;
