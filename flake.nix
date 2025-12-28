@@ -251,12 +251,14 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo hi
+                                                                                                            TEMPORARY=${ resources.foobar.temporary }
+                                                                                                            git config foobar.temporary "$TEMPORARY"
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/setup" ;
                                                                         } ;
                                                             secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
+                                                            temporary = ignore : { init = null ; targets = [ ] ; } ;
                                                         } ;
                                                     production =
                                                         {
