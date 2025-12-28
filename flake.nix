@@ -251,6 +251,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            cd /
                                                                                                             TEMPORARY=${ resources.foobar.temporary ( setup : setup ) }
                                                                                                             git config foobar.temporary "$TEMPORARY"
                                                                                                         '' ;
