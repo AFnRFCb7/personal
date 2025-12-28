@@ -253,6 +253,7 @@
                                                                                                         ''
                                                                                                             cd /
                                                                                                             TEMPORARY=${ resources.foobar.temporary ( setup : setup ) }
+                                                                                                            cd /mount/repository
                                                                                                             git config foobar.temporary "$TEMPORARY"
                                                                                                         '' ;
                                                                                                 } ;
