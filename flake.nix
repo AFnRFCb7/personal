@@ -650,19 +650,19 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-squash" ;
-                                                                                                                            ssh-command =
+                                                                                                                            ssh =
                                                                                                                                 let
                                                                                                                                     application =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                name = "ssh-command" ;
+                                                                                                                                                name = "ssh" ;
                                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         ssh -F "$MOUNT/stage/ssh/config" "$@"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/ssh-command" ;
+                                                                                                                                    in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                         ''
                                                                                                                             git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
@@ -689,7 +689,7 @@
                                                                                                                             wrap ${ mutable-squash } stage/alias/root/mutable-squash 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
@@ -929,12 +929,12 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-test" ;
-                                                                                                                            ssh-command =
+                                                                                                                            ssh =
                                                                                                                                 let
                                                                                                                                     application =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                name = "ssh-command" ;
+                                                                                                                                                name = "ssh" ;
                                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
@@ -979,7 +979,7 @@
                                                                                                                                     wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ ssh-command } stage/bin/ssh 0500 --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/
