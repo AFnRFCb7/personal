@@ -691,8 +691,8 @@
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            # DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                            # root "$DOT_SSH"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root "$DOT_SSH"
                                                                                                                             # wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             # git fetch origin main 2>&1
                                                                                                                             # git checkout origin/main 2>&1
