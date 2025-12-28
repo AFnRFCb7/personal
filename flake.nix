@@ -510,7 +510,53 @@
                                                                                                                                                             git -C "$MUTABLE_SNAPSHOT" mutable-${ command }
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
-                                                                                                                                        in "${ application }/bin/mutable-${ command }";
+                                                                                                                                        in "${ application }/bin/mutable-${ command }" ;
+                                                                                                                            mutable-audit =
+                                                                                                                                {
+                                                                                                                                    root =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-audit" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                git fetch origin main
+                                                                                                                                                                git checkout --patch origin/main
+                                                                                                                                                                git submodule foreach "git mutable-audit"
+                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                then
+                                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                                fi
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-audit" ;
+                                                                                                                                    submodule =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-audit" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                cd "$toplevel/$name"
+                                                                                                                                                                git fetch origin main
+                                                                                                                                                                git checkout --patch origin/main
+                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                then
+                                                                                                                                                                    git commit -a --verbose
+                                                                                                                                                                fi
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-audit" ;
+                                                                                                                                } ;
                                                                                                                             mutable-mirror =
                                                                                                                                 let
                                                                                                                                     application =
