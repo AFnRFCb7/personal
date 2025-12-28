@@ -316,8 +316,7 @@
                                                                             ownertrust-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
                                                                             secret-keys-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
                                                                         } ;
-                                                            dot-ssh = ignore : _dot-ssh.implementation { } ;
-                                                            dot-ssh-1 =
+                                                            dot-ssh =
                                                                 ignore :
                                                                     _dot-ssh.implementation
                                                                         {
