@@ -261,21 +261,8 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init =
-                                                                            { mount , pkgs , resources , root , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        mkdir --parents /mount/directory
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                        targets = [ "directory" ] ;
+                                                                        init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                        transient = true ;
                                                                     } ;
                                                         } ;
                                                     production =
