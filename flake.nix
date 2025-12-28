@@ -676,7 +676,7 @@
                                                                                                                             git config alias.mutable-snapshot "!${ mount }/stage/alias/root/mutable-snapshot" ;
                                                                                                                             git config alias.mutable-switch "!${ mount }/stage/mutable-switch" ;
                                                                                                                             git config alias.mutable-test "!${ mount }/stage/alias/root/mutable-test" ;
-                                                                                                                            git config core.sshCommand "!${ mount }/stage/ssh/command" ;
+                                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command" ;
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             git remote add origin "${ config.personal.repository.private.remote }"
@@ -696,8 +696,8 @@
                                                                                                                             # DOT_SSH="$( mktemp -d )" || failure d345afcf
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                            export GIT_SSH_COMMAND=/mount/stage/ssh/command
-                                                                                                                            # git fetch origin main 2>&1
+                                                                                                                            # export GIT_SSH_COMMAND=/mount/stage/ssh/command
+                                                                                                                            git fetch origin main 2>&1
                                                                                                                             # git checkout origin/main 2>&1
                                                                                                                             # UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             # BRANCH="$( echo "scratch/$UUID" | sha512sum )" || failure 87fa1efd
