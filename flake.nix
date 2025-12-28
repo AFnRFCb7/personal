@@ -698,7 +698,7 @@
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 87fa1efd
                                                                                                                             git checkout -b "$BRANCH" 2>&1
-                                                                                                                            # git submodule foreach submodule
+                                                                                                                            git submodule foreach submodule
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
