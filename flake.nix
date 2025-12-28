@@ -235,6 +235,7 @@
                                                                         targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
+
                                                             git-repository =
                                                                 ignore :
                                                                     _git-repository.implementation
