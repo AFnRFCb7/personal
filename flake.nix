@@ -695,7 +695,7 @@
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
-                                                                                                                            # UUID="$( uuidgen | sha512sum )" || failure 22985e16
+                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             # BRANCH="$( echo "scratch/$UUID" | sha512sum )" || failure 87fa1efd
                                                                                                                             # git checkout -b "$BRANCH" 2>&1
                                                                                                                             # git submodule foreach submodule
