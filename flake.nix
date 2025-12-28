@@ -214,7 +214,6 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ( _failure.implementation "f99f6e39" ) ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    echo d9ee4b5f
                                                                                                     RELEASE="$( cat /mount/release )" || failure "6e02a8fe"
                                                                                                     if $RELEASE
                                                                                                     then
