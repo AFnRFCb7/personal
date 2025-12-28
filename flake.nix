@@ -982,8 +982,7 @@
                                                                                                                                     wrap ${ ssh } stage/ssh/command 0500 --literal "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
-                                                                                                                                    wrap "$DOT_SSH/config" stage/
-                                                                                                                                    ssh/config 0400
+                                                                                                                                    wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                     git remote add origin "${ config.personal.repository.private.remote }"
                                                                                                                                     git fetch origin "$BRANCH" 2>&1
                                                                                                                                     git checkout "$COMMIT" 2>&1
