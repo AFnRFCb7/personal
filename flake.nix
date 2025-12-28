@@ -692,24 +692,17 @@
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ ssh-command } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            echo 18630073 "$0" >&2
-                                                                                                                            # shellcheck disable=SC2016
-                                                                                                                            FOOBAR='${ resources.production.dot-ssh ( setup : setup ) }'
-                                                                                                                            echo 0e6f1228 "$FOOBAR"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             # DOT_SSH="$( mktemp -d )" || failure d345afcf
-                                                                                                                            echo de299495 >&2
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                            echo 02ed5e21 >&2
                                                                                                                             export GIT_SSH_COMMAND=/mount/ssh/command
                                                                                                                             git fetch origin main 2>&1
-                                                                                                                            echo ac26ae7e >&2
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | sha512sum )" || failure 87fa1efd
                                                                                                                             git checkout -b "$BRANCH" 2>&1
-                                                                                                                            git submodule foreach submodule
+                                                                                                                            # git submodule foreach submodule
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
