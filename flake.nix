@@ -580,7 +580,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mutable-snapshot" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.git root ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.git "$MOUNT/stage" ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
@@ -700,6 +700,7 @@
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 87fa1efd
                                                                                                                             git checkout -b "$BRANCH" 2>&1
                                                                                                                             git submodule foreach submodule
+                                                                                                                            wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
