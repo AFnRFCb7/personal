@@ -197,7 +197,7 @@
                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         root "$GIT_REPOSITORY"
-                                                                                                        ln --symbolic "$GIT_REPOSITORY/repository" /mount/repository
+                                                                                                        ln --symbolic "$GIT_REPOSITORY/repository" /mount
                                                                                                         SECRET=${ resources.foobar.secret ( setup : setup ) }
                                                                                                         root "$SECRET"
                                                                                                         ln --symbolic "$SECRET/secret" /mount
@@ -232,7 +232,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "git-repository" "init" "release" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository =
