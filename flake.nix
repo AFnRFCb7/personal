@@ -481,8 +481,8 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "aa2cc832" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                git config alias.mutable-snapshot "${ mount }/alias/submodule/mutable-snapshot"
-                                                                                                                                                git config alias.mutable-switch "${ mount }/alias/submodule/mutable-switch"
+                                                                                                                                                git config alias.mutable-snapshot "${ mount }/stage/alias/submodule/mutable-snapshot"
+                                                                                                                                                git config alias.mutable-switch "${ mount }/stage/alias/submodule/mutable-switch"
                                                                                                                                                 git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
