@@ -764,10 +764,12 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
+                                                                                                                            git mutable m
                                                                                                                             git fetch origin main 2>&1
                                                                                                                             git checkout origin/main 2>&1
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 87fa1efd
+                                                                                                                            git submodule update --init --recursive
                                                                                                                             git checkout -b "$BRANCH" 2>&1
                                                                                                                             git submodule foreach "submodule"
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
