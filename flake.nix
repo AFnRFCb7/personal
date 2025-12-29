@@ -659,8 +659,8 @@
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
                                                                                                                                                                     git commit -a --verbose --allow-empty-message >&2
+                                                                                                                                                                    git push origin HEAD >&2
                                                                                                                                                                 fi
-                                                                                                                                                                git push origin HEAD >&2
                                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
                                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
