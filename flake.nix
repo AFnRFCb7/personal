@@ -654,7 +654,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                                                git submodule foreach '$MOUNT/stage/mutable-snapshot'
+                                                                                                                                                                git submodule foreach '$MOUNT/stage/alias/submodule/mutable-snapshot'
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
