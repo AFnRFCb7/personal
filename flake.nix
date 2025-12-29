@@ -585,6 +585,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         BRANCH="$1"
+                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/ssh"
                                                                                                                                                         git fetch origin "$BRANCH"
                                                                                                                                                         git checkout "origin/$BRANCH"
                                                                                                                                                         git submodule update --init --recursive
