@@ -653,7 +653,7 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                                git submodule foreach "$MOUNT/stage/mutable-snapshot"
+                                                                                                                                                                git submodule foreach '$MOUNT/stage/mutable-snapshot'
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
