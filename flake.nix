@@ -785,7 +785,26 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.git root wrap ] ;
+                                                                                                                    runtimeInputs =
+                                                                                                                        [
+                                                                                                                            pkgs.git
+                                                                                                                            root
+                                                                                                                            wrap
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "submodule" ;
+                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                git config core.sshCommand "${ mount }/ssh/command"
+                                                                                                                                                git config alias.mutable-switch "!${ mount }/alias/submodule/mutable-switch"
+                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                git config user.name "${ config.personal.repository.private.name }
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                        ] ;
                                                                                                                     text =
                                                                                                                         let
                                                                                                                             mutable-build-vm =
@@ -1041,7 +1060,7 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                    git submodule foreach "submodule"
+                                                                                                                                    git submodule foreach "git submodule"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
