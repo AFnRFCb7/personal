@@ -800,7 +800,7 @@
                                                                                                                                                 git config core.sshCommand "${ mount }/ssh/command"
                                                                                                                                                 git config alias.mutable-switch "!${ mount }/alias/submodule/mutable-switch"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                git config user.name "${ config.personal.repository.private.name }
+                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
