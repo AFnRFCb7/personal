@@ -500,6 +500,9 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "3410b891" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                cd "$toplevel/$name"
                                                                                                                                                 git config alias.mutable-audit "$MOUNT/alias/submodule/mutable-audit"
                                                                                                                                                 git config alias.mutable-snapshot "$MOUNT/alias/submodule/mutable-snapshot"
                                                                                                                                                 git config alias.mutable-squash "$MOUNT/alias/submodule/mutable-squash"
@@ -766,7 +769,7 @@
                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure 22985e16
                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 87fa1efd
                                                                                                                             git checkout -b "$BRANCH" 2>&1
-                                                                                                                            git submodule foreach "git submodule"
+                                                                                                                            git submodule foreach "submodule"
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                         '' ;
                                                                                                                 } ;
