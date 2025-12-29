@@ -506,8 +506,8 @@
                                                                                                                                                 git config alias.mutable-audit "$MOUNT/stage/alias/submodule/mutable-audit"
                                                                                                                                                 git config alias.mutable-snapshot "$MOUNT/stage/alias/submodule/mutable-snapshot"
                                                                                                                                                 git config alias.mutable-squash "$MOUNT/stage/alias/submodule/mutable-squash"
-                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                git config user.email "${ config.personal.repository.private.email } XXX"
+                                                                                                                                                git config user.name "${ config.personal.repository.private.name } YYY"
                                                                                                                                                 git config core.sshCommand "$MOUNT/ssh/command"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 48cb787a
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 348ef190
