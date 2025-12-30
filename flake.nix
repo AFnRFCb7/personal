@@ -847,6 +847,7 @@
                                                                                                                                                     text =
                                                                                                                                                         ''
                                                                                                                                                             cd "$MOUNT/stage/artifacts/${ vm }"
+                                                                                                                                                            export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                             nixos-rebuild ${ vm } --flake "$MOUNT/repository#user"
                                                                                                                                                             export SHARED_DIR="$MOUNT/artifacts/${ vm }/shared"
                                                                                                                                                             "$MOUNT/repository/result/bin/run-nixos-vm"
