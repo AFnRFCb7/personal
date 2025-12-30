@@ -682,7 +682,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                                                git submodule foreach '$MOUNT/stage/alias/submodule/mutable-snapshot'
+                                                                                                                                                                git submodule foreach '$MOUNT/stage/alias/submodule/mutable-snapshot' >&2
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 84ef6d86
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
@@ -692,7 +692,7 @@
                                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
                                                                                                                                                                 MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                                 root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                                echo "$MUTABLE_SNAPSHOT/repository"
+                                                                                                                                                                echo "$MUTABLE_SNAPSHOT"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-snapshot" ;
