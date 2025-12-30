@@ -847,7 +847,7 @@
                                                                                                                                                     text =
                                                                                                                                                         ''
                                                                                                                                                             cd "$MOUNT/stage/artifacts/${ vm }"
-                                                                                                                                                            export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
+                                                                                                                                                            export NIX_SSHOPTS="-F $MOUNT/stage/ssh/config"
                                                                                                                                                             nixos-rebuild ${ vm } --flake "$MOUNT/repository#user"
                                                                                                                                                             export SHARED_DIR="$MOUNT/artifacts/${ vm }/shared"
                                                                                                                                                             "$MOUNT/repository/result/bin/run-nixos-vm"
@@ -864,7 +864,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         cd "$MOUNT/stage/artifacts/check"
-                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
+                                                                                                                                                        export NIX_SSHOPTS="-F $MOUNT/stage/ssh/config"
                                                                                                                                                         nix flake check "$MOUNT/repository"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
