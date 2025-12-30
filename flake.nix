@@ -782,7 +782,7 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             git mutable-mirror main 2>&1
-                                                                                                                            ${ pkgs.which }/bin/which submodule
+                                                                                                                            ${ pkgs.which }/bin/which submodule >&2
                                                                                                                             git submodule foreach 'submodule' 2>&1
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                         '' ;
@@ -819,7 +819,7 @@
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                 git config alias.mutable-switch "!${ mount }/stage/alias/submodule/mutable-switch"
-                                                                                                                                                git config core.sshCommand "${ mount }/ssh/command"
+                                                                                                                                                git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 NAME="$( basename "$name" )" || failure a45e8121
