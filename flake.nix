@@ -783,8 +783,6 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             git mutable-mirror main 2>&1
-                                                                                                                            ${ pkgs.which }/bin/which submodule >&2
-                                                                                                                            git submodule foreach 'submodule' 2>&1
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                         '' ;
                                                                                                                 } ;
