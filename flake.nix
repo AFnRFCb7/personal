@@ -1103,8 +1103,8 @@
                                                                                                                                     git submodule foreach "submodule" >&2
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
                                                                                                                                     NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1bc074b2
-                                                                                                                                    git checkout -b "$NEW_BRANCH"
-                                                                                                                                    git push origin HEAD
+                                                                                                                                    git checkout -b "$NEW_BRANCH" 2>&1
+                                                                                                                                    git push origin HEAD 2>&1
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
