@@ -504,6 +504,7 @@
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                 git config alias.mutable-audit "$MOUNT/stage/alias/submodule/mutable-audit"
+                                                                                                                                                git config alias.mutable-mirror "$MOUNT/stage/alias/submodule/mutable-mirror"
                                                                                                                                                 git config alias.mutable-snapshot "$MOUNT/stage/alias/submodule/mutable-snapshot"
                                                                                                                                                 git config alias.mutable-squash "$MOUNT/stage/alias/submodule/mutable-squash"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
@@ -580,22 +581,49 @@
                                                                                                                                             in "${ application }/bin/mutable-audit" ;
                                                                                                                                 } ;
                                                                                                                             mutable-mirror =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-mirror" ;
-                                                                                                                                                runtimeInputs = [ pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        BRANCH="$1"
-                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
-                                                                                                                                                        git fetch origin "$BRANCH"
-                                                                                                                                                        git checkout "origin/$BRANCH"
-                                                                                                                                                        git submodule update --init --recursive
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/mutable-mirror" ;
+                                                                                                                                {
+                                                                                                                                    root =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-mirror" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                OLD_BRANCH="$1"
+                                                                                                                                                                export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
+                                                                                                                                                                git fetch origin "$OLD_BRANCH"
+                                                                                                                                                                git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                git submodule update --init --recursive
+                                                                                                                                                                git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b10e1bdf
+                                                                                                                                                                NEW_BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 9dcc9629
+                                                                                                                                                                git checkout -b "$NEW_BRANCH"
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                           in "${ application }/bin/mutable-mirror" ;
+                                                                                                                                    submodule =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-mirror" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "f2523caa" ) ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                cd "$toplevel/$name"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 95ae98e7
+                                                                                                                                                                BRANCH="$( echo "$UUID" | cut --characters 1-64 )" || failure e53dc5f9
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-mirror" ;
+                                                                                                                                } ;
                                                                                                                             mutable-rebase =
                                                                                                                                 let
                                                                                                                                     application = pkgs.writeShellApplication
@@ -761,7 +789,7 @@
                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ ssh } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodules/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
