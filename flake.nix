@@ -816,23 +816,29 @@
                                                                                                                     name = "setup" ;
                                                                                                                     runtimeInputs =
                                                                                                                         [
+                                                                                                                            pkgs.coreutils
                                                                                                                             pkgs.git
+                                                                                                                            pkgs.libuuid
                                                                                                                             root
                                                                                                                             wrap
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "submodule" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix ( _failure.implementation "a24ad586" ) ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ( _failure.implementation "a24ad586" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                git config core.sshCommand "${ mount }/ssh/command"
                                                                                                                                                 git config alias.mutable-switch "!${ mount }/stage/alias/submodule/mutable-switch"
+                                                                                                                                                git config core.sshCommand "${ mount }/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 NAME="$( basename "$name" )" || failure a45e8121
+                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 03931c59
+                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 44ee7b13
+                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                git push origin HEAD
                                                                                                                                                 nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                             '' ;
                                                                                                                                     }
@@ -1065,7 +1071,7 @@
                                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    BRANCH="$1"
+                                                                                                                                    OLD_BRANCH="$1"
                                                                                                                                     COMMIT="$2"
                                                                                                                                     git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
                                                                                                                                     git config alias.mutable-build-vm-with-bootloader "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
@@ -1086,7 +1092,7 @@
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                     git remote add origin "${ config.personal.repository.private.remote }"
-                                                                                                                                    git fetch origin "$BRANCH" 2>&1
+                                                                                                                                    git fetch origin "$OLD_BRANCH" 2>&1
                                                                                                                                     git checkout "$COMMIT" 2>&1
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm/shared
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
@@ -1095,6 +1101,10 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                     git submodule foreach "submodule" >&2
+                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
+                                                                                                                                    NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1bc074b2
+                                                                                                                                    git checkout -b "$NEW_BRANCH"
+                                                                                                                                    git push origin HEAD
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
