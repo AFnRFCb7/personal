@@ -486,6 +486,7 @@
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                 git config foobar.alpha "$toplevel/$name"
                                                                                                                                                 cd "$toplevel/$name"
+                                                                                                                                                MOUNT="$( dirname "$toplevel" )" || failure 66e9623b
                                                                                                                                                 git config alias.mutable-audit "$MOUNT/stage/alias/submodule/mutable-audit"
                                                                                                                                                 git config alias.mutable-mirror "$MOUNT/stage/alias/submodule/mutable-mirror"
                                                                                                                                                 git config alias.mutable-snapshot "$MOUNT/stage/alias/submodule/mutable-snapshot"
