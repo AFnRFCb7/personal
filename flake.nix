@@ -530,7 +530,7 @@
                                                                                                                                                     text =
                                                                                                                                                         ''
                                                                                                                                                             MUTABLE_SNAPSHOT="$( git mutable-snapshot )" || failure 24c41cef
-                                                                                                                                                            "$MUTABLE_SNAPSHOT/stage/alias/${ command }"
+                                                                                                                                                            "$MUTABLE_SNAPSHOT/stage/alias/mutable-${ command }"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
                                                                                                                                         in "${ application }/bin/mutable-${ command }" ;
@@ -1071,7 +1071,7 @@
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                     git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                                     wrap ${ mutable-build-vm "build-vm" } stage/alias/root/mutable-build-vm 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/build-vm-with-bootloader 0500 --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-check } stage/alias/root/mutable-check 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }"
