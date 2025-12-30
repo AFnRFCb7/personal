@@ -530,7 +530,7 @@
                                                                                                                                                     text =
                                                                                                                                                         ''
                                                                                                                                                             MUTABLE_SNAPSHOT="$( git mutable-snapshot )" || failure 24c41cef
-                                                                                                                                                            git -C "$MUTABLE_SNAPSHOT" mutable-${ command }
+                                                                                                                                                            "$MUTABLE_SNAPSHOT/stage/alias/${ command }"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
                                                                                                                                         in "${ application }/bin/mutable-${ command }" ;
