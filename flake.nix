@@ -839,7 +839,9 @@
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 44ee7b13
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 git push origin HEAD
+                                                                                                                                                git config foobar.alpha "nix flake update --flake $toplevel $NAME"
                                                                                                                                                 nix flake update --flake "$toplevel" "$NAME"
+                                                                                                                                                git config foobar.beta "B"
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
