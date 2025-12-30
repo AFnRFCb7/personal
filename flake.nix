@@ -474,24 +474,6 @@
                                                                                                                             pkgs.libuuid
                                                                                                                             root
                                                                                                                             wrap
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "submodule" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "aa2cc832" ) ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                git config alias.mutable-snapshot "${ mount }/stage/alias/submodule/mutable-snapshot"
-                                                                                                                                                git config alias.mutable-switch "${ mount }/stage/alias/submodule/mutable-switch"
-                                                                                                                                                git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure a25716db
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 89ef1ef5
-                                                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
                                                                                                                             ( _failure.implementation "6e3e1011" )
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
