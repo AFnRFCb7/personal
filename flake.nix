@@ -482,9 +482,9 @@
                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "3410b891" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                git config foobar.alpha 1
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                git config foobar.alpha "$toplevel/$name"
                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                 git config alias.mutable-audit "$MOUNT/stage/alias/submodule/mutable-audit"
                                                                                                                                                 git config alias.mutable-mirror "$MOUNT/stage/alias/submodule/mutable-mirror"
