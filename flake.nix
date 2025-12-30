@@ -1094,7 +1094,7 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                    git submodule foreach "submodule"
+                                                                                                                                    git submodule foreach "submodule" >&2
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
