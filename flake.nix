@@ -863,7 +863,9 @@
                                                                                                                                                 runtimeInputs = [ pkgs.nix ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        nix flake check "$MOUNT/repository#user"
+                                                                                                                                                        cd "$MOUNT/stage/artifacts/check"
+                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
+                                                                                                                                                        nix flake check "$MOUNT/repository"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-check" ;
