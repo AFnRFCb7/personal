@@ -677,7 +677,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mutable-snapshot" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.git "$MOUNT/stage" ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.git "$MOUNT/stage" ( _failure.implementation "63144217" ) ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
@@ -823,13 +823,17 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "submodule" ;
-                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix ( _failure.implementation "a24ad586" ) ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                 git config core.sshCommand "${ mount }/ssh/command"
                                                                                                                                                 git config alias.mutable-switch "!${ mount }/stage/alias/submodule/mutable-switch"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                NAME="$( basename "$name" ) || failure a45e8121
+                                                                                                                                                nix flake update --flake "$MOUNT/repository" "$NAME"
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
@@ -1090,7 +1094,7 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                    git submodule foreach "git submodule"
+                                                                                                                                    git submodule foreach "submodule"
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
