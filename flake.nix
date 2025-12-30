@@ -598,7 +598,7 @@
                                                                                                                                                                 git submodule update --init --recursive
                                                                                                                                                                 git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure b10e1bdf
-                                                                                                                                                                NEW_BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 9dcc9629
+                                                                                                                                                                NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 9dcc9629
                                                                                                                                                                 git checkout -b "$NEW_BRANCH"
                                                                                                                                                                 git push origin HEAD
                                                                                                                                                             '' ;
