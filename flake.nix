@@ -598,7 +598,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mutable-mirror" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "f2523caa" ) ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ( _failure.implementation "f2523caa" ) ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
@@ -608,6 +608,8 @@
                                                                                                                                                                 BRANCH="$( echo "$UUID" | cut --characters 1-64 )" || failure e53dc5f9
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git push origin HEAD
+                                                                                                                                                                NAME="$( basename "$name" )" || failure 8b703514
+                                                                                                                                                                nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-mirror" ;
