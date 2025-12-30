@@ -833,7 +833,7 @@
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 NAME="$( basename "$name" )" || failure a45e8121
-                                                                                                                                                nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
