@@ -495,6 +495,10 @@
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 48cb787a
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 348ef190
                                                                                                                                                 git checkout -b "$BRANCH"
+                                                                                                                                                git push origin HEAD
+                                                                                                                                                NAME="$( basename "$name" )" || 6147c84f
+                                                                                                                                                nix flake update "$toplevel" "$NAME"
+                                                                                                                                                git config foobar.alpha 1
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                                 )
