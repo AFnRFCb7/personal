@@ -499,7 +499,7 @@
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 NAME="$( basename "$name" )" || 6147c84f
-                                                                                                                                                nix flake update "$toplevel" "$NAME"
+                                                                                                                                                nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                 git config foobar.beta 1
                                                                                                                                             '' ;
                                                                                                                                     }
@@ -783,7 +783,7 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             git mutable-mirror main 2>&1
-                                                                                                                            ${ pkgs.which }/bin/which submodule >&2
+                                                                                                                            # ${ pkgs.which }/bin/which submodule >&2
                                                                                                                             git submodule foreach 'submodule' 2>&1
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                         '' ;
