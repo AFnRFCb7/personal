@@ -821,10 +821,10 @@
                                                                                                                                                 git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure 03931c59
-                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 44ee7b13
-                                                                                                                                                git checkout -b "$BRANCH"
-                                                                                                                                                git push origin HEAD
+                                                                                                                                                # UUID="$( uuidgen | sha512sum )" || failure 03931c59
+                                                                                                                                                # BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 44ee7b13
+                                                                                                                                                # git checkout -b "$BRANCH"
+                                                                                                                                                # git push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
@@ -1090,10 +1090,10 @@
                                                                                                                                     git submodule sync >&2
                                                                                                                                     git submodule update --init --recursive >&2
                                                                                                                                     git submodule foreach "submodule" >&2
-                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
-                                                                                                                                    NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1bc074b2
-                                                                                                                                    git checkout -b "$NEW_BRANCH" 2>&1
-                                                                                                                                    git push origin HEAD 2>&1
+                                                                                                                                    # UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
+                                                                                                                                    # NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1bc074b2
+                                                                                                                                    # git checkout -b "$NEW_BRANCH" 2>&1
+                                                                                                                                    # git push origin HEAD 2>&1
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
