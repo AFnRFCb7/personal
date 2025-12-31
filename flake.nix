@@ -1086,6 +1086,7 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
+                                                                                                                                    export GIT_SSH_COMMAND=/mount/stage/ssh/command
                                                                                                                                     git submodule sync >&2
                                                                                                                                     git submodule update --init --recursive >&2
                                                                                                                                     git submodule foreach "submodule" >&2
