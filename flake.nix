@@ -1087,9 +1087,9 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                     export GIT_SSH_COMMAND=/mount/stage/ssh/command
-                                                                                                                                    git submodule sync >&2
-                                                                                                                                    git submodule update --init --recursive >&2
-                                                                                                                                    git submodule foreach "submodule" >&2
+                                                                                                                                    git submodule sync 2>&1
+                                                                                                                                    git submodule update --init --recursive 2>&1
+                                                                                                                                    git submodule foreach "submodule" 2>&1
                                                                                                                                     # UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
                                                                                                                                     # NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1bc074b2
                                                                                                                                     # git checkout -b "$NEW_BRANCH" 2>&1
