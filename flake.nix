@@ -858,6 +858,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         cd "$MOUNT/stage/artifacts/check"
+                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                         echo nix flake check "$MOUNT/repository" >&2
                                                                                                                                                         nix flake check "$MOUNT/repository"
                                                                                                                                                     '' ;
