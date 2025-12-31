@@ -1011,7 +1011,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                                cd "$toplevel/main"
+                                                                                                                                                                cd "$toplevel/$name"
                                                                                                                                                                 git fetch origin main
                                                                                                                                                                 if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
                                                                                                                                                                 then
