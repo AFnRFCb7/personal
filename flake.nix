@@ -1082,7 +1082,7 @@
                                                                                                                                     git checkout "$COMMIT" 2>&1
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm/shared
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
-                                                                                                                                    mkdir --parents /mount/stage/artificats/promote
+                                                                                                                                    mkdir --parents /mount/stage/artifacts/promote
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
