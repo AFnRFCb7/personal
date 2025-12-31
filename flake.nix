@@ -826,9 +826,6 @@
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 44ee7b13
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 git push origin HEAD
-                                                                                                                                                git config foobar.alpha "nix flake update --flake $toplevel $NAME"
-                                                                                                                                                nix flake update --flake "$toplevel" "$NAME"
-                                                                                                                                                git config foobar.beta "B"
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
@@ -1090,6 +1087,7 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
+                                                                                                                                    git submodule synch update --init --recursive
                                                                                                                                     git submodule foreach "submodule" >&2
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
                                                                                                                                     NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 1bc074b2
