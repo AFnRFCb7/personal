@@ -608,8 +608,6 @@
                                                                                                                                                                 BRANCH="$( echo "$UUID" | cut --characters 1-64 )" || failure e53dc5f9
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git push origin HEAD
-                                                                                                                                                                NAME="$( basename "$name" )" || failure 8b703514
-                                                                                                                                                                nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-mirror" ;
@@ -784,7 +782,7 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                            # "${ mount }/stage/alias/root/mutable-mirror" main 2>&1
+                                                                                                                            "${ mount }/stage/alias/root/mutable-mirror" main 2>&1
                                                                                                                             # wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
                                                                                                                         '' ;
                                                                                                                 } ;
