@@ -844,6 +844,7 @@
                                                                                                                                                             cd "$MOUNT/stage/artifacts/${ vm }"
                                                                                                                                                             nixos-rebuild ${ vm } --flake "$MOUNT/repository#user"
                                                                                                                                                             export SHARED_DIR="$MOUNT/artifacts/${ vm }/shared"
+                                                                                                                                                            echo "$MOUNT/repository/result/bin/run-nixos-vm"
                                                                                                                                                             "$MOUNT/repository/result/bin/run-nixos-vm"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
@@ -857,8 +858,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.nix ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        cd "$MOUNT/stage/artifacts/check"
-                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
+                                                                                                                                                        cd "$MOUNT/repository"
                                                                                                                                                         echo nix flake check "$MOUNT/repository" >&2
                                                                                                                                                         nix flake check "$MOUNT/repository"
                                                                                                                                                     '' ;
@@ -995,6 +995,7 @@
                                                                                                                                                                 git -C "$MUTABLE_SNAPSHOT/repository" checkout main
                                                                                                                                                                 git -C "$MUTABLE_SNAPSHOT/repository" rebase "$BRANCH"
                                                                                                                                                                 git -C "$MUTABLE_SNAPSHOT/repository" push origin main
+                                                                                                                                                                echo nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                                 nixos-rebuild switch --flake "$MUTABLE_SNAPSHOT/repository#user" --show-trace
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
@@ -1039,6 +1040,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         cd "$MOUNT/stage/artifacts/test"
+                                                                                                                                                        echo "$MOUNT/repository/result/bin/run-nixos-vm"
                                                                                                                                                         nixos-rebuild test --flake "$MOUNT/repository#user"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
