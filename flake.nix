@@ -699,6 +699,9 @@
                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
+                                                                                                                                                                    UUID="$( uuidgen | sha512 )" || failure 23d60eed
+                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" )" || failure 48e374d5
+                                                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                                     git push origin HEAD
                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
