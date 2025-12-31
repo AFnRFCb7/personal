@@ -759,7 +759,7 @@
                                                                                                                             git config alias.mutable-promote "!${ mount }/stage/alias/root/mutable-promote" ;
                                                                                                                             git config alias.mutable-rebase "!${ mount }/stage/alias/root/mutable-rebase" ;
                                                                                                                             git config alias.mutable-snapshot "!${ mount }/stage/alias/root/mutable-snapshot" ;
-                                                                                                                            git config alias.mutable-switch "!${ mount }/stage/mutable-switch" ;
+                                                                                                                            git config alias.mutable-switch "!${ mount }/stage/alias/root/mutable-switch" ;
                                                                                                                             git config alias.mutable-test "!${ mount }/stage/alias/root/mutable-test" ;
                                                                                                                             git config core.sshCommand "${ mount }/stage/ssh/command" ;
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
