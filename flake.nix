@@ -1001,36 +1001,39 @@
                                                                                                                                                     } ;
                                                                                                                                                 in "${ application }/bin/mutable-switch" ;
                                                                                                                                     submodule =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable-switch" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.nix ( _failure.implementation "c0f7e8f6" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
-                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                        cd "$toplevel/main"
-                                                                                                                                                        git fetch origin main
-                                                                                                                                                        if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
-                                                                                                                                                        then
-                                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
-                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                            if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
-                                                                                                                                                            then
-                                                                                                                                                                gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
-                                                                                                                                                            fi
-                                                                                                                                                            gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                            URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
-                                                                                                                                                            gh pr merge "$URL" --rebase
-                                                                                                                                                            gh auth logout
-                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?name must be set" "}" ] }"
-                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
-                                                                                                                                                            NAME="$( basename "$name" )" || failure 368e7b07
-                                                                                                                                                            nix flake update --flake "$toplevel" "$NAME"
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-switch" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.nix ( _failure.implementation "c0f7e8f6" ) ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                cd "$toplevel/main"
+                                                                                                                                                                git fetch origin main
+                                                                                                                                                                if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
+                                                                                                                                                                then
+                                                                                                                                                                    BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
+                                                                                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                    gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                    if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
+                                                                                                                                                                    then
+                                                                                                                                                                        gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
+                                                                                                                                                                    fi
+                                                                                                                                                                    gh pr create --base main --head "$BRANCH" --label "snapshot"
+                                                                                                                                                                    URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
+                                                                                                                                                                    gh pr merge "$URL" --rebase
+                                                                                                                                                                    gh auth logout
+                                                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?name must be set" "}" ] }"
+                                                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
+                                                                                                                                                                    NAME="$( basename "$name" )" || failure 368e7b07
+                                                                                                                                                                    nix flake update --flake "$toplevel" "$NAME"
+                                                                                                                                                                fi
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-switch" ;
                                                                                                                                 } ;
                                                                                                                             mutable-test =
                                                                                                                                 let
