@@ -862,6 +862,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         cd "$MOUNT/stage/artifacts/check"
+                                                                                                                                                        echo nix flake check "$MOUNT/repository" >&2
                                                                                                                                                         nix flake check "$MOUNT/repository"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
