@@ -1086,7 +1086,7 @@
                                                                                                                                     mkdir --parents /mount/stage/artifacts/check
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                    git submodule synch >&2
+                                                                                                                                    git submodule sync >&2
                                                                                                                                     git submodule update --init --recursive >&2
                                                                                                                                     git submodule foreach "submodule" >&2
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure 839b0e7b
