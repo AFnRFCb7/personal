@@ -605,7 +605,7 @@
                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 95ae98e7
-                                                                                                                                                                BRANCH="$( echo "$UUID" | cut --characters 1-64 )" || failure e53dc5f9
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure e53dc5f9
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git push origin HEAD
                                                                                                                                                             '' ;
