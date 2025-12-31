@@ -632,7 +632,7 @@
                                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 54d22bae
                                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                                             git rebase -i origin/main
-                                                                                                                                                            git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                            git commit -m "SNAPSHOT REBASE COMMIT" --allow-empty
                                                                                                                                                             git push origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
