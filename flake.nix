@@ -633,7 +633,7 @@
                                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                                             git rebase -i origin/main
                                                                                                                                                             git commit -m "SNAPSHOT REBASE COMMIT" --allow-empty
-                                                                                                                                                            git push origin HEAD
+                                                                                                                                                            git push -u origin HEAD
                                                                                                                                                             TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
