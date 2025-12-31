@@ -821,7 +821,6 @@
                                                                                                                                                 git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                NAME="$( basename "$name" )" || failure a45e8121
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 03931c59
                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 44ee7b13
                                                                                                                                                 git checkout -b "$BRANCH"
