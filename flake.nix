@@ -700,7 +700,7 @@
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
                                                                                                                                                                     UUID="$( uuidgen | sha512 )" || failure 23d60eed
-                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" )" || failure 48e374d5
+                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 48e374d5
                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                                     git push origin HEAD
