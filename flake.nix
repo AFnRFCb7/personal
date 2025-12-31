@@ -982,8 +982,8 @@
                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
-                                                                                                                                                                cd "$MOUNT/repository/stage/artifacts/switch"
-                                                                                                                                                                git -C "$MOUNT/repository" submodule foreach "$MOUNT/repository/stage/alias/submodule/mutable-switch"
+                                                                                                                                                                cd "$MOUNT/stage/artifacts/switch"
+                                                                                                                                                                git -C "$MOUNT/repository" submodule foreach "$MOUNT/stage/alias/submodule/mutable-switch"
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 0f1227b6
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
                                                                                                                                                                 git -C "$MOUNT/repository" checkout -b "$BRANCH"
