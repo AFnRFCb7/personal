@@ -1035,7 +1035,7 @@
                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 6ad73063
                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                                    export PARENT="$( dirname "$toplevel" )" || failure e5630d4d
+                                                                                                                                                                    PARENT="$( dirname "$toplevel" )" || failure e5630d4d
                                                                                                                                                                     export GIT_SSH_COMMAND="$PARENT/stage/ssh/command"
                                                                                                                                                                     nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                                 fi
