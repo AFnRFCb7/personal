@@ -699,7 +699,7 @@
                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
-                                                                                                                                                                    UUID="$( uuidgen | sha512 )" || failure 23d60eed
+                                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure 23d60eed
                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 48e374d5
                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                     git commit -a --verbose --allow-empty-message
@@ -772,7 +772,7 @@
                                                                                                                             wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --literal BRANCH --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --literal-plain BRANCH --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable- "promote" } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-rebase } stage/alias/root/mutable-rebase 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
@@ -1091,7 +1091,7 @@
                                                                                                                                     wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch.submodule } stage/alias/submodule/mutable-switch 0500
                                                                                                                                     wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal "@" --set-plain MOUNT "${ mount }"
+                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }"
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -1158,7 +1158,7 @@
                                                                                                                 in "${ application }/bin/snapshot"
                                                                                                             ''
                                                                                                                 NAME="$1"
-                                                                                                                wrap ${ snapshot } script 0500 --literal BRANCH --literal UUID --
+                                                                                                                wrap ${ snapshot } script 0500 --literal-plain BRANCH --literal-plain UUID --
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
