@@ -849,8 +849,8 @@
                                                                                                                                                             cd "$MOUNT/stage/artifacts/${ vm }"
                                                                                                                                                             nixos-rebuild ${ vm } --flake "$MOUNT/repository#user"
                                                                                                                                                             export SHARED_DIR="$MOUNT/artifacts/${ vm }/shared"
-                                                                                                                                                            echo "$MOUNT/repository/result/bin/run-nixos-vm"
-                                                                                                                                                            "$MOUNT/repository/result/bin/run-nixos-vm"
+                                                                                                                                                            echo "$MOUNT/stage/artifacts/${ vm }/result/bin/run-nixos-vm"
+                                                                                                                                                            "$MOUNT/stage/artificats/${ vm }/result/bin/run-nixos-vm"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
                                                                                                                                         in "${ application }/bin/mutable-build-vm" ;
