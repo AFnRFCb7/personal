@@ -848,9 +848,9 @@
                                                                                                                                                         ''
                                                                                                                                                             cd "$MOUNT/stage/artifacts/${ vm }"
                                                                                                                                                             nixos-rebuild ${ vm } --flake "$MOUNT/repository#user"
-                                                                                                                                                            export SHARED_DIR="$MOUNT/artifacts/${ vm }/shared"
+                                                                                                                                                            export SHARED_DIR="$MOUNT/stage/artifacts/${ vm }/shared"
                                                                                                                                                             echo "$MOUNT/stage/artifacts/${ vm }/result/bin/run-nixos-vm"
-                                                                                                                                                            "$MOUNT/stage/artificats/${ vm }/result/bin/run-nixos-vm"
+                                                                                                                                                            "$MOUNT/stage/artifacts/${ vm }/result/bin/run-nixos-vm"
                                                                                                                                                         '' ;
                                                                                                                                                 } ;
                                                                                                                                         in "${ application }/bin/mutable-build-vm" ;
