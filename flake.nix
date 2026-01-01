@@ -1037,6 +1037,7 @@
                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                     PARENT="$( dirname "$toplevel" )" || failure e5630d4d
                                                                                                                                                                     export GIT_SSH_COMMAND="$PARENT/stage/ssh/command"
+                                                                                                                                                                    cd "$toplevel"
                                                                                                                                                                     nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
