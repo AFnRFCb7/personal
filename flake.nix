@@ -1802,7 +1802,7 @@
                                                                 host-name = "eedaca3e" ;
                                                             } ;
                                                     } ;
-                                                expected = "/nix/store/riz34w85kbnrp9944m7bxxaigm7xqq4w-init/bin/init" ;
+                                                expected = "/nix/store/05f5bx3jmjp8l85paq330klvrh912236-init/bin/init" ;
                                                 mount = "271a376c" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
