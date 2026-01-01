@@ -645,7 +645,6 @@
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        cd "$MOUNT/stage/artifacts/promote"
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         BIN_1="$PARENT_1/stage/bin"
@@ -878,20 +877,20 @@
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             git remote add origin "${ config.personal.repository.private.remote }"
-                                                                                                                            wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --literal-plain BRANCH --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --set-plain MOUNT "${ mount }"
                                                                                                                             wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-rebase } stage/alias/root/mutable-rebase 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-squash } stage/alias/root/mutable-squash 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
-                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-switch 0500 --inherit INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-rebase } stage/alias/root/mutable-rebase 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-squash } stage/alias/root/mutable-squash 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-switch 0500 --inherit-plain INDEX --set-plain MOUNT "${ mount }"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -908,7 +907,7 @@
                                                                                                                             git diff origin/main 2>&1
                                                                                                                             echo DIFF 21
                                                                                                                             git diff 2>&1
-                                                                                                                            wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
+                                                                                                                            wrap ${ root }/bin/root stage/bin/root 0500 --inherit-plain INDEX
                                                                                                                             echo DIFF 30
                                                                                                                             git diff origin/main 2>&1
                                                                                                                             echo DIFF 31
@@ -946,8 +945,8 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                git config alias.mutable-switch "!${ mount }/stage/alias/submodule/mutable-switch"
-                                                                                                                                                git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                                                git config alias.mutable-switch "!/$toplevel/stage/alias/submodule/mutable-switch"
+                                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 03931c59
@@ -1116,7 +1115,6 @@
                                                                                                                                     git checkout "$COMMIT" 2>&1
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm/shared
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
-                                                                                                                                    mkdir --parents /mount/stage/artifacts/promote
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                     export GIT_SSH_COMMAND=/mount/stage/ssh/command
