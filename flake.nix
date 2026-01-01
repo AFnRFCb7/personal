@@ -500,7 +500,7 @@
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 NAME="$( basename "$name" )" || 6147c84f
                                                                                                                                                 nix flake update --flake "$toplevel" "$NAME"
-                                                                                                                                                git config foobar.beta 1
+                                                                                                                                                git config foobar.beta 10aadb44
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                                 )
