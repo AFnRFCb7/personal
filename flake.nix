@@ -645,7 +645,6 @@
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        cd "$MOUNT/stage/artifacts/promote"
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         BIN_1="$PARENT_1/stage/bin"
@@ -946,8 +945,8 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                git config alias.mutable-switch "!${ mount }/stage/alias/submodule/mutable-switch"
-                                                                                                                                                git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                                                git config alias.mutable-switch "!/$toplevel/stage/alias/submodule/mutable-switch"
+                                                                                                                                                git config core.sshCommand "$toplevel/stage/ssh/command"
                                                                                                                                                 git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                 git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 03931c59
@@ -1116,7 +1115,6 @@
                                                                                                                                     git checkout "$COMMIT" 2>&1
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm/shared
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
-                                                                                                                                    mkdir --parents /mount/stage/artifacts/promote
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                     export GIT_SSH_COMMAND=/mount/stage/ssh/command
