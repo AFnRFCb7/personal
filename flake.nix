@@ -1031,9 +1031,12 @@
                                                                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
                                                                                                                                                                     gh pr merge "$URL" --rebase
                                                                                                                                                                     gh auth logout
-                                                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?name must be set" "}" ] }"
-                                                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
                                                                                                                                                                     NAME="$( basename "$name" )" || failure 368e7b07
+                                                                                                                                                                    TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                    TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 6ad73063
+                                                                                                                                                                    export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                                    export PARENT="$( dirname "$toplevel" )" || failure e5630d4d
+                                                                                                                                                                    export GIT_SSH_COMMAND="$PARENT/stage/ssh/command"
                                                                                                                                                                     nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
