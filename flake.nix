@@ -500,6 +500,7 @@
                                                                                                                                                 export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                 git push origin HEAD
                                                                                                                                                 NAME="$( basename "$name" )" || 6147c84f
+                                                                                                                                                cd "$toplevel"
                                                                                                                                                 nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                 git config foobar.beta 10aadb44
                                                                                                                                             '' ;
