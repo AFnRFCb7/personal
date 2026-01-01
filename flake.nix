@@ -896,8 +896,20 @@
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             "${ mount }/stage/alias/root/mutable-mirror" main 2>&1
+                                                                                                                            echo DIFF 10
+                                                                                                                            git diff origin/main 2>&1
+                                                                                                                            echo DIFF 11
+                                                                                                                            git diff 2>&1
                                                                                                                             git submodule foreach 'submodule' 2>&1
+                                                                                                                            echo DIFF 20
+                                                                                                                            git diff origin/main 2>&1
+                                                                                                                            echo DIFF 21
+                                                                                                                            git diff 2>&1
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
+                                                                                                                            echo DIFF 30
+                                                                                                                            git diff origin/main 2>&1
+                                                                                                                            echo DIFF 31
+                                                                                                                            git diff 2>&1
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
