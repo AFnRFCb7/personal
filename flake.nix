@@ -790,12 +790,17 @@
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                             git submodule update --init --recursive
                                                                                                                             git config foobar.submodule "$( ${ pkgs.which }/bin/which submodule )"
+                                                                                                                            echo
+                                                                                                                            echo
                                                                                                                             echo BEFORE SUBMODULE
                                                                                                                             git submodule foreach 'submodule' 2>&1
                                                                                                                             echo AFTER SUBMODULE
-                                                                                                                            git -C inputs/dot-ssh config --get user.name
+                                                                                                                            # git -C inputs/dot-ssh config --get user.name
                                                                                                                             echo BEFORE MIRROR MAIN
                                                                                                                             "${ mount }/stage/alias/root/mutable-mirror" main 2>&1
+                                                                                                                            echo
+                                                                                                                            echo
+                                                                                                                            echo
                                                                                                                             echo AFTER MIRROR MAIN
                                                                                                                             git -C inputs/dot-ssh config --get user.name
                                                                                                                             wrap ${ root }/bin/root stage/bin/root 0500 --inherit INDEX
