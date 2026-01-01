@@ -902,8 +902,8 @@
                                                                                                                             git diff 2>&1
                                                                                                                             git submodule foreach 'submodule' 2>&1
                                                                                                                             git add flake.lock
-                                                                                                                            git commit -m "" --allow-empty --allow-empty-message
-                                                                                                                            git push origin HEAD
+                                                                                                                            git commit -m "" --allow-empty --allow-empty-message >&1
+                                                                                                                            git push origin HEAD 2>&1
                                                                                                                             echo DIFF 20
                                                                                                                             git diff origin/main 2>&1
                                                                                                                             echo DIFF 21
