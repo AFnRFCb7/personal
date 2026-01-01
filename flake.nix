@@ -645,7 +645,6 @@
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        cd "$MOUNT/stage/artifacts/promote"
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         BIN_1="$PARENT_1/stage/bin"
@@ -1116,7 +1115,6 @@
                                                                                                                                     git checkout "$COMMIT" 2>&1
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm/shared
                                                                                                                                     mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
-                                                                                                                                    mkdir --parents /mount/stage/artifacts/promote
                                                                                                                                     mkdir --parents /mount/stage/artifacts/test
                                                                                                                                     mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                     export GIT_SSH_COMMAND=/mount/stage/ssh/command
