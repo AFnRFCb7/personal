@@ -906,7 +906,7 @@
                                                                                                                             git diff origin/main 2>&1
                                                                                                                             echo DIFF 21
                                                                                                                             git diff 2>&1
-                                                                                                                            wrap ${ root }/bin/root stage/bin/root 0500 --inherit-plain INDEX
+                                                                                                                            wrap ${ root }/bin/root stage/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --inherit-plain PATH --inherit-plain TARGET
                                                                                                                             echo DIFF 30
                                                                                                                             git diff origin/main 2>&1
                                                                                                                             echo DIFF 31
@@ -1099,8 +1099,8 @@
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                     git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                                                    wrap ${ mutable-build-vm "build-vm" } stage/alias/root/mutable-build-vm 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                                    wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm" } stage/alias/root/mutable-build-vm 0500 --set-plain MOUNT "${ mount }" --literal-plain SHARED_DIR
+                                                                                                                                    wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --set-plain MOUNT "${ mount }" --literal-plain SHARED_DIR
                                                                                                                                     wrap ${ mutable-check } stage/alias/root/mutable-check 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --set-plain MOUNT "${ mount }"
                                                                                                                                     wrap ${ mutable-switch.submodule } stage/alias/submodule/mutable-switch 0500
