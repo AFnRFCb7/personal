@@ -627,20 +627,21 @@
                                                                                                                                                         USER_NAME="$2"
                                                                                                                                                         REPO_NAME="$3"
                                                                                                                                                         TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                        gh auth login --with-token "$TOKEN/secret"
+                                                                                                                                                        gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                         gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                         gh auth logout
                                                                                                                                                         mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
                                                                                                                                                         cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
                                                                                                                                                         git init
-                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                         git checkout -b main
                                                                                                                                                         git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
+                                                                                                                                                        git commit -am --allow-empty --allow-empty-branch
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$MOUNT/repository"
-                                                                                                                                                        git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git"
+                                                                                                                                                        git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$MOUNT/repository/inputs/$INPUT"
                                                                                                                                                         # spellcheck disable=SC2086
@@ -651,6 +652,7 @@
                                                                                                                                                         git config alias.mutable-snapshot "!$MOUNT/stage/alias/root/mutable-snapshot"
                                                                                                                                                         # spellcheck disable=SC2086
                                                                                                                                                         git config alias.mutable-squash "!$MOUNT/stage/alias/root/mutable-squash"
+                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                     '' ;
