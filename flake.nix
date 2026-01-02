@@ -630,6 +630,25 @@
                                                                                                                                                         gh auth login --with-token "$TOKEN/secret"
                                                                                                                                                         gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                         gh auth logout
+                                                                                                                                                        mkdir --parents "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
+                                                                                                                                                        cd "$MOUNT/stage/nursery/$INPUT/$USER_NAME/$REPO_NAME"
+                                                                                                                                                        git init
+                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh"
+                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                                        git checkout -b main
+                                                                                                                                                        git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        cd "$MOUNT/repository
+                                                                                                                                                        git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git"
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        cd "$MOUNT/repository/inputs/$INPUT_NAME"
+                                                                                                                                                        git config mutable-audit "!$MOUNT/stage/alias/root/mutable-audit"
+                                                                                                                                                        git config mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
+                                                                                                                                                        git config mutable-snapshot "!$MOUNT/stage/alias/root/mutable-snapshot"
+                                                                                                                                                        git config mutable-squash "!$MOUNT/stage/alias/root/mutable-squash"
+                                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-nurse" ;
