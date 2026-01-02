@@ -648,7 +648,7 @@
                                                                                                                                                         git config alias.mutable-snapshot '!'${ builtins.concatStringsSep "" [ "$" "{" "MOUNT" "}" ] }'/stage/alias/root/mutable-snapshot'
                                                                                                                                                         git config alias.mutable-squash '!'${ builtins.concatStringsSep "" [ "$" "{" "MOUNT" "}" ] }'/stage/alias/root/mutable-squash'
                                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }
+                                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-nurse" ;
