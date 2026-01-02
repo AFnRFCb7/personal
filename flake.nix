@@ -1,4 +1,3 @@
-
 {
     inputs =
         {
@@ -2129,6 +2128,7 @@
                                        systemd =
                                             _systemd.check
                                                 {
+                                                    name = "WTF" ;
                                                     config = [ ] ;
                                                     coreutils = pkgs.coreutils ;
                                                     mkDerivation = pkgs.stdenv.mkDerivation ;
