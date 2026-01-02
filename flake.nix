@@ -639,7 +639,7 @@
                                                                                                                                                         git checkout -b main
                                                                                                                                                         git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
                                                                                                                                                         git push origin HEAD
-                                                                                                                                                        cd "$MOUNT/repository
+                                                                                                                                                        cd "$MOUNT/repository"
                                                                                                                                                         git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git"
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$MOUNT/repository/inputs/$INPUT_NAME"
