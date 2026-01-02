@@ -889,7 +889,7 @@
                                                                                                                             wrap ${ mutable-squash } stage/alias/root/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --set-plain MOUNT "${ mount }" --literal-plain NAME --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --literal-plain PATH
+                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
