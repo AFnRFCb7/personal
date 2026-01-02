@@ -24,6 +24,7 @@
                         secrets ,
                         string ,
                         system ,
+                        systemd ,
                         visitor
                     } @primary :
                         let
@@ -69,6 +70,7 @@
                             _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
+                            _systemd = systemd.lib { failure = _failure.implementation "e382c260" ; } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -689,6 +691,7 @@
                                                                                                                                                     ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
+
                                                                                                                                                         PARENT_1="$MOUNT"
                                                                                                                                                         STUDIO_1="$PARENT_1/repository"
                                                                                                                                                         BIN_1="$PARENT_1/stage/bin"
@@ -2123,6 +2126,14 @@
                                                     failure = _failure.implementation "a720a5e7" ;
                                                     pkgs = pkgs ;
                                                } ;
+                                       systemd =
+                                            _systemd.check
+                                                {
+                                                    config = [ ] ;
+                                                    coreutils = pkgs.coreutils ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
