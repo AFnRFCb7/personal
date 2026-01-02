@@ -614,6 +614,25 @@
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-mirror" ;
                                                                                                                                 } ;
+                                                                                                                            mutable-nurse =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable-nurse" ;
+                                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        INPUT="$1"
+                                                                                                                                                        USER_NAME="$2"
+                                                                                                                                                        REPO_NAME="$3"
+                                                                                                                                                        TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                        gh auth login --with-token "$TOKEN/secret"
+                                                                                                                                                        gh repo create "$USER_NAME/$REPO_NAME" --public
+                                                                                                                                                        gh auth logout
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/mutable-nurse" ;
                                                                                                                             mutable-promote =
                                                                                                                                 let
                                                                                                                                     application =
@@ -866,14 +885,15 @@
                                                                                                                             git config alias.mutable-audit "!${ mount }/stage/alias/root/mutable-audit"
                                                                                                                             git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
-                                                                                                                            git config alias.mutable-check "!${ mount }/stage/alias/root/mutable-check" ;
-                                                                                                                            git config alias.mutable-mirror "!${ mount }/stage/alias/root/mutable-mirror" ;
-                                                                                                                            git config alias.mutable-promote "!${ mount }/stage/alias/root/mutable-promote" ;
-                                                                                                                            git config alias.mutable-rebase "!${ mount }/stage/alias/root/mutable-rebase" ;
-                                                                                                                            git config alias.mutable-snapshot "!${ mount }/stage/alias/root/mutable-snapshot" ;
-                                                                                                                            git config alias.mutable-switch "!${ mount }/stage/alias/root/mutable-switch" ;
-                                                                                                                            git config alias.mutable-test "!${ mount }/stage/alias/root/mutable-test" ;
-                                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command" ;
+                                                                                                                            git config alias.mutable-check "!${ mount }/stage/alias/root/mutable-check"
+                                                                                                                            git config alias.mutable-mirror "!${ mount }/stage/alias/root/mutable-mirror"
+                                                                                                                            git config alias.mutable-nurse "!${ mount }/stage/alias/root/mutable-nurse"
+                                                                                                                            git config alias.mutable-promote "!${ mount }/stage/alias/root/mutable-promote"
+                                                                                                                            git config alias.mutable-rebase "!${ mount }/stage/alias/root/mutable-rebase"
+                                                                                                                            git config alias.mutable-snapshot "!${ mount }/stage/alias/root/mutable-snapshot"
+                                                                                                                            git config alias.mutable-switch "!${ mount }/stage/alias/root/mutable-switch"
+                                                                                                                            git config alias.mutable-test "!${ mount }/stage/alias/root/mutable-test"
+                                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
                                                                                                                             git remote add origin "${ config.personal.repository.private.remote }"
@@ -882,6 +902,7 @@
                                                                                                                             wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                             wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --set-plain MOUNT "${ mount }" --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID
                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
+                                                                                                                            wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --literal-plain 3 --literal-plain INPUT --literal-plain REPO_NAME --literal TOKEN --literal-plain USER_NAME
                                                                                                                             wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --set-plain MOUNT "${ mount }" --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain UUID
                                                                                                                             wrap ${ mutable-rebase } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain name --literal-plain NAME --literal-plain PATH --literal-plain UUID --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY
                                                                                                                             wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
