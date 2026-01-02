@@ -484,6 +484,7 @@
                                                                                                                                             ''
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+
                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                 git config foobar.alpha "$toplevel/$name"
                                                                                                                                                 MOUNT="$( dirname "$toplevel" )" || failure 66e9623b
