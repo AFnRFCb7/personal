@@ -579,7 +579,21 @@
                                                                                                                                             application =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-
+                                                                                                                                                        name = "mutable-mirror" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                OLD_BRANCH="$1"
+                                                                                                                                                                export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
+                                                                                                                                                                git fetch origin "$OLD_BRANCH"
+                                                                                                                                                                git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                git submodule update --init --recursive
+                                                                                                                                                                git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b10e1bdf
+                                                                                                                                                                NEW_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 9dcc9629
+                                                                                                                                                                git checkout -b "$NEW_BRANCH"
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                            '' ;
                                                                                                                                                     } ;
                                                                                                                                            in "${ application }/bin/mutable-mirror" ;
                                                                                                                                     submodule =
