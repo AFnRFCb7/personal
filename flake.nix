@@ -1461,89 +1461,57 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
-                                                        systemd.services =
-                                                            let
-                                                                fun =
-                                                                    { description , enable , text } :
-                                                                        {
-                                                                            name = builtins.hashString "sha512" text ;
-                                                                            value =
-                                                                                {
-                                                                                    after = [ "network.target" "redis.service" ] ;
-                                                                                    description = description ;
-                                                                                    enable = enable ;
-                                                                                    serviceConfig =
-                                                                                        {
-                                                                                            ExecStart =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "ExecStart" ;
-                                                                                                                runtimeInputs = [ ] ;
-                                                                                                                text = text ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/ExecStart" ;
-                                                                                            User = config.personal.name ;
-                                                                                        } ;
-                                                                                    wantedBy = [ "multi-user.target" ] ;
-                                                                                } ;
-                                                                        } ;
-                                                                resource-reporter =
-                                                                    organization : repository : resolution :
-                                                                        {
-                                                                            after = [ "network.target" "redis.service" ] ;
-                                                                            enable = true ;
-                                                                            serviceConfig =
-                                                                                {
-                                                                                    ExecStart =
-                                                                                        _resource-reporter.implementation
-                                                                                            {
-                                                                                                channel = config.personal.channel ;
-                                                                                                organization = organization ;
-                                                                                                repository = repository ;
-                                                                                                resolution = resolution ;
-                                                                                                token = resources__.production.secrets.token ( setup : setup ) ;
-                                                                                            } ;
-                                                                                    User = config.personal.name ;
-                                                                                } ;
-                                                                            wantedBy = [ "multi-user.target" ] ;
-                                                                        } ;
-                                                                in
-                                                                    builtins.listToAttrs
-                                                                        (
-                                                                            [
-                                                                                ( fun { description = "logger" ; enable = true ; text = _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ; } )
-                                                                                # (
-                                                                                #     fun
-                                                                                #         (
-                                                                                #             _resource-releaser.implementation
-                                                                                #                 {
-                                                                                #                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                #                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                #                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
-                                                                                #                     quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                #                 }
-                                                                                #         )
-                                                                                # )
-                                                                                (
-                                                                                    fun
-                                                                                        {
-                                                                                            description = "personal reporter" ;
-                                                                                            enable = false ;
-                                                                                            text =
-                                                                                                _resource-reporter.implementation
-                                                                                                    {
-                                                                                                        organization = config.personal.repository.personal.organization ;
-                                                                                                        repository = config.personal.repository.personal.repository ;
-                                                                                                        resolution = "personal" ;
-                                                                                                        token = resources__.production.secrets.token ( setup : setup ) ;
-                                                                                                    } ;
-                                                                                        }
-                                                                                )
-                                                                                ( fun { description = "resolver" ; enable = false ; text = _resource-resolver.implementation { quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ; } ; } )
-                                                                            ]
-                                                                        ) ;
+                                                        systemd =
+                                                            {
+                                                                services =
+                                                                    {
+                                                                        resource-logger =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-logger.implementation
+                                                                                                {
+                                                                                                    log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                                } ;
+                                                                                        User = config.personal.user ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resource-reporter-personal =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-reporter.implementation
+                                                                                                {
+                                                                                                    organization = config.personal.repository.personal.organization ;
+                                                                                                    repository = config.personal.repository.personal.repository ;
+                                                                                                    resolution = "personal" ;
+                                                                                                    token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                                } ;
+                                                                                        User = config.personal.user ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resource-resolver =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-resolver.implementation
+                                                                                                {
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                } ;
+                                                                                        User = config.personal.user ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                    } ;
+                                                            } ;
                                                         time.timeZone = "America/New_York" ;
                                                         users.users.user =
                                                             {
