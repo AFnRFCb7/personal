@@ -1461,6 +1461,45 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
+                                                        systemd =
+                                                            _systemd.implementation
+                                                                [
+                                                                    (
+                                                                        _resource_logger.implementation
+                                                                            {
+                                                                                channel = "redis" ;
+                                                                                description = "log resources" ;
+                                                                                enable = true ;
+                                                                                log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                log-file = "log.yaml" ;
+                                                                                log-lock = "log.lock" ;
+                                                                                user = config.personal.name ;
+                                                                            }
+                                                                    )
+                                                                    (
+                                                                        _resource-reporter.implementation
+                                                                            {
+                                                                                channel = "redis" ;
+                                                                                description = "personal resource reporter" ;
+                                                                                enable = true ;
+                                                                                organization = config.personal.repository.private.personal.organization ;
+                                                                                repository = config.personal.repository.private.personal.repository ;
+                                                                                resolution = config.personal.repository.private.personal.repository ;
+                                                                                token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                user = config.personal.name ;
+                                                                            }
+                                                                    )
+                                                                    (
+                                                                        _resource-resolver.implementation
+                                                                            {
+                                                                                channel = "redis" ;
+                                                                                description = "resolves resources" ;
+                                                                                enable = true ;
+                                                                                quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                user = config.personal.name ;
+                                                                            }
+                                                                    )
+                                                                ] ;
                                                         systemd.services =
                                                             let
                                                                 fun =
@@ -1513,7 +1552,7 @@
                                                                     builtins.listToAttrs
                                                                         (
                                                                             [
-                                                                                ( fun { description = "logger" ; enable = true ; text = _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ; } )
+                                                                                # ( fun { description = "logger" ; enable = true ; text = _resource-logger.implementation { log-directory = "/home/${ config.personal.name }/resources/log" ; } ; } )
                                                                                 # (
                                                                                 #     fun
                                                                                 #         (
