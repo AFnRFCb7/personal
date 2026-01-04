@@ -454,18 +454,8 @@
                                                                 } ;
                                                             pads =
                                                                 let
-                                                                    list =
-                                                                        builtins.concatLists
-                                                                            [
-                                                                                # config.personal.pads
-                                                                                [
-                                                                                    {
-                                                                                        name = config.personal.name ;
-                                                                                    }
-                                                                                ]
-                                                                            ] ;
                                                                     mapper =
-                                                                        pad :
+                                                                        name : pad :
                                                                             ignore :
                                                                                 {
                                                                                     init =
@@ -479,7 +469,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     cat > /mount/.envrc <<EOF
-                                                                                                                    export NAME=${ pad.name }
+                                                                                                                    export NAME=${ name }
                                                                                                                     export FOOBAR=7e68f889
                                                                                                                     EOF
                                                                                                                 '' ;
@@ -487,7 +477,13 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envrc" ] ;
                                                                                 } ;
-                                                                    in builtins.map mapper list ;
+                                                                    sets =
+                                                                        # config.personal.pads
+                                                                        # //
+                                                                        {
+                                                                            name = { } ;
+                                                                        } ;
+                                                                    in builtins.mapAttrs mapper sets ;
                                                             repository =
                                                                 {
                                                                     studio =
