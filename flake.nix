@@ -452,6 +452,18 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            pads =
+                                                                let
+                                                                    mapper =
+                                                                        pad :
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { } :
+                                                                                    release =
+
+                                                                                } ;
+                                                                    in builtins.map mapper config.personal.pads ;
                                                             repository =
                                                                 {
                                                                     studio =
