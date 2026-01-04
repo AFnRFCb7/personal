@@ -1475,7 +1475,7 @@
                                                                                                 {
                                                                                                     log-directory = "/home/${ config.personal.name }/resources/log" ;
                                                                                                 } ;
-                                                                                        User = config.personal.user ;
+                                                                                        User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
@@ -1492,7 +1492,7 @@
                                                                                                     resolution = "personal" ;
                                                                                                     token = resources__.production.secrets.token ( setup : setup ) ;
                                                                                                 } ;
-                                                                                        User = config.personal.user ;
+                                                                                        User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
@@ -1506,7 +1506,7 @@
                                                                                                 {
                                                                                                     quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
                                                                                                 } ;
-                                                                                        User = config.personal.user ;
+                                                                                        User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
