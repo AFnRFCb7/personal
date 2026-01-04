@@ -1485,7 +1485,7 @@
                                                                                                                     COREUTILS=${ pkgs.coreutils }
                                                                                                                     PASS=${ pkgs.pass }
                                                                                                                     export PATH=$BASH/bin:$COREUTILS/bin:$PASS/bin
-                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
+                                                                                                                    # DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
                                                                                                                     export PASS_GPG_OPTS="--homedir $DOT_GNUPG/gnupghome"
                                                                                                                     EOF
                                                                                                                     chmod 0400 "/home/${ config.personal.name }/pads/home/${ config.personal.name }/.envrc"
