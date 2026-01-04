@@ -1871,7 +1871,7 @@
                                     dot-gnupg =
                                         _dot-gnupg.check
                                             {
-                                                expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
+                                                expected = "/nix/store/kcf82ngcn6ssq5x5mm8bra1pgpnjkldj-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
                                                 ownertrust-fun = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
                                                 secret-keys-fun = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
