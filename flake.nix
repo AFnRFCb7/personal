@@ -484,7 +484,8 @@
                                                                                                                     EOF
                                                                                                                 '' ;
                                                                                                         } ;
-                                                                                                targets = [ ".envrc" ] ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envrc" ] ;
                                                                                 } ;
                                                                     in builtins.map mapper pads ;
                                                             repository =
@@ -1513,17 +1514,16 @@
                                                                                                             name = "ExecStart" ;
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        name : value :
+                                                                                                                            ''
+                                                                                                                                mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
+                                                                                                                                ${ name }=${ value ( setup : setup ) }
+                                                                                                                                ln --symbolic "$${ name }/.envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
+                                                                                                                            ''
                                                                                                                 ''
-                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads/home"
-                                                                                                                    cat > "/home/${ config.personal.name }/pads/${ config.personal.name }/.envrc" <<EOF
-                                                                                                                    BASH=${ pkgs.bash }
-                                                                                                                    COREUTILS=${ pkgs.coreutils }
-                                                                                                                    PASS=${ pkgs.pass }
-                                                                                                                    export PATH=$BASH/bin:$COREUTILS/bin:$PASS/bin
-                                                                                                                    # DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
-                                                                                                                    export PASS_GPG_OPTS="--homedir $DOT_GNUPG/gnupghome"
-                                                                                                                    EOF
-                                                                                                                    chmod 0400 "/home/${ config.personal.name }/pads/home/${ config.personal.name }/.envrc"
+                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
