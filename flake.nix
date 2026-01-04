@@ -459,7 +459,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        { } :
+                                                                                        { mount , pkgs , resources , root , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
