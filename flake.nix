@@ -486,7 +486,7 @@
                                                                                                         } ;
                                                                                                 targets = [ ".envrc" ] ;
                                                                                 } ;
-                                                                    in builtins.map mapper (config.personal.pads ;
+                                                                    in builtins.map mapper pads ;
                                                             repository =
                                                                 {
                                                                     studio =
