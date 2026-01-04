@@ -1521,10 +1521,8 @@
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
                                                                                                                                 ${ name }=${ value ( setup : setup ) }
                                                                                                                                 ln --symbolic "$${ name }/.envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
-                                                                                                                            ''
-                                                                                                                ''
-                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads
-                                                                                                                '' ;
+                                                                                                                            '' ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
