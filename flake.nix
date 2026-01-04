@@ -1465,7 +1465,7 @@
                                                             _systemd.implementation
                                                                 [
                                                                     (
-                                                                        _resource_logger.implementation
+                                                                        _resource-logger.implementation
                                                                             {
                                                                                 channel = "redis" ;
                                                                                 description = "log resources" ;
