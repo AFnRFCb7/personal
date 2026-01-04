@@ -314,8 +314,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
+                                                                            ownertrust-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust-fun ;
+                                                                            secret-keys-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys-fun ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -452,6 +452,38 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            pads =
+                                                                let
+                                                                    mapper =
+                                                                        name : pad :
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cat > /mount/.envrc <<EOF
+                                                                                                                    export NAME=${ name }
+                                                                                                                    export FOOBAR=7e68f889
+                                                                                                                    EOF
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ ".envrc" ] ;
+                                                                                } ;
+                                                                    sets =
+                                                                        # config.personal.pads
+                                                                        # //
+                                                                        {
+                                                                            home = { } ;
+                                                                        } ;
+                                                                    in builtins.mapAttrs mapper sets ;
                                                             repository =
                                                                 {
                                                                     studio =
@@ -640,7 +672,7 @@
                                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                         git checkout -b main
                                                                                                                                                         git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                        git commit -am --allow-empty --allow-empty-branch
+                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$MOUNT/repository"
                                                                                                                                                         git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
@@ -1242,8 +1274,8 @@
                                                                                     user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                                 } ;
                                                                         } ;
-                                                                    ownertrust-fun = ignore : secret { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
-                                                                    secret-keys-fun = ignore : secret { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity-file = ignore : config.personal.agenix ; } ;
+                                                                    ownertrust-fun = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    secret-keys-fun = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                     token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                 } ;
                                                             temporary =
@@ -1465,6 +1497,34 @@
                                                             {
                                                                 services =
                                                                     {
+                                                                        home =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        name : value :
+                                                                                                                            ''
+                                                                                                                                mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
+                                                                                                                                ${ name }=${ value ( setup : setup ) }
+                                                                                                                                ln --symbolic --force "${ builtins.concatStringsSep "" [ "$" name ] }/.envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
+                                                                                                                            '' ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -1655,6 +1715,12 @@
                                                                         generated-length = lib.mkOption { default = 25 ; type = lib.types.int ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:nextmoose/secrets.git" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                pads =
+                                                                    lib.mkOption
+                                                                        {
+                                                                            # type = lib.types.listOf type ;
+                                                                            default = [ ] ;
+                                                                        } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
@@ -1805,7 +1871,7 @@
                                     dot-gnupg =
                                         _dot-gnupg.check
                                             {
-                                                expected = "/nix/store/8llbrkb6by8r1051zyxdz526rsh4p8qm-init/bin/init" ;
+                                                expected = "/nix/store/kcf82ngcn6ssq5x5mm8bra1pgpnjkldj-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
                                                 ownertrust-fun = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
                                                 secret-keys-fun = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
