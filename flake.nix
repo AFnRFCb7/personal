@@ -1479,11 +1479,11 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    mkdir --parents "/home/${ config.user.name }/pads/home"
-                                                                                                                    cat > "/home/${ config.user.name }/pads/home/.envirc" <<EOF
+                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads/home"
+                                                                                                                    cat > "/home/${ config.personal.name }/pads/home/.envirc" <<EOF
                                                                                                                     FOOBAR=2904b34b
                                                                                                                     EOF
-                                                                                                                    chmod 0400 "/home/${ config.user.name }/pads/home/.envirc"
+                                                                                                                    chmod 0400 "/home/${ config.personal.name }/pads/home/.envirc"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
