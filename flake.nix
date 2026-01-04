@@ -487,7 +487,7 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envrc" ] ;
                                                                                 } ;
-                                                                    in builtins.map mapper pads ;
+                                                                    in builtins.map mapper list ;
                                                             repository =
                                                                 {
                                                                     studio =
