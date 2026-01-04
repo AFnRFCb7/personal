@@ -454,16 +454,39 @@
                                                                 } ;
                                                             pads =
                                                                 let
+                                                                    list =
+                                                                        builtins.concatLists
+                                                                            [
+                                                                                config.personal.pads
+                                                                                [
+                                                                                    {
+                                                                                        name = config.personal.name ;
+                                                                                    }
+                                                                                ]
+                                                                            ] ;
                                                                     mapper =
                                                                         pad :
                                                                             ignore :
                                                                                 {
                                                                                     init =
                                                                                         { } :
-                                                                                    release =
-
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    cat > /mount/.envrc <<EOF
+                                                                                                                    export NAME=${ pad.name }
+                                                                                                                    export FOOBAR=7e68f889
+                                                                                                                    EOF
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                targets = [ ".envrc" ] ;
                                                                                 } ;
-                                                                    in builtins.map mapper config.personal.pads ;
+                                                                    in builtins.map mapper (config.personal.pads ;
                                                             repository =
                                                                 {
                                                                     studio =
@@ -1698,6 +1721,12 @@
                                                                         generated-length = lib.mkOption { default = 25 ; type = lib.types.int ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:nextmoose/secrets.git" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                pads =
+                                                                    lib.mkOption
+                                                                        {
+                                                                            # type = lib.types.listOf type ;
+                                                                            default = [ ] ;
+                                                                        } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
                                                                     {
