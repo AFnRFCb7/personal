@@ -457,7 +457,7 @@
                                                                     list =
                                                                         builtins.concatLists
                                                                             [
-                                                                                config.personal.pads
+                                                                                # config.personal.pads
                                                                                 [
                                                                                     {
                                                                                         name = config.personal.name ;
