@@ -640,7 +640,7 @@
                                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                         git checkout -b main
                                                                                                                                                         git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                        git commit -am --allow-empty --allow-empty-branch
+                                                                                                                                                        git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$MOUNT/repository"
                                                                                                                                                         git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git" "inputs/$INPUT"
@@ -1465,6 +1465,32 @@
                                                             {
                                                                 services =
                                                                     {
+                                                                        home =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    mkdir --parents "/home/${ config.user.name }/pads/home"
+                                                                                                                    cat > "/home/${ config.user.name }/pads/home/.envirc" <<EOF
+                                                                                                                    FOOBAR=2904b34b
+                                                                                                                    EOF
+                                                                                                                    chmod 0400 "/home/${ config.user.name }/pads/home/.envirc"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
