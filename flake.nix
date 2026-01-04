@@ -314,8 +314,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
+                                                                            ownertrust-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust-fun ;
+                                                                            secret-keys-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys-fun ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
