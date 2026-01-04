@@ -857,7 +857,7 @@
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                            in "${ application }/bin/submodule" ;
+                                                                                                                                            in "${ application }/bin/mutable-rebase" ;
                                                                                                                                 } ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 {
