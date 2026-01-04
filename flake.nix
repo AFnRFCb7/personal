@@ -1,3 +1,4 @@
+# e2618a6f
 {
     inputs =
         {
@@ -533,9 +534,8 @@
                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                 export GIT_SSH_COMMAND="${ mount }/stage/ssh/command"
                                                                                                                                                 git push origin HEAD
-                                                                                                                                                NAME="$( basename "$name" )" || 6147c84f
                                                                                                                                                 cd "$toplevel"
-                                                                                                                                                nix flake update --flake "$toplevel" "$NAME"
+                                                                                                                                                nix flake update --flake "$toplevel" "$name"
                                                                                                                                                 git config foobar.beta 10aadb44
                                                                                                                                             '' ;
                                                                                                                                     }
@@ -800,51 +800,65 @@
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-promote" ;
                                                                                                                             mutable-rebase =
-                                                                                                                                let
-                                                                                                                                    application = pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "mutable-rebase" ;
-                                                                                                                                            runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
-                                                                                                                                            text =
-                                                                                                                                                ''
-                                                                                                                                                    export INDEX="$INDEX"
-                                                                                                                                                    # shellcheck disable=SC2016
-                                                                                                                                                    git submodule foreach '
-                                                                                                                                                        git fetch origin main
-                                                                                                                                                        if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
-                                                                                                                                                        then
-                                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "name:?name must be set" "}" ] }"
-                                                                                                                                                            cd "$MOUNT/repository/$name"
-                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure f192db0b
-                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 54d22bae
-                                                                                                                                                            git checkout -b "$BRANCH"
-                                                                                                                                                            git rebase -i origin/main
-                                                                                                                                                            git commit -m "SNAPSHOT REBASE COMMIT" --allow-empty
-                                                                                                                                                            git push -u origin HEAD
-                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
-                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                            NAME="$( basename "$name" )" || failure 9a285a44
+                                                                                                                                {
+                                                                                                                                    root =
+                                                                                                                                        let
+                                                                                                                                            application = pkgs.writeShellApplication
+                                                                                                                                                {
+                                                                                                                                                    name = "mutable-rebase" ;
+                                                                                                                                                    runtimeInputs = [ pkgs.git "$MOUNT/stage" root ] ;
+                                                                                                                                                    text =
+                                                                                                                                                        ''
+                                                                                                                                                            export INDEX="$INDEX"
+                                                                                                                                                            # shellcheck disable=SC2016
+                                                                                                                                                            git submodule foreach '$MOUNT/stage/alias/submodule/mutable-mirror'
                                                                                                                                                             cd "$MOUNT/repository"
-                                                                                                                                                            nix flake update --flake "$MOUNT/repository" "$NAME"
-                                                                                                                                                        fi
-                                                                                                                                                    ' >&2
-                                                                                                                                                    cd "$MOUNT/repository"
-                                                                                                                                                    git fetch origin main
-                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure aae710e7
-                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
-                                                                                                                                                    git checkout -b "$BRANCH" >&2
-                                                                                                                                                    git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                    git reset --soft origin/main
-                                                                                                                                                    git commit -a --verbose
-                                                                                                                                                    git push origin HEAD >&2
-                                                                                                                                                    COMMIT="$( git rev-parse HEAD )" || failure d0633308
-                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
-                                                                                                                                                    root "$MUTABLE_SNAPSHOT"
-                                                                                                                                                    echo "$MUTABLE_SNAPSHOT"
-                                                                                                                                                '' ;
-                                                                                                                                        } ;
-                                                                                                                                    in "${ application }/bin/mutable-rebase" ;
+                                                                                                                                                            git fetch origin main
+                                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure aae710e7
+                                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
+                                                                                                                                                            git checkout -b "$BRANCH" >&2
+                                                                                                                                                            git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                            git push origin HEAD >&2
+                                                                                                                                                            COMMIT="$( git rev-parse HEAD )" || failure d0633308
+                                                                                                                                                            MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                            root "$MUTABLE_SNAPSHOT"
+                                                                                                                                                            echo "$MUTABLE_SNAPSHOT"
+                                                                                                                                                        '' ;
+                                                                                                                                                } ;
+                                                                                                                                            in "${ application }/bin/mutable-rebase" ;
+                                                                                                                                    submodule =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-rebase" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                git fetch origin main
+                                                                                                                                                                if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
+                                                                                                                                                                then
+                                                                                                                                                                    cd "$toplevel/$name"
+                                                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure f192db0b
+                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 54d22bae
+                                                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                                                    git rebase -i origin/main
+                                                                                                                                                                    git commit -m "SNAPSHOT REBASE COMMIT" --allow-empty
+                                                                                                                                                                    git push -u origin HEAD
+                                                                                                                                                                    TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                    TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
+                                                                                                                                                                    export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                                    cd "$toplevel"
+                                                                                                                                                                    nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                fi
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-rebase" ;
+                                                                                                                                } ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 {
                                                                                                                                     root =
@@ -894,9 +908,8 @@
                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                                    NAME="$( basename "$name" )" || failure 8c4f2fea
                                                                                                                                                                     cd "$toplevel"
-                                                                                                                                                                    nix flake update --flake "$MOUNT/repository" "$NAME"
+                                                                                                                                                                    nix flake update --flake "toplevel" "$name"
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
@@ -922,8 +935,7 @@
                                                                                                                                                         git commit -a --verbose
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$MOUNT/repository"
-                                                                                                                                                        NAME="$( basename "$name" )" || failure 694203c3
-                                                                                                                                                        nix flake update --flake "$toplevel" "$NAME"
+                                                                                                                                                        nix flake update --flake "$toplevel" "$name"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/mutable-squash" ;
@@ -964,9 +976,10 @@
                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                             wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --literal-plain 3 --literal-plain INPUT --set-plain MOUNT "${ mount }" --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
                                                                                                                             wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --set-plain MOUNT "${ mount }" --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain UUID
-                                                                                                                            wrap ${ mutable-rebase } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain name --literal-plain NAME --literal-plain PATH --literal-plain UUID --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY
+                                                                                                                            wrap ${ mutable-rebase.root } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH --literal-plain UUID
+                                                                                                                            wrap ${ mutable-rebase.submodule } stage/alias/submodule/mutable-rebase 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
                                                                                                                             wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain NAME --set-plain MOUNT "${ mount }" --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
+                                                                                                                            wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
                                                                                                                             wrap ${ mutable-squash } stage/alias/root/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --set-plain MOUNT "${ mount }" --literal-plain NAME --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
@@ -1206,58 +1219,6 @@
                                                                                                         in "${ application }/bin/setup" ;
                                                                                         } ;
                                                                         } ;
-                                                                } ;
-                                                            scripts =
-                                                                {
-                                                                    snapshot =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                snapshot =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "snapshot" ;
-                                                                                                                            runtimeInputs = [ pkgs.git ( _failure.implementation "5afc908c" ) ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                    then
-                                                                                                                                        if git symbolic-ref -q HEAD
-                                                                                                                                        then
-                                                                                                                                            BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 96acc6a6
-                                                                                                                                        else
-                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure d3737ca3
-                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure 78dc2d70
-                                                                                                                                            git checkout -b "$BRANCH"
-                                                                                                                                        fi
-                                                                                                                                        git commit --verbose --allow-empty --allow-empty-message
-                                                                                                                                        NAME="$( basename "$name" )" || failure e006c4e7
-                                                                                                                                        git push origin HEAD
-                                                                                                                                        TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                        TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
-                                                                                                                                        export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                        nix flake update --flake "$MOUNT/repository" "$NAME"
-                                                                                                                                    fi
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/snapshot"
-                                                                                                            ''
-                                                                                                                NAME="$1"
-                                                                                                                wrap ${ snapshot } script 0500 --literal-plain BRANCH --literal-plain UUID --
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "script" ] ;
-                                                                            } ;
                                                                 } ;
                                                             secrets =
                                                                 {
