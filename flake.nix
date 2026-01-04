@@ -854,8 +854,9 @@
                                                                                                                                                                     cd "$toplevel"
                                                                                                                                                                     nix flake update --flake "$toplevel" "$name"
                                                                                                                                                                 fi
+                                                                                                                                                            '' ;
                                                                                                                                                     } ;
-                                                                                                                                                in "${ application }/bin/submodule" ;
+                                                                                                                                            in "${ application }/bin/submodule" ;
                                                                                                                                 } ;
                                                                                                                             mutable-snapshot =
                                                                                                                                 {
