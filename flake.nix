@@ -481,7 +481,7 @@
                                                                         # config.personal.pads
                                                                         # //
                                                                         {
-                                                                            name = { } ;
+                                                                            home = { } ;
                                                                         } ;
                                                                     in builtins.mapAttrs mapper sets ;
                                                             repository =
@@ -1516,7 +1516,7 @@
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
                                                                                                                                 ${ name }=${ value ( setup : setup ) }
-                                                                                                                                ln --symbolic "$${ name }/.envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
+                                                                                                                                ln --symbolic "${ builtins.concatStringsSep "" [ "$" name ] }/.envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
                                                                                                                             '' ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
                                                                                                         } ;
