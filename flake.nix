@@ -10,6 +10,7 @@
                     {
                         dot-gnupg ,
                         dot-ssh ,
+                        ephemeral ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -32,6 +33,7 @@
                             _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            _ephemeral = ephemeral.lib { } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
@@ -1878,6 +1880,14 @@
                                                                 user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                     } ;
+                                            } ;
+                                    ephemeral =
+                                        _ephemeral.check
+                                            {
+                                                coreutils = pkgs.coreutils ;
+                                                failure = _failure.implementation "c0aaf6bd" ;
+                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                writeShellApplication = pkgs.writeShellApplication ;
                                             } ;
                                    failure =
                                        _failure.check
