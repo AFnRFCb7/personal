@@ -10,7 +10,7 @@
                     {
                         dot-gnupg ,
                         dot-ssh ,
-                        ephemeral ,
+                        # ephemeral ,
                         failure ,
                         fixture ,
                         git-repository ,
