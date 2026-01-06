@@ -1469,7 +1469,7 @@
                                                                     {
                                                                         pads =
                                                                             {
-                                                                                after = [ "network.target" ] ;
+                                                                                after = [ "network-online.target" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -1493,6 +1493,7 @@
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
+                                                                                wants = [ "network-online.target" ] ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
                                                                         resource-logger =
