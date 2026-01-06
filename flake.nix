@@ -486,6 +486,7 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
+                                                                                                                                    # shellcheck disable=SC2269
                                                                                                                                     COREUTILS=$COREUTILS
                                                                                                                                     export COREUTILS
                                                                                                                                 '' ;
@@ -493,7 +494,7 @@
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program --set-plain COREUTILS
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
