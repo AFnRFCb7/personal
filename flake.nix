@@ -371,9 +371,9 @@
                                                                         } ;
                                                             ephemeral =
                                                                 {
-                                                                    chromium = ignore : ephemeral { expression = "'with import <nixpkgs> {}; chromium'" ; targets = [ ] ; } ;
-                                                                    emacs = ignore : ephemeral { expression = "'with import <nixpkgs> {}; emacs'" ; targets = [ ] ; } ;
-                                                                    pass = ignore : ephemeral { expression = "'with import <nixpkgs> {} ; pass" ; targets = [ ] ; } ;
+                                                                    chromium = ignore : ephemeral.implementation { expression = "'with import <nixpkgs> {}; chromium'" ; targets = [ ] ; } ;
+                                                                    emacs = ignore : ephemeral.implementation { expression = "'with import <nixpkgs> {}; emacs'" ; targets = [ ] ; } ;
+                                                                    pass = ignore : ephemeral.implementation { expression = "'with import <nixpkgs> {} ; pass" ; targets = [ ] ; } ;
                                                                 } ;
                                                             fixture =
                                                                 {
@@ -463,31 +463,30 @@
                                                             pads =
                                                                 let
                                                                     mapper =
-                                                                        name : pad :
-                                                                            ignore :
-                                                                                {
-                                                                                    init =
-                                                                                        { mount , pkgs , resources , root , wrap } :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    EMACS=${ resources.production.ephemeral.emacs ( setup : setup ) }
-                                                                                                                    root "$EMACS"
-                                                                                                                    cat > /mount/.envrc <<EOF
-                                                                                                                    export NAME=${ name }
-                                                                                                                    export FOOBAR=7e68f889
-                                                                                                                    export EMACS="$EMACS/bin"
-                                                                                                                    EOF
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/init" ;
-                                                                                    targets = [ ".envrc" ] ;
-                                                                                } ;
+                                                                        name : pad : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                EMACS=${ resources.production.ephemeral.emacs ( setup : setup ) }
+                                                                                                                root "$EMACS"
+                                                                                                                cat > /mount/.envrc <<EOF
+                                                                                                                export NAME=${ name }
+                                                                                                                export FOOBAR=7e68f889
+                                                                                                                export EMACS="$EMACS/bin"
+                                                                                                                EOF
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ ".envrc" ] ;
+                                                                            } ;
                                                                     sets =
                                                                         # config.personal.pads
                                                                         # //
