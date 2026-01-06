@@ -485,7 +485,7 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
-                                                                                                                                    PATH=$COREUTILSbin:$CHROMIUM/bin:$PASS/bin
+                                                                                                                                    PATH=$COREUTILS/bin:$CHROMIUM/bin:$PASS/bin
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
