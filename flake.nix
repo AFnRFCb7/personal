@@ -475,9 +475,9 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                cat > /mount/.envrc <<EOF
                                                                                                                 EMACS=${ resources.production.ephemeral.emacs ( setup : setup ) }
                                                                                                                 root "$EMACS"
-                                                                                                                cat > /mount/.envrc <<EOF
                                                                                                                 export NAME=${ name }
                                                                                                                 export FOOBAR=7e68f889
                                                                                                                 export EMACS="$EMACS/bin"
@@ -1466,7 +1466,7 @@
                                                             {
                                                                 services =
                                                                     {
-                                                                        home =
+                                                                        pads =
                                                                             {
                                                                                 after = [ "network.target" ] ;
                                                                                 serviceConfig =
@@ -1484,8 +1484,8 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ${ name }=${ value ( setup : setup ) }
-                                                                                                                                ln --symbolic --force "${ builtins.concatStringsSep "" [ "$" name ] }/.envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
+                                                                                                                                ENVRC=${ resources__.production.pads.name ( setup : setup ) }
+                                                                                                                                ln --symbolic "$ENVRC/.envirc" "/home/${ config.personal.name }/pads/${ name }/.envirc"
                                                                                                                             '' ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
                                                                                                         } ;
