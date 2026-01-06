@@ -1884,7 +1884,7 @@
                                         builtins.trace "${ builtins.typeOf _ephemeral.check }"
                                         _ephemeral.check
                                             {
-                                                expected = "b633f7e6" ;
+                                                expected = "/nix/store/yynxdjqz92x4jmla99a1fs3zzlgw7vpr-init/bin/init" ;
                                                 failure = _failure.implementation "c0aaf6bd" ;
                                                 pkgs = pkgs ;
                                           } ;
