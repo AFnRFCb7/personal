@@ -494,7 +494,7 @@
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS $COREUTILS
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
