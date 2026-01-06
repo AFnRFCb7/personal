@@ -487,12 +487,6 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    COREUTILS=$COREUTILS
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _CHROMIUM=$CHROMIUM
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    COWSAY=$COWSAY
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
