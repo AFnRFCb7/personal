@@ -1883,11 +1883,9 @@
                                     ephemeral =
                                         _ephemeral.check
                                             {
-                                                coreutils = pkgs.coreutils ;
                                                 expected = "b633f7e6" ;
                                                 failure = _failure.implementation "c0aaf6bd" ;
-                                                mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                writeShellApplication = pkgs.writeShellApplication ;
+                                                pkgs = pkgs ;
                                            } ;
                                    failure =
                                        _failure.check
