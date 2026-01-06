@@ -485,6 +485,9 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
+                                                                                                                                    COREUTILS=$COREUTILS
+                                                                                                                                    CHROMIUM=$CHROMIUM
+                                                                                                                                    PASS=$PASS
                                                                                                                                     PATH=$COREUTILS/bin:$CHROMIUM/bin:$PASS/bin
                                                                                                                                 '' ;
                                                                                                                         } ;
