@@ -480,7 +480,7 @@
                                                                                                                 cat > /mount/.envrc <<EOF
                                                                                                                 export NAME=${ name }
                                                                                                                 export FOOBAR=7e68f889
-                                                                                                                COREUTILS=\${ resources.production.ephemeral.coreutils ( setup : setup ) }
+                                                                                                                COREUTILS=\\${ resources.production.ephemeral.coreutils ( setup : setup ) }
                                                                                                                 export COREUTILS
                                                                                                                 EOF
                                                                                                             '' ;
