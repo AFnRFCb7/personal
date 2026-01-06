@@ -474,16 +474,27 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils wrap ] ;
                                                                                                         text =
-                                                                                                            ''
-                                                                                                                cat > /mount/.envrc <<EOF
-                                                                                                                export NAME=${ name }
-                                                                                                                export FOOBAR=7e68f889
-                                                                                                                COREUTILS="\$( ${ resources.production.ephemeral.coreutils ( setup : setup ) } )"
-                                                                                                                export COREUTILS
-                                                                                                                EOF
-                                                                                                            '' ;
+                                                                                                            let
+                                                                                                                program =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "program" ;
+                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    export NAME=${ name }
+                                                                                                                                    export FOOBAR=7e68f889
+                                                                                                                                    COREUTILS=$COREUTILS
+                                                                                                                                    export COREUTILS
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
+                                                                                                                        wrap ${ program }/bin/program --set-plain COREUTILS
+                                                                                                                    '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ ".envrc" ] ;
