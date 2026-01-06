@@ -478,6 +478,8 @@
                                                                                                                 cat > /mount/.envrc <<EOF
                                                                                                                 export NAME=${ name }
                                                                                                                 export FOOBAR=7e68f889
+                                                                                                                EMACS=\${ resources.production.ephemeral.emacs ( setup : setup ) }
+                                                                                                                export EMACS
                                                                                                                 EOF
                                                                                                             '' ;
                                                                                                     } ;
