@@ -909,7 +909,7 @@
                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                     cd "$toplevel"
-                                                                                                                                                                    nix flake update --flake "toplevel" "$name"
+                                                                                                                                                                    nix flake update --flake "$toplevel" "$name"
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
