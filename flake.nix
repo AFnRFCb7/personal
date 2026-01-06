@@ -32,7 +32,7 @@
                             _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            _ephemeral = ephemeral.lib { } ;
+                            _ephemeral = ephemeral.lib { failure = _failure.implementation "1b07a5b1" ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
@@ -373,6 +373,7 @@
                                                                 {
                                                                     chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
                                                                     coreutils = ignore : _ephemeral.implementation { expression = "nixpkgs#coreutils" ; targets = [ "bin" "libexec" ] ; } ;
+                                                                    cowsay = ignore : _ephemeral.implementation { expression = "nixpkgs#cowsay" ; target = [ "bin" "etc" "share" ] ; }
                                                                     emacs = ignore : _ephemeral.implementation { expression = "nixpkgs#emacs" ; targets = [ "bin" "include" "lib" "libexec" "nix-support" "share" ] ; } ;
                                                                     hello = ignore : _ephemeral.implementation { expression = "nixpkgs#hello" ; targets = [ "bin" "share" ] ; } ;
                                                                     pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share" ] ; } ;
@@ -502,8 +503,10 @@
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         CHROMIUM='${ resources.production.ephemeral.chromium ( setup : setup ) }'
                                                                                                                         # shellcheck disable=SC2016
+                                                                                                                        COWSAY='${ resources.production.ephemeral.cowsay ( setup : setup ) }'
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain _PASS --set-plain PASS "$PASS"
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain _PASS --set-plain PASS "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
@@ -1920,7 +1923,6 @@
                                         _ephemeral.check
                                             {
                                                 expected = "/nix/store/yynxdjqz92x4jmla99a1fs3zzlgw7vpr-init/bin/init" ;
-                                                failure = _failure.implementation "c0aaf6bd" ;
                                                 pkgs = pkgs ;
                                           } ;
                                    failure =
