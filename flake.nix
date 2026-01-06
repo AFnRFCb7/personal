@@ -1880,14 +1880,14 @@
                                                             } ;
                                                     } ;
                                             } ;
-                                    # ephemeral =
-                                    #     _ephemeral.check
-                                    #         {
-                                    #             coreutils = pkgs.coreutils ;
-                                    #             failure = _failure.implementation "c0aaf6bd" ;
-                                    #             mkDerivation = pkgs.stdenv.mkDerivation ;
-                                    #             writeShellApplication = pkgs.writeShellApplication ;
-                                    #        } ;
+                                    ephemeral =
+                                        _ephemeral.check
+                                            {
+                                                coreutils = pkgs.coreutils ;
+                                                failure = _failure.implementation "c0aaf6bd" ;
+                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                writeShellApplication = pkgs.writeShellApplication ;
+                                           } ;
                                    failure =
                                        _failure.check
                                            {
