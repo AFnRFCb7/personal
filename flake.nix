@@ -369,6 +369,12 @@
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
+                                                            ephemeral =
+                                                                {
+                                                                    chromium = ignore : ephemeral { expression = "'with import <nixpkgs> {}; chromium'" ; targets = [ ] ; } ;
+                                                                    emacs = ignore : ephemeral { expression = "'with import <nixpkgs> {}; emacs'" ; targets = [ ] ; } ;
+                                                                    pass = ignore : ephemeral { expression = "'with import <nixpkgs> {} ; pass" ; targets = [ ] ; } ;
+                                                                } ;
                                                             fixture =
                                                                 {
                                                                     laptop =
@@ -470,9 +476,11 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    EMACS=${ resources.productions.ephemeral.emacs ( setup : setup ) }
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export NAME=${ name }
                                                                                                                     export FOOBAR=7e68f889
+                                                                                                                    export EMACS="$EMACS/bin"
                                                                                                                     EOF
                                                                                                                 '' ;
                                                                                                         } ;
