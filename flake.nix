@@ -476,7 +476,8 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    EMACS=${ resources.productions.ephemeral.emacs ( setup : setup ) }
+                                                                                                                    EMACS=${ resources.production.ephemeral.emacs ( setup : setup ) }
+                                                                                                                    root "$EMACS"
                                                                                                                     cat > /mount/.envrc <<EOF
                                                                                                                     export NAME=${ name }
                                                                                                                     export FOOBAR=7e68f889
