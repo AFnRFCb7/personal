@@ -373,7 +373,7 @@
                                                                 {
                                                                     chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
                                                                     coreutils = ignore : _ephemeral.implementation { expression = "nixpkgs#coreutils" ; targets = [ "bin" "libexec" ] ; } ;
-                                                                    cowsay = ignore : _ephemeral.implementation { expression = "nixpkgs#cowsay" ; target = [ "bin" "etc" "share" ] ; } ;
+                                                                    cowsay = ignore : _ephemeral.implementation { expression = "nixpkgs#cowsay" ; targets = [ "bin" "etc" "share" ] ; } ;
                                                                     emacs = ignore : _ephemeral.implementation { expression = "nixpkgs#emacs" ; targets = [ "bin" "include" "lib" "libexec" "nix-support" "share" ] ; } ;
                                                                     hello = ignore : _ephemeral.implementation { expression = "nixpkgs#hello" ; targets = [ "bin" "share" ] ; } ;
                                                                     pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share" ] ; } ;
