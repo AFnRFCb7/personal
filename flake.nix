@@ -476,11 +476,8 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 cat > /mount/.envrc <<EOF
-                                                                                                                # EMACS=\${ resources.production.ephemeral.emacs ( setup : setup ) }
-                                                                                                                # root "$EMACS"
                                                                                                                 export NAME=${ name }
                                                                                                                 export FOOBAR=7e68f889
-                                                                                                                # export EMACS="$EMACS/bin"
                                                                                                                 EOF
                                                                                                             '' ;
                                                                                                     } ;
