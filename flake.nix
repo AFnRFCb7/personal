@@ -371,9 +371,10 @@
                                                                         } ;
                                                             ephemeral =
                                                                 {
-                                                                    chromium = ignore : _ephemeral.implementation { expression = "'with import <nixpkgs> {}; chromium'" ; targets = [ ] ; } ;
-                                                                    emacs = ignore : _ephemeral.implementation { expression = "'with import <nixpkgs> {}; emacs'" ; targets = [ ] ; } ;
-                                                                    pass = ignore : _ephemeral.implementation { expression = "'with import <nixpkgs> {} ; pass" ; targets = [ ] ; } ;
+                                                                    chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
+                                                                    emacs = ignore : _ephemeral.implementation { expression = "nixpkgs#emacs" ; targets = [ "bin" "include" "lib" "libexec" "nix-support" "share" ] ; } ;
+                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share"
+                                                                    ] ; } ;
                                                                 } ;
                                                             fixture =
                                                                 {
