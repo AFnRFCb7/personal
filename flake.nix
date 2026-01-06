@@ -485,14 +485,18 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
-                                                                                                                                    PATH=$COREUTILS:bin
+                                                                                                                                    PATH=$COREUTILSbin:$CHROMIUM/bin:$PASS/bin
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS "$COREUTILS"
+                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        CHROMIUM='${ resources.production.ephemeral.chromium ( setup : setup ) }'
+                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS "$COREUTILS" --set-plain CHROMIUM "$CHROMIUM" --set-plain PASS "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
