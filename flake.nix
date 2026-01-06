@@ -502,7 +502,7 @@
                                                                                                                         CHROMIUM='${ resources.production.ephemeral.chromium ( setup : setup ) }'
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-literal _COREUTILS --set-plain COREUTILS "$COREUTILS" --set-literal _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain _PASS --set-plain PASS "$PASS"
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain _PASS --set-plain PASS "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
@@ -517,6 +517,10 @@
                                                                     in builtins.mapAttrs mapper sets ;
                                                             repository =
                                                                 {
+                                                                    pass =
+                                                                        {
+
+                                                                        } ;
                                                                     studio =
                                                                         {
                                                                             entry =
