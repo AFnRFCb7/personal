@@ -497,15 +497,16 @@
                                                                                                                         } ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        # shellcheck disable=SC2269
                                                                                                                         COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        # shellcheck disable=SC2269
                                                                                                                         CHROMIUM='${ resources.production.ephemeral.chromium ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        # shellcheck disable=SC2269
                                                                                                                         COWSAY='${ resources.production.ephemeral.cowsay ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        # PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
+                                                                                                                        # shellcheck disable=SC2269
+                                                                                                                        PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
                                                                                                                         wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS "$COREUTILS" --set-plain COWSAY "$COWSAY" --set-plain CHROMIUM "$CHROMIUM" --literal-plain PATH
+                                                                                                                        true "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
