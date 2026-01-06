@@ -491,8 +491,10 @@
                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                     _CHROMIUM=$CHROMIUM
                                                                                                                                     # shellcheck disable=SC2153
+                                                                                                                                    _COWSAY=$COWSAY
+                                                                                                                                    # shellcheck disable=SC2153
                                                                                                                                     #_PASS=$PASS
-                                                                                                                                    PATH=$_COREUTILS/bin:$_CHROMIUM/bin
+                                                                                                                                    PATH=$_COREUTILS/bin:$_CHROMIUM/bin:$COWSAY/bin
                                                                                                                                     # $_PASS
                                                                                                                                 '' ;
                                                                                                                         } ;
