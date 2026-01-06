@@ -1881,7 +1881,7 @@
                                                     } ;
                                             } ;
                                     ephemeral =
-                                        builtins.trace "${ builtins.typeOf _ephemeral }"
+                                        builtins.trace "${ builtins.typeOf _ephemeral.check }"
                                         _ephemeral.check
                                             {
                                                 expected = "b633f7e6" ;
