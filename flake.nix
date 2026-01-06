@@ -372,9 +372,10 @@
                                                             ephemeral =
                                                                 {
                                                                     chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
+                                                                    coreutils = ignore : _ephemeral.implementation { expression = "nixpkgs#coreutils" ; targets = [ "bin" "libexec" ] ; } ;
                                                                     emacs = ignore : _ephemeral.implementation { expression = "nixpkgs#emacs" ; targets = [ "bin" "include" "lib" "libexec" "nix-support" "share" ] ; } ;
-                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share"
-                                                                    ] ; } ;
+                                                                    hello = ignore : _ephemeral.implementation { expression = "nixpkgs#hello" ; targets = [ "bin" "share" ] ; } ;
+                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share" ] ; } ;
                                                                 } ;
                                                             fixture =
                                                                 {
@@ -479,8 +480,8 @@
                                                                                                                 cat > /mount/.envrc <<EOF
                                                                                                                 export NAME=${ name }
                                                                                                                 export FOOBAR=7e68f889
-                                                                                                                EMACS=\${ resources.production.ephemeral.emacs ( setup : setup ) }
-                                                                                                                export EMACS
+                                                                                                                COREUTILS=\${ resources.production.ephemeral.coreutils ( setup : setup ) }
+                                                                                                                export COREUTILS
                                                                                                                 EOF
                                                                                                             '' ;
                                                                                                     } ;
