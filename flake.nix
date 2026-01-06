@@ -486,15 +486,14 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
-                                                                                                                                    # shellcheck disable=SC2269
-                                                                                                                                    COREUTILS=$COREUTILS
-                                                                                                                                    export COREUTILS
+                                                                                                                                    PATH=$COREUTILS:bin
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
                                                                                                                     ''
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS "$COREUTILS"
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain PATH --set-plain COREUTILS "$COREUTILS"
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
