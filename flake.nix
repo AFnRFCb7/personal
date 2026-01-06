@@ -476,11 +476,11 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 cat > /mount/.envrc <<EOF
-                                                                                                                EMACS=\${ resources.production.ephemeral.emacs ( setup : setup ) }
-                                                                                                                root "$EMACS"
+                                                                                                                # EMACS=\${ resources.production.ephemeral.emacs ( setup : setup ) }
+                                                                                                                # root "$EMACS"
                                                                                                                 export NAME=${ name }
                                                                                                                 export FOOBAR=7e68f889
-                                                                                                                export EMACS="$EMACS/bin"
+                                                                                                                # export EMACS="$EMACS/bin"
                                                                                                                 EOF
                                                                                                             '' ;
                                                                                                     } ;
@@ -1485,7 +1485,7 @@
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
                                                                                                                                 ENVRC=${ resources__.production.pads."${ name }" ( setup : setup ) }
-                                                                                                                                ln --symbolic "$ENVRC/.envirc" "/home/${ config.personal.name }/pads/${ name }/.envirc"
+                                                                                                                                ln --symbolic --force "$ENVRC/.envirc" "/home/${ config.personal.name }/pads/${ name }/.envirc"
                                                                                                                             '' ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
                                                                                                         } ;
