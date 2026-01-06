@@ -485,8 +485,11 @@
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
+                                                                                                                                    # shellcheck disable=SC2269
                                                                                                                                     COREUTILS=$COREUTILS
+                                                                                                                                    # shellcheck disable=SC2269
                                                                                                                                     CHROMIUM=$CHROMIUM
+                                                                                                                                    # shellcheck disable=SC2269
                                                                                                                                     PASS=$PASS
                                                                                                                                     PATH=$COREUTILS/bin:$CHROMIUM/bin:$PASS/bin
                                                                                                                                 '' ;
