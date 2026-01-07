@@ -321,8 +321,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = resources.production.secrets.ownertrust ;
-                                                                            secret-keys = resources.production.secrets.secret-keys ;
+                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
+                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
                                                                             setup =
                                                                                 ''
                                                                                     wrap "$1/secret" stage/secret-keys.asc
@@ -1294,8 +1294,8 @@
                                                                                     user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                                 } ;
                                                                         } ;
-                                                                    ownertrust-fun = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    secret-keys-fun = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    ownertrust = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    secret-keys = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                     token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                 } ;
                                                             temporary =
