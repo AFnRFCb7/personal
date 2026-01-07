@@ -1728,7 +1728,7 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            type = lib.types.attrsOf ( lib.types.funcTo ) ;
+                                                                            type = lib.types.attrsOf ( lib.types.funcTo lib.types.str ) ;
                                                                             default =
                                                                                 {
                                                                                     emory =
