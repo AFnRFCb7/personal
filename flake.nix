@@ -505,7 +505,7 @@
                                                                                                                         COWSAY='${ resources.production.ephemeral.cowsay ( setup : setup ) }'
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain PATH
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM"
                                                                                                                         true "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
