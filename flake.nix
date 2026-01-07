@@ -197,9 +197,6 @@
                                                                                                             failure b9a218e1
                                                                                                         fi
                                                                                                         chmod 0400 /mount/init /mount/release
-                                                                                                        DOT_GNUPG=${ resources.foobar.dot-gnupg ( setup : setup ) }
-                                                                                                        root "$DOT_GNUPG"
-                                                                                                        root ${ pkgs.gnupg }
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         root "$DOT_SSH"
@@ -240,7 +237,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" "secret" ] ;
+                                                                        targets = [ "dot-ssh" "repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository =
