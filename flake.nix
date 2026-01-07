@@ -482,24 +482,30 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "program" ;
-                                                                                                                            runtimeInputs = [ "$COREUTILS" "$CHROMIUM" "$COWSAY" ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
+                                                                                                                                    # shellcheck disable=SC2269
+                                                                                                                                    _COREUTILS="$COREUTILS"
+                                                                                                                                    # shellcheck disable=SC2269
+                                                                                                                                    _CHROMIUM="$CHROMIUM"
+                                                                                                                                    # shellcheck disable=SC2269
+                                                                                                                                    _COWSAY="$COWSAY"
+                                                                                                                                    export PATH=${ pkgs.makeBinPath [ "$_COREUTILS" "$_CHROMIUM" "$_COWSAY" ]
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        # shellcheck disable=SC2269
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2269
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         CHROMIUM='${ resources.production.ephemeral.chromium ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2269
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         COWSAY='${ resources.production.ephemeral.cowsay ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2269
+                                                                                                                        # shellcheck disable=SC2016
                                                                                                                         PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --set-plain COREUTILS "$COREUTILS" --set-plain COWSAY "$COWSAY" --set-plain CHROMIUM "$CHROMIUM" --literal-plain PATH
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain PATH
                                                                                                                         true "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
