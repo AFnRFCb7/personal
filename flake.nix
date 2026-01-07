@@ -544,6 +544,22 @@
                                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                                             text =
                                                                                                                 let
+                                                                                                                    post-commit =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "post-commit" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                while ! git push origin HEAD
+                                                                                                                                                do
+                                                                                                                                                    sleep 1
+                                                                                                                                                done
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/post-commit" ;
                                                                                                                     ssh =
                                                                                                                         let
                                                                                                                             application =
@@ -562,6 +578,7 @@
                                                                                                                             git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                             git config user.email ${ config.personal.pass.email }
                                                                                                                             git config user.name ${ config.personal.pass.name }
+                                                                                                                            ln --symbolic ${ post-commit } "${ mount }/.git/hooks/post-commit
                                                                                                                             git remote add origin ${ config.personal.pass.remote }
                                                                                                                             git fetch origin ${ config.personal.pass.branch }
                                                                                                                             git checkout ${ config.personal.pass.branch }
