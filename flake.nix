@@ -323,8 +323,7 @@
                                                                             secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
                                                                             setup =
                                                                                 ''
-                                                                                    wrap "$1/secret" stage/secret-keys.asc
-                                                                                    wrap "$2/secret" stage/ownertrust.asc
+                                                                                    echo "$1/secret" "$2/secret"
                                                                                 '' ;
                                                                         } ;
                                                             dot-ssh =
