@@ -137,8 +137,13 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            setup =
+                                                                                ''
+                                                                                    wrap "$1" stage/secret-keys.asc
+                                                                                    wrap "$2" stage/ownertrust.asc
+                                                                                '' ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
@@ -316,8 +321,13 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust-fun ;
-                                                                            secret-keys-fun = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys-fun ;
+                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust-fun ;
+                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys-fun ;
+                                                                            setup =
+                                                                                ''
+                                                                                    wrap "$1/secret" stage/secret-keys.asc
+                                                                                    wrap "$2/secret" stage/ownertrust.asc
+                                                                                '' ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
