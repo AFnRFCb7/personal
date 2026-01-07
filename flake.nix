@@ -498,6 +498,8 @@
                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                     _PASSWORD_STORE_REPOSITORY=$PASSWORD_STORE_REPOSITORY
                                                                                                                                     export PASSWORD_STORE_DIR=$_PASSWORD_STORE_REPOSITORY/repository
+                                                                                                                                    _GNUPGHOME=$GNUPGHOME
+                                                                                                                                    export PASSWORD_STORE_GPG_OPTS="--homedir $_GNUPGHOME/dot-gnupg"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
@@ -512,8 +514,9 @@
                                                                                                                         PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         PASSWORD_STORE_REPOSITORY='${ resources.production.repository.pass ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-brace _PASS --set-brace PASS "$PASS" --literal-plain _PASSWORD_STORE_REPOSITORY --set-plain PASSWORD_STORE_REPOSITORY "$PASSWORD_STORE_REPOSITORY"
-                                                                                                                        true "$PASS"
+                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        GNUPGHOME='${ resources.production.dot-gnupg ( setup : setup ) }'
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-brace _PASS --set-brace PASS "$PASS" --literal-plain _PASSWORD_STORE_REPOSITORY --set-plain PASSWORD_STORE_REPOSITORY "$PASSWORD_STORE_REPOSITORY" --literal-plain _DOT_GNUPG --set-plain DOT_GNUPG "$DOT_GNUPG"
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
