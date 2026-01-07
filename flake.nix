@@ -1746,7 +1746,7 @@
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
-                                                                                                                            export PASSWORD_STORE_GPT_OPTS="$DOT_GNUPG/dot-gnupg"
+                                                                                                                            export PASSWORD_STORE_GPT_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
                                                                                                                             export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
                                                                                                                         '' ;
                                                                                                                 } ;
