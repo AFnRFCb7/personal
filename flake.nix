@@ -541,7 +541,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "setup" ;
-                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            runtimeInputs = [ pkgs.git root wrap ] ;
                                                                                                             text =
                                                                                                                 let
                                                                                                                     post-commit =
