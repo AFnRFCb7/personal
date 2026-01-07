@@ -580,7 +580,7 @@
                                                                                                                             git config user.name ${ config.personal.pass.name }
                                                                                                                             ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
                                                                                                                             git remote add origin ${ config.personal.pass.remote }
-                                                                                                                            wrap ${ ssh } ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }"
+                                                                                                                            wrap ${ ssh } ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" ssh/config 0400
