@@ -1756,7 +1756,7 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            wrap ${ envrc } /mount/envrc 0400
+                                                                                                                            wrap ${ envrc } envrc 0400
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init " ;
