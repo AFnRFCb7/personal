@@ -494,7 +494,7 @@
                                                                                                                                     _COWSAY=$COWSAY
                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                     _PASS=${ builtins.concatStringsSep "" [ "$" "{" "PASS" "}" ] }
-                                                                                                                                    export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin:${ builtins.concatStringsSep "" [ "$" "{" "PASS" "}" ] }/bin"
+                                                                                                                                    export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin:${ builtins.concatStringsSep "" [ "$" "{" "_PASS" "}" ] }/bin"
                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                     _PASSWORD_STORE_REPOSITORY=$PASSWORD_STORE_REPOSITORY
                                                                                                                                     export PASSWORD_STORE_DIR=$_PASSWORD_STORE_REPOSITORY/repository
