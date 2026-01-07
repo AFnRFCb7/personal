@@ -492,7 +492,11 @@
                                                                                                                                     _CHROMIUM=$CHROMIUM
                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                     _COWSAY=$COWSAY
-                                                                                                                                    export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin"
+                                                                                                                                    # shellcheck disable=SC2153
+                                                                                                                                    _PASS=$PASS
+                                                                                                                                    export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin:$PASS/bin"
+                                                                                                                                    _PASSWORD_STORE_REPOSITORY=$PASS_STORE_REPOSITORY
+                                                                                                                                    export PASSWORD_STORE_DIR=$PASSWORD_STORE_REPOSITORY/repository
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
@@ -505,7 +509,9 @@
                                                                                                                         COWSAY='${ resources.production.ephemeral.cowsay ( setup : setup ) }'
                                                                                                                         # shellcheck disable=SC2016
                                                                                                                         PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM"
+                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        PASSWORD_STORE_REPOSITORY='${ resources.production.production.repository.pass }'
+                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-plain PASS --set-plain PASS "$PASS" --literal-plain _PASSWORD_STORE_REPOSITORY --set-plain PASSWORD_STORE_REPOSITORY "$PASSWORD_STORE_REPOSITORY"
                                                                                                                         true "$PASS"
                                                                                                                     '' ;
                                                                                                     } ;
@@ -522,9 +528,49 @@
                                                             repository =
                                                                 {
                                                                     pass =
-                                                                        {
+                                                                        ignore :
+                                                                            _git-repository.implementation
+                                                                                {
+                                                                                    setup =
+                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "setup" ;
+                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    ssh =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                ssh -F "$MOUNT/stage/ssh/config" "$@"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/ssh" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                            git config user.email ${ config.personal.pass.email }
+                                                                                                                            git config user.name ${ config.personal.pass.name }
+                                                                                                                            git remote add origin ${ config.personal.pass.remote }
+                                                                                                                            git fetch origin ${ config.personal.pass.branch }
+                                                                                                                            git checkout ${ config.personal.pass.branch }
+                                                                                                                            wrap ${ ssh } ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root "$DOT_SSH"
+                                                                                                                            wrap "$DOT_SSH/config" ssh/config 0400
+                                                                                                                        '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/setup" ;
 
-                                                                        } ;
+                                                                                } ;
                                                                     studio =
                                                                         {
                                                                             entry =
