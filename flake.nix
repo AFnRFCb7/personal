@@ -468,10 +468,10 @@
                                                                     mapper =
                                                                         name : value : ignore :
                                                                             {
-                                                                                init = { ... } : "" ;
+                                                                                init = value ;
                                                                                 targets = [ "envrc" ] ;
                                                                             } ;
-                                                                    in builtins.mapAttrs config.personal.pads ;
+                                                                    in builtins.mapAttrs mapper config.personal.pads ;
                                                             repository =
                                                                 {
                                                                     pass =
