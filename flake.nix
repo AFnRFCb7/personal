@@ -584,8 +584,8 @@
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                            git fetch origin ${ config.personal.pass.branch }
-                                                                                                                            git checkout ${ config.personal.pass.branch }
+                                                                                                                            git fetch origin ${ config.personal.pass.branch } 2>&1
+                                                                                                                            git checkout ${ config.personal.pass.branch } 2>&1
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
