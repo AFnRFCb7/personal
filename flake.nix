@@ -492,7 +492,7 @@
                                                                                                                                     _CHROMIUM="$CHROMIUM"
                                                                                                                                     # shellcheck disable=SC2269
                                                                                                                                     _COWSAY="$COWSAY"
-                                                                                                                                    export PATH=${ pkgs.makeBinPath [ "$_COREUTILS" "$_CHROMIUM" "$_COWSAY" ]
+                                                                                                                                    export PATH=${ pkgs.makeBinPath [ "$_COREUTILS" "$_CHROMIUM" "$_COWSAY" ] }
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
