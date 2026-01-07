@@ -197,6 +197,7 @@
                                                                                                             failure b9a218e1
                                                                                                         fi
                                                                                                         chmod 0400 /mount/init /mount/release
+                                                                                                        DOT_GNUPG="FIXME"
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
                                                                                                         DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
                                                                                                         root "$DOT_SSH"
@@ -237,7 +238,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-ssh" "repository" "init" "release" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" "secret" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository =
