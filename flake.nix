@@ -1732,7 +1732,7 @@
                                                                             default =
                                                                                 {
                                                                                     emory =
-                                                                                        { mounts , pkgs , resources , root , wrap } :
+                                                                                        { mount , pkgs , resources , root , wrap } :
                                                                                             let
                                                                                                 envrc =
                                                                                                     let
