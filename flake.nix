@@ -466,70 +466,12 @@
                                                             pads =
                                                                 let
                                                                     mapper =
-                                                                        name : pad : ignore :
+                                                                        name : value : ignore :
                                                                             {
-                                                                                init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils wrap ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                program =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "program" ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    export NAME=${ name }
-                                                                                                                                    export FOOBAR=7e68f889
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _COREUTILS=$COREUTILS
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _CHROMIUM=$CHROMIUM
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _COWSAY=$COWSAY
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _PASS=${ builtins.concatStringsSep "" [ "$" "{" "PASS" "}" ] }
-                                                                                                                                    export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin:${ builtins.concatStringsSep "" [ "$" "{" "_PASS" "}" ] }/bin"
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _PASSWORD_STORE_REPOSITORY=$PASSWORD_STORE_REPOSITORY
-                                                                                                                                    export PASSWORD_STORE_DIR=$_PASSWORD_STORE_REPOSITORY/repository
-                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                    _DOT_GNUPG=$DOT_GNUPG
-                                                                                                                                    export PASSWORD_STORE_GPG_OPTS="--homedir $_DOT_GNUPG/dot-gnupg"
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        COREUTILS='${ resources.production.ephemeral.coreutils ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        CHROMIUM='${ resources.production.ephemeral.chromium ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        COWSAY='${ resources.production.ephemeral.cowsay ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        PASS='${ resources.production.ephemeral.pass ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        PASSWORD_STORE_REPOSITORY='${ resources.production.repository.pass ( setup : setup ) }'
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        DOT_GNUPG='${ resources.production.dot-gnupg ( setup : setup ) }'
-                                                                                                                        wrap ${ program }/bin/program .envrc 0400 --literal-plain _COREUTILS --set-plain COREUTILS "$COREUTILS" --literal-plain _COWSAY --set-plain COWSAY "$COWSAY" --literal-plain _CHROMIUM --set-plain CHROMIUM "$CHROMIUM" --literal-brace _PASS --set-brace PASS "$PASS" --literal-plain _PASSWORD_STORE_REPOSITORY --set-plain PASSWORD_STORE_REPOSITORY "$PASSWORD_STORE_REPOSITORY" --literal-plain _DOT_GNUPG --set-plain DOT_GNUPG "$DOT_GNUPG"
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ ".envrc" ] ;
+                                                                                init = value ;
+                                                                                targets = [ "envrc" ] ;
                                                                             } ;
-                                                                    sets =
-                                                                        # config.personal.pads
-                                                                        # //
-                                                                        {
-                                                                            home = { } ;
-                                                                        } ;
-                                                                    in builtins.mapAttrs mapper sets ;
+                                                                    in builtins.mapAttrs config.personal.pads ;
                                                             repository =
                                                                 {
                                                                     pass =
@@ -1567,7 +1509,7 @@
                                                                     {
                                                                         pads =
                                                                             {
-                                                                                after = [ "network-online.target" ] ;
+                                                                                after = [ "network.target" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -1591,7 +1533,6 @@
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
-                                                                                wants = [ "network-online.target" ] ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
                                                                         resource-logger =
@@ -1787,8 +1728,39 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            # type = lib.types.listOf type ;
-                                                                            default = [ ] ;
+                                                                            type = lib.types.attrsOf ( lib.types.funcTo ) ;
+                                                                            default =
+                                                                                {
+                                                                                    emory =
+                                                                                        { mounts , pkgs , resources , root , wrap } :
+                                                                                            let
+                                                                                                envrc =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "envrc" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            export FOOBAR=ead70f30
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/envrc" ;
+                                                                                                in
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "init" ;
+                                                                                                                    runtimeInputs = [ wrap ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            wrap ${ envrc } /mount/envrc
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/init " ;
+                                                                                } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
