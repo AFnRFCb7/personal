@@ -495,6 +495,7 @@
                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                     _PASS=$PASS
                                                                                                                                     export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin:$PASS/bin"
+                                                                                                                                    # shellcheck disable=SC2153
                                                                                                                                     _PASSWORD_STORE_REPOSITORY=$PASS_STORE_REPOSITORY
                                                                                                                                     export PASSWORD_STORE_DIR=$PASSWORD_STORE_REPOSITORY/repository
                                                                                                                                 '' ;
