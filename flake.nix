@@ -531,6 +531,7 @@
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
+                                                                                    follow-parent = false ;
                                                                                     resolutions = [ ] ;
                                                                                     setup =
                                                                                         { mount , resources , pkgs , root , wrap } :
