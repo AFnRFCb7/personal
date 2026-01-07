@@ -1740,7 +1740,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "envrc" ;
-                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    runtimeInputs = [ pkgs.pass ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             export FOOBAR=ead70f30
@@ -1756,7 +1756,7 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            wrap ${ envrc } envrc 0400
+                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain PATH
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init " ;
