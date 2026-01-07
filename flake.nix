@@ -487,11 +487,11 @@
                                                                                                                                     export NAME=${ name }
                                                                                                                                     export FOOBAR=7e68f889
                                                                                                                                     # shellcheck disable=SC2153
-                                                                                                                                    _COREUTILS="$COREUTILS"
+                                                                                                                                    _COREUTILS=$COREUTILS
                                                                                                                                     # shellcheck disable=SC2153
-                                                                                                                                    _CHROMIUM="$CHROMIUM"
+                                                                                                                                    _CHROMIUM=$CHROMIUM
                                                                                                                                     # shellcheck disable=SC2153
-                                                                                                                                    _COWSAY="$COWSAY"
+                                                                                                                                    _COWSAY=$COWSAY
                                                                                                                                     export PATH="$_COREUTILS/bin:$_CHROMIUM/bin:$_COWSAY/bin"
                                                                                                                                 '' ;
                                                                                                                         } ;
