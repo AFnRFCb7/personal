@@ -321,8 +321,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust-fun ;
-                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys-fun ;
+                                                                            ownertrust = resources.production.secrets.ownertrust ;
+                                                                            secret-keys = resources.production.secrets.secret-keys ;
                                                                             setup =
                                                                                 ''
                                                                                     wrap "$1/secret" stage/secret-keys.asc
