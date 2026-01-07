@@ -531,6 +531,7 @@
                                                                         ignore :
                                                                             _git-repository.implementation
                                                                                 {
+                                                                                    resolutions = [ ] ;
                                                                                     setup =
                                                                                         { mount , resources , pkgs , root , wrap } :
                                                                                             let
