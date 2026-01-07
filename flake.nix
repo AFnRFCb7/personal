@@ -578,14 +578,14 @@
                                                                                                                             git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                                             git config user.email ${ config.personal.pass.email }
                                                                                                                             git config user.name ${ config.personal.pass.name }
-                                                                                                                            ln --symbolic ${ post-commit } "${ mount }/.git/hooks/post-commit
+                                                                                                                            ln --symbolic ${ post-commit } "${ mount }/.git/hooks/post-commit"
                                                                                                                             git remote add origin ${ config.personal.pass.remote }
-                                                                                                                            git fetch origin ${ config.personal.pass.branch }
-                                                                                                                            git checkout ${ config.personal.pass.branch }
                                                                                                                             wrap ${ ssh } ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                             root "$DOT_SSH"
                                                                                                                             wrap "$DOT_SSH/config" ssh/config 0400
+                                                                                                                            git fetch origin ${ config.personal.pass.branch }
+                                                                                                                            git checkout ${ config.personal.pass.branch }
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/setup" ;
