@@ -468,7 +468,7 @@
                                                                     mapper =
                                                                         name : value : ignore :
                                                                             {
-                                                                                init = value ;
+                                                                                init = { ... } : "" ;
                                                                                 targets = [ "envrc" ] ;
                                                                             } ;
                                                                     in builtins.mapAttrs config.personal.pads ;
