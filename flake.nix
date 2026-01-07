@@ -320,12 +320,9 @@
                                                                     _dot-gnupg.implementation
                                                                         {
                                                                             ownertrust = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
+                                                                            ownertrust-file = ''echo "$1/secret"'' ;
                                                                             secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
-                                                                            setup =
-                                                                                ''
-                                                                                    echo "$1/secret"
-                                                                                    echo "$2/secret"
-                                                                                '' ;
+                                                                            secret-keys-file = ''echo $1/secret'' ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
