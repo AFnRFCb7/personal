@@ -499,8 +499,8 @@
                                                                                                                                     _PASSWORD_STORE_REPOSITORY=$PASSWORD_STORE_REPOSITORY
                                                                                                                                     export PASSWORD_STORE_DIR=$_PASSWORD_STORE_REPOSITORY/repository
                                                                                                                                     # shellcheck disable=SC2153
-                                                                                                                                    _GNUPGHOME=$GNUPGHOME
-                                                                                                                                    export PASSWORD_STORE_GPG_OPTS="--homedir $_GNUPGHOME/dot-gnupg"
+                                                                                                                                    _DOT_GNUPG=$DOT_GNUPG
+                                                                                                                                    export PASSWORD_STORE_GPG_OPTS="--homedir $_DOT_GNUPG/dot-gnupg"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in
