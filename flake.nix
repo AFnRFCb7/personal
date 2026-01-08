@@ -507,7 +507,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             ln --symbolic ${ post-commit } .git/hooks/post-commit
-                                                                                                            wrap ${ post-commit} stage/hooks/post-commit --inherit-plain MOUNT
+                                                                                                            wrap ${ post-commit} stage/hooks/post-commit 0500 --inherit-plain MOUNT
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
@@ -1839,7 +1839,7 @@
                                                                             type = lib.types.attrsOf ( lib.types.functionTo lib.types.str ) ;
                                                                             default =
                                                                                 {
-                                                                                    emory =
+                                                                                    home =
                                                                                         { mount , pkgs , resources , root , wrap } :
                                                                                             let
                                                                                                 envrc =
