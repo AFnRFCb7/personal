@@ -1758,17 +1758,25 @@
                                                                                                                                             ] ;
                                                                                                                                         name = "chromium" ;
                                                                                                                                         runScript =
-                                                                                                                                            ''
-                                                                                                                                                export XDG_CONFIG_DIR=/mount/config
-                                                                                                                                                export XDG_CACHE_DIR=/mount/cache
-                                                                                                                                                export XDG_DATA_DIR=/mount/data
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    chromium "$@"
-                                                                                                                                                else
-                                                                                                                                                    cat | chromium "$@"
-                                                                                                                                                fi
-                                                                                                                                            '' ;
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "chromium" ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    export XDG_CONFIG_DIR=/mount/config
+                                                                                                                                                                    export XDG_CACHE_DIR=/mount/cache
+                                                                                                                                                                    export XDG_DATA_DIR=/mount/data
+                                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        chromium "$@"
+                                                                                                                                                                    else
+                                                                                                                                                                        cat | chromium "$@"
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        } ;
+                                                                                                                                                in "${ application }/bin/chromium" ;
                                                                                                                                         targetPkgs = pkgs : [ pkgs.chromium ] ;
                                                                                                                                     }
                                                                                                                             )
