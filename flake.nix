@@ -1829,8 +1829,7 @@
                                                                                         email = lib.mkOption { default = "script.user@local" ; type = lib.types.str ; } ;
                                                                                         name = lib.mkOption { default = "Script User" ; type = lib.types.str ; } ;
                                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                        remote = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
-
+                                                                                        repository = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
                                                                                     } ;
                                                                                 data =
                                                                                     {
