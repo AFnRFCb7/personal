@@ -480,7 +480,7 @@
                                                             repository =
                                                                 let
                                                                     ssh =
-                                                                        pkgs : root : wrap :
+                                                                        pkgs : resources : root : wrap :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -538,7 +538,7 @@
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     git init
-                                                                                                                                                    ${ ssh pkgs root wrap }
+                                                                                                                                                    ${ ssh pkgs resources root wrap }
                                                                                                                                                     git config user.email "emory.merryman@gmail.com"
                                                                                                                                                     git config user.name "Emory Merryman"
                                                                                                                                                 '' ;
