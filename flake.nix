@@ -791,6 +791,40 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
+                                                                                                                                        ## ALPHA
+                                                                                                                                    mutable-generate-gnupg-key =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-generate-gnupg-key" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                MONIKER="$1"
+                                                                                                                                                                NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
+                                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg }
+                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                KEY_ID="$MONIKER $NOW"
+                                                                                                                                                                gpg --homedir "$GNUPGHOME" --batch --yes --quick-gen-key "$KEY_ID" ed25519 sign 1y
+                                                                                                                                                                gpg --homedir "$GNUPGHOME" --batch --yes --quick-add-key "$KEY_ID" cv25519 encrypt 1y
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/private"
+                                                                                                                                                                SECRETS=${ resources.productions.repository.secrets }
+                                                                                                                                                                gpg --export-ownertrust --armour > "$SECRETS/repository/ownertrust.asc"
+                                                                                                                                                                gpg --export-secret-keys --armour > "$SECRETS/repository/secret-keys.asc"
+                                                                                                                                                                git -C "$SECRETS/repository" add ownertrust.asc secret-keys.asc
+                                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
+                                                                                                                                                                git -C "$SECRETS/repository" push origin HEAD
+                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 47e2654b
+                                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "snapshot"
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 508fe804
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-generate-key" ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
@@ -1144,6 +1178,7 @@
                                                                                                                                     git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
                                                                                                                                     git config alias.mutable-build-vm-with-bootloader "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                     git config alias.mutable-check "!${ mount }/stage/alias/root/mutable-check"
+                                                                                                                                    git config alias.mutable-generate-gnupg-key "!${ mount }/stage/alias/mutable-generate-gnupg-key"
                                                                                                                                     git config alias.mutable-mirror "!${ mount }/stage/alias/root/mutable-mirror"
                                                                                                                                     git config alias.mutable-nurse "!${ mount }/stage/alias/root/mutable-nurse"
                                                                                                                                     git config alias.mutable-promote "!${ mount }/stage/alias/root/mutable-promote"
@@ -1158,6 +1193,8 @@
                                                                                                                                     wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
+                                                                                                                                    ## ALPHA
+                                                                                                                                    wrap ${ mutable-generate-gnupg-key } stage/alias/root/mutable-generate-gnupg-key 0500 --literal-plain BRANCH --literal DOT_GNUPG --literal GNUPGHOME --literal-plain KEYID --literal-plain MONIKER --literal-plain NOW --literal-plain SECRETS --literal-plain TOKEN --literal-plain URL --literal-plain UUID --literal-plain PATH
                                                                                                                                     wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --set-plain MOUNT "${ mount }" --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID
                                                                                                                                     wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --set-plain MOUNT "${ mount }" --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
@@ -1191,6 +1228,35 @@
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 31
                                                                                                                                     git diff 2>&1
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
+                                                                                    secrets =
+                                                                                        ignore :
+                                                                                            _git-repository.implementation
+                                                                                                {
+                                                                                                    follow-parent = false ;
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "1f1cc6de" ) ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    ${ ssh pkgs resources root wrap }
+                                                                                                                                    git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                    git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                    git remote add git@github.com:${ config.personal.repository.secrets.organization }/${ config.personal.repository.secrets.repository }
+                                                                                                                                    git fetch origin main
+                                                                                                                                    git checkout origin/main
+                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure e22efcd4
+                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c80f0375
+                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
@@ -1382,6 +1448,7 @@
                                                                                                                                             wrap ${ mutable-build-vm "build-vm" } stage/alias/root/mutable-build-vm 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
                                                                                                                                             wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
                                                                                                                                             wrap ${ mutable-check } stage/alias/root/mutable-check 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                                                            wrap ${ mutable-generate }
                                                                                                                                             wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --literal-plain BRANCH --set-plain MOUNT "${ mount }" --literal-plain PATH --literal-plain UUID
                                                                                                                                             wrap ${ mutable-switch.submodule } stage/alias/submodule/mutable-switch 0500 --literal-plain BRANCH --literal-plain name --literal-plain NAME --literal-plain PARENT --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain URL
                                                                                                                                             wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
