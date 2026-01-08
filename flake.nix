@@ -1745,7 +1745,27 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "envrc" ;
-                                                                                                                    runtimeInputs = [ pkgs.pass ] ;
+                                                                                                                    runtimeInputs =
+                                                                                                                        [
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                                then
+                                                                                                                                                    ssh -F "$DOT_SSH/config" "$@"
+                                                                                                                                                else
+                                                                                                                                                    cat | ssh -F "$DOT_SSH/config" "$@"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                            pkgs.pass
+                                                                                                                        ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             export FOOBAR=ead70f30
