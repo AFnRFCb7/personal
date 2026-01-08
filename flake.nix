@@ -485,7 +485,7 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "post-commit" ;
-                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                            runtimeInputs = [ pkgs.git wrap ] ;
                                                                                             text =
                                                                                                 let
                                                                                                     post-commit =
@@ -572,9 +572,6 @@
                                                                                                                                                     git init
                                                                                                                                                     ${ ssh pkgs resources root wrap }
                                                                                                                                                     ${ post-commit pkgs wrap }
-                                                                                                                                                    git config user.email "emory.merryman@gmail.com"
-                                                                                                                                                    git config user.name "Emory Merryman"
-                                                                                                                                                    git remote add origin something
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
