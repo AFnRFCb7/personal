@@ -1859,7 +1859,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.emory.chromium.config }
+                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.emory.chromium.config ( setup : setup ) }
                                                                                                                                                 export CONFIG_RESOURCE
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
                                                                                                                                                 export DATA_RESOURCE
