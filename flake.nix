@@ -510,7 +510,7 @@
                                                                                                             wrap ${ post-commit} stage/hooks/post-commit --inherit-plain MOUNT
                                                                                                         '' ;
                                                                                         } ;
-                                                                                in "${ application }/post-commit" ;
+                                                                                in "${ application }/bin/post-commit" ;
                                                                     ssh =
                                                                         pkgs : resources : root : wrap :
                                                                             let
@@ -574,7 +574,7 @@
                                                                                                                                                     ${ post-commit pkgs wrap }
                                                                                                                                                     git config user.email "emory.merryman@gmail.com"
                                                                                                                                                     git config user.name "Emory Merryman"
-                                                                                                                                                    git remote add
+                                                                                                                                                    git remote add origin something
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
