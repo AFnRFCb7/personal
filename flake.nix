@@ -506,8 +506,7 @@
                                                                                                             in "${ application }/bin/post-commit" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            ln --symbolic ${ post-commit } .git/hooks/post-commit
-                                                                                                            wrap ${ post-commit} stage/hooks/post-commit 0500 --inherit-plain MOUNT
+                                                                                                            wrap ${ post-commit} repository.git/hooks/post-commit 0500
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
