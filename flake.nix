@@ -538,10 +538,10 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
-                                                                                                            wrap "$DOT_SSH/config" /mount/stage/config 0400 --literal-plain PATH
+                                                                                                            wrap "$DOT_SSH/config" /mount/stage/config 0400
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
@@ -571,8 +571,10 @@
                                                                                                                                                 ''
                                                                                                                                                     git init
                                                                                                                                                     ${ ssh pkgs resources root wrap }
+                                                                                                                                                    ${ post-commit pkgs wrap }
                                                                                                                                                     git config user.email "emory.merryman@gmail.com"
                                                                                                                                                     git config user.name "Emory Merryman"
+                                                                                                                                                    git remote add
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
