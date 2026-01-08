@@ -565,27 +565,41 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "setup" ;
-                                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.git-crypt ] ;
                                                                                                                                             text =
-                                                                                                                                                ''
-                                                                                                                                                    git init
-                                                                                                                                                    ${ ssh pkgs resources root wrap }
-                                                                                                                                                    ${ post-commit pkgs wrap }
-                                                                                                                                                    git config user.email "${ config.personal.chromium.home.config.email }"
-                                                                                                                                                    git config user.name "${ config.personal.chromium.home.config.name }"
-                                                                                                                                                    git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
-                                                                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                    gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                    if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
-                                                                                                                                                    then
-                                                                                                                                                        git fetch origin ${ config.personal.chromium.home.config.branch }
-                                                                                                                                                    else
-                                                                                                                                                        gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.config.repository } --private --confirm 2>&1
-                                                                                                                                                        git checkout -b ${ config.personal.chromium.home.config.branch }
-                                                                                                                                                    fi
-                                                                                                                                                    gh auth logout
-                                                                                                                                                    if git fetch
-                                                                                                                                                '' ;
+                                                                                                                                                let
+                                                                                                                                                    git-attributes =
+                                                                                                                                                        let
+                                                                                                                                                            file =
+                                                                                                                                                                pkgs.toFile
+                                                                                                                                                                    "git-attributes"
+                                                                                                                                                                    ''
+                                                                                                                                                                        secret filter=git-crypt diff=git-crypt
+                                                                                                                                                                    '' ;
+                                                                                                                                                            in "${ file }/git-attributes" ;
+                                                                                                                                                    in
+                                                                                                                                                        ''
+                                                                                                                                                            git init
+                                                                                                                                                            ${ ssh pkgs resources root wrap }
+                                                                                                                                                            ${ post-commit pkgs wrap }
+                                                                                                                                                            git config user.email "${ config.personal.chromium.home.config.email }"
+                                                                                                                                                            git config user.name "${ config.personal.chromium.home.config.name }"
+                                                                                                                                                            git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
+                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                            if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
+                                                                                                                                                            then
+                                                                                                                                                                git fetch origin ${ config.personal.chromium.home.config.branch }
+                                                                                                                                                            else
+                                                                                                                                                                gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.config.repository } --private --confirm 2>&1
+                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.config.branch }
+                                                                                                                                                                git-crypt init
+                                                                                                                                                                wrap ${ git-attributes } .git-attributes 0400
+                                                                                                                                                                git-crypt add-gpg-user USER_ID
+                                                                                                                                                            fi
+                                                                                                                                                            gh auth logout
+                                                                                                                                                            if git fetch
+                                                                                                                                                        '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                                 } ;
@@ -1919,7 +1933,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.emory.chromium.config ( setup : setup ) }
+                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
                                                                                                                                                 export CONFIG_RESOURCE
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
                                                                                                                                                 export DATA_RESOURCE
