@@ -565,7 +565,7 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "setup" ;
-                                                                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.git-crypt wrap ] ;
+                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-crypt wrap ] ;
                                                                                                                                             text =
                                                                                                                                                 let
                                                                                                                                                     git-attributes =
@@ -581,7 +581,6 @@
                                                                                                                                                         ''
                                                                                                                                                             git init
                                                                                                                                                             ${ ssh pkgs resources root wrap }
-                                                                                                                                                            ${ post-commit pkgs wrap }
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.config.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.config.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
@@ -600,6 +599,7 @@
                                                                                                                                                                 git-crypt init
                                                                                                                                                                 wrap ${ git-attributes } .git-attributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }"
+                                                                                                                                                                mkdir secret
                                                                                                                                                                 git add .git-attributes secret
                                                                                                                                                                 git commit -m "" --allow-empty-message
                                                                                                                                                                 git push origin HEAD
@@ -1909,7 +1909,7 @@
                                                                                                                                                             extraBrwapArgs =
                                                                                                                                                                 [
                                                                                                                                                                     "--bindfs $DOT_GNUPG/dot-gnupg /mount/dot-gnupg"
-                                                                                                                                                                    "--bindfs $CONFIG_RESOURCE/repository /mount/config"
+                                                                                                                                                                    "--bindfs $CONFIG_RESOURCE/repository/secret /mount/config"
                                                                                                                                                                     "--tmpfs /mount/config/cache"
                                                                                                                                                                     "--bindfs $DATA_RESOURCE/repository /mount/data"
                                                                                                                                                                 ] ;
@@ -1932,6 +1932,8 @@
                                                                                                                                                                                         else
                                                                                                                                                                                             cat | chromium "$@"
                                                                                                                                                                                         fi
+                                                                                                                                                                                        git add secret
+                                                                                                                                                                                        git commit -m "" --allow-empty --allow-empty-message
                                                                                                                                                                                     '' ;
                                                                                                                                                                             } ;
                                                                                                                                                                     in "${ application }/bin/chromium" ;
