@@ -587,19 +587,19 @@
                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                             if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
                                                                                                                                                             then
-                                                                                                                                                                git fetch origin ${ config.personal.chromium.home.config.branch }
-                                                                                                                                                                git checkout ${ config.personal.chromium.home.config.branch }
-                                                                                                                                                                git-crypt unlock
+                                                                                                                                                                git fetch origin ${ config.personal.chromium.home.config.branch } 2>&1
+                                                                                                                                                                git checkout ${ config.personal.chromium.home.config.branch } 2>&1
+                                                                                                                                                                git-crypt unlock 2>&1
                                                                                                                                                             else
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
-                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.config.branch }
-                                                                                                                                                                git-crypt init
+                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.config.branch } 2>&2
+                                                                                                                                                                git-crypt init 2>&1
                                                                                                                                                                 wrap ${ git-attributes } .git-attributes 0400
-                                                                                                                                                                git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }"
+                                                                                                                                                                git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
                                                                                                                                                                 mkdir secret
                                                                                                                                                                 git add .git-attributes secret
-                                                                                                                                                                git commit -m "" --allow-empty-message
-                                                                                                                                                                git push origin HEAD
+                                                                                                                                                                git commit -m "" --allow-empty-message 2>&1
+                                                                                                                                                                git push origin HEAD 2>&1
                                                                                                                                                             fi
                                                                                                                                                             gh auth logout
                                                                                                                                                         '' ;
