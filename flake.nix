@@ -583,6 +583,7 @@
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
                                                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                            gpg --list-keys
                                                                                                                                                             TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                             if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
@@ -1950,6 +1951,7 @@
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" add secret
                                                                                                                                                 DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                gpg --list-keys
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" commit -m "" --allow-empty-message
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" push origin HEAD
                                                                                                                                             '' ;
