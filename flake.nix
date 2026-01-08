@@ -594,11 +594,11 @@
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
                                                                                                                                                                 git checkout -b ${ config.personal.chromium.home.config.branch } 2>&2
                                                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                                                wrap ${ git-attributes } .git-attributes 0400
+                                                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
                                                                                                                                                                 mkdir secret
                                                                                                                                                                 git add .git-attributes secret
-                                                                                                                                                                git commit -m "" --allow-empty-message 2>&1
+                                                                                                                                                                git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                                                             fi
                                                                                                                                                             gh auth logout
