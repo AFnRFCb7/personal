@@ -2036,7 +2036,7 @@
                                                                                                                                                 NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
                                                                                                                                                 DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                KEY_ID="$MONIKER $NOW"
+                                                                                                                                                KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local"
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
@@ -2046,8 +2046,8 @@
                                                                                                                                                 echo "COPIED FILES TO $TEMPORARY"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
                                                                                                                                                 RECIPIENT=${ resources.production.age.public ( setup : setup ) }
-                                                                                                                                                age --encrypt "$RECIPIENT" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
-                                                                                                                                                age --encrypt "$RECIPIENT" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
+                                                                                                                                                age --recipient "$RECIPIENT" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
+                                                                                                                                                age --recipient "$RECIPIENT" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
                                                                                                                                                 echo "ABOUT TO COMMIT"
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
