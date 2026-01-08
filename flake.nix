@@ -565,7 +565,7 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "setup" ;
-                                                                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.git-crypt ] ;
+                                                                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.git-crypt wrap ] ;
                                                                                                                                             text =
                                                                                                                                                 let
                                                                                                                                                     git-attributes =
@@ -601,7 +601,7 @@
                                                                                                                                                                 wrap ${ git-attributes } .git-attributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }"
                                                                                                                                                                 git add .git-attributes secret
-                                                                                                                                                                git commit -m "" --allow-empty
+                                                                                                                                                                git commit -m "" --allow-empty-message
                                                                                                                                                                 git push origin HEAD
                                                                                                                                                             fi
                                                                                                                                                             gh auth logout
