@@ -159,7 +159,7 @@
                                                                                     mobile =
                                                                                         {
                                                                                             strict-host-key-checking = true ;
-                                                                                            host-name = "192.168.1.192" ;
+                                                                                            host-name = config.personal.mobile ;
                                                                                             port = 19952 ;
                                                                                         } ;
                                                                                 } ;
@@ -347,8 +347,7 @@
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            host-name = "192.168.1.192" ;
-                                                                                            # host-name = "192.0.0.4" ;
+                                                                                            host-name = config.personal.mobile ;
                                                                                             identity-file = ignore : "secret" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = false ;
@@ -1820,6 +1819,7 @@
                                                                         timeout = lib.mkOption { default = 60 * 60 ; type = lib.types.int ; } ;
                                                                         timeout2 = lib.mkOption { default = 60 ; type = lib.types.int ; } ;
                                                                     } ;
+                                                                mobile = lib.mkOption { default = "192.168.1.192" ; type = lib.types.str ; } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
                                                                     {
