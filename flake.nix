@@ -1795,9 +1795,11 @@
                                                                                                                         ''
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
-                                                                                                                            export CONFIG_RESOURCE="$( mktemp -d )" || failure cb0f53f3
+                                                                                                                            CONFIG_RESOURCE="$( mktemp -d )" || failure cb0f53f3
+                                                                                                                            export CONFIG_RESOURCE
                                                                                                                             mkdir "$CONFIG_RESOURCE/repository"
-                                                                                                                            export DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
+                                                                                                                            DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
+                                                                                                                            export DATA_RESOURCE
                                                                                                                             mkdir "$DATA_RESOURCE/repository"
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
