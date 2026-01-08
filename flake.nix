@@ -592,7 +592,7 @@
                                                                                                                                                                 git-crypt unlock 2>&1
                                                                                                                                                             else
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
-                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.config.branch } 2>&2
+                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.config.branch } 2>&1
                                                                                                                                                                 git-crypt init 2>&1
                                                                                                                                                                 wrap ${ git-attributes } repository/.git-attributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
