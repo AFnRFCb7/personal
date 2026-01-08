@@ -2029,7 +2029,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "generate-gnupg-key" ;
-                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg failure ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gawk pkgs.gnupg failure ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MONIKER="$1"
@@ -2037,6 +2037,7 @@
                                                                                                                                                 DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
+                                                                                                                                                echo BEFORE FPR
                                                                                                                                                 FPR="$(
                                                                                                                                                   gpg --homedir "$GNUPGHOME" \
                                                                                                                                                       --with-colons --fingerprint "$KEY_ID" \
