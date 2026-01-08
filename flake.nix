@@ -2036,7 +2036,7 @@
                                                                                                                                                 NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
                                                                                                                                                 DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local"
+                                                                                                                                                KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
