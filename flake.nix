@@ -503,14 +503,16 @@
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
-                                                                                in
-                                                                                    ''
-                                                                                        wrap ${ ssh } stage/ssh/command 0500
-                                                                                        DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                        root "$DOT_SSH"
-                                                                                        wrap "$DOT_SSH/config" /mount/stage/config 0400
-                                                                                    '' ;
-                                                                        } ;
+
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            wrap ${ ssh } stage/ssh/command 0500
+                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                            root "$DOT_SSH"
+                                                                                                            wrap "$DOT_SSH/config" /mount/stage/config 0400
+                                                                                                        '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
                                                                             pads =
@@ -1341,7 +1343,7 @@
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
                                                                                 } ;
-                                                                } ;
+                                                                        } ;
                                                             secrets =
                                                                 {
                                                                     dot-ssh =
