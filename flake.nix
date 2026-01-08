@@ -2033,9 +2033,9 @@
                                                                                                                                             ''
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
-                                                                                                                                                    STUDIO=${ resources__.production.studio.entry ( setup : ''${ setup } "$@"'' ) }
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$@"'' ) }
                                                                                                                                                 else
-                                                                                                                                                    STUDIO=${ resources__.production.studio.entry ( setup : ''cat | ${ setup } "$@"'')}
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry ( setup : ''cat | ${ setup } "$@"'')}
                                                                                                                                                 fi
                                                                                                                                                 echo "$STUDIO"
                                                                                                                                             '' ;
