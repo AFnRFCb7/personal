@@ -572,6 +572,8 @@
                                                                                                                                                     git init
                                                                                                                                                     ${ ssh pkgs resources root wrap }
                                                                                                                                                     ${ post-commit pkgs wrap }
+                                                                                                                                                    git config user.email "script.user@local"
+                                                                                                                                                    git config user.name "Script User"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
