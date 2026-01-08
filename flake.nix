@@ -541,7 +541,7 @@
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
-                                                                                                            wrap "$DOT_SSH/config" /mount/stage/config 0400
+                                                                                                            wrap "$DOT_SSH/config" /mount/stage/config 0400 --literal-plain PATH
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
