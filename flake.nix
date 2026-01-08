@@ -2038,11 +2038,7 @@
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
                                                                                                                                                 echo BEFORE FPR
-                                                                                                                                                FPR="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" \
-                                                                                                                                                      --with-colons --fingerprint "$KEY_ID" \
-                                                                                                                                                  | awk -F: '/^fpr:/ {print $10; exit}'
-                                                                                                                                                )" || failure 5bc4778d
+                                                                                                                                                FPR="$( gpg --homedir "$GNUPGHOME" --with-colons --fingerprint "$KEY_ID" | awk -F: '/^fpr:/ {print $10; exit}' )" || failure 5bc4778d
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$FPR" ed25519 sign 1y
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
