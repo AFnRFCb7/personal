@@ -539,7 +539,7 @@
 
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ ssh } stage/ssh/command 0500
+                                                                                                            wrap ${ ssh pkgs resources root wrap } stage/ssh/command 0500 --inherit-plain MOUNT
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" /mount/stage/config 0400
