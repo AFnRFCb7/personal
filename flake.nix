@@ -571,7 +571,7 @@
                                                                                                                                                     git-attributes =
                                                                                                                                                         let
                                                                                                                                                             file =
-                                                                                                                                                                pkgs.toFile
+                                                                                                                                                                builtins.toFile
                                                                                                                                                                     "git-attributes"
                                                                                                                                                                     ''
                                                                                                                                                                         secret filter=git-crypt diff=git-crypt
@@ -585,6 +585,8 @@
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.config.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.config.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
+                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                             TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                             if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
