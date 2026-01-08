@@ -1748,6 +1748,31 @@
                                                                                                                     runtimeInputs =
                                                                                                                         [
                                                                                                                             (
+                                                                                                                                pkgs.buildFHSUserEnv
+                                                                                                                                    {
+                                                                                                                                        extraBrwapArgs =
+                                                                                                                                            [
+                                                                                                                                                "--bindfs $CONFIG_RESOURCE/repository /mount/config"
+                                                                                                                                                "--tmpfs /mount/config/cache"
+                                                                                                                                                "--bindfs $DATA_RESOURCE/repository /mount/data"
+                                                                                                                                            ] ;
+                                                                                                                                        name = "chromium" ;
+                                                                                                                                        runScript =
+                                                                                                                                            ''
+                                                                                                                                                export XDG_CONFIG_DIR=/mount/config
+                                                                                                                                                export XDG_CACHE_DIR=/mount/cache
+                                                                                                                                                export XDG_DATA_DIR=/mount/data
+                                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                                then
+                                                                                                                                                    chromium "$@"
+                                                                                                                                                else
+                                                                                                                                                    cat | chromium "$@"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                        targetPkgs = pkgs : [ pkgs.chromium ] ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                            (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "ssh" ;
@@ -1770,6 +1795,10 @@
                                                                                                                         ''
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
+                                                                                                                            export CONFIG_RESOURCE="$( mktemp -d )" || failure cb0f53f3
+                                                                                                                            mkdir "$CONFIG_RESOURCE/repository"
+                                                                                                                            export DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
+                                                                                                                            mkdir "$DATA_RESOURCE/repository"
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
                                                                                                                             export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
