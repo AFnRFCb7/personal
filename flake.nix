@@ -2028,7 +2028,7 @@
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
                                                                                                                                         name = "generate-gnupg-key" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
+                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gnupg failure ] ;
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 MONIKER="$1"
@@ -2039,9 +2039,13 @@
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
                                                                                                                                                 mkdir --parents "$MOUNT/stage/private"
+                                                                                                                                                TEMPORARY=${ resources.temporary ( setup : setup ) }
+                                                                                                                                                gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
+                                                                                                                                                gpg --export-secret-keys --armour > "$TEMPORARY/secret-keys.asc"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
-                                                                                                                                                gpg --export-ownertrust --armour > "$SECRETS/repository/ownertrust.asc"
-                                                                                                                                                gpg --export-secret-keys --armour > "$SECRETS/repository/secret-keys.asc"
+                                                                                                                                                RECIPIENT=${ resources.age.public ( setup : setup ) }
+                                                                                                                                                age --encrypt "$RECIPIENT" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
+                                                                                                                                                age --encrypt "$RECIPIENT" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc secret-keys.asc
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
                                                                                                                                                 git -C "$SECRETS/repository" push origin HEAD
