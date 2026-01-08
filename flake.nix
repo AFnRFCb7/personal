@@ -479,6 +479,39 @@
                                                                     in builtins.mapAttrs mapper config.personal.pads ;
                                                             repository =
                                                                 let
+                                                                    post-commit =
+                                                                        pkgs : wrap :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "post-commit" ;
+                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    post-commit =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "post-commit" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                while ! git push origin HEAD
+                                                                                                                                do
+                                                                                                                                    sleep 1
+                                                                                                                                done
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/post-commit" ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            ln --symbolic ${ post-commit } .git/hooks/post-commit
+                                                                                                            wrap ${ post-commit} stage/hooks/post-commit --inherit-plain MOUNT
+                                                                                                        '' ;
+                                                                                        } ;
+                                                                                in "${ application }/post-commit" ;
                                                                     ssh =
                                                                         pkgs : resources : root : wrap :
                                                                             let
