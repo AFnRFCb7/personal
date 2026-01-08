@@ -569,14 +569,11 @@
                                                                                                                                             text =
                                                                                                                                                 let
                                                                                                                                                     git-attributes =
-                                                                                                                                                        let
-                                                                                                                                                            file =
-                                                                                                                                                                builtins.toFile
-                                                                                                                                                                    "git-attributes"
-                                                                                                                                                                    ''
-                                                                                                                                                                        secret filter=git-crypt diff=git-crypt
-                                                                                                                                                                    '' ;
-                                                                                                                                                            in "${ file }/git-attributes" ;
+                                                                                                                                                        builtins.toFile
+                                                                                                                                                            "git-attributes"
+                                                                                                                                                            ''
+                                                                                                                                                                secret filter=git-crypt diff=git-crypt
+                                                                                                                                                            '' ;
                                                                                                                                                     in
                                                                                                                                                         ''
                                                                                                                                                             git init
