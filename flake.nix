@@ -535,10 +535,9 @@
                                                                                                                     fi
                                                                                                                 '' ;
                                                                                                         } ;
-
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --inherit-plain MOUNT
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" /mount/stage/config 0400
@@ -570,7 +569,7 @@
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     git init
-
+                                                                                                                                                    ${ ssh pkgs resources root wrap }
                                                                                                                                                     git config user.email "emory.merryman@gmail.com"
                                                                                                                                                     git config user.name "Emory Merryman"
                                                                                                                                                 '' ;
