@@ -1748,36 +1748,61 @@
                                                                                                                     runtimeInputs =
                                                                                                                         [
                                                                                                                             (
-                                                                                                                                pkgs.buildFHSUserEnv
+                                                                                                                                pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        extraBrwapArgs =
-                                                                                                                                            [
-                                                                                                                                                "--bindfs $CONFIG_RESOURCE/repository /mount/config"
-                                                                                                                                                "--tmpfs /mount/config/cache"
-                                                                                                                                                "--bindfs $DATA_RESOURCE/repository /mount/data"
-                                                                                                                                            ] ;
                                                                                                                                         name = "chromium" ;
-                                                                                                                                        runScript =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        runtimeInputs =
+                                                                                                                                            [
+                                                                                                                                                pkgs.coreutils
+                                                                                                                                                (
+                                                                                                                                                    pkgs.buildFHSUserEnv
                                                                                                                                                         {
+                                                                                                                                                            extraBrwapArgs =
+                                                                                                                                                                [
+                                                                                                                                                                    "--bindfs $CONFIG_RESOURCE/repository /mount/config"
+                                                                                                                                                                    "--tmpfs /mount/config/cache"
+                                                                                                                                                                    "--bindfs $DATA_RESOURCE/repository /mount/data"
+                                                                                                                                                                ] ;
                                                                                                                                                             name = "chromium" ;
-                                                                                                                                                            text =
-                                                                                                                                                                ''
-                                                                                                                                                                    export XDG_CONFIG_DIR=/mount/config
-                                                                                                                                                                    export XDG_CACHE_DIR=/mount/cache
-                                                                                                                                                                    export XDG_DATA_DIR=/mount/data
-                                                                                                                                                                    if [[ -t 0 ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        chromium "$@"
-                                                                                                                                                                    else
-                                                                                                                                                                        cat | chromium "$@"
-                                                                                                                                                                    fi
-                                                                                                                                                                '' ;
-                                                                                                                                                        } ;
-                                                                                                                                                in "${ application }/bin/chromium" ;
-                                                                                                                                        targetPkgs = pkgs : [ pkgs.chromium ] ;
+                                                                                                                                                            runScript =
+                                                                                                                                                                let
+                                                                                                                                                                    application =
+                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                            {
+                                                                                                                                                                                name = "chromium" ;
+                                                                                                                                                                                text =
+                                                                                                                                                                                    ''
+                                                                                                                                                                                        export XDG_CONFIG_DIR=/mount/config
+                                                                                                                                                                                        export XDG_CACHE_DIR=/mount/cache
+                                                                                                                                                                                        export XDG_DATA_DIR=/mount/data
+                                                                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                                                                        then
+                                                                                                                                                                                            chromium "$@"
+                                                                                                                                                                                        else
+                                                                                                                                                                                            cat | chromium "$@"
+                                                                                                                                                                                        fi
+                                                                                                                                                                                    '' ;
+                                                                                                                                                                            } ;
+                                                                                                                                                                    in "${ application }/bin/chromium" ;
+                                                                                                                                                            targetPkgs = pkgs : [ pkgs.coreutils pkgs.chromium ] ;
+                                                                                                                                                        }
+                                                                                                                                                )
+                                                                                                                                            ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                CONFIG_RESOURCE="$( mktemp -d )" || failure cb0f53f3
+                                                                                                                                                export CONFIG_RESOURCE
+                                                                                                                                                mkdir "$CONFIG_RESOURCE/repository"
+                                                                                                                                                DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
+                                                                                                                                                export DATA_RESOURCE
+                                                                                                                                                mkdir "$DATA_RESOURCE/repository"
+                                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                                then
+                                                                                                                                                    chromium "$@"
+                                                                                                                                                else
+                                                                                                                                                    cat | "$@"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
                                                                                                                                     }
                                                                                                                             )
                                                                                                                             (
@@ -1803,12 +1828,6 @@
                                                                                                                         ''
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
-                                                                                                                            CONFIG_RESOURCE="$( mktemp -d )" || failure cb0f53f3
-                                                                                                                            export CONFIG_RESOURCE
-                                                                                                                            mkdir "$CONFIG_RESOURCE/repository"
-                                                                                                                            DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
-                                                                                                                            export DATA_RESOURCE
-                                                                                                                            mkdir "$DATA_RESOURCE/repository"
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
                                                                                                                             export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
@@ -1825,7 +1844,7 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain CONFIG_RESOURCE --literal-plain DATA_RESOURCE --literal-plain DOT_GNUPG --literal-plain PASSWORD_STORE_REPOSITORY --literal-plain PATH
+                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain DOT_GNUPG --literal-plain PASSWORD_STORE_REPOSITORY --literal-plain PATH
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init " ;
