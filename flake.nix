@@ -522,19 +522,20 @@
                                                                                             text =
                                                                                                 let
                                                                                                     application =
-                                                                                                        {
-                                                                                                            name = "ssh" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    if [[ -t 0 ]]
-                                                                                                                    then
-                                                                                                                        ssh -F "$MOUNT/stage/ssh/config"
-                                                                                                                    else
-                                                                                                                        cat | ssh -F "$MOUNT/stage/ssh/config"
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        } ;
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "ssh" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        if [[ -t 0 ]]
+                                                                                                                        then
+                                                                                                                            ssh -F "$MOUNT/stage/ssh/config"
+                                                                                                                        else
+                                                                                                                            cat | ssh -F "$MOUNT/stage/ssh/config"
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     in
                                                                                                         ''
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT
