@@ -506,7 +506,7 @@
                                                                                                             in "${ application }/bin/post-commit" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ post-commit} repository.git/hooks/post-commit 0500
+                                                                                                            wrap ${ post-commit} repository.git/hooks/post-commit 0500 --literal-plain PATH
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
