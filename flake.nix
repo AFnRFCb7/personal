@@ -2043,7 +2043,7 @@
                                                                                                                                                 gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
                                                                                                                                                 gpg --export-secret-keys --armour > "$TEMPORARY/secret-keys.asc"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
-                                                                                                                                                RECIPIENT=${ resources.age.public ( setup : setup ) }
+                                                                                                                                                RECIPIENT=${ resources.production.age.public ( setup : setup ) }
                                                                                                                                                 age --encrypt "$RECIPIENT" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
                                                                                                                                                 age --encrypt "$RECIPIENT" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
@@ -2056,6 +2056,17 @@
                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 508fe804
                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                 gh auth logout
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "nonce" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                uuidgen | sha512sum | cut --characters 1-8
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
