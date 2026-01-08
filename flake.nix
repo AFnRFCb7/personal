@@ -506,7 +506,7 @@
                                                                                                             in "${ application }/bin/post-commit" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ post-commit} repository.git/hooks/post-commit 0500 --literal-plain PATH
+                                                                                                            wrap ${ post-commit} repository/.git/hooks/post-commit 0500 --literal-plain PATH
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
@@ -540,7 +540,7 @@
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
-                                                                                                            wrap "$DOT_SSH/config" /mount/stage/config 0400
+                                                                                                            wrap "$DOT_SSH/config" stage/config 0400
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
