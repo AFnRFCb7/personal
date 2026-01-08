@@ -1826,6 +1826,7 @@
                                                                             {
                                                                                 config =
                                                                                     {
+                                                                                        branch = lib.mkOption { default = "550263ebac4ad73472a99fdb9d9a9cc61e7ef2842d5edd586055cf877f4f1405" ; type = lib.types.str ; } ;
                                                                                         email = lib.mkOption { default = "script.user@local" ; type = lib.types.str ; } ;
                                                                                         name = lib.mkOption { default = "Script User" ; type = lib.types.str ; } ;
                                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
