@@ -605,7 +605,6 @@
                                                                                                                                                                 git push origin HEAD
                                                                                                                                                             fi
                                                                                                                                                             gh auth logout
-                                                                                                                                                            if git fetch
                                                                                                                                                         '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
