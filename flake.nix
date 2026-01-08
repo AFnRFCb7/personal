@@ -2037,26 +2037,30 @@
                                                                                                                                                 DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 KEY_ID="$MONIKER $NOW"
+                                                                                                                                                echo GENERATING KEY "$KEY_ID"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
-                                                                                                                                                mkdir --parents "$MOUNT/stage/private"
                                                                                                                                                 TEMPORARY=${ resources.production.temporary ( setup : setup ) }
                                                                                                                                                 gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
                                                                                                                                                 gpg --export-secret-keys --armour > "$TEMPORARY/secret-keys.asc"
+                                                                                                                                                echo "COPIED FILES TO $TEMPORARY"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
                                                                                                                                                 RECIPIENT=${ resources.production.age.public ( setup : setup ) }
                                                                                                                                                 age --encrypt "$RECIPIENT" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
                                                                                                                                                 age --encrypt "$RECIPIENT" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
+                                                                                                                                                echo "ABOUT TO COMMIT"
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
                                                                                                                                                 git -C "$SECRETS/repository" push origin HEAD
-                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 47e2654b
+                                                                                                                                                echo "HAVE PUSHED"
+                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 47e2654b
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                 gh pr create --base main --head "$BRANCH" --label "snapshot"
                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 508fe804
                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                 gh auth logout
+                                                                                                                                                echo SUCCESS
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
