@@ -2027,7 +2027,7 @@
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-                                                                                                                                        name = "mutable-generate-gnupg-key" ;
+                                                                                                                                        name = "generate-gnupg-key" ;
                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
                                                                                                                                         text =
                                                                                                                                             ''
