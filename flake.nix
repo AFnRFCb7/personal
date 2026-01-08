@@ -543,7 +543,7 @@
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                                 } ;
-                                                                                                    data =
+                                                                                                    # data =
                                                                                                 } ;
                                                                                         } ;
                                                                                 } ;
