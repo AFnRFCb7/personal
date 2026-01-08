@@ -2036,10 +2036,15 @@
                                                                                                                                                 NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
                                                                                                                                                 DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                FPR="$(
+                                                                                                                                                  gpg --homedir "$GNUPGHOME" \
+                                                                                                                                                      --with-colons --fingerprint "$KEY_ID" \
+                                                                                                                                                  | awk -F: '/^fpr:/ {print $10; exit}'
+                                                                                                                                                )" || failure 5bc4778d
                                                                                                                                                 KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
-                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
-                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
+                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-gen-key "$FPR" ed25519 sign 1y
+                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
                                                                                                                                                 TEMPORARY=${ resources.production.temporary ( setup : setup ) }
                                                                                                                                                 gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
                                                                                                                                                 gpg --export-secret-keys --armour > "$TEMPORARY/secret-keys.asc"
