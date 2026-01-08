@@ -1946,7 +1946,7 @@
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
                                                                                                                                                 export DATA_RESOURCE
                                                                                                                                                 mkdir "$DATA_RESOURCE/repository"
-                                                                                                                                                DOT_GNUPG=${ resources__.production.repository.dot-gnupg ( setup : setup ) }
+                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
                                                                                                                                                 export DOT_GNUPG
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
