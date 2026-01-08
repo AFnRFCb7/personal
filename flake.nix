@@ -1860,6 +1860,7 @@
                                                                                                                                         text =
                                                                                                                                             ''
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.emory.chromium.config }
+                                                                                                                                                export CONFIG_RESOURCE
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
                                                                                                                                                 export DATA_RESOURCE
                                                                                                                                                 mkdir "$DATA_RESOURCE/repository"
