@@ -2027,6 +2027,23 @@
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
+                                                                                                                                        name = "studio" ;
+                                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                                then
+                                                                                                                                                    STUDIO=${ resources__.production.studio.entry ( setup : ''${ setup } "$@"'' ) }
+                                                                                                                                                else
+                                                                                                                                                    STUDIO=${ resources__.production.studio.entry ( setup : ''cat | ${ setup } "$@"'')}
+                                                                                                                                                fi
+                                                                                                                                                echo "$STUDIO"
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
                                                                                                                                         name = "ssh" ;
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
