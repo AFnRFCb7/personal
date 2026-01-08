@@ -590,12 +590,17 @@
                                                                                                                                                             if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
                                                                                                                                                             then
                                                                                                                                                                 git fetch origin ${ config.personal.chromium.home.config.branch }
+                                                                                                                                                                git checkout ${ config.personal.chromium.home.config.branch }
+                                                                                                                                                                git-crypt unlock
                                                                                                                                                             else
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.config.repository } --private --confirm 2>&1
                                                                                                                                                                 git checkout -b ${ config.personal.chromium.home.config.branch }
                                                                                                                                                                 git-crypt init
                                                                                                                                                                 wrap ${ git-attributes } .git-attributes 0400
                                                                                                                                                                 git-crypt add-gpg-user USER_ID
+                                                                                                                                                                git add .git-attributes secret
+                                                                                                                                                                git commit -m "" --allow-empty
+                                                                                                                                                                git push origin HEAD
                                                                                                                                                             fi
                                                                                                                                                             gh auth logout
                                                                                                                                                             if git fetch
@@ -1821,7 +1826,7 @@
                                                                             {
                                                                                 config =
                                                                                     {
-                                                                                        email = lib.mkOptioin { default = "script.user@local" ; type = lib.types.str ; } ;
+                                                                                        email = lib.mkOption { default = "script.user@local" ; type = lib.types.str ; } ;
                                                                                         name = lib.mkOption { default = "Script User" ; type = lib.types.str ; } ;
                                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                         remote = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
