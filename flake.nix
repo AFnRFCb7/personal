@@ -1859,7 +1859,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pad.chromium.config }
+                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.chromium.config }
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
                                                                                                                                                 export DATA_RESOURCE
                                                                                                                                                 mkdir "$DATA_RESOURCE/repository"
