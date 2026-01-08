@@ -1905,7 +1905,6 @@
                                                                                                                                                         {
                                                                                                                                                             extraBrwapArgs =
                                                                                                                                                                 [
-                                                                                                                                                                    "--bindfs $DOT_GNUPG/dot-gnupg /mount/dot-gnupg"
                                                                                                                                                                     "--bindfs $CONFIG_RESOURCE/repository/secret /mount/config"
                                                                                                                                                                     "--tmpfs /mount/config/cache"
                                                                                                                                                                     "--bindfs $DATA_RESOURCE/repository /mount/data"
@@ -1919,7 +1918,6 @@
                                                                                                                                                                                 name = "chromium" ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        export GNUPGHOME=/mount/dot-gnupg
                                                                                                                                                                                         export XDG_CONFIG_DIR=/mount/config
                                                                                                                                                                                         export XDG_CACHE_DIR=/mount/cache
                                                                                                                                                                                         export XDG_DATA_DIR=/mount/data
@@ -1929,8 +1927,6 @@
                                                                                                                                                                                         else
                                                                                                                                                                                             cat | chromium "$@"
                                                                                                                                                                                         fi
-                                                                                                                                                                                        git add secret
-                                                                                                                                                                                        git commit -m "" --allow-empty --allow-empty-message
                                                                                                                                                                                     '' ;
                                                                                                                                                                             } ;
                                                                                                                                                                     in "${ application }/bin/chromium" ;
@@ -1945,14 +1941,17 @@
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
                                                                                                                                                 export DATA_RESOURCE
                                                                                                                                                 mkdir "$DATA_RESOURCE/repository"
-                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
-                                                                                                                                                export DOT_GNUPG
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
                                                                                                                                                     chromium "$@"
                                                                                                                                                 else
                                                                                                                                                     cat | "$@"
                                                                                                                                                 fi
+                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" add secret
+                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" commit -m "" --allow-empty-message
+                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
