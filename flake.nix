@@ -548,7 +548,7 @@
                                                                         {
                                                                             pads =
                                                                                 {
-                                                                                    emory =
+                                                                                    home =
                                                                                         {
                                                                                             chromium =
                                                                                                 {
@@ -571,8 +571,20 @@
                                                                                                                                                     git init
                                                                                                                                                     ${ ssh pkgs resources root wrap }
                                                                                                                                                     ${ post-commit pkgs wrap }
-                                                                                                                                                    git config user.email "script.user@local"
-                                                                                                                                                    git config user.name "Script User"
+                                                                                                                                                    git config user.email "${ config.personal.chromium.home.config.email }"
+                                                                                                                                                    git config user.name "${ config.personal.chromium.home.config.name }"
+                                                                                                                                                    git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
+                                                                                                                                                    TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                    gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                    if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
+                                                                                                                                                    then
+                                                                                                                                                        git fetch origin ${ config.personal.chromium.home.config.branch }
+                                                                                                                                                    else
+                                                                                                                                                        gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.config.repository } --private --confirm 2>&1
+                                                                                                                                                        git checkout -b ${ config.personal.chromium.home.config.branch }
+                                                                                                                                                    fi
+                                                                                                                                                    gh auth logout
+                                                                                                                                                    if git fetch
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
@@ -1791,6 +1803,21 @@
                                                                 channel = lib.mkOption { default = "redis" ; type = lib.types.str ; } ;
                                                                 chromium =
                                                                     {
+                                                                        home =
+                                                                            {
+                                                                                config =
+                                                                                    {
+                                                                                        email = lib.mkOptioin { default = "script.user@local" ; type = lib.types.str ; } ;
+                                                                                        name = lib.mkOption { default = "Script User" ; type = lib.types.str ; } ;
+                                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                        remote = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
+
+                                                                                    } ;
+                                                                                data =
+                                                                                    {
+
+                                                                                    } ;
+                                                                            } ;
                                                                         branch = lib.mkOption { default = "artifact/eb5e3536f8f42f3e6d42d135cc85c4e0df4b955faaf7d221a0ed5ef" ; type = lib.types.str ; } ;
                                                                         recipient = lib.mkOption { default = "688A5A79ED45AED4D010D56452EDF74F9A9A6E20" ; type = lib.types.str ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/artifacts.git" ; type = lib.types.str ; } ;
