@@ -565,7 +565,7 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "setup" ;
-                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-crypt wrap ] ;
+                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-crypt pkgs.gnupg wrap ] ;
                                                                                                                                             text =
                                                                                                                                                 let
                                                                                                                                                     git-attributes =
@@ -1901,6 +1901,7 @@
                                                                                                                                         runtimeInputs =
                                                                                                                                             [
                                                                                                                                                 pkgs.coreutils
+                                                                                                                                                pkgs.gnupg
                                                                                                                                                 (
                                                                                                                                                     pkgs.buildFHSUserEnv
                                                                                                                                                         {
