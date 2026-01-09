@@ -611,7 +611,63 @@
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                                 } ;
-                                                                                                    # data =
+                                                                                                    data =
+                                                                                                        ignore :
+                                                                                                            _git-repository.implementation
+                                                                                                                {
+                                                                                                                    follow-parent = false ;
+                                                                                                                    resolutions = [ ] ;
+                                                                                                                    setup =
+                                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "setup" ;
+                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-crypt pkgs.gnupg wrap ] ;
+                                                                                                                                            text =
+                                                                                                                                                let
+                                                                                                                                                    git-attributes =
+                                                                                                                                                        builtins.toFile
+                                                                                                                                                            "git-attributes"
+                                                                                                                                                            ''
+                                                                                                                                                                secret filter=git-crypt diff=git-crypt
+                                                                                                                                                            '' ;
+                                                                                                                                                    in
+                                                                                                                                                        ''
+                                                                                                                                                            git init
+                                                                                                                                                            ${ ssh mount pkgs resources root wrap }
+                                                                                                                                                            git config user.email "${ config.personal.chromium.home.data.email }"
+                                                                                                                                                            git config user.name "${ config.personal.chromium.home.data.name }"
+                                                                                                                                                            git remote add origin git@github.com:${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository }
+                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                            gpg --list-keys
+                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                            if gh repo view ${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository } 2>&1
+                                                                                                                                                            then
+                                                                                                                                                                git fetch origin ${ config.personal.chromium.home.data.branch } 2>&1
+                                                                                                                                                                git checkout ${ config.personal.chromium.home.data.branch } 2>&1
+                                                                                                                                                                git-crypt unlock 2>&1
+                                                                                                                                                                gh auth logout 2>&1
+                                                                                                                                                            else
+                                                                                                                                                                gh repo create ${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository } --private --confirm 2>&1
+                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.data.branch } 2>&1
+                                                                                                                                                                git-crypt init 2>&1
+                                                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                                                                git-crypt add-gpg-user "${ config.personal.chromium.home.data.email }" 2>&1
+                                                                                                                                                                mkdir secret
+                                                                                                                                                                touch secret/.gitkeep
+                                                                                                                                                                git add .git-attributes secret/.gitkeep
+                                                                                                                                                                git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                                                                gh auth logout 2>&1
+                                                                                                                                                                git push origin HEAD 2>&1
+                                                                                                                                                            fi
+                                                                                                                                                        '' ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                                } ;
                                                                                                 } ;
                                                                                         } ;
                                                                                 } ;
@@ -1903,7 +1959,11 @@
                                                                                     } ;
                                                                                 data =
                                                                                     {
-
+                                                                                        branch = lib.mkOption { default = "2897539d1c3aeab568e6348d480b6348ef8b55f9cbe105c6ab355aee48510892" ; type = lib.types.str ; } ;
+                                                                                        email = lib.mkOption { default = "E.20260109124809@local" ; type = lib.types.str ; } ;
+                                                                                        name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                                        repository = lib.mkOption { default = "ec59af155460eb89" ; type = lib.types.str ; } ;
                                                                                     } ;
                                                                             } ;
                                                                         branch = lib.mkOption { default = "artifact/eb5e3536f8f42f3e6d42d135cc85c4e0df4b955faaf7d221a0ed5ef" ; type = lib.types.str ; } ;
@@ -1990,9 +2050,9 @@
                                                                                                                                                                                 name = "chromium" ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        export XDG_CONFIG_DIR=/mount/config
-                                                                                                                                                                                        export XDG_CACHE_DIR=/mount/cache
-                                                                                                                                                                                        export XDG_DATA_DIR=/mount/data
+                                                                                                                                                                                        export XDG_CONFIG_HOME=/mount/config
+                                                                                                                                                                                        export XDG_CACHE_HOME=/mount/cache
+                                                                                                                                                                                        export XDG_DATA_HOME=/mount/data
                                                                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                                                                         then
                                                                                                                                                                                             chromium "$@"
@@ -2013,9 +2073,8 @@
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
                                                                                                                                                 export CONFIG_RESOURCE
-                                                                                                                                                DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
+                                                                                                                                                DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data ( setup : setup ) }
                                                                                                                                                 export DATA_RESOURCE
-                                                                                                                                                mkdir "$DATA_RESOURCE/repository"
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
                                                                                                                                                     chromium "$@"
@@ -2023,9 +2082,12 @@
                                                                                                                                                     cat | "$@"
                                                                                                                                                 fi
                                                                                                                                                 sleep 1m
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" add secret
+                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" add secret/**
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" commit -am "" --allow-empty-message
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" push origin HEAD
+                                                                                                                                                git -C "$DATA_RESOURCE/repository" add secret/**
+                                                                                                                                                git -C "$DATA_RESOURCE/repository" commit -am "" --allow-empty-message
+                                                                                                                                                git -C "$DATA_RESOURCE/repository" push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
