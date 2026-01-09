@@ -2081,6 +2081,8 @@
                                                                                                                                                 echo "COPIED FILES TO $TEMPORARY"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
                                                                                                                                                 echo GENERATED SECRETS "$SECRETS"
+                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 47e2654b
+                                                                                                                                                echo "BRANCH=$BRANCH"
                                                                                                                                                 if [[ ! -d "$SECRETS/repository" ]]
                                                                                                                                                 then
                                                                                                                                                     failure fee1c8e6
@@ -2108,7 +2110,6 @@
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
                                                                                                                                                 git -C "$SECRETS/repository" push origin HEAD
                                                                                                                                                 echo "HAVE PUSHED"
-                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 47e2654b
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                 gh pr create --base main --head "$BRANCH" --label "snapshot"
