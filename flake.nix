@@ -2041,11 +2041,14 @@
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 echo "EXTRACTING FINGERPRINT"
                                                                                                                                                 FPR="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys \
+                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys 2>/dev/null || true
+                                                                                                                                                )"
+                                                                                                                                                FPR="$(
+                                                                                                                                                  printf '%s\n' "$FPR" \
                                                                                                                                                   | awk -F: -v uid="$MONIKER.$NOW@local" '
                                                                                                                                                       $1=="uid" && index($10, uid) { seen=1 }
                                                                                                                                                       seen && $1=="fpr" { print $10; exit }
-                                                                                                                                                  '
+                                                                                                                                                    '
                                                                                                                                                 )" || failure 5bc4778d
                                                                                                                                                 echo "FINGERPRINT $FPR"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
