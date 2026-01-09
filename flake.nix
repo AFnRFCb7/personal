@@ -2052,6 +2052,7 @@
                                                                                                                                                 )" || failure 5bc4778d
                                                                                                                                                 echo "FINGERPRINT $FPR"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
+                                                                                                                                                echo "FINGERPRINT B $FPR"
                                                                                                                                                 TEMPORARY=${ resources.production.temporary ( setup : setup ) }
                                                                                                                                                 gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
                                                                                                                                                 gpg --export-secret-keys --armour > "$TEMPORARY/secret-keys.asc"
