@@ -2008,6 +2008,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                gpg --sign --local-user "${ config.personal.pads.home.chromium.config.email }" --armor </dev/null >/dev/null
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
                                                                                                                                                 export CONFIG_RESOURCE
                                                                                                                                                 DATA_RESOURCE="$( mktemp -d )" || failure b40fd012
