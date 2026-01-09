@@ -542,7 +542,7 @@
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
-                                                                                                            wrap "$DOT_SSH/config" stage/config 0400
+                                                                                                            wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/ssh" ;
