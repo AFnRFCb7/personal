@@ -2022,8 +2022,9 @@
                                                                                                                                                 else
                                                                                                                                                     cat | "$@"
                                                                                                                                                 fi
+                                                                                                                                                sleep 1m
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" add secret
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" commit -m "" --allow-empty-message
+                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" commit -am "" --allow-empty-message
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" push origin HEAD
                                                                                                                                             '' ;
                                                                                                                                     }
