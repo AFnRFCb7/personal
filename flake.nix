@@ -1894,7 +1894,7 @@
                                                                                 config =
                                                                                     {
                                                                                         branch = lib.mkOption { default = "550263ebac4ad73472a99fdb9d9a9cc61e7ef2842d5edd586055cf877f4f1405" ; type = lib.types.str ; } ;
-                                                                                        email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                                        email = lib.mkOption { default = "E.2026109124809@local" ; type = lib.types.str ; } ;
                                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                         repository = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
@@ -2109,8 +2109,8 @@
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$SECRETS/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
                                                                                                                                                 echo "ABOUT TO COMMIT"
-                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
-                                                                                                                                                git -C "$SECRETS/repository" push --force-with-lease origin HEAD
+                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID" 2>&1
+                                                                                                                                                git -C "$SECRETS/repository" push --force-with-lease origin HEAD 2>&1
                                                                                                                                                 echo "HAVE PUSHED"
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 cd "$SECRETS/repository"
