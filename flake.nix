@@ -530,16 +530,16 @@
                                                                                                                     ''
                                                                                                                         if [[ -t 0 ]]
                                                                                                                         then
-                                                                                                                            ssh -F "$MOUNT/stage/ssh/config"
+                                                                                                                            ssh -F "$MOUNT/stage/ssh/config" "$@"
                                                                                                                         else
-                                                                                                                            cat | ssh -F "$MOUNT/stage/ssh/config"
+                                                                                                                            cat | ssh -F "$MOUNT/stage/ssh/config" "$@"
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
                                                                                                             git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT --literal-plain PATH
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/config 0400
