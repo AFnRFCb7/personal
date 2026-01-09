@@ -593,6 +593,7 @@
                                                                                                                                                                 git fetch origin ${ config.personal.chromium.home.config.branch } 2>&1
                                                                                                                                                                 git checkout ${ config.personal.chromium.home.config.branch } 2>&1
                                                                                                                                                                 git-crypt unlock 2>&1
+                                                                                                                                                                gh auth logout
                                                                                                                                                             else
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
                                                                                                                                                                 git checkout -b ${ config.personal.chromium.home.config.branch } 2>&1
@@ -603,9 +604,9 @@
                                                                                                                                                                 touch secret/.gitkeep
                                                                                                                                                                 git add .git-attributes secret/.gitkeep
                                                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                                                                gh auth logout
                                                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                                                             fi
-                                                                                                                                                            gh auth logout
                                                                                                                                                         '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/setup" ;
