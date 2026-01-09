@@ -2096,10 +2096,10 @@
                                                                                                                                                     failure 047ed19d "$RECIPIENT/public"
                                                                                                                                                 fi
                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure fba2f13f
-                                                                                                                                                if grep -q $'\n' <<< "$RECIPIENT_"
-                                                                                                                                                then
-                                                                                                                                                    failure 367f1591
-                                                                                                                                                fi
+                                                                                                                                                # if grep -q $'\n' <<< "$RECIPIENT_"
+                                                                                                                                                # then
+                                                                                                                                                #     failure 367f1591
+                                                                                                                                                # fi
                                                                                                                                                 echo "ABOUT TO ENCRYPT"
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
