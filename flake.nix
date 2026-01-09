@@ -2065,6 +2065,7 @@
                                                                                                                                                 gpg --export-secret-keys --armor > "$TEMPORARY/secret-keys.asc"
                                                                                                                                                 echo "COPIED FILES TO $TEMPORARY"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
+                                                                                                                                                echo GENERATED SECRETS "$SECRETS"
                                                                                                                                                 if [[ ! -d "$SECRETS/repository" ]]
                                                                                                                                                 then
                                                                                                                                                     failure fee1c8e6
@@ -2074,6 +2075,7 @@
                                                                                                                                                     failure 10d0002c
                                                                                                                                                 fi
                                                                                                                                                 RECIPIENT=${ resources.production.age.public ( setup : setup ) }
+                                                                                                                                                echo "GENERATED RECIPIENT $RECIPIENT"
                                                                                                                                                 if [[ ! -f "$RECIPIENT/public" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 047ed19d "$RECIPIENT/public"
@@ -2083,6 +2085,7 @@
                                                                                                                                                 then
                                                                                                                                                     failure 367f1591
                                                                                                                                                 fi
+                                                                                                                                                echo "ABOUT TO ENCRYPT"
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
@@ -2155,6 +2158,7 @@
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
                                                                                                                             export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
                                                                                                                             export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
