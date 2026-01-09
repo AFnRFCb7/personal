@@ -1254,11 +1254,11 @@
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                     git remote add origin ${ config.personal.repository.secrets.remote }
-                                                                                                                                    git fetch origin main
-                                                                                                                                    git checkout origin/main
+                                                                                                                                    git fetch origin main 2>&1
+                                                                                                                                    git checkout origin/main 2>&1
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure e22efcd4
                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c80f0375
-                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                    git checkout -b "$BRANCH" 2>&1
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
