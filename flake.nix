@@ -512,7 +512,7 @@
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
                                                                     ssh =
-                                                                        pkgs : resources : root : wrap :
+                                                                        mount : pkgs : resources : root : wrap :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -538,6 +538,7 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
+                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
@@ -578,7 +579,7 @@
                                                                                                                                                     in
                                                                                                                                                         ''
                                                                                                                                                             git init
-                                                                                                                                                            ${ ssh pkgs resources root wrap }
+                                                                                                                                                            ${ ssh mount pkgs resources root wrap }
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.config.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.config.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }:${ config.personal.chromium.home.config.repository }
@@ -1249,10 +1250,10 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "1f1cc6de" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ${ ssh pkgs resources root wrap }
+                                                                                                                                    ${ ssh mount pkgs resources root wrap }
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                    git remote add origin git@github.com:${ config.personal.repository.secrets.organization }/${ config.personal.repository.secrets.repository }
+                                                                                                                                    git remote add origin ${ config.personal.repository.secrets.remote }
                                                                                                                                     git fetch origin main
                                                                                                                                     git checkout origin/main
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure e22efcd4
@@ -2028,6 +2029,20 @@
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
+                                                                                                                                        name = "delete-gnupgkey" ;
+                                                                                                                                        runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                KEY="$1"
+                                                                                                                                                gpg --delete-secret-keys "$KEY"
+                                                                                                                                                gpg --delete-keys "$KEY"
+                                                                                                                                                gpg --list-keys
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
                                                                                                                                         name = "generate-gnupg-key" ;
                                                                                                                                         runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gawk pkgs.gnupg failure ] ;
                                                                                                                                         text =
@@ -2159,6 +2174,8 @@
                                                                                                                             export NAME="Emory Merryman"
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            export DOT_SSH="$DOT_SSH/config"
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
                                                                                                                             export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
                                                                                                                             export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
