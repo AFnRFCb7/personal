@@ -2111,6 +2111,7 @@
                                                                                                                                                 git -C "$SECRETS/repository" push origin HEAD
                                                                                                                                                 echo "HAVE PUSHED"
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                cd "$SECRETS/repository"
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                 gh pr create --base main --head "$BRANCH" --label "snapshot"
                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 508fe804
