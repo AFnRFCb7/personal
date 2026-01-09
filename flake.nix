@@ -1894,7 +1894,7 @@
                                                                                 config =
                                                                                     {
                                                                                         branch = lib.mkOption { default = "550263ebac4ad73472a99fdb9d9a9cc61e7ef2842d5edd586055cf877f4f1405" ; type = lib.types.str ; } ;
-                                                                                        email = lib.mkOption { default = "E.2026109124809@local" ; type = lib.types.str ; } ;
+                                                                                        email = lib.mkOption { default = "E.20260109124809@local" ; type = lib.types.str ; } ;
                                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                         repository = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
