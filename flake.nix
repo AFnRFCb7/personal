@@ -2175,7 +2175,7 @@
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
-                                                                                                                            export DOT_SSH="$DOT_SSH/config"
+                                                                                                                            export DOT_SSH
                                                                                                                             PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
                                                                                                                             export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
                                                                                                                             export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
