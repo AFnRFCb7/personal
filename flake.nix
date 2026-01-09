@@ -2040,8 +2040,6 @@
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 echo "EXTRACTING FINGERPRINT"
-                                                                                                                                                echo "EXTRACTING FINGERPRINT"
-
                                                                                                                                                 FPR="$(
                                                                                                                                                   gpg --homedir "$GNUPGHOME" --with-colons --list-keys 2>/dev/null \
                                                                                                                                                   | awk -F: -v uid="$MONIKER.$NOW@local" '
@@ -2049,18 +2047,44 @@
                                                                                                                                                       $1=="uid" && index($10, uid) { print fpr; exit }
                                                                                                                                                     '
                                                                                                                                                 )" || failure 5bc4778d
-                                                                                                                                                echo "FINGERPRINT $FPR"
-                                                                                                                                                echo "FINGERPRINT $FPR"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
-                                                                                                                                                echo "FINGERPRINT B $FPR"
+                                                                                                                                                OLD_KEYS="$(
+                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys \
+                                                                                                                                                  | awk -F: -v new="$FPR" '$1=="fpr" && $10!=new { print $10 }'
+                                                                                                                                                )"
+                                                                                                                                                for key in $OLD_KEYS; do
+                                                                                                                                                    echo "Signing new key $FPR with old key $key"
+                                                                                                                                                    gpg --homedir "$GNUPGHOME" --yes --default-key "$key" --sign-key "$FPR"
+                                                                                                                                                done
                                                                                                                                                 TEMPORARY=${ resources.production.temporary ( setup : setup ) }
-                                                                                                                                                gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
-                                                                                                                                                gpg --export-secret-keys --armour > "$TEMPORARY/secret-keys.asc"
+                                                                                                                                                if [[ ! -d "$TEMPORARY" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 399f0b2b
+                                                                                                                                                fi
+                                                                                                                                                gpg --export-ownertrust --armor > "$TEMPORARY/ownertrust.asc"
+                                                                                                                                                gpg --export-secret-keys --armor > "$TEMPORARY/secret-keys.asc"
                                                                                                                                                 echo "COPIED FILES TO $TEMPORARY"
                                                                                                                                                 SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
+                                                                                                                                                if [[ ! -d "$SECRETS/repository" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure fee1c8e6
+                                                                                                                                                fi
+                                                                                                                                                if [[ ! -d "$SECRETS/repository/.git" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 10d0002c
+                                                                                                                                                fi
                                                                                                                                                 RECIPIENT=${ resources.production.age.public ( setup : setup ) }
-                                                                                                                                                age --recipient "$RECIPIENT" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
-                                                                                                                                                age --recipient "$RECIPIENT" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
+                                                                                                                                                if [[ ! -f "$RECIPIENT/public" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 047ed19d "$RECIPIENT/public"
+                                                                                                                                                fi
+                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure fba2f13f
+                                                                                                                                                if grep -q $'\n' <<< "$RECIPIENT_"
+                                                                                                                                                then
+                                                                                                                                                    failure 367f1591
+                                                                                                                                                fi
+                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
+                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
                                                                                                                                                 echo "ABOUT TO COMMIT"
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
@@ -2126,6 +2150,8 @@
                                                                                                                         ] ;
                                                                                                                     text =
                                                                                                                         ''
+                                                                                                                            export TEST_USER=1abfeaf8
+                                                                                                                            export TEST_PASSWORD=38e38981
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
