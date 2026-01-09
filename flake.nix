@@ -1252,7 +1252,7 @@
                                                                                                                                     ${ ssh pkgs resources root wrap }
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                    git remote add git@github.com:${ config.personal.repository.secrets.organization }/${ config.personal.repository.secrets.repository }
+                                                                                                                                    git remote add origin git@github.com:${ config.personal.repository.secrets.organization }/${ config.personal.repository.secrets.repository }
                                                                                                                                     git fetch origin main
                                                                                                                                     git checkout origin/main
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure e22efcd4
