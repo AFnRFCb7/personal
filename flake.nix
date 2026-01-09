@@ -539,7 +539,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --inherit-plain "@" --inherit-plain MOUNT --literal-plain PATH
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/config 0400
