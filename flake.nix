@@ -2047,6 +2047,7 @@
                                                                                                                                                       seen && $1=="fpr" { print $10; exit }
                                                                                                                                                   '
                                                                                                                                                 )" || failure 5bc4778d
+                                                                                                                                                echo "FINGERPRINT $FPR"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
                                                                                                                                                 TEMPORARY=${ resources.production.temporary ( setup : setup ) }
                                                                                                                                                 gpg --export-ownertrust --armour > "$TEMPORARY/ownertrust.asc"
