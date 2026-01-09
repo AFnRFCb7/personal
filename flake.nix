@@ -286,10 +286,10 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.age ] ;
+                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                age-keygen -y ${ config.personal.agenix } > /mount/public
+                                                                                                                age-keygen -y ${ config.personal.agenix } | tr -d '\n' > /mount/public
                                                                                                                 chmod 0400 /mount/public
                                                                                                             '' ;
                                                                                                     } ;
