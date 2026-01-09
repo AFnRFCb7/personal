@@ -2040,16 +2040,16 @@
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                 echo "EXTRACTING FINGERPRINT"
+                                                                                                                                                echo "EXTRACTING FINGERPRINT"
+
                                                                                                                                                 FPR="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys 2>/dev/null || true
-                                                                                                                                                )"
-                                                                                                                                                FPR="$(
-                                                                                                                                                  printf '%s\n' "$FPR" \
+                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys 2>/dev/null \
                                                                                                                                                   | awk -F: -v uid="$MONIKER.$NOW@local" '
-                                                                                                                                                      $1=="uid" && index($10, uid) { seen=1 }
-                                                                                                                                                      seen && $1=="fpr" { print $10; exit }
+                                                                                                                                                      $1=="fpr" { fpr=$10 }
+                                                                                                                                                      $1=="uid" && index($10, uid) { print fpr; exit }
                                                                                                                                                     '
                                                                                                                                                 )" || failure 5bc4778d
+                                                                                                                                                echo "FINGERPRINT $FPR"
                                                                                                                                                 echo "FINGERPRINT $FPR"
                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
                                                                                                                                                 echo "FINGERPRINT B $FPR"
