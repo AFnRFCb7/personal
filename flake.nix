@@ -2101,8 +2101,8 @@
                                                                                                                                                 #     failure 367f1591
                                                                                                                                                 # fi
                                                                                                                                                 echo "ABOUT TO ENCRYPT"
-                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$TEMPORARY/repository/ownertrust.asc.age"
-                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$TEMPORARY/repository/secret-keys.asc.age"
+                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$SECRETS/repository/ownertrust.asc.age"
+                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$SECRETS/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
                                                                                                                                                 echo "ABOUT TO COMMIT"
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
