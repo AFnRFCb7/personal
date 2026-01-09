@@ -600,7 +600,8 @@
                                                                                                                                                                 wrap ${ git-attributes } repository/.git-attributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
                                                                                                                                                                 mkdir secret
-                                                                                                                                                                git add .git-attributes secret
+                                                                                                                                                                touch secret/.gitkeep
+                                                                                                                                                                git add .git-attributes secret/.gitkeep
                                                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                                                             fi
@@ -1897,7 +1898,7 @@
                                                                                         email = lib.mkOption { default = "E.20260109124809@local" ; type = lib.types.str ; } ;
                                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                        repository = lib.mkOption { default = "1783008edda6ceb30ce4be521e651a991b5f8e200dd8a5fff6026987091c61ae" ; type = lib.types.str ; } ;
+                                                                                        repository = lib.mkOption { default = "170c48bfd29d9625" ; type = lib.types.str ; } ;
                                                                                     } ;
                                                                                 data =
                                                                                     {
