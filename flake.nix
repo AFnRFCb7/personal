@@ -2102,13 +2102,15 @@
                                                                                                                                                 # then
                                                                                                                                                 #     failure 367f1591
                                                                                                                                                 # fi
+                                                                                                                                                git -C "$SECRETS/repository" fetch origin main 2>&1
+                                                                                                                                                git -C "$SECRETS/repository" rebase origin/main 2>&1
                                                                                                                                                 echo "ABOUT TO ENCRYPT"
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$SECRETS/repository/ownertrust.asc.age"
                                                                                                                                                 age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$SECRETS/repository/secret-keys.asc.age"
                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
                                                                                                                                                 echo "ABOUT TO COMMIT"
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
-                                                                                                                                                git -C "$SECRETS/repository" push origin HEAD
+                                                                                                                                                git -C "$SECRETS/repository" push --force-with-lease origin HEAD
                                                                                                                                                 echo "HAVE PUSHED"
                                                                                                                                                 TOKEN=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                 cd "$SECRETS/repository"
