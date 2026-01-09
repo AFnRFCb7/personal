@@ -2008,6 +2008,7 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
                                                                                                                                                 export CONFIG_RESOURCE
@@ -2022,8 +2023,7 @@
                                                                                                                                                 fi
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" add secret
                                                                                                                                                 DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
-                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                gpg --list-keys
+                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" add secret
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" commit -m "" --allow-empty-message
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" push origin HEAD
                                                                                                                                             '' ;
