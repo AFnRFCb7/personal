@@ -756,7 +756,7 @@
                                                                                                                                 User git
                                                                                                                                 HostName github.com
                                                                                                                                 IdentityFile ${ mount }/stage/ssh/identity
-                                                                                                                                UserKnownHostFile ${ mount }/stage/ssh/known-hosts
+                                                                                                                                UserKnownHostsFile ${ mount }/stage/ssh/known-hosts
                                                                                                                                 StrictHostKeyChecking yes
                                                                                                                             EOF
                                                                                                                             cat ${ config.personal.temporary.ssh.identity } > /mount/stage/ssh/identity
