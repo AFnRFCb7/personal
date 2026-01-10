@@ -2039,7 +2039,7 @@
                                                                                                                                                                 [
                                                                                                                                                                     "--bindfs $CONFIG_RESOURCE/repository/secret /mount/config"
                                                                                                                                                                     "--tmpfs /mount/config/cache"
-                                                                                                                                                                    "--bindfs $DATA_RESOURCE/repository /mount/data"
+                                                                                                                                                                    "--bindfs $DATA_RESOURCE/repository/secret /mount/data"
                                                                                                                                                                 ] ;
                                                                                                                                                             name = "chromium" ;
                                                                                                                                                             runScript =
