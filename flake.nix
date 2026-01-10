@@ -2395,8 +2395,11 @@
                                             {
                                                 expected = "/nix/store/kcf82ngcn6ssq5x5mm8bra1pgpnjkldj-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg/ownertrust.asc" ; pkgs = pkgs ;
-                                                secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg/secret-keys.asc" ;
+                                                ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                ownertrust-file = ''echo "$1/ownertrust.asc"'';
+                                                pkgs = pkgs ;
+                                                secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                secret-keys-file = ''echo "$1/secret-keys.asc"'';
                                             } ;
                                     dot-ssh =
                                         _dot-ssh.check
