@@ -2077,7 +2077,7 @@
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
-                                                                                                                                                mkdir ---parents "$CONFIG_RESOURCE/repository/secret"
+                                                                                                                                                mkdir --parents "$CONFIG_RESOURCE/repository/secret"
                                                                                                                                                 export CONFIG_RESOURCE
                                                                                                                                                 echo CONFIG
                                                                                                                                                 find "$CONFIG_RESOURCE"
