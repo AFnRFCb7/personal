@@ -1321,6 +1321,30 @@
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
+                                                                                    secrets_ =
+                                                                                        ignore :
+                                                                                            _git-repository
+                                                                                                {
+                                                                                                    follow-parent = false ;
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    ${ ssh mounts pkgs resources root wrap }
+                                                                                                                                    git remote add origin ${ config.personal.secrets.remote }
+                                                                                                                                    git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                                                    git checkout origin/${ config.personal.secrets.branch } 2>&1
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
                                                                                     snapshot =
                                                                                         ignore :
                                                                                             _git-repository.implementation
@@ -1538,18 +1562,18 @@
                                                                         {
                                                                             github =
                                                                                 {
-                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                                 } ;
                                                                             mobile =
                                                                                 {
-                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                                 } ;
                                                                         } ;
-                                                                    ownertrust = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    secret-keys = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    ownertrust = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    secret-keys = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    token = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
                                                                 } ;
                                                             temporary =
                                                                 ignore :
@@ -2353,6 +2377,11 @@
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
+                                                                    } ;
+                                                                secrets =
+                                                                    {
+                                                                        remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                        branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 wifi =
                                                                     lib.mkOption
