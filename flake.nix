@@ -1337,7 +1337,7 @@
                                                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ${ ssh mounts pkgs resources root wrap }
+                                                                                                                                    ${ ssh mount pkgs resources root wrap }
                                                                                                                                     git remote add origin ${ config.personal.secrets.remote }
                                                                                                                                     git fetch origin ${ config.personal.secrets.branch } 2>&1
                                                                                                                                     git checkout origin/${ config.personal.secrets.branch } 2>&1
