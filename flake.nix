@@ -734,6 +734,30 @@
                                                                                                         in "${ application }/bin/setup" ;
 
                                                                                         } ;
+                                                                            secrets_ =
+                                                                                ignore :
+                                                                                    _git-repository
+                                                                                        {
+                                                                                            follow-parent = false ;
+                                                                                            resolutions = [ ] ;
+                                                                                            setup =
+                                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            ${ ssh mount pkgs resources root wrap }
+                                                                                                                            git remote add origin ${ config.personal.secrets.remote }
+                                                                                                                            git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                                            git checkout origin/${ config.personal.secrets.branch } 2>&1
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
+                                                                                        } ;
                                                                             studio =
                                                                                 {
                                                                                     entry =
@@ -1317,30 +1341,6 @@
                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure e22efcd4
                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c80f0375
                                                                                                                                     git checkout -b "$BRANCH" 2>&1
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/setup" ;
-                                                                                                } ;
-                                                                                    secrets_ =
-                                                                                        ignore :
-                                                                                            _git-repository
-                                                                                                {
-                                                                                                    follow-parent = false ;
-                                                                                                    resolutions = [ ] ;
-                                                                                                    setup =
-                                                                                                        { mount , pkgs , resources , root , wrap } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    ${ ssh mount pkgs resources root wrap }
-                                                                                                                                    git remote add origin ${ config.personal.secrets.remote }
-                                                                                                                                    git fetch origin ${ config.personal.secrets.branch } 2>&1
-                                                                                                                                    git checkout origin/${ config.personal.secrets.branch } 2>&1
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
