@@ -206,9 +206,6 @@
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         root "$GIT_REPOSITORY"
                                                                                                         ln --symbolic "$GIT_REPOSITORY/repository" /mount
-                                                                                                        SECRET=${ resources.foobar.secret ( setup : setup ) }
-                                                                                                        root "$SECRET"
-                                                                                                        ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -239,7 +236,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository =
@@ -264,7 +261,6 @@
                                                                                                 } ;
                                                                                         in "${ application }/bin/setup" ;
                                                                         } ;
-                                                            secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                             temporary =
                                                                 ignore :
                                                                     {
