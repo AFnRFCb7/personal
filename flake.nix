@@ -751,7 +751,7 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             git config core.sshCommand ${ mount }/stage/ssh/command
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            DOT_SSH="$0"
                                                                                                                             root "$DOT_SSH"
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
