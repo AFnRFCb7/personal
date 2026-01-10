@@ -23,7 +23,6 @@
                         resource-reporter ,
                         resource-resolver ,
                         secret ,
-                        secrets ,
                         string ,
                         system ,
                         systemd ,
