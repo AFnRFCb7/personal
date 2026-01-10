@@ -759,7 +759,10 @@
                                                                                                                                 UserKnownHostFile ${ mount }/stage/ssh/known-hosts
                                                                                                                                 StrictHostKeyChecking yes
                                                                                                                             EOF
-                                                                                                                            chmod 0400 /mount/stage/ssh/config
+                                                                                                                            cat ${ config.personal.temporary.ssh.identity } > /mount/stage/ssh/identity
+                                                                                                                            cat ${ config.personal.temporary.ssh.known-hosts } > /mount/stage/ssh/known-hosts
+                                                                                                                            chmod 0400 /mount/stage/ssh/config /mount/stage/ssh/identity /mount/stage/ssh/known-hosts
+                                                                                                                            chmod 0700 /mount/stage/ssh
                                                                                                                             git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F ${ mount }/stage/ssh/config"
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
@@ -2392,6 +2395,14 @@
                                                                     {
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                    } ;
+                                                                temporary =
+                                                                    {
+                                                                        ssh =
+                                                                            {
+                                                                                identity = lib.mkOption { type = lib.types.path ; } ;
+                                                                                known-hosts = lib.mkOption { type = lib.types.path ; } ;
+                                                                            } ;
                                                                     } ;
                                                                 wifi =
                                                                     lib.mkOption
