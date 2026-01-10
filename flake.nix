@@ -2736,7 +2736,7 @@
                                             _secret.check
                                                 {
                                                     # encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                    expected = "/nix/store/6hghn0kl1k9arrw0ycr3vf1qxcf2kfj6-init/bin/init" ;
+                                                    expected = "/nix/store/x21jg50mlmqmi59m5j26a4wjh0bx72ls-init/bin/ini" ;
                                                     # identity = ignore : "${ fixture }/age/identity/private" ;
                                                     failure = _failure.implementation "a720a5e7" ;
                                                     setup = { mount , pkgs , resources , root , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
