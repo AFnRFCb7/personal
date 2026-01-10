@@ -1573,7 +1573,7 @@
                                                                                 ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
                                                                                 IDENTITY=${ config.personal.agenix }
                                                                                 ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
-                                                                                ln --symbolic "$IDENTITY" /scratch/identity" ;
+                                                                                ln --symbolic "$IDENTITY" /scratch/identity
                                                                             '' ;
                                                                     in
                                                                         {
