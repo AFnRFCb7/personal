@@ -2393,7 +2393,7 @@
                                     dot-gnupg =
                                         _dot-gnupg.check
                                             {
-                                                expected = "/nix/store/kcf82ngcn6ssq5x5mm8bra1pgpnjkldj-init/bin/init" ;
+                                                expected = "/nix/store/rxf0885ih1ws3x75xwdiq3rf2yz3ircg-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
                                                 ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 ownertrust-file = ''echo "$1/ownertrust.asc"'';
