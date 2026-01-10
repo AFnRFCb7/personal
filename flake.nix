@@ -2059,10 +2059,15 @@
                                                                                                                                                                                         else
                                                                                                                                                                                             cat | chromium "$@"
                                                                                                                                                                                         fi
+                                                                                                                                                                                        echo CONFIG
+                                                                                                                                                                                        find $XDG_CONFIG_HOME
+                                                                                                                                                                                        echo
+                                                                                                                                                                                        echo DATA
+                                                                                                                                                                                        find $XDG_DATA_HOME
                                                                                                                                                                                     '' ;
                                                                                                                                                                             } ;
                                                                                                                                                                     in "${ application }/bin/chromium" ;
-                                                                                                                                                            targetPkgs = pkgs : [ pkgs.coreutils pkgs.chromium ] ;
+                                                                                                                                                            targetPkgs = pkgs : [ pkgs.coreutils pkgs.findutils pkgs.chromium ] ;
                                                                                                                                                         }
                                                                                                                                                 )
                                                                                                                                             ] ;
@@ -2081,10 +2086,12 @@
                                                                                                                                                 else
                                                                                                                                                     cat | "$@"
                                                                                                                                                 fi
-                                                                                                                                                sleep 1m
+                                                                                                                                                sleep 1s
+                                                                                                                                                echo "CONFIG_RESOURCE=$CONFIG_RESOURCE"
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" add secret/**
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" commit -am "" --allow-empty-message
                                                                                                                                                 git -C "$CONFIG_RESOURCE/repository" push origin HEAD
+                                                                                                                                                echo "DATA_RESOURCE=$DATA_RESOURCE"
                                                                                                                                                 git -C "$DATA_RESOURCE/repository" add secret/**
                                                                                                                                                 git -C "$DATA_RESOURCE/repository" commit -am "" --allow-empty-message
                                                                                                                                                 git -C "$DATA_RESOURCE/repository" push origin HEAD
