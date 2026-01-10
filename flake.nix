@@ -2031,45 +2031,8 @@
                                                                                                                                         runtimeInputs =
                                                                                                                                             [
                                                                                                                                                 pkgs.coreutils
+                                                                                                                                                pkgs.chromium
                                                                                                                                                 pkgs.gnupg
-                                                                                                                                                (
-                                                                                                                                                    pkgs.buildFHSUserEnv
-                                                                                                                                                        {
-                                                                                                                                                            extraBrwapArgs =
-                                                                                                                                                                [
-                                                                                                                                                                    "--bindfs $CONFIG_RESOURCE/repository/secret /mount/config"
-                                                                                                                                                                    "--tmpfs /mount/config/cache"
-                                                                                                                                                                    "--bindfs $DATA_RESOURCE/repository/secret /mount/data"
-                                                                                                                                                                ] ;
-                                                                                                                                                            name = "chromium" ;
-                                                                                                                                                            runScript =
-                                                                                                                                                                let
-                                                                                                                                                                    application =
-                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                            {
-                                                                                                                                                                                name = "chromium" ;
-                                                                                                                                                                                text =
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        export XDG_CONFIG_HOME=/mount/config
-                                                                                                                                                                                        export XDG_CACHE_HOME=/mount/cache
-                                                                                                                                                                                        export XDG_DATA_HOME=/mount/data
-                                                                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                                                                        then
-                                                                                                                                                                                            chromium "$@"
-                                                                                                                                                                                        else
-                                                                                                                                                                                            cat | chromium "$@"
-                                                                                                                                                                                        fi
-                                                                                                                                                                                        echo CONFIG
-                                                                                                                                                                                        find $XDG_CONFIG_HOME
-                                                                                                                                                                                        echo
-                                                                                                                                                                                        echo DATA
-                                                                                                                                                                                        find $XDG_DATA_HOME
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            } ;
-                                                                                                                                                                    in "${ application }/bin/chromium" ;
-                                                                                                                                                            targetPkgs = pkgs : [ pkgs.coreutils pkgs.findutils pkgs.chromium ] ;
-                                                                                                                                                        }
-                                                                                                                                                )
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
@@ -2077,13 +2040,13 @@
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
-                                                                                                                                                mkdir --parents "$CONFIG_RESOURCE/repository/secret"
-                                                                                                                                                export CONFIG_RESOURCE
+                                                                                                                                                export XDG_CONFIG_HOME="$CONFIG_RESOURCE/repository/secret"
+                                                                                                                                                mkdir --parents "$XDG_CONFIG_HOME"
                                                                                                                                                 echo CONFIG
                                                                                                                                                 find "$CONFIG_RESOURCE"
                                                                                                                                                 DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data ( setup : setup ) }
-                                                                                                                                                mkdir --parents "$DATA_RESOURCE/repository/secret"
-                                                                                                                                                export DATA_RESOURCE
+                                                                                                                                                export XDG_DATA_HOME="$CONFIG_RESOURCE/repository/secret"
+                                                                                                                                                mkdir --parents "$XDG_DATA_HOME"
                                                                                                                                                 echo
                                                                                                                                                 echo DATA
                                                                                                                                                 find "$DATA_RESOURCE"
