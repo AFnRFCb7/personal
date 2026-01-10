@@ -69,7 +69,6 @@
                             _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
                             _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
-                            _systemd = systemd.lib { failure = _failure.implementation "e382c260" ; } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -2716,14 +2715,6 @@
                                                     setup = { mount , pkgs , resources , root , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
                                                     pkgs = pkgs ;
                                                } ;
-                                       systemd =
-                                            _systemd.check
-                                                {
-                                                    config = [ ] ;
-                                                    coreutils = pkgs.coreutils ;
-                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
