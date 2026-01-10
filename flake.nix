@@ -23,7 +23,6 @@
                         resource-reporter ,
                         resource-resolver ,
                         secret ,
-                        secrets ,
                         string ,
                         system ,
                         systemd ,
@@ -206,9 +205,6 @@
                                                                                                         GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
                                                                                                         root "$GIT_REPOSITORY"
                                                                                                         ln --symbolic "$GIT_REPOSITORY/repository" /mount
-                                                                                                        SECRET=${ resources.foobar.secret ( setup : setup ) }
-                                                                                                        root "$SECRET"
-                                                                                                        ln --symbolic "$SECRET/secret" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -239,7 +235,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" "secret" ] ;
+                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                             git-repository =
@@ -264,7 +260,6 @@
                                                                                                 } ;
                                                                                         in "${ application }/bin/setup" ;
                                                                         } ;
-                                                            secret = ignore : _secret.implementation { encrypted = ignore : "${ _fixture.implementation }/age/encrypted/known-hosts.asc" ; identity = ignore : "${ _fixture.implementation }/age/identity/private" ; } ;
                                                             temporary =
                                                                 ignore :
                                                                     {
@@ -734,6 +729,43 @@
                                                                                                         in "${ application }/bin/setup" ;
 
                                                                                         } ;
+                                                                            secrets_ =
+                                                                                ignore :
+                                                                                    _git-repository.implementation
+                                                                                        {
+                                                                                            follow-parent = false ;
+                                                                                            resolutions = [ ] ;
+                                                                                            setup =
+                                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "setup" ;
+                                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            mkdir --parents /mount/stage/ssh
+                                                                                                                            cat >> /mount/stage/ssh/config <<EOF
+                                                                                                                            Host github.com
+                                                                                                                                User git
+                                                                                                                                HostName github.com
+                                                                                                                                IdentityFile ${ mount }/stage/ssh/identity
+                                                                                                                                UserKnownHostsFile ${ mount }/stage/ssh/known-hosts
+                                                                                                                                StrictHostKeyChecking yes
+                                                                                                                            EOF
+                                                                                                                            cat ${ config.personal.temporary.ssh.identity } > /mount/stage/ssh/identity
+                                                                                                                            cat ${ config.personal.temporary.ssh.known-hosts } > /mount/stage/ssh/known-hosts
+                                                                                                                            chmod 0400 /mount/stage/ssh/config /mount/stage/ssh/identity /mount/stage/ssh/known-hosts
+                                                                                                                            chmod 0700 /mount/stage/ssh
+                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F ${ mount }/stage/ssh/config"
+                                                                                                                            git remote add origin ${ config.personal.secrets.remote }
+                                                                                                                            git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                                            git checkout origin/${ config.personal.secrets.branch } 2>&1
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/setup" ;
+                                                                                        } ;
                                                                             studio =
                                                                                 {
                                                                                     entry =
@@ -769,10 +801,10 @@
                                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                         cd "$toplevel/$name"
                                                                                                                                                         git config foobar.alpha "$toplevel/$name"
-                                                                                                                                                        git config alias.mutable-audit "${ mount }/stage/alias/submodule/mutable-audit"
-                                                                                                                                                        git config alias.mutable-mirror "${ mount }/stage/alias/submodule/mutable-mirror"
-                                                                                                                                                        git config alias.mutable-snapshot "${ mount }/stage/alias/submodule/mutable-snapshot"
-                                                                                                                                                        git config alias.mutable-squash "${ mount }/stage/alias/submodule/mutable-squash"
+                                                                                                                                                        git config alias.mutable-audit "!${ mount }/stage/alias/submodule/mutable-audit"
+                                                                                                                                                        git config alias.mutable-mirror "!${ mount }/stage/alias/submodule/mutable-mirror"
+                                                                                                                                                        git config alias.mutable-snapshot "!${ mount }/stage/alias/submodule/mutable-snapshot"
+                                                                                                                                                        git config alias.mutable-squash "!${ mount }/stage/alias/submodule/mutable-squash"
                                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                                         git config core.sshCommand "${ mount }/stage/ssh/command"
@@ -1157,8 +1189,8 @@
                                                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                         then
                                                                                                                                                                             git commit -a --verbose --allow-empty-message >&2
-                                                                                                                                                                            git push origin HEAD >&2
                                                                                                                                                                         fi
+                                                                                                                                                                        git push origin HEAD >&2
                                                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
                                                                                                                                                                         MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
                                                                                                                                                                         root "$MUTABLE_SNAPSHOT"
@@ -1184,13 +1216,13 @@
                                                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 48e374d5
                                                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                                                             git commit -a --verbose --allow-empty-message
-                                                                                                                                                                            git push origin HEAD
-                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
-                                                                                                                                                                            TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
-                                                                                                                                                                            export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                                            cd "$toplevel"
-                                                                                                                                                                            nix flake update --flake "$toplevel" "$name"
                                                                                                                                                                         fi
+                                                                                                                                                                        TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                        TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
+                                                                                                                                                                        export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                                        cd "$toplevel"
+                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
@@ -1263,7 +1295,7 @@
                                                                                                                                     wrap ${ mutable-rebase.submodule } stage/alias/submodule/mutable-rebase 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
-                                                                                                                                    wrap ${ mutable-squash } stage/alias/root/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --set-plain MOUNT "${ mount }" --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-squash } stage/alias/submodule/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --set-plain MOUNT "${ mount }" --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
@@ -1533,32 +1565,42 @@
                                                                                 } ;
                                                                         } ;
                                                             secrets =
-                                                                {
-                                                                    dot-ssh =
+                                                                let
+                                                                    setup =
+                                                                        encrypted : { mount , pkgs , resources , root , wrap } :
+                                                                            ''
+                                                                                ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
+                                                                                IDENTITY=${ config.personal.agenix }
+                                                                                ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
+                                                                                ln --symbolic "$IDENTITY" /scratch/identity
+                                                                            '' ;
+                                                                    in
                                                                         {
-                                                                            github =
+                                                                            dot-ssh =
                                                                                 {
-                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    github =
+                                                                                        {
+                                                                                            identity-file = ignore : _secret.implementation { setup = setup "/dot-ssh/boot/identity.asc.age" ; } ;
+                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            identity-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/identity.asc.age" ; } ;
+                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
+                                                                                        } ;
                                                                                 } ;
-                                                                            mobile =
-                                                                                {
-                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                } ;
+                                                                            ownertrust = ignore : _secret.implementation { setup = setup "ownertrust.asc.age" ; } ;
+                                                                            secret-keys = ignore : _secret.implementation { setup = setup "secret-keys.asc.age" ; } ;
+                                                                            token = ignore : _secret.implementation { setup = setup "github-token.asc.age" ; } ;
                                                                         } ;
-                                                                    ownertrust = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    secret-keys = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    token = ignore : _secret.implementation { encrypted = ignore : "${ secrets }/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    temporary =
+                                                                        ignore :
+                                                                            {
+                                                                                init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                                transient = true ;
+                                                                            } ;
                                                                 } ;
-                                                            temporary =
-                                                                ignore :
-                                                                    {
-                                                                        init = { mount , pkgs , resources , root , wrap } : "" ;
-                                                                        transient = true ;
-                                                                    } ;
                                                         } ;
-                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
@@ -2354,6 +2396,19 @@
                                                                                 repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
+                                                                secrets =
+                                                                    {
+                                                                        remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                        branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                    } ;
+                                                                temporary =
+                                                                    {
+                                                                        ssh =
+                                                                            {
+                                                                                identity = lib.mkOption { type = lib.types.path ; } ;
+                                                                                known-hosts = lib.mkOption { type = lib.types.path ; } ;
+                                                                            } ;
+                                                                    } ;
                                                                 wifi =
                                                                     lib.mkOption
                                                                         {
@@ -2679,10 +2734,11 @@
                                         secret =
                                             _secret.check
                                                 {
-                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                    expected = "/nix/store/6hghn0kl1k9arrw0ycr3vf1qxcf2kfj6-init/bin/init" ;
-                                                    identity = ignore : "${ fixture }/age/identity/private" ;
+                                                    # encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
+                                                    expected = "/nix/store/x21jg50mlmqmi59m5j26a4wjh0bx72ls-init/bin/init" ;
+                                                    # identity = ignore : "${ fixture }/age/identity/private" ;
                                                     failure = _failure.implementation "a720a5e7" ;
+                                                    setup = { mount , pkgs , resources , root , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
                                                     pkgs = pkgs ;
                                                } ;
                                        systemd =
