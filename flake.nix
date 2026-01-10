@@ -750,9 +750,17 @@
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            git config core.sshCommand ${ mount }/stage/ssh/command
-                                                                                                                            DOT_SSH="$0"
-                                                                                                                            root "$DOT_SSH"
+                                                                                                                            mkdir --parents /mount/stage/ssh
+                                                                                                                            cat >> /mount/stage/ssh/config <<EOF
+                                                                                                                            Host github.com
+                                                                                                                                User git
+                                                                                                                                HostName github.com
+                                                                                                                                IdentityFile ${ mount }/stage/ssh/identity
+                                                                                                                                UserKnownHostFile ${ mount }/stage/ssh/known-hosts
+                                                                                                                                StrictHostKeyChecking yes
+                                                                                                                            EOF
+                                                                                                                            chmod 0400 /mount/stage/ssh/config
+                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F ${ mount }/stage/ssh/config"
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
                                                                                                                             git checkout origin/${ config.personal.secrets.branch } 2>&1
