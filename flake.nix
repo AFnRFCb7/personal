@@ -1573,7 +1573,7 @@
                                                                                 ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
                                                                                 IDENTITY=${ config.personal.agenix }
                                                                                 ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
-                                                                                ln --symbolic "$IDENTITY" /scratch/identity
+                                                                                ln --symbolic "$IDENTITY" /scratch/identity" ;
                                                                             '' ;
                                                                     in
                                                                         {
@@ -2735,10 +2735,11 @@
                                         secret =
                                             _secret.check
                                                 {
-                                                    encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
+                                                    # encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
                                                     expected = "/nix/store/6hghn0kl1k9arrw0ycr3vf1qxcf2kfj6-init/bin/init" ;
-                                                    identity = ignore : "${ fixture }/age/identity/private" ;
+                                                    # identity = ignore : "${ fixture }/age/identity/private" ;
                                                     failure = _failure.implementation "a720a5e7" ;
+                                                    setup = { mount , pkgs , resources , root , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity''
                                                     pkgs = pkgs ;
                                                } ;
                                        systemd =
