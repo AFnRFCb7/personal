@@ -1570,32 +1570,42 @@
                                                                                 } ;
                                                                         } ;
                                                             secrets =
-                                                                {
-                                                                    dot-ssh =
+                                                                let
+                                                                    setup =
+                                                                        encrypted : { mount , pkgs , resources , root , wrap } :
+                                                                            ''
+                                                                                ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
+                                                                                IDENTITY=${ config.personal.agenix }
+                                                                                ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
+                                                                                ln --symbolic "$IDENTITY" /scratch/identity"
+                                                                            '' ;
+                                                                    in
                                                                         {
-                                                                            github =
+                                                                            dot-ssh =
                                                                                 {
-                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                                    github =
+                                                                                        {
+                                                                                            identity-file = ignore : _secret.implementation { setup = setup "/dot-ssh/boot/identity.asc.age" ; } ;
+                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            identity-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/identity.asc.age" ; } ;
+                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
+                                                                                        } ;
                                                                                 } ;
-                                                                            mobile =
-                                                                                {
-                                                                                    identity-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/identity.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                    user-known-hosts-file = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/dot-ssh/boot/known-hosts.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                                } ;
+                                                                            ownertrust = ignore : _secret.implementation { setup = setup "ownertrust.asc.age" ; } ;
+                                                                            secret-keys = ignore : _secret.implementation { setup = setup "secret-keys.asc.age" ; } ;
+                                                                            token = ignore : _secret.implementation { setup = setup "github-token.asc.age" ; } ;
                                                                         } ;
-                                                                    ownertrust = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/ownertrust.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    secret-keys = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/secret-keys.asc.age" ; identity = ignore : config.personal.agenix ; } ;
-                                                                    token = ignore : _secret.implementation { encrypted = ignore : "${ resources__.production.repository.secrets_ ( setup : setup ) }/repository/github-token.asc.age" ; identity = ignore : config.personal.agenix ; } ;
+                                                                    temporary =
+                                                                        ignore :
+                                                                            {
+                                                                                init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                                transient = true ;
+                                                                            } ;
                                                                 } ;
-                                                            temporary =
-                                                                ignore :
-                                                                    {
-                                                                        init = { mount , pkgs , resources , root , wrap } : "" ;
-                                                                        transient = true ;
-                                                                    } ;
                                                         } ;
-                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
