@@ -2444,13 +2444,6 @@
                                                             } ;
                                                     } ;
                                             } ;
-                                    ephemeral =
-                                        builtins.trace "${ builtins.typeOf _ephemeral.check }"
-                                        _ephemeral.check
-                                            {
-                                                expected = "/nix/store/yynxdjqz92x4jmla99a1fs3zzlgw7vpr-init/bin/init" ;
-                                                pkgs = pkgs ;
-                                          } ;
                                    failure =
                                        _failure.check
                                            {
