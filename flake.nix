@@ -2077,14 +2077,21 @@
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
                                                                                                                                                 CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
+                                                                                                                                                mkdir ---parents "$CONFIG_RESOURCE/repository/secret"
                                                                                                                                                 export CONFIG_RESOURCE
+                                                                                                                                                echo CONFIG
+                                                                                                                                                find "$CONFIG_RESOURCE"
                                                                                                                                                 DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data ( setup : setup ) }
+                                                                                                                                                mkdir --parents "$DATA_RESOURCE/repository/secret"
                                                                                                                                                 export DATA_RESOURCE
+                                                                                                                                                echo
+                                                                                                                                                echo DATA
+                                                                                                                                                find "$DATA_RESOURCE"
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
                                                                                                                                                     chromium "$@"
                                                                                                                                                 else
-                                                                                                                                                    cat | "$@"
+                                                                                                                                                    cat | chromium "$@"
                                                                                                                                                 fi
                                                                                                                                                 sleep 1s
                                                                                                                                                 echo "CONFIG_RESOURCE=$CONFIG_RESOURCE"
