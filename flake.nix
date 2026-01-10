@@ -750,7 +750,9 @@
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-
+                                                                                                                            git config core.sshCommand ${ mount }/stage/ssh/command
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            root "$DOT_SSH"
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
                                                                                                                             git checkout origin/${ config.personal.secrets.branch } 2>&1
