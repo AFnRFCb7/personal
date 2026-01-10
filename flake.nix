@@ -736,7 +736,7 @@
                                                                                         } ;
                                                                             secrets_ =
                                                                                 ignore :
-                                                                                    _git-repository
+                                                                                    _git-repository.implementation
                                                                                         {
                                                                                             follow-parent = false ;
                                                                                             resolutions = [ ] ;
