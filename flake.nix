@@ -10,7 +10,6 @@
                     {
                         dot-gnupg ,
                         dot-ssh ,
-                        ephemeral ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -25,14 +24,12 @@
                         secret ,
                         string ,
                         system ,
-                        systemd ,
                         visitor
                     } @primary :
                         let
                             _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            _ephemeral = ephemeral.lib { failure = _failure.implementation "1b07a5b1" ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
@@ -369,15 +366,6 @@
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
-                                                            ephemeral =
-                                                                {
-                                                                    chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
-                                                                    coreutils = ignore : _ephemeral.implementation { expression = "nixpkgs#coreutils" ; targets = [ "bin" "libexec" ] ; } ;
-                                                                    cowsay = ignore : _ephemeral.implementation { expression = "nixpkgs#cowsay" ; targets = [ "bin" "etc" "share" ] ; } ;
-                                                                    emacs = ignore : _ephemeral.implementation { expression = "nixpkgs#emacs" ; targets = [ "bin" "include" "lib" "libexec" "nix-support" "share" ] ; } ;
-                                                                    hello = ignore : _ephemeral.implementation { expression = "nixpkgs#hello" ; targets = [ "bin" "share" ] ; } ;
-                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share" ] ; } ;
-                                                                } ;
                                                             fixture =
                                                                 {
                                                                     laptop =
@@ -2430,19 +2418,6 @@
                                             } ;
                     in
                         {
-                            apps =
-                                {
-                                    chromium =
-                                        {
-                                            type = "app" ;
-                                            program = "${ pkgs.chromium }/bin/chromium" ;
-                                        } ;
-                                    pass =
-                                        {
-                                            type = "app" ;
-                                            program = "${ pkgs.pass }/bin/pass" ;
-                                        } ;
-                                } ;
                             checks =
                                 {
                                     dot-gnupg =
